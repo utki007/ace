@@ -8,7 +8,6 @@ import pymongo
 import dns
 import pandas as pd
 import numpy as np
-from discord_webhook import DiscordWebhook
 
 description = '''This is what I have been programmed to do'''
 client = commands.Bot(command_prefix='?', description=description,)
