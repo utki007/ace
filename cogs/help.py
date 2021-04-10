@@ -15,46 +15,87 @@ class Help(commands.Cog, name="Help command"):
     async def on_ready(self):
         print(f" Help Cog has been loaded. ")
 
-    @commands.command(name="help", description="This is the help command", usage="The help command!!", aliases=['h'])
-    async def help(self,ctx,cog="1"):
+    @commands.command(
+        name='help', aliases=['h', 'commands'], description="The help command!"
+    )
+    async def help(self, ctx, cog="1"):
         helpEmbed = discord.Embed(
-            title = "Help Commands!",
-            color = ctx.author.colour
+            title="Help commands!", color=random.choice(self.client.color_list)
         )
-        helpEmbed.set_thumbnail(url = ctx.author.avatar_url)
-        
-        cogs = [c for c in self.client.cogs.keys()]
-        # cogs.remove('')
-        
-        totalPages = math.ceil(len(cogs)/4)
-        
-        cog = int(cog)
-        if cog > totalPages or cog <1:
-            await ctx.send(f"Invalid page number: `{cog}`")
-            return
-        
-        neededCogs = []
-        
-        for i in range(4):
-            x = i + (int(cog) - 1)*4
-            try:
-                neededCogs.append(cogs[x])
-            except IndexError:
-                pass
-        
-        for cog in neededCogs:
-            commandList = ""
-            for command in self.client.get_cog(cog).walk_commands():
+        helpEmbed.set_thumbnail(url=ctx.author.avatar_url)
+
+        # Get a list of all our current cogs & rmeove ones without commands
+        cogs = [c for c in self.bot.cogs.keys()]
+        cogs.remove('Events')
+
+        totalPages = math.ceil(len(cogs) / 4)
+
+        if re.search(r"\d", str(cog)):
+            cog = int(cog)
+            if cog > totalPages or cog < 1:
+                await ctx.send(f"Invalid page number: `{cog}`. Please pick from {totalPages} pages.\nAlternatively, simply run `help` to see the first help page.")
+                return
+
+            helpEmbed.set_footer(
+                text=f"<> - Required & [] - Optional | Page {cog} of {totalPages}"
+            )
+
+            neededCogs = []
+            for i in range(4):
+                x = i + (int(cog) - 1) * 4
+                try:
+                    neededCogs.append(cogs[x])
+                except IndexError:
+                    pass
+
+            for cog in neededCogs:
+                commandList = ""
+                for command in self.client.get_cog(cog).walk_commands():
+                    if command.hidden:
+                        continue
+
+                    elif command.parent != None:
+                        continue
+
+                    commandList += f"**{command.name}** - *{command.description}*\n"
+                commandList += "\n"
+
+                helpEmbed.add_field(name=cog, value=commandList, inline=False)
+
+        elif re.search(r"[a-zA-Z]", str(cog)):
+            lowerCogs = [c.lower() for c in cogs]
+            if cog.lower() not in lowerCogs:
+                await ctx.send(f"Invalid argument: `{cog}`. Please pick from {totalPages} pages.\nAlternatively, simply run `help` to see page one or type `help [category]` to see that categories help command!")
+                return
+
+            helpEmbed.set_footer(
+                text=f"<> - Required & [] - Optional | Cog {(lowerCogs.index(cog.lower())+1)} of {len(lowerCogs)}"
+            )
+
+            helpText = ""
+
+            for command in self.client.get_cog(cogs[lowerCogs.index(cog.lower())]).walk_commands():
                 if command.hidden:
                     continue
-                elif command.parent is None:
+
+                elif command.parent != None:
                     continue
-                
-                commandList += f"**{command.name}** - *{command.description} \n*"
-            commandList += "\n"
-             
-            helpEmbed.add_field(name = cog,value = commandList, inline =False)
-            await ctx.send(embed = helpEmbed)
+
+                helpText += f"```{command.name}```\n**{command.description}**\n\n"
+
+                if len(command.aliases) > 0:
+                    helpText += f'**Aliases: ** `{", ".join(command.aliases)}`'
+                helpText += '\n'
+
+                helpText += f'**Format:** `{prefix}{command.name} {command.usage if command.usage is not None else ""}`\n\n'
+            helpEmbed.description = helpText
+
+        else:
+            await ctx.send(f"Invalid argument: `{cog}`\nPlease pick from {totalPages} pages.\nAlternatively, simply run `help` to see page one or type `help [category]` to see that categories help command!")
+            return
+
+        await ctx.send(embed=helpEmbed)
+
              
 def setup(client):
     client.add_cog(Help(client))
