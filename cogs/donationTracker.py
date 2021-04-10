@@ -21,6 +21,10 @@ class donationTracker(commands.Cog):
         # for my server
         self.logChannel = int(829432135936376852)
 
+        # donor bank properties
+        self.bal = "bal"
+        self.name = "name"
+        self.id = "_id"
 
 
 
@@ -28,8 +32,7 @@ class donationTracker(commands.Cog):
     async def on_ready(self):
         # Send a nice message
         print(f'donobank loaded')
-
-
+         
     # add a donator if he doesn't exist
     async def create_donor(self,user):
         dict = {}
@@ -43,7 +46,7 @@ class donationTracker(commands.Cog):
     async def adono(self,ctx, member: discord.Member, amount: int):
         
         self.authorized = False
-        authorizedUsers = ['562738920031256576']
+        authorizedUsers = []
 
         for i in authorizedUsers:
             if ctx.author.id == int(i):
@@ -72,20 +75,20 @@ class donationTracker(commands.Cog):
             await ctx.message.add_reaction("<a:tick:823850808264097832>")
 
             # showing donor balance
-            self.bal = "bal"
             display = discord.Embed(
-                title=f"__{member.name} Donator Bank__",
-                description=f"{member.mention} has added {amount:,} to their donor balance. thanks for your dono.  \n\n"
-                            f"{member.mention} Total Donation **{dict[self.bal]:,}** \n",
+                title=f"{member.avatar_url}__{dict[self.name].upper()}'s Donation__ 🏦",
+                description=f"** Amount Credited: **⏣ {amount:,}\n"
+                            f"**By: ** {ctx.author.mention}\n"
+                            f"**Total Donation: ** {dict[self.bal]:,} \n\n"
+                            f"**𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧. ** \n",
                 colour=member.colour
             )
-
             display.set_footer(
                 text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
 
             dmMessage = discord.Embed(
                 title=f"__{member.name} Donator Bank__",
-                description=f"Thank you for your {amount:,} Donation. \n\n"
+                description=f"**𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧 of ⏣ {amount:,} ** \n\n"
                             f"Total Donation **{dict[self.bal]:,}** \n",
                 colour=member.colour
             )
@@ -100,12 +103,12 @@ class donationTracker(commands.Cog):
             # for logging
             logg = discord.Embed(
                 title="__Gambler's Kingdom Logging Registry__",
-                description=f"{ctx.author.mention} added **{amount:,}** to {member.mention} bal [here]({ctx.message.jump_url})",
+                description=f"{ctx.author.mention} added ⏣ **{amount:,}** to {member.mention} bal [here]({ctx.message.jump_url})",
                 colour=ctx.author.colour
             )
 
             logg.set_footer(
-                text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
+                text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
             channel = self.client.get_channel(self.logChannel)
             await channel.send(embed=logg)
