@@ -76,10 +76,10 @@ class donationTracker(commands.Cog):
 
             # showing donor balance
             display = discord.Embed(
-                title=f"{member.avatar}__{dict[self.name].upper()}'s Donation__ 🏦",
-                description=f"** Amount Credited: **⏣ {amount:,}\n"
-                            f"**By: ** {ctx.author.mention}\n"
-                            f"**Total Donation: ** {dict[self.bal]:,} \n\n"
+                title=f"<:TGK_businessman:830519947015749654>__{dict[self.name].upper()}'s Donation__ <:TGK_businessman:830519947015749654>",
+                description=f"** Amount Credited: **<:TGK_DMC:830520214021603350> {amount:,}\n"
+                            # f"**By: ** {ctx.author.mention}\n"
+                            f"**Total Donation: **<:TGK_DMC:830520214021603350> {dict[self.bal]:,} \n\n"
                             f"**𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧. ** \n",
                 colour=member.colour
             )
@@ -88,8 +88,8 @@ class donationTracker(commands.Cog):
 
             dmMessage = discord.Embed(
                 title=f"__{member.name} Donator Bank__",
-                description=f"**𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧 of ⏣ {amount:,} ** \n\n"
-                            f"Total Donation **{dict[self.bal]:,}** \n",
+                description=f"**𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧 of <:TGK_DMC:830520214021603350> {amount:,} ** \n\n"
+                            f"Total Donation: <:TGK_DMC:830520214021603350> **{dict[self.bal]:,}** \n",
                 colour=member.colour
             )
 
@@ -103,7 +103,7 @@ class donationTracker(commands.Cog):
             # for logging
             logg = discord.Embed(
                 title="__Gambler's Kingdom Logging Registry__",
-                description=f"{ctx.author.mention} added ⏣ **{amount:,}** to {member.mention} bal [here]({ctx.message.jump_url})",
+                description=f"{ctx.author.mention} added <:TGK_DMC:830520214021603350> **{amount:,}** to {member.mention} bal [here]({ctx.message.jump_url})",
                 colour=ctx.author.colour
             )
 
