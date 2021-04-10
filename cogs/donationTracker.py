@@ -74,7 +74,7 @@ class donationTracker(commands.Cog):
 
             # updating the value
             self.mycol.update_one(myquery, newvalues)
-            await ctx.message.add_reaction("<a:tick:823850808264097832>")
+            # await ctx.message.add_reaction("<a:tick:823850808264097832>")
 
             # showing donor balance
             display = discord.Embed(
@@ -132,11 +132,11 @@ class donationTracker(commands.Cog):
 
 
 
-    @commands.command()
+    @commands.command(name="remove-donation", description="Add Donation for a member", usage="<member> <amount>",aliases=['rdono','rbal','remove-bal'])
     async def rdono(self,ctx, member: discord.Member, amount: int):
         
         self.authorized = False
-        authorizedUsers = ['562738920031256576','779311369420931133']
+        authorizedUsers = []
 
         for i in authorizedUsers:
             if ctx.author.id == int(i):
@@ -155,7 +155,6 @@ class donationTracker(commands.Cog):
 
             if flag == 0:
                 await ctx.send(f"⚠ {ctx.author.mention}, donor doesn't exist. How tf are you removing donation? Let me report you to my boss!! ⚠") 
-                # await ctx.send("⚠ {ctx.message.author} {ctx.author.mention} Donor Doesn't Exist. How tf are you removing donation? Let me report you to my boss!! ⚠")
             else:
                 if dict["bal"]-amount < 0:
                     await ctx.message.add_reaction("<a:invalid:823999689879191552>")
@@ -166,7 +165,7 @@ class donationTracker(commands.Cog):
 
             # updating the value
             self.mycol.update_one(myquery, newvalues)
-            await ctx.message.add_reaction("<a:tick:823850808264097832>")
+            # await ctx.message.add_reaction("<a:tick:823850808264097832>")
 
             # showing donor balance
             self.bal = "bal"
@@ -198,7 +197,7 @@ class donationTracker(commands.Cog):
             dmMessage.set_thumbnail(url="https://cdn.discordapp.com/emojis/830548561329782815.gif?v=1")
             
             await ctx.send(embed=display)
-            await member.send(embed=dmMessage)
+            await ctx.message.delete()
 
 
             # for logging
@@ -213,7 +212,8 @@ class donationTracker(commands.Cog):
 
             channel = self.client.get_channel(self.logChannel)
             await channel.send(embed=logg)
-        
+            
+            await member.send(embed=dmMessage)
         else:
             await ctx.message.add_reaction("<a:ban:823998531827400795>")
             await ctx.send(f"⚠ {ctx.author.mention}, you are __**unauthorized**__ to use this command ⚠") 
