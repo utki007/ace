@@ -193,7 +193,7 @@ class donationTracker(commands.Cog):
 
             dmMessage.set_footer(
                 text=f"{self.client.user.name} | Developed by utki & Jay", icon_url=self.client.user.avatar_url)
-            display.set_thumbnail(url="https://cdn.discordapp.com/emojis/830548561329782815.gif?v=1")
+            dmMessage.set_thumbnail(url="https://cdn.discordapp.com/emojis/830548561329782815.gif?v=1")
             
             await ctx.send(embed=display)
             await member.send(embed=dmMessage)
