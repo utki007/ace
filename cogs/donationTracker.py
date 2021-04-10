@@ -68,9 +68,6 @@ class donationTracker(commands.Cog):
                 await self.create_donor(member)
                 newvalues = {"$set": {"bal": amount}}
                 dict["bal"] = amount
-                dict = {}
-                for x in info:
-                    dict = x
             else:
                 newvalues = {"$set": {"bal": dict["bal"]+amount}}
                 dict["bal"] = dict["bal"]+amount
