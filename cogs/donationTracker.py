@@ -87,7 +87,7 @@ class donationTracker(commands.Cog):
                 text=f"{self.client.user.name} | Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
             idd = 830519601384128523
             # display.set_thumbnail(url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
-            display.set_thumbnail(url="ctx.guild.emoji.idd")
+            display.set_thumbnail(url=ctx.guild.emoji.idd)
             
             dmMessage = discord.Embed(
                 title=f"__{member.name} Donator Bank__",
