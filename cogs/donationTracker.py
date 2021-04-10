@@ -81,7 +81,7 @@ class donationTracker(commands.Cog):
 
             # showing donor balance
             display = discord.Embed(
-                title=f"<a:TGK_Pandaswag:830525027341565982>  __{dict[self.name].upper()}'s Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+                title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
                 description=f"\n**Amount Credited: **<:TGK_DMC:830520214021603350> {amount:,}\n"
                             # f"**By: ** {ctx.author.mention}\n"
                             f"**Total Donation: **<:TGK_DMC:830520214021603350> {dict[self.bal]:,} \n\n"
@@ -93,14 +93,17 @@ class donationTracker(commands.Cog):
             display.set_thumbnail(url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
             
             dmMessage = discord.Embed(
-                title=f"__{member.name} Donator Bank__",
-                description=f"**𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧 of <:TGK_DMC:830520214021603350> {amount:,} ** \n\n"
-                            f"Total Donation: <:TGK_DMC:830520214021603350> **{dict[self.bal]:,}** \n",
+                title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK Donation Bank__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+                description=f"\n**Amount Credited: **<:TGK_DMC:830520214021603350> {amount:,}\n"
+                            # f"**By: ** {ctx.author.mention}\n"
+                            f"**Total Donation: **<:TGK_DMC:830520214021603350> {dict[self.bal]:,} \n\n"
+                            f"**_𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧_** \n",
                 colour=member.colour
             )
 
             dmMessage.set_footer(
                 text=f"{self.client.user.name} | Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
+            dmMessage.set_thumbnail(url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
 
             await ctx.send(embed=display)
             await ctx.message.delete()
