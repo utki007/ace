@@ -76,7 +76,7 @@ class donationTracker(commands.Cog):
 
             # showing donor balance
             display = discord.Embed(
-                title=f"<:TGK_businessman:830519947015749654>  __{dict[self.name].upper()}'s Donation__  <:TGK_businessman:830519947015749654>\n\n",
+                title=f"<a:TGK_Pandaswag:830526139298349119>  __{dict[self.name].upper()}'s Donation__  <a:TGK_Pandaswag:830526139298349119>\n\n",
                 description=f"\n**Amount Credited: **<:TGK_DMC:830520214021603350> {amount:,}\n"
                             # f"**By: ** {ctx.author.mention}\n"
                             f"**Total Donation: **<:TGK_DMC:830520214021603350> {dict[self.bal]:,} \n\n"
