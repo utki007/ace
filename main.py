@@ -10,7 +10,11 @@ import pandas as pd
 import numpy as np
 
 description = '''This is what I have been programmed to do'''
-client = commands.Bot(command_prefix='?', description=description,case_insensitive = True)
+client = commands.Bot(
+    command_prefix='?', 
+    description=description,
+    case_insensitive = True,
+    help_command = None)
 
 
 @client.event
