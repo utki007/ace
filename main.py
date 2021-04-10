@@ -49,6 +49,14 @@ for filename in os.listdir('./cogs'):
 async def logout(ctx):
     await ctx.send(f'Hey {ctx.author.mention}, I am now logging out.')
     await client.logout()
+    
+@logout.error
+async def logout_error(ctx,error):
+    """ Will be triggered in case of an error in logout command """
+    if isinstance(error,commands.CheckFailure):
+        await ctx.send(f"Hey {ctx.author.mention},You don't have permissions.")
+    else:
+        raise error
 
 
 # pong command (checks bot latency)
