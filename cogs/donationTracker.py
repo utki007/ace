@@ -104,7 +104,11 @@ class donationTracker(commands.Cog):
 
             await ctx.send(embed=display)
             await ctx.message.delete()
-            await member.send(embed=dmMessage)
+            try:
+                await member.send(embed=dmMessage)
+            except:
+                await ctx.send("Member dm is closed")
+                pass 
 
 
             # for logging
@@ -163,25 +167,32 @@ class donationTracker(commands.Cog):
             # showing donor balance
             self.bal = "bal"
             display = discord.Embed(
-                title=f"__{member.name} Donator Bank__",
-                description=f"{member.mention} has removed {amount:,} to their donor balance. thanks for your dono.  \n\n"
-                            f"{member.mention} Total Donation **{dict[self.bal]:,}** \n",
+                title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",,
+                description=f"\n**Amount Debited: **<:TGK_DMC:830520214021603350> {amount:,}\n"
+                            # f"**By: ** {ctx.author.mention}\n"
+                            f"**Total Donation: **<:TGK_DMC:830520214021603350> {dict[self.bal]:,} \n\n"
+                            f"**_Sanctioned By: _** {ctx.author.mention}\n",
                 colour=member.colour
             )
 
             display.set_footer(
-                text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
-
+                text=f"{self.client.user.name} | Developed by utki & Jay", icon_url=self.client.user.avatar_url)
+            display.set_thumbnail(url="https://tenor.com/view/cute-cat-crying-tears-sad-emotional-gif-15881815")
+            
             dmMessage = discord.Embed(
-                title=f"__{member.name} Donator Bank__",
-                description=f"{amount:,} Has been deducted from your account. \n If it was not authorized by you then do reach out to an admin. \n\n"
-                            f"Updated Donation **{dict[self.bal]:,}** \n",
+                title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK Donation Bank__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+                description=f"\n**Amount Debited: **<:TGK_DMC:830520214021603350> {amount:,}\n"
+                            # f"**By: ** {ctx.author.mention}\n"
+                            f"**Total Donation: **<:TGK_DMC:830520214021603350> {dict[self.bal]:,} \n\n"
+                            f"**_Sanctioned By: _** {ctx.author.mention}\n"
+                            f"**__If it was not authorized by you then do reach out to an admin/owner.__** \n\n",
                 colour=member.colour
             )
 
             dmMessage.set_footer(
-                text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
-
+                text=f"{self.client.user.name} | Developed by utki & Jay", icon_url=self.client.user.avatar_url)
+            display.set_thumbnail(url="https://tenor.com/view/cute-cat-crying-tears-sad-emotional-gif-15881815")
+            
             await ctx.send(embed=display)
             await member.send(embed=dmMessage)
 
@@ -228,11 +239,11 @@ class donationTracker(commands.Cog):
         embed = discord.Embed(
             title="__Gambler's Kingdom Top Donators__",
             description=f"```{'Rank' : <8}{'Name' : <12}{'Donated':>12}\n"
-            f"{'🥇' : <7}{f'{list[0][id]}' : <12}{f'{int(list[0][bal]/1000):,} K' :>12}\n"
-            f"{'🥈' : <7}{f'{list[1][id]}' : <12}{f'{int(list[1][bal]/1000):,} K' :>12}\n"
-            f"{'🥉' : <7}{f'{list[2][id]}' : <12}{f'{int(list[2][bal]/1000):,} K' :>12}\n"
-            f"{'🏅' : <7}{f'{list[3][id]}' : <12}{f'{int(list[3][bal]/1000):,} K' :>12}\n"
-            f"{'🏅' : <7}{f'{list[4][id]}' : <12}{f'{int(list[4][bal]/1000):,} K' :>12}\n```",
+            f"{'🥇' : <7}{f'{list[0][id]}' : <12}{f'{int(list[0][bal]/1000000):,} M' :>12}\n"
+            f"{'🥈' : <7}{f'{list[1][id]}' : <12}{f'{int(list[1][bal]/1000000):,} M' :>12}\n"
+            f"{'🥉' : <7}{f'{list[2][id]}' : <12}{f'{int(list[2][bal]/1000000):,} M' :>12}\n"
+            f"{'🏅' : <7}{f'{list[3][id]}' : <12}{f'{int(list[3][bal]/1000000):,} M' :>12}\n"
+            f"{'🏅' : <7}{f'{list[4][id]}' : <12}{f'{int(list[4][bal]/1000000):,} M' :>12}\n```",
             colour=member.colour
         )
 
