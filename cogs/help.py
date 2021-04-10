@@ -53,8 +53,8 @@ class Help(commands.Cog, name="Help command"):
                 commandList += f"**{command.name}** - *{command.description} \n*"
             commandList += "\n"
              
-             helpEmbed.add_field(name = cog,value = commandList, inline =False)
-             await ctx.send(embed = helpEmbed)
+            helpEmbed.add_field(name = cog,value = commandList, inline =False)
+            await ctx.send(embed = helpEmbed)
              
 def setup(client):
     client.add_cog(Help(client))
