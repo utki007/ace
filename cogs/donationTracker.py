@@ -167,7 +167,7 @@ class donationTracker(commands.Cog):
             # showing donor balance
             self.bal = "bal"
             display = discord.Embed(
-                title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",,
+                title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
                 description=f"\n**Amount Debited: **<:TGK_DMC:830520214021603350> {amount:,}\n"
                             # f"**By: ** {ctx.author.mention}\n"
                             f"**Total Donation: **<:TGK_DMC:830520214021603350> {dict[self.bal]:,} \n\n"
