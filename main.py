@@ -43,7 +43,16 @@ for filename in os.listdir('./cogs'):
         client.load_extension(f'cogs.{filename[:-3]}')
 
 
-@client.command(aliases=['pong'], description='ping the bot mofo')
+@client.command(name="logout", description="shutdown bot", aliases=['dc'])
+# @commands.has_permissions(administrator=True)
+@commands.is_owner()
+async def logout(ctx):
+    await ctx.send(f'Hey {ctx.author.mention}, I am now logging out.')
+    await client.logout()
+
+
+# pong command (checks bot latency)
+@client.command(aliases=['pong'], description='check bot latency')
 async def ping(ctx):
     """Bot Is dead"""
     await ctx.send(f'Pong! {round(client.latency*1000)}ms')
