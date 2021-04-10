@@ -27,7 +27,7 @@ class Help(commands.Cog, name="Help command"):
 
         # Get a list of all our current cogs & rmeove ones without commands
         cogs = [c for c in self.client.cogs.keys()]
-        cogs.remove('Events')
+        # cogs.remove('Events')
 
         totalPages = math.ceil(len(cogs) / 4)
 
