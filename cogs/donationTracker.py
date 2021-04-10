@@ -76,7 +76,7 @@ class donationTracker(commands.Cog):
 
             # showing donor balance
             display = discord.Embed(
-                title=f"{member.avatar_url}__{dict[self.name].upper()}'s Donation__ 🏦",
+                title=f"{member.avatar}__{dict[self.name].upper()}'s Donation__ 🏦",
                 description=f"** Amount Credited: **⏣ {amount:,}\n"
                             f"**By: ** {ctx.author.mention}\n"
                             f"**Total Donation: ** {dict[self.bal]:,} \n\n"
