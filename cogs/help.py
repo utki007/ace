@@ -26,7 +26,7 @@ class Help(commands.Cog, name="Help command"):
         helpEmbed.set_thumbnail(url=ctx.author.avatar_url)
 
         # Get a list of all our current cogs & rmeove ones without commands
-        cogs = [c for c in self.bot.cogs.keys()]
+        cogs = [c for c in self.client.cogs.keys()]
         cogs.remove('Events')
 
         totalPages = math.ceil(len(cogs) / 4)
