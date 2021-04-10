@@ -151,13 +151,15 @@ class donationTracker(commands.Cog):
             for x in info:
                 dict = x
                 flag = 1
+            newvalues = {}
 
             if flag == 0:
-                await ctx.send("⚠  Donor Doesn't Exist. How tf are you removing donation? Let me report you to my boss!! ⚠")
+                await ctx.send(f"⚠ {ctx.author.mention}, donor doesn't exist. How tf are you removing donation? Let me report you to my boss!! ⚠") 
+                # await ctx.send("⚠ {ctx.message.author} {ctx.author.mention} Donor Doesn't Exist. How tf are you removing donation? Let me report you to my boss!! ⚠")
             else:
                 if dict["bal"]-amount < 0:
                     await ctx.message.add_reaction("<a:invalid:823999689879191552>")
-                    await ctx.send("⚠ Try Again!! You can't remove more than the donated value. ⚠")
+                    await ctx.send("⚠  Try Again!! You can't remove more than the donated value. ⚠")
                 else:
                     newvalues = {"$set": {"bal": dict["bal"]-amount}}
                     dict["bal"] = dict["bal"]-amount
