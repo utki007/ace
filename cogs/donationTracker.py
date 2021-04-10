@@ -169,7 +169,7 @@ class donationTracker(commands.Cog):
             # showing donor balance
             self.bal = "bal"
             display = discord.Embed(
-                title=f"<a:TGK_peperain:796301021239967744>  __{member.name.upper()}'s Donation__  <a:TGK_peperain:796301021239967744>\n\n",
+                title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
                 description=f"\n**Amount Debited: **<:TGK_DMC:830520214021603350> {amount:,}\n"
                             # f"**By: ** {ctx.author.mention}\n"
                             f"**Total Donation: **<:TGK_DMC:830520214021603350> {dict[self.bal]:,} \n\n"
@@ -179,10 +179,10 @@ class donationTracker(commands.Cog):
 
             display.set_footer(
                 text=f"{self.client.user.name} | Developed by utki & Jay", icon_url=self.client.user.avatar_url)
-            display.set_thumbnail(url="https://cdn.discordapp.com/emojis/816574068203192348.gif?v=1")
+            display.set_thumbnail(url="https://cdn.discordapp.com/emojis/830548561329782815.gif?v=1")
             
             dmMessage = discord.Embed(
-                title=f"<a:TGK_peperain:796301021239967744>  __TGK Donation Bank__  <a:TGK_peperain:796301021239967744>\n\n",
+                title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK Donation Bank__  <a:TGK_Pandaswag:830525027341565982>\n\n",
                 description=f"\n**Amount Debited: **<:TGK_DMC:830520214021603350> {amount:,}\n"
                             # f"**By: ** {ctx.author.mention}\n"
                             f"**Total Donation: **<:TGK_DMC:830520214021603350> {dict[self.bal]:,} \n\n"
@@ -193,7 +193,7 @@ class donationTracker(commands.Cog):
 
             dmMessage.set_footer(
                 text=f"{self.client.user.name} | Developed by utki & Jay", icon_url=self.client.user.avatar_url)
-            display.set_thumbnail(url="https://cdn.discordapp.com/emojis/816574068203192348.gif?v=1")
+            display.set_thumbnail(url="https://cdn.discordapp.com/emojis/830548561329782815.gif?v=1")
             
             await ctx.send(embed=display)
             await member.send(embed=dmMessage)

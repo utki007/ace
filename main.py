@@ -24,23 +24,6 @@ async def on_ready():
     print(client.user.id)
     print('------')
 
-@client.event
-async def on_message(msg):
-    if ";" == msg.content[0] and ";" == msg.content[-1]:
-        name = msg.content[1:-1]
-        for emoji in msg.guild.emojis:
-            if emoji.name == name:
-                # await msg.channel.send(str(emoji))
-                # await msg.delete()
-                webhooks = await msg.channel.webhooks()
-                webhook = discord.utils.get(webhooks, name="utki009")
-                if webhook is None:
-                    webhook = await msg.channel.create_webhook(name="utki009")
-                await webhook.send(content=str(emoji), username=msg.author.name,avatar_url = msg.author.avatar_url)
-                await msg.delete()
-
-    await client.process_commands(msg)
-
 
 @client.command()
 @commands.has_permissions(administrator=True)
