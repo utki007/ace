@@ -17,7 +17,7 @@ class Help(commands.Cog, name="Help command"):
         print(f" Help Cog has been loaded. ")
 
     @commands.command(
-        name='help', aliases=['h', 'commands'], description="The help command!"
+        name='help', aliases=['h', 'commands'], description="The help command!", hidden = True
     )
     async def help(self, ctx, cog="1"):
         helpEmbed = discord.Embed(
