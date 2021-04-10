@@ -186,8 +186,8 @@ class donationTracker(commands.Cog):
                 description=f"\n**Amount Debited: **<:TGK_DMC:830520214021603350> {amount:,}\n"
                             # f"**By: ** {ctx.author.mention}\n"
                             f"**Total Donation: **<:TGK_DMC:830520214021603350> {dict[self.bal]:,} \n\n"
-                            f"**_Sanctioned By: _** {ctx.author.mention}\n"
-                            f"**__If it was not authorized by you then do reach out to an admin/owner.__** \n\n",
+                            f"**_Sanctioned By: _** {ctx.author.mention}\n\n"
+                            f"**__If it was not authorized by you then \n do reach out to an admin/owner.__** \n\n",
                 colour=member.colour
             )
 
@@ -202,12 +202,12 @@ class donationTracker(commands.Cog):
             # for logging
             logg = discord.Embed(
                 title="__Gambler's Kingdom Logging Registry__",
-                description=f"{ctx.author.mention} added **{amount:,}** to {member.mention} bal [here]({ctx.message.jump_url})",
+                description=f"{ctx.author.mention} removed **{amount:,}** from {member.mention} bal [here]({ctx.message.jump_url})",
                 colour=ctx.author.colour
             )
 
             logg.set_footer(
-                text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
+                text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
             channel = self.client.get_channel(self.logChannel)
             await channel.send(embed=logg)
