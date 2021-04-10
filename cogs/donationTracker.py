@@ -85,7 +85,10 @@ class donationTracker(commands.Cog):
             )
             display.set_footer(
                 text=f"{self.client.user.name} | Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
-
+            idd = 830519601384128523
+            # display.set_thumbnail(url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
+            display.set_thumbnail(url="ctx.guild.emoji.idd")
+            
             dmMessage = discord.Embed(
                 title=f"__{member.name} Donator Bank__",
                 description=f"**𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧 of <:TGK_DMC:830520214021603350> {amount:,} ** \n\n"
