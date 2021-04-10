@@ -97,6 +97,7 @@ class donationTracker(commands.Cog):
                 text=f"{self.client.user.name} | Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
 
             await ctx.send(embed=display)
+            await ctx.message.delete()
             await member.send(embed=dmMessage)
 
 
