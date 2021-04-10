@@ -50,7 +50,7 @@ class Help(commands.Cog, name="Help command"):
                 elif command.parent is None:
                     continue
                 
-                commandList += f"**{command.name}** - *{command.description}*"
+                commandList += f"**{command.name}** - *{command.description} \n*"
             commandList += "\n"
              
              helpEmbed.add_field(name = cog,value = commandList, inline =False)
