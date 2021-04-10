@@ -68,6 +68,9 @@ class donationTracker(commands.Cog):
                 await self.create_donor(member)
                 newvalues = {"$set": {"bal": amount}}
                 dict["bal"] = amount
+                dict = {}
+                for x in info:
+                    dict = x
             else:
                 newvalues = {"$set": {"bal": dict["bal"]+amount}}
                 dict["bal"] = dict["bal"]+amount
@@ -82,7 +85,7 @@ class donationTracker(commands.Cog):
                 description=f"\n**Amount Credited: **<:TGK_DMC:830520214021603350> {amount:,}\n"
                             # f"**By: ** {ctx.author.mention}\n"
                             f"**Total Donation: **<:TGK_DMC:830520214021603350> {dict[self.bal]:,} \n\n"
-                            f"**Thank you for your valuable donation.** \n",
+                            f"**_𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧_** \n",
                 colour=member.colour
             )
             display.set_footer(
