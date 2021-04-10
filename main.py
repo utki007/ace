@@ -11,7 +11,7 @@ import numpy as np
 
 description = '''This is what I have been programmed to do'''
 client = commands.Bot(
-    command_prefix='?', 
+    command_prefix='?',
     description=description,
     case_insensitive = True,
     help_command = None)
@@ -53,7 +53,7 @@ for filename in os.listdir('./cogs'):
 async def logout(ctx):
     await ctx.send(f'Hey {ctx.author.mention}, I am now logging out.')
     await client.logout()
-    
+
 @logout.error
 async def logout_error(ctx,error):
     """ Will be triggered in case of an error in logout command """
