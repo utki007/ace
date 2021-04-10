@@ -49,7 +49,7 @@ class utils(commands.Cog):
 
         await ctx.message.delete()
 
-    @commands.command(name="lock", description="Lock the channel", usage="role", aliases=['l'])
+    @commands.command(name="lock", description="Lock the channel", usage="role", aliases=['l'],hidden = True)
     @commands.has_permissions(manage_messages=True)
     async def lock(self, ctx, channel: discord.TextChannel = None, role: discord.Role = None):
 
