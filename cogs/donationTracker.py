@@ -153,7 +153,7 @@ class donationTracker(commands.Cog):
                 flag = 1
 
             if flag == 0:
-                await ctx.send("⚠ {ctx.author.mention}, Donor Doesn't Exist. How tf are you removing donation? Let me report you to my boss!! ⚠")
+                await ctx.send("⚠  Donor Doesn't Exist. How tf are you removing donation? Let me report you to my boss!! ⚠")
             else:
                 if dict["bal"]-amount < 0:
                     await ctx.message.add_reaction("<a:invalid:823999689879191552>")
