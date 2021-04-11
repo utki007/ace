@@ -14,8 +14,8 @@ class donationTracker(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        self.myclient = pymongo.MongoClient(
-            'mongodb+srv://utki009:Utkarsh2697@cluster0.5wndm.mongodb.net/TGK?retryWrites=true&w=majority')
+        self.mongoconnection = os.environ['MongoConnectionUrl']
+        self.myclient = pymongo.MongoClient(self.mongoconnection)
         self.mydb = self.myclient['TGK']
         self.mycol = self.mydb["donorBank"]
         # for my server
