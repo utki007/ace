@@ -439,9 +439,10 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
         if ctx.author.guild_permissions.administrator:
             
             myquery = {"$pull": {"event": {"name" : name}}}
-            info = self.mycol.update_many({},myquery)
+            
             
             try:
+                info = self.mycol.update_many({},myquery)
                 await ctx.message.add_reaction("<a:tick:823850808264097832>")
                 await ctx.send(f" Event {name} removed. ")
             except:
