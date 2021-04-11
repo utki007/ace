@@ -433,7 +433,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
 
 
     @commands.command(name="remove-event", description="Add Special Events", usage="<name>")
-    @commands.command.is_owner()
+    @commands.is_owner()
     async def addevent(self,ctx, *name: str):
         
         if ctx.author.guild_permissions.administrator:
