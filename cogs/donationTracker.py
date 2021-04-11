@@ -418,7 +418,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
         if ctx.author.guild_permissions.administrator:
             
             myquery = {"$push": {"event": {"name" : name,"bal" : 0 }}}
-            info = self.mycol.updateMany({},myquery)
+            info = self.mycol.update_many({},myquery)
             
             if info:
                 await ctx.message.add_reaction("<a:tick:823850808264097832>")
