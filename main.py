@@ -9,6 +9,7 @@ import dns
 import pandas as pd
 import numpy as np
 
+hidden = True
 description = '''This is what I have been programmed to do'''
 client = commands.Bot(
     command_prefix='?',
