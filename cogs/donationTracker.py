@@ -30,8 +30,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        # Send a nice message
-        print(f'donobank loaded')
+        print(f'Donation Tracker loaded')
          
     # add a donator if he doesn't exist
     async def create_donor(self,user):
@@ -412,5 +411,27 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
             await ctx.send(embed=display)
 
 
+    @commands.command(name="add-event", description="Add Special Events", usage="<name>")
+    async def addevent(self,ctx, name: str):
+        
+
+        if ctx.author.guild_permissions.administrator:
+            
+            myquery = {"$push": {"event": {"name" : name,"bal" : 0 }}}
+            info = self.mycol.updateMany({},myquery)
+            
+            if info:
+                await ctx.message.add_reaction("<a:tick:823850808264097832>")
+                await ctx.send(f" {info} ")
+            else:
+                await ctx.message.add_reaction("<a:invalid:823999689879191552>")
+                await ctx.send(f" {info} ")     
+        
+        else:
+            await ctx.message.add_reaction("<a:ban:823998531827400795>")
+            await ctx.send(f"⚠ {ctx.author.mention}, you are __**UNAUTHORIZED**__ to use this command ⚠") 
+
+
+    
 def setup(client):
     client.add_cog(donationTracker(client))
