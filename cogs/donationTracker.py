@@ -107,7 +107,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
             try:
                 await member.send(embed=dmMessage)
             except:
-                await ctx.send("Member dm is closed")
+                await ctx.send("⚠ {member.mention} yours dms is closed. ⚠")
                 pass 
 
 
