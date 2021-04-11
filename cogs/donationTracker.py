@@ -10,7 +10,7 @@ import time
 import asyncio
 
 
-class donationTracker(commands.Cog):
+class donationTracker(commands.Cog,name="Donation Tracker"):
 
     def __init__(self, client):
         self.client = client
