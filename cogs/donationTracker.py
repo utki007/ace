@@ -219,7 +219,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
     
 
     
-    @commands.command(name="lb-donation", description="Checout top donators", usage="<member> <amount>",aliases=['topdono','lb-donator'])
+    @commands.command(name="leaderboard", description="Checout top donators", usage="<member> <amount>",aliases=['lb'])
     async def topdono(self,ctx,  number=5):
 
         myquery = self.mycol.find({}, {"_id": 1, "name": 1, "bal": 1}
@@ -392,8 +392,8 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
             flag = 1
 
         if flag == 0:
-            await ctx.message.add_reaction("<a:invalid:823999689879191552>")
             await ctx.send(f"⚠ {member.mention}, Please donate to check balance!! ⚠")
+            await ctx.message.add_reaction("<a:invalid:823999689879191552>")
         else:
             await ctx.message.add_reaction("<a:tick:823850808264097832>")
 
