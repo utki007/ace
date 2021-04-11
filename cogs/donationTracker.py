@@ -37,14 +37,13 @@ class donationTracker(commands.Cog):
     async def create_donor(self,user):
         dict = {}
         dict["_id"] = user.id
-        dict["name"] = user.name[0:9]
+        dict["name"] = user.name[0:7]
         dict["bal"] = 0
         dict["event"] = []
-        dict["total"] = 0
         self.mycol.insert_one(dict)
 
 
-    @commands.command(name="adono", description="Add Donation for a member", usage="<member> <amount>",aliases=['add-donation','add-bal'])
+    @commands.command(name="add-donation", description="Add Donation for a member", usage="<member> <amount>",aliases=['add-donation','add-bal','adono'])
     async def adono(self,ctx, member: discord.Member, amount: int):
         
         self.authorized = False
@@ -132,7 +131,7 @@ class donationTracker(commands.Cog):
 
 
 
-    @commands.command(name="remove-donation", description="Add Donation for a member", usage="<member> <amount>",aliases=['rdono','rbal','remove-bal'])
+    @commands.command(name="remove-donation", description="Remove donation from a member", usage="<member> <amount>",aliases=['rdono','rbal','remove-bal'])
     async def rdono(self,ctx, member: discord.Member, amount: int):
         
         self.authorized = False
@@ -220,7 +219,7 @@ class donationTracker(commands.Cog):
     
 
     
-    @commands.command()
+    @commands.command(name="lb-donation", description="Checout top donators", usage="<member> <amount>",aliases=['topdono','lb-donator'])
     async def topdono(self,ctx,  number=5):
 
         myquery = self.mycol.find({}, {"_id": 1, "name": 1, "bal": 1}
@@ -265,7 +264,7 @@ class donationTracker(commands.Cog):
     async def nick(self,ctx, member: discord.Member = None, nick :str ="setNewNick"):
         
         self.authorized = False
-        authorizedUsers = ['562738920031256576']
+        authorizedUsers = []
 
         for i in authorizedUsers:
             if ctx.author.id == int(i):
