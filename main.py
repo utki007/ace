@@ -26,7 +26,7 @@ async def on_ready():
     print('------')
 
 
-@client.command()
+@client.command(hidden = True)
 @commands.has_permissions(administrator=True)
 async def load(ctx, extension):
     client.load_extension(f'cogs.{extension}')
@@ -35,7 +35,7 @@ async def load(ctx, extension):
     await ctx.send(f'The {extension} is successfully Loaded.')
 
 
-@client.command()
+@client.command(hidden = True)
 @commands.has_permissions(administrator=True)
 async def unload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
@@ -48,7 +48,7 @@ for filename in os.listdir('./cogs'):
         client.load_extension(f'cogs.{filename[:-3]}')
 
 
-@client.command(name="logout", description="shutdown bot", aliases=['dc'])
+@client.command(name="logout", description="shutdown bot", aliases=['dc'],hidden = True)
 # @commands.has_permissions(administrator=True)
 @commands.is_owner()
 async def logout(ctx):
@@ -65,7 +65,7 @@ async def logout_error(ctx,error):
 
 
 # pong command (checks bot latency)
-@client.command(aliases=['pong'], description='check bot latency')
+@client.command(aliases=['pong'], description='check bot latency',hidden = True)
 async def ping(ctx):
     """Bot Is dead"""
     await ctx.send(f'Pong! {round(client.latency*1000)}ms')
