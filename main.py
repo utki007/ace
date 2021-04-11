@@ -13,8 +13,9 @@ description = '''This is what I have been programmed to do'''
 client = commands.Bot(
     command_prefix='?',
     description=description,
-    case_insensitive = True,
-    help_command = None)
+    case_insensitive = True
+    # help_command = None
+    )
 
 
 @client.event

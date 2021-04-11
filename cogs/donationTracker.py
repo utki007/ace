@@ -260,7 +260,7 @@ class donationTracker(commands.Cog):
 
 
  
-    @commands.command()
+    @commands.command(name="nick", description="this nick appears on your donor bank", usage="<member> <nick>",aliases=['ign'])
     async def nick(self,ctx, member: discord.Member = None, nick :str ="setNewNick"):
         
         self.authorized = False
@@ -367,7 +367,7 @@ class donationTracker(commands.Cog):
             await channel.send(embed=logg)
 
 
-    @commands.command()
+    @commands.command(name="bal", description="Check your donation balance", usage="<member>",aliases=['donation','balance'])
     async def bal(self,ctx, member: discord.Member=None):
         
         self.authorized = False
