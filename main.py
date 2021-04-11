@@ -9,7 +9,7 @@ import dns
 import pandas as pd
 import numpy as np
 
-hidden = True
+
 description = '''This is what I have been programmed to do'''
 client = commands.Bot(
     command_prefix='?',
@@ -31,8 +31,6 @@ async def on_ready():
 @commands.has_permissions(administrator=True)
 async def load(ctx, extension):
     client.load_extension(f'cogs.{extension}')
-    # need logs here
-    # print(f'The {extension} is loaded by {ctx.author.name}')
     await ctx.send(f'The {extension} is successfully Loaded.')
 
 
@@ -40,8 +38,6 @@ async def load(ctx, extension):
 @commands.has_permissions(administrator=True)
 async def unload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
-    # need logs here
-    # print(f'The {extension} is unloaded by {ctx.author.name}')
     await ctx.send(f'The {extension} is successfully unloaded.')
 
 for filename in os.listdir('./cogs'):
