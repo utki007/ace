@@ -8,13 +8,15 @@ import pymongo
 import dns
 import time
 import asyncio
+import math
 
 
 class donationTracker(commands.Cog,name="Donation Tracker"):
 
     def __init__(self, client):
         self.client = client
-        self.mongoconnection = os.environ['MongoConnectionUrl']
+        # self.mongoconnection = os.environ['MongoConnectionUrl']
+        self.mongoconnection = self.client.connection_url
         self.myclient = pymongo.MongoClient(self.mongoconnection)
         # self.myclient = pymongo.MongoClient('')
         self.mydb = self.myclient['TGK']
@@ -715,6 +717,9 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
     async def _leaderboard(self,ctx,name :str,number: int = 1):
         myquery = self.mycol.find({}, {"_id": 1, "name": 1, "bal": 1,"event":1})
 
+        low = 5 * (number - 1)
+        high = 5 * (number)
+        
         n = 0
         list = []
         # print the result:
@@ -734,12 +739,31 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
             celeb_name = "event_" + l[i]
             df[celeb_name] = df.event.apply(lambda x: x[i]["bal"])
 
-        top3 = df[["_id","name","bal","event_"+name]].head(3).sort_values(by = "event_"+name,ascending = False)
-        await ctx.send(top3)
+        df = df[["_id","name","bal","event_"+name]].sort_values(by = "event_"+name,ascending = False)
+        # await ctx.send(top3)
 
+        desc = ""
+        spl ='event_'+name
+        millnames = ['',' K',' M',' B',' T']
+        counter = 0
+        for ind in df.index:
 
-        for ind in top3.index:
-            await ctx.send(f" {df['name'][ind]} {df['bal'][ind]} {df['event_'+name][ind]}")
+            n = float(df[spl][ind])
+            millidx = max(0,min(len(millnames)-1,int(math.floor(0 if n == 0 else math.log10(abs(n))/3))))
+            
+            rank = ''
+            if counter == 0:
+                rank = '🥇' 
+            elif counter == 1:
+                rank = '🥈'
+            elif counter == 2:
+                rank = '🥉'
+            else:
+                rank = '🏅'
+            counter = counter + 1
+            
+            if n>0 :    
+                desc = desc + f"{ rank : <7}{df['name'][ind] : <15}{f'{int (n / 10**(3 * millidx)):,}{millnames[millidx]}' :>12}\n"
 
         
         member = ctx.author
@@ -747,20 +771,19 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
         id = "name"
         bal = "bal"
         embed = discord.Embed(
-            title="__Gambler's Kingdom Top Donators__",
-            description=f"`{'Rank' : <8}{'Name' : <15}{'Donated':>12}`\n"
-            f"`{'🥇' : <7}{f'{list[0][id]}' : <15}{f'{int(list[0][bal]/1000000):,} M' :>12}`\n"
-            f"`{'🥈' : <7}{f'{list[1][id]}' : <15}{f'{int(list[1][bal]/1000000):,} M' :>12}`\n"
-            f"`{'🥉' : <7}{f'{list[2][id]}' : <15}{f'{int(list[2][bal]/1000000):,} M' :>12}`\n",
+            title=f"<a:TGK_Pandaswag:830525027341565982> **TGK's {name.upper()} Spl. Top Donators** <a:TGK_Pandaswag:830525027341565982>",
+            description=f"```{'Rank' : <8}{'Name' : <15}{'Donated':>12}\n"
+            f"{desc}```\n\n",
             colour=member.colour
         )
 
-        embed.add_field(
-            name="Note: ", value=f"to check your donation do `?bal`", inline=True)
+        # embed.add_field(
+        #     name="Note: ", value=f"to check your donation do `?bal`", inline=True)
 
         embed.set_footer(
             text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
-        # embed.set_thumbnail(url=member.avatar_url)
+        # embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
+        embed.set_image(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
         await ctx.send(embed=embed)
 
 
