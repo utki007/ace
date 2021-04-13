@@ -23,6 +23,11 @@ client = commands.Bot(
 if os.path.exists(os.getcwd()+"./properties/tokens.json"):
     with open("./properties/tokens.json") as f:
         configData = json.load(f)
+else: 
+    configData = {
+        "token": "",
+        "mongo": ""
+    }
 client.botToken = configData["token"]
 client.connection_url = configData["mongo"]
 
