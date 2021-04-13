@@ -20,19 +20,19 @@ client = commands.Bot(
 )
 
 # setting up tokens.py
-if os.path.exists(os.getcwd()+"./properties/tokens.json"):
-    with open("./properties/tokens.json") as f:
-        configData = json.load(f)
-else:
-    configTemplate = {
-            "token": "",
-            "mongo": ""
-    }
+# if os.path.exists(os.getcwd()+"./properties/tokens.json"):
+#     with open("./properties/tokens.json") as f:
+#         configData = json.load(f)
+# else:
+#     configTemplate = {
+#             "token": "",
+#             "mongo": ""
+#     }
 
-    with open(os.getcwd()+"./properties/tokens.json", "w+") as f:
-        json.dump(configTemplate, f)
-client.botToken = configData["token"]
-client.connection_url = configData["mongo"]
+#     with open(os.getcwd()+"./properties/tokens.json", "w+") as f:
+#         json.dump(configTemplate, f)
+# client.botToken = configData["token"]
+# client.connection_url = configData["mongo"]
 
 
 @client.event
