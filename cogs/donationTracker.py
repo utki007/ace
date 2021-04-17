@@ -15,8 +15,8 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
 
     def __init__(self, client):
         self.client = client
-        self.mongoconnection = os.environ['MongoConnectionUrl']
-        # self.mongoconnection = self.client.connection_url
+        # self.mongoconnection = os.environ['MongoConnectionUrl']
+        self.mongoconnection = self.client.connection_url
         self.myclient = pymongo.MongoClient(self.mongoconnection)
         # self.myclient = pymongo.MongoClient('')
         self.mydb = self.myclient['TGK']
@@ -39,7 +39,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
     async def create_donor(self,user):
         dict = {}
         dict["_id"] = user.id
-        dict["name"] = user.name[0:7]
+        dict["name"] = user.name[0:15]
         dict["bal"] = 0
         dict["event"] = [{"name":"500","bal":0},{"name":"1000","bal":0}]
         self.mycol.insert_one(dict)
@@ -223,41 +223,70 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
     
     @commands.command(name="leaderboard", description="Checout top donators", usage="<member> <amount>",aliases=['lb'])
     async def topdono(self,ctx,  number=5):
-
-        myquery = self.mycol.find({}, {"_id": 1, "name": 1, "bal": 1}
-                            ).sort("bal", -1).limit(5)
-
+        
+        myquery = self.mycol.find({}, {"_id": 1, "name": 1, "bal": 1,"event":1})
+        
+        n = 0
         list = []
         # print the result:
         for x in myquery:
             dict = x
             list.append(dict)
-            # await ctx.send(list)
+        
+        
+        n = len(dict["event"])
+        l = []
+        # get event names
+        for i in dict["event"]:
+            l.append(i["name"])    
+        df = pd.DataFrame(list)
 
-        # if len(list)<5:
-        #     await ctx.send("Min 5 members are needed for top dono")
+        df = df[["_id","name","bal"]].head(30).sort_values(by = "bal",ascending = False)
+        # await ctx.send(top3)
 
+        desc = ""
+        spl ='bal'
+        millnames = ['',' K',' M',' B',' T']
+        counter = 0
+        for ind in df.index:
+
+            n = float(df[spl][ind])
+            millidx = max(0,min(len(millnames)-1,int(math.floor(0 if n == 0 else math.log10(abs(n))/3))))
+            
+            rank = ''
+            if counter == 0:
+                rank = '🥇' 
+            elif counter == 1:
+                rank = '🥈'
+            elif counter == 2:
+                rank = '🥉'
+            else:
+                rank = '🏅'
+            counter = counter + 1
+            
+            if n>0 :    
+                desc = desc + f"|{rank: ^3}|{df['name'][ind]: ^20}|{f'{int(n / 10**(3 * millidx)):,}{millnames[millidx]}' :>12}  | \n"
+
+        
         member = ctx.author
         """Get to know the top donors"""
         id = "name"
         bal = "bal"
+        title = "𝕋𝔾𝕂'𝕤 𝕋𝕆ℙ 𝔻𝕆ℕ𝔸𝕋𝕆ℝ𝕊"  
         embed = discord.Embed(
-            title="__Gambler's Kingdom Top Donators__",
-            description=f"```{'Rank' : <8}{'Name' : <12}{'Donated':>12}\n"
-            f"{'🥇' : <7}{f'{list[0][id]}' : <12}{f'{int(list[0][bal]/1000000):,} M' :>12}\n"
-            f"{'🥈' : <7}{f'{list[1][id]}' : <12}{f'{int(list[1][bal]/1000000):,} M' :>12}\n"
-            f"{'🥉' : <7}{f'{list[2][id]}' : <12}{f'{int(list[2][bal]/1000000):,} M' :>12}\n"
-            f"{'🏅' : <7}{f'{list[3][id]}' : <12}{f'{int(list[3][bal]/1000000):,} M' :>12}\n"
-            f"{'🏅' : <7}{f'{list[4][id]}' : <12}{f'{int(list[4][bal]/1000000):,} M' :>12}\n```",
+            title=f"<a:TGK_Pandaswag:830525027341565982>  `{title:^35}`  <a:TGK_Pandaswag:830525027341565982>",
+            description=f"```|{'🏆': ^3}|{'Name': ^20}|{'Donated':>13} |\n"
+            f"{desc}```\n\n",
             colour=member.colour
         )
 
-        embed.add_field(
-            name="Note: ", value=f"to check your donation do `?bal`", inline=True)
+        # embed.add_field(
+        #     name="Note: ", value=f"to check your donation do `?bal`", inline=True)
 
         embed.set_footer(
             text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
-        # embed.set_thumbnail(url=member.avatar_url)
+        # embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
+        # embed.set_image(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
         await ctx.send(embed=embed)
 
 
@@ -287,7 +316,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
                 await ctx.send(f"⚠ {ctx.author.mention}, Donor Doesn't Exist. Can't Change nick!! ⚠")
                 await member.send(f"⚠ {member.mention}, Please donate to change your nick!! ⚠")
             else:
-                newvalues = {"$set": {"name": nick[0:9]}}
+                newvalues = {"$set": {"name": nick[0:15]}}
                 self.mycol.update_one(myquery, newvalues)
                 await ctx.message.add_reaction("<a:tick:823850808264097832>")
             
@@ -297,7 +326,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
                 display = discord.Embed(
                     title=f"__{dict[self.name]} Donator Bank__",
                     description=
-                            f"{dict[self.name]} name has been changed to  **{nick[:9]}** ",
+                            f"{dict[self.name]} name has been changed to  **{nick[:15]}** ",
                     colour=member.colour
                 )
 
@@ -310,7 +339,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
             # for logging
             logg = discord.Embed(
                 title="__Gambler's Kingdom Logging Registry__",
-                description=f"{ctx.author.mention} changed  {member.mention} name to  **{nick[:9]}** [here]({ctx.message.jump_url})",
+                description=f"{ctx.author.mention} changed  {member.mention} name to  **{nick[:15]}** [here]({ctx.message.jump_url})",
                 colour=ctx.author.colour
             )
 
@@ -335,7 +364,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
                 await ctx.send(f"⚠ {ctx.author.mention}, Donor Doesn't Exist. Can't Change nick!! ⚠")
                 await member.send(f"⚠ {member.mention}, Please donate to change your nick!! ⚠")
             else:
-                newvalues = {"$set": {"name": nick[0:9]}}
+                newvalues = {"$set": {"name": nick[0:15]}}
                 self.mycol.update_one(myquery, newvalues)
                 await ctx.message.add_reaction("<a:tick:823850808264097832>")
             
@@ -344,7 +373,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
             display = discord.Embed(
                 title=f"__{member.name} Name Change Request__",
                 description=
-                            f"{ctx.author.mention} you have changed name to  **{nick[:9]}** ",
+                            f"{ctx.author.mention} you have changed name to  **{nick[:15]}** ",
                 colour=member.colour
             )
 
@@ -716,9 +745,6 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
     @celeb.command(name="lb", description="Remove donation from a special", usage="<event-name>")
     async def _leaderboard(self,ctx,name :str,number: int = 1):
         myquery = self.mycol.find({}, {"_id": 1, "name": 1, "bal": 1,"event":1})
-
-        low = 5 * (number - 1)
-        high = 5 * (number)
         
         n = 0
         list = []
@@ -763,7 +789,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
             counter = counter + 1
             
             if n>0 :    
-                desc = desc + f"{ rank : <7}{df['name'][ind] : <15}{f'{int (n / 10**(3 * millidx)):,}{millnames[millidx]}' :>12}\n"
+                desc = desc + f"|{rank: ^3}|{df['name'][ind]: ^20}|{f'{int(n / 10**(3 * millidx)):,}{millnames[millidx]}' :>12}  | \n"
 
         
         member = ctx.author
@@ -772,7 +798,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
         bal = "bal"
         embed = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982> **TGK's {name.upper()} Spl. Top Donators** <a:TGK_Pandaswag:830525027341565982>",
-            description=f"```{'Rank' : <8}{'Name' : <15}{'Donated':>12}\n"
+            description=f"```|{'🏆': ^3}|{'Name': ^20}|{'Donated':>13} |\n"
             f"{desc}```\n\n",
             colour=member.colour
         )
@@ -783,7 +809,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
         embed.set_footer(
             text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
         # embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
-        embed.set_image(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
+        # embed.set_image(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
         await ctx.send(embed=embed)
 
 

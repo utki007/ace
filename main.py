@@ -15,24 +15,25 @@ description = '''This is what I have been programmed to do'''
 client = commands.Bot(
     command_prefix='?',
     description=description,
-    case_insensitive=True
+    case_insensitive=True,
+    intents= discord.Intents.all()
     # help_command = None
 )
 
 # setting up tokens.py
-# if os.path.exists(os.getcwd()+"./properties/tokens.json"):
-#     with open("./properties/tokens.json") as f:
-#         configData = json.load(f)
-# else:
-#     configTemplate = {
-#             "token": "",
-#             "mongo": ""
-#     }
+if os.path.exists(os.getcwd()+"./properties/tokens.json"):
+    with open("./properties/tokens.json") as f:
+        configData = json.load(f)
+else:
+    configTemplate = {
+        "token": "",
+        "mongo": ""
+    }
 
-#     with open(os.getcwd()+"./properties/tokens.json", "w+") as f:
-#         json.dump(configTemplate, f)
-# client.botToken = configData["token"]
-# client.connection_url = configData["mongo"]
+    with open(os.getcwd()+"./properties/tokens.json", "w+") as f:
+        json.dump(configTemplate, f)
+client.botToken = configData["token"]
+client.connection_url = configData["mongo"]
 
 
 @client.event
@@ -61,6 +62,15 @@ for filename in os.listdir('./cogs'):
         client.load_extension(f'cogs.{filename[:-3]}')
 
 
+@client.command(hidden=True)
+@commands.has_permissions(administrator=True)
+async def reload(ctx, extension):
+    client.unload_extension(f'cogs.{extension}')
+    client.load_extension(f'cogs.{extension}')
+    await ctx.send(f'The {extension} is successfully reloaded.')
+
+
+
 @client.command(name="logout", description="shutdown bot", aliases=['dc'], hidden=True)
 # @commands.has_permissions(administrator=True)
 @commands.is_owner()
@@ -84,5 +94,5 @@ async def ping(ctx):
     """Bot Is dead"""
     await ctx.send(f'Pong! {round(client.latency*1000)}ms')
 
-client.run(os.environ['BOT_TOKEN'])
-# client.run(client.botToken)
+# client.run(os.environ['BOT_TOKEN'])
+client.run(client.botToken)
