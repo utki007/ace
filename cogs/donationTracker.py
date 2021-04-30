@@ -15,7 +15,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
 
     def __init__(self, client):
         self.client = client
-        self.mongoconnection = os.environ['MongoConnectionUrl']
+        self.mongoconnection = self.client.connection_url
         # self.mongoconnection = self.client.connection_url
         self.myclient = pymongo.MongoClient(self.mongoconnection)
         # self.myclient = pymongo.MongoClient('')
@@ -33,7 +33,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'Donation Tracker loaded')
+        print(f"{self.__class__.__name__} Cog has been loaded\n-----")
          
     # add a donator if he doesn't exist
     async def create_donor(self,user):
