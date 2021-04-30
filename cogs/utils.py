@@ -10,8 +10,8 @@ class utils(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        # Send a nice message
-        print(f'utils loaded')
+        print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+
 
     @commands.command(name="slowmode", description="Set Slowmode In Current Channel", usage="[slowmode time 1m, 1s 1h max 6h]", aliases=['s', 'sm'],hidden = True)
     @commands.has_permissions(manage_messages=True)
