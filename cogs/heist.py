@@ -25,7 +25,8 @@ class heist(commands.Cog, name="Heist Planner"):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print(f'Heist Cog Loaded')
+        print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+
 
     @commands.command(name="heist", description="Setup an Heist", usage="<role> <title> <flags>")
     # @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
