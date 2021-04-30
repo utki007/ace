@@ -32,9 +32,9 @@ client = commands.Bot(
 #    }
 #    with open(os.getcwd()+"./properties/tokens.json", "w+") as f:
 #        json.dump(configTemplate, f)
-client.botToken = configData["token"]
+#client.botToken = configData["token"]
 #use the .env to get your mongo link here
-client.connection_url = configData["mongo"]
+client.connection_url = os.environ['MongoConnectionUrl']
 
 logging.basicConfig(level=logging.INFO)
 
@@ -96,5 +96,5 @@ async def ping(ctx):
     """Bot Is dead"""
     await ctx.send(f'Pong! {round(client.latency*1000)}ms')
 
-#client.run(os.environ['BOT_TOKEN'])
-client.run(client.botToken)
+client.run(os.environ['BOT_TOKEN'])
+#client.run(client.botToken)
