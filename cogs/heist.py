@@ -124,8 +124,8 @@ class heist(commands.Cog, name="Heist Planner"):
         embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         # embed.set_image(url="https://cdn.discordapp.com/attachments/831970404762648586/833255266127970334/rob.gif")
 
-        # await ctx.send(heist_ping.mention, embed=embed)
-        await ctx.send(embed=embed)
+        await ctx.send(heist_ping.mention, embed=embed)
+        # await ctx.send(embed=embed)
         await ctx.send(" <a:timesand:832701552845389866> **Searching for heist in this channel**", delete_after=60)
         # await self.create_heist_timer(timer)
 
