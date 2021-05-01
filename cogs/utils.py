@@ -14,7 +14,7 @@ class utils(commands.Cog):
 
 
     @commands.command(name="slowmode", description="Set Slowmode In Current Channel", usage="[slowmode time 1m, 1s 1h max 6h]", aliases=['s', 'sm'],hidden = True)
-    @commands.has_permissions(manage_messages=True)
+    @commands.has_permissions(administrator=True)  
     async def slowmode(self, ctx, time: str = '0'):
 
         unit = ['h', 'H', 'm', 'M', 's', 'S']
@@ -50,7 +50,7 @@ class utils(commands.Cog):
         await ctx.message.delete()
 
     @commands.command(name="lock", description="Lock the channel", usage="role", aliases=['l'],hidden=True)
-    @commands.has_permissions(manage_messages=True)
+    @commands.has_permissions(administrator=True)  
     async def lock(self, ctx, channel: discord.TextChannel = None, role: discord.Role = None):
 
         channel = channel if channel else ctx.channel
