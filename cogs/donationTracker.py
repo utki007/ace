@@ -15,6 +15,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
 
     def __init__(self, client):
         self.client = client
+        # self.mongoconnection = os.environ['MongoConnectionUrl']
         self.mongoconnection = self.client.connection_url
         # self.mongoconnection = self.client.connection_url
         self.myclient = pymongo.MongoClient(self.mongoconnection)
@@ -41,11 +42,16 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
         dict["_id"] = user.id
         dict["name"] = user.name[0:15]
         dict["bal"] = 0
-        dict["event"] = [{"name":"500","bal":0},{"name":"1000","bal":0}]
+        dict["event"] = [{"name":"750","bal":0},{"name":"1250","bal":0}]
         self.mycol.insert_one(dict)
 
+    @commands.group(name = "donation" , aliases=['dono'])
+    async def donation(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await ctx.send(f"use `help donation` to know more!!!")
 
-    @commands.group(name="add-donation", description="Add Donation for a member", usage="<member> <amount>",aliases=['abal','add-bal','adono'])
+
+    @donation.command(name="add", description="Add Donation for a member", usage="<member> <amount>",aliases=['a'])
     async def adono(self,ctx, member: discord.Member, amount: int):
         
         self.authorized = False
@@ -133,7 +139,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
 
 
 
-    @commands.command(name="remove-donation", description="Remove donation from a member", usage="<member> <amount>",aliases=['rdono','rbal','remove-bal'])
+    @donation.command(name="remove", description="Remove donation from a member", usage="<member> <amount>",aliases=['r'])
     async def rdono(self,ctx, member: discord.Member, amount: int):
         
         self.authorized = False
@@ -221,7 +227,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
     
 
     
-    @commands.command(name="leaderboard", description="Checout top donators", usage="<member> <amount>",aliases=['lb'])
+    @donation.command(name="leaderboard", description="Checout top donators", usage="<member> <amount>",aliases=['lb'])
     async def topdono(self,ctx,  number=5):
         
         myquery = self.mycol.find({}, {"_id": 1, "name": 1, "bal": 1,"event":1})
@@ -265,7 +271,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
             counter = counter + 1
             
             if n>0 :    
-                desc = desc + f"|{rank: ^3}|{df['name'][ind]: ^20}|{f'{int(n / 10**(3 * millidx)):,}{millnames[millidx]}' :>12}  | \n"
+                desc = desc + f"|{rank: ^3}|{df['name'][ind]: ^15}|{f'{int(n / 10**(3 * millidx)):,}{millnames[millidx]}' :>12}  | \n"
 
         
         member = ctx.author
@@ -274,8 +280,8 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
         bal = "bal"
         title = "𝕋𝔾𝕂'𝕤 𝕋𝕆ℙ 𝔻𝕆ℕ𝔸𝕋𝕆ℝ𝕊"  
         embed = discord.Embed(
-            title=f"<a:TGK_Pandaswag:830525027341565982>  `{title:^35}`  <a:TGK_Pandaswag:830525027341565982>",
-            description=f"```|{'🏆': ^3}|{'Name': ^20}|{'Donated':>13} |\n"
+            title=f"<a:TGK_Pandaswag:830525027341565982>  `{title:^30}`  <a:TGK_Pandaswag:830525027341565982>",
+            description=f"```|{'🏆': ^3}|{'Name': ^15}|{'Donated':>13} |\n"
             f"{desc}```\n\n",
             colour=member.colour
         )
@@ -398,7 +404,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
             await channel.send(embed=logg)
 
 
-    @commands.command(name="bal", description="Check your donation balance", usage="<member>",aliases=['donation','balance'])
+    @commands.command(name="bal", description="Check your donation balance", usage="<member>",aliases=['balance'])
     async def _bal(self,ctx, member: discord.Member=None):
         
         self.authorized = False
@@ -789,7 +795,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
             counter = counter + 1
             
             if n>0 :    
-                desc = desc + f"|{rank: ^3}|{df['name'][ind]: ^20}|{f'{int(n / 10**(3 * millidx)):,}{millnames[millidx]}' :>12}  | \n"
+                desc = desc + f"|{rank: ^3}|{df['name'][ind]: ^15}|{f'{int(n / 10**(3 * millidx)):,}{millnames[millidx]}' :>12}  | \n"
 
         
         member = ctx.author
@@ -798,7 +804,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
         bal = "bal"
         embed = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982> **TGK's {name.upper()} Spl. Top Donators** <a:TGK_Pandaswag:830525027341565982>",
-            description=f"```|{'🏆': ^3}|{'Name': ^20}|{'Donated':>13} |\n"
+            description=f"```|{'🏆': ^3}|{'Name': ^15}|{'Donated':>13} |\n"
             f"{desc}```\n\n",
             colour=member.colour
         )
