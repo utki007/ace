@@ -18,10 +18,10 @@ class heist(commands.Cog, name="Heist Planner"):
         self.client = client
 
         # some roles for tgk
-        self.heist_role = 804068344612913163 
-        self.default_role = 787566421592899614 
-        self.starter_role = 802233925036408892 
-        
+        self.heist_role = 804068344612913163
+        self.default_role = 787566421592899614
+        self.starter_role = 802233925036408892
+
         # some roles for tts
         # self.heist_role = 833023910391578634
         # self.default_role = 829431704296357938
@@ -32,9 +32,8 @@ class heist(commands.Cog, name="Heist Planner"):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-
     @commands.command(name="heist", description="Setup an Heist", usage="<role> <title> <flags>")
-    @commands.has_permissions(administrator=True)    
+    @commands.has_permissions(administrator=True)
     # @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
     async def start(self, ctx, req_role: str, *args: str):
         await ctx.message.delete()
@@ -44,7 +43,7 @@ class heist(commands.Cog, name="Heist Planner"):
         default_role = discord.utils.get(ctx.guild.roles, id=self.default_role)
         req_role = discord.utils.get(ctx.guild.roles, id=int(
             req_role)) if req_role.lower() != "none" else default_role
-        heist_ping =  discord.utils.get(ctx.guild.roles, id=self.heist_role)
+        heist_ping = discord.utils.get(ctx.guild.roles, id=self.heist_role)
         channel = ctx.channel
         host = ctx.author
 
@@ -125,7 +124,8 @@ class heist(commands.Cog, name="Heist Planner"):
         embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         # embed.set_image(url="https://cdn.discordapp.com/attachments/831970404762648586/833255266127970334/rob.gif")
 
-        await ctx.send(heist_ping.mention, embed=embed)
+        # await ctx.send(heist_ping.mention, embed=embed)
+        await ctx.send(embed=embed)
         await ctx.send(" <a:timesand:832701552845389866> **Searching for heist in this channel**", delete_after=60)
         # await self.create_heist_timer(timer)
 
@@ -164,7 +164,11 @@ class heist(commands.Cog, name="Heist Planner"):
                     unlock_embed.set_thumbnail(
                         url="https://cdn.discordapp.com/attachments/831970404762648586/833039923548389397/tenor.gif")
 
-                    await channel.set_permissions(i, send_messages=True)
+                    overwrite = channel.overwrites_for(i)
+                    overwrite.send_messages = True
+                    overwrite.view_channel = True
+
+                    await channel.set_permissions(i, overwrite=overwrite)
                     await ctx.send(embed=unlock_embed)
                 tm.sleep(20)
                 flag = 1
@@ -180,7 +184,11 @@ class heist(commands.Cog, name="Heist Planner"):
             unlock_embed.set_thumbnail(
                 url="https://cdn.discordapp.com/attachments/831970404762648586/833039923548389397/tenor.gif")
 
-            await channel.set_permissions(req_role, send_messages=True)
+            overwrite = channel.overwrites_for(req_role)
+            overwrite.send_messages = True
+            overwrite.view_channel = True
+            
+            await channel.set_permissions(req_role, overwrite=overwrite)
             await ctx.send(embed=unlock_embed)
 
             await asyncio.sleep(5)
@@ -252,37 +260,34 @@ class heist(commands.Cog, name="Heist Planner"):
             await ctx.channel.edit(sync_permissions=True)
             await ctx.send(embed=timesup)
 
-
     @start.error
     async def start_error(ctx, error):
         """ Will be triggered in case of an error in heist command """
         if isinstance(error, commands.CheckFailure):
             await ctx.send(f"Hey {ctx.author.mention},You don't have permissions.")
-        elif isinstance(error, commands.MissingRequiredArgument): 
+        elif isinstance(error, commands.MissingRequiredArgument):
             await ctx.send(f"Hey {ctx.author.mention},You did not use the command correctly!! \n`[p]heist <role> <title> <--amt (amount) --starter (name.id or name.mention)>")
         else:
             raise ctx.send(f"we erred")
-    
-    
+
     @commands.command(name="reset", description="Reset any channel", hidden=True)
     @commands.is_owner()
     async def hlock(self, ctx):
 
-        
         lock_embed = discord.Embed(
-                title=f"<a:tgk_run:832700446711611422>       **{'Channel Locked'}**       <a:tgk_run:832700446711611422> ",
-                description=f"Channel has been locked. Good luck guys. \n",
-                color=ctx.author.color,
-                timestamp=datetime.datetime.utcnow()
+            title=f"<a:tgk_run:832700446711611422>       **{'Channel Locked'}**       <a:tgk_run:832700446711611422> ",
+            description=f"Channel has been locked. Good luck guys. \n",
+            color=ctx.author.color,
+            timestamp=datetime.datetime.utcnow()
         )
         lock_embed.set_author(name=ctx.guild.name,
-                                  icon_url=ctx.guild.icon_url)
+                              icon_url=ctx.guild.icon_url)
         # lock_embed.set_image(url="https://cdn.discordapp.com/attachments/831970404762648586/833255266127970334/rob.gif")
         lock_embed.set_thumbnail(url=ctx.guild.icon_url)
 
         await ctx.channel.edit(sync_permissions=True)
         await ctx.send(embed=lock_embed)
-        
+
     # async def create_heist_timer(self,ctx,msg):
     #     try:
     #         for i in range(8,-1,-1):
