@@ -15,11 +15,9 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
 
     def __init__(self, client):
         self.client = client
-        # self.mongoconnection = os.environ['MongoConnectionUrl']
-        self.mongoconnection = self.client.connection_url
+        self.mongoconnection = os.environ['MongoConnectionUrl']
         # self.mongoconnection = self.client.connection_url
         self.myclient = pymongo.MongoClient(self.mongoconnection)
-        # self.myclient = pymongo.MongoClient('')
         self.mydb = self.myclient['TGK']
         self.mycol = self.mydb["donorBank"]
         # for my server
@@ -46,12 +44,14 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
         self.mycol.insert_one(dict)
 
     @commands.group(name = "donation" , aliases=['dono'])
+    @commands.has_permissions(administrator=True)
     async def donation(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send(f"use `help donation` to know more!!!")
 
 
     @donation.command(name="add", description="Add Donation for a member", usage="<member> <amount>",aliases=['a'])
+    @commands.has_permissions(administrator=True)
     async def adono(self,ctx, member: discord.Member, amount: int):
         
         self.authorized = False
@@ -139,7 +139,8 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
 
 
 
-    @donation.command(name="remove", description="Remove donation from a member", usage="<member> <amount>",aliases=['r'])
+    @donation.command(name="remove", description="Remove donation from a member", usage="<member> <amount>",aliases=['r']) 
+    @commands.has_permissions(administrator=True)
     async def rdono(self,ctx, member: discord.Member, amount: int):
         
         self.authorized = False
@@ -228,6 +229,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
 
     
     @donation.command(name="leaderboard", description="Checout top donators", usage="<member> <amount>",aliases=['lb'])
+    @commands.has_permissions(administrator=True)
     async def topdono(self,ctx,  number=5):
         
         myquery = self.mycol.find({}, {"_id": 1, "name": 1, "bal": 1,"event":1})
@@ -298,6 +300,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
 
  
     @commands.command(name="nick", description="this nick appears on your donor bank", usage="<member> <nick>",aliases=['ign'])
+    @commands.has_permissions(administrator=True)
     async def nick(self,ctx, member: discord.Member = None, nick :str ="setNewNick"):
         
         self.authorized = False
@@ -405,6 +408,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
 
 
     @commands.command(name="bal", description="Check your donation balance", usage="<member>",aliases=['balance'])
+    @commands.has_permissions(administrator=True)
     async def _bal(self,ctx, member: discord.Member=None):
         
         self.authorized = False
@@ -506,11 +510,13 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
 
 
     @commands.group()
+    @commands.has_permissions(administrator=True)
     async def celeb(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send(f"use `help celeb` to know more!!!")
 
     @celeb.command(name="add",description="Add donation to a special event",usage = "<event-name> <member> <amount>")
+    @commands.has_permissions(administrator=True)
     async def add(self, ctx,name: str,member: discord.Member, amount: int):
             
         self.authorized = False
@@ -630,6 +636,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
             await ctx.send(f"⚠ {ctx.author.mention}, you are __**unauthorized**__ to use this command ⚠") 
 
     @celeb.command(name="remove", description="Remove donation from a special", usage="<event-name> <member> <amount>")
+    @commands.has_permissions(administrator=True)
     async def remove(self, ctx,name: str,member: discord.Member, amount: int):
         
         self.authorized = False
@@ -749,6 +756,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
             await ctx.send(f"⚠ {ctx.author.mention}, you are __**UNAUTHORIZED**__ to use this command ⚠") 
     
     @celeb.command(name="lb", description="Remove donation from a special", usage="<event-name>")
+    @commands.has_permissions(administrator=True)
     async def _leaderboard(self,ctx,name :str,number: int = 1):
         myquery = self.mycol.find({}, {"_id": 1, "name": 1, "bal": 1,"event":1})
         

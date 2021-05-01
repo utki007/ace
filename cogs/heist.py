@@ -17,10 +17,15 @@ class heist(commands.Cog, name="Heist Planner"):
     def __init__(self, client):
         self.client = client
 
-        # some roles
-        self.heist_role = 833023910391578634
-        self.default_role = 829431704296357938
-        self.starter_role = 831984444297969677
+        # some roles for tgk
+        self.heist_role = 804068344612913163 
+        self.default_role = 787566421592899614 
+        self.starter_role = 802233925036408892 
+        
+        # some roles for tts
+        # self.heist_role = 833023910391578634
+        # self.default_role = 829431704296357938
+        # self.starter_role = 831984444297969677
         # ctx.guild.default_role
 
     @commands.Cog.listener()
@@ -29,6 +34,7 @@ class heist(commands.Cog, name="Heist Planner"):
 
 
     @commands.command(name="heist", description="Setup an Heist", usage="<role> <title> <flags>")
+    @commands.has_permissions(administrator=True)    
     # @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
     async def start(self, ctx, req_role: str, *args: str):
         await ctx.message.delete()
@@ -213,7 +219,7 @@ class heist(commands.Cog, name="Heist Planner"):
                 lock_embed.set_thumbnail(
                     url="https://cdn.discordapp.com/emojis/801343188945207297.gif?v=1")
 
-                await self.client.wait_for("message", check=lambda m: m.author.id == 270904126974590976 and "Time is up to join" in m.content, timeout=240)
+                await self.client.wait_for("message", check=lambda m: m.author.id == 270904126974590976 and ("Time is up to join" in m.content or "sorry lady, you're not popular enough and didn't get enough people to rob the bank" in m.content), timeout=220)
                 await ctx.channel.edit(sync_permissions=True)
                 await ctx.send(embed=lock_embed)
 
