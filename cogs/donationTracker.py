@@ -20,8 +20,10 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
         self.myclient = pymongo.MongoClient(self.mongoconnection)
         self.mydb = self.myclient['TGK']
         self.mycol = self.mydb["donorBank"]
+        # for tgk
+        self.logChannel = int(838042561486258247)
         # for my server
-        self.logChannel = int(829432135936376852)
+        # self.logChannel = int(829432135936376852)
 
         # donor bank properties
         self.bal = "bal"
