@@ -19,8 +19,8 @@ client = commands.Bot(
     command_prefix='?',
     description=description,
     case_insensitive=True,
-    intents= discord.Intents.all()
-    # help_command = None
+    intents= discord.Intents.all(),
+    help_command = None
 )
 
 
