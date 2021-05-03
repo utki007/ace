@@ -40,6 +40,12 @@ class Events(commands.Cog):
         elif isinstance(error, commands.CheckFailure):
             # If the command has failed a check, trip this
             await ctx.send("Hey! You lack permission to use this command.")
+        elif isinstance(error, commands.MissingRequiredArgument):
+            # If the command has failed a check, trip this
+            await ctx.send("Pass in the required arguments")
+        elif isinstance(error, commands.CommandInvokeError):
+                # If the command has failed a check, trip this
+            await ctx.send("Pass in the required arguments")
         else:
             raise error
 

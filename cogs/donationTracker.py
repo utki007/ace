@@ -230,7 +230,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
     
 
     
-    @donation.command(name="leaderboard", description="Checout top donators", usage="<member> <amount>",aliases=['lb'])
+    @donation.command(name="leaderboard", description="Checout top donators", usage="",aliases=['lb'])
     @commands.has_permissions(administrator=True)
     async def topdono(self,ctx,  number=5):
         
