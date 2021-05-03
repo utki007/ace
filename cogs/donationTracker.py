@@ -42,7 +42,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
         dict["_id"] = user.id
         dict["name"] = user.name[0:15]
         dict["bal"] = 0
-        dict["event"] = [{"name":"750","bal":0},{"name":"1250","bal":0}]
+        dict["event"] = [{"name":"750","bal":0},{"name":"1500","bal":0}]
         self.mycol.insert_one(dict)
 
     @commands.group(name = "donation" , aliases=['dono'])
@@ -462,7 +462,7 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
             display.set_thumbnail(url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
             
             await ctx.send(embed=display)
-            await ctx.message.add_reaction("<a:tick:823850808264097832>")
+            await ctx.message.add_reaction("<a:goldcheck:802995101528883262>")
 
 
 

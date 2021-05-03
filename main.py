@@ -1,6 +1,6 @@
 # importing the required libraries
 import discord
-from discord.ext import commands
+from discord.ext import commands,tasks
 import random
 import time
 import os
@@ -10,6 +10,8 @@ import pandas as pd
 import numpy as np
 import json
 import logging
+import asyncio
+from asyncio import sleep
 
 
 description = '''This is what I have been programmed to do'''
@@ -17,9 +19,18 @@ client = commands.Bot(
     command_prefix='?',
     description=description,
     case_insensitive=True,
-    intents= discord.Intents.all(),
-    help_command = None
+    intents= discord.Intents.all()
+    # help_command = None
 )
+
+
+@client.event
+async def on_ready():
+    print(
+        f"-----\nLogged in as: {client.user.name} : {client.user.id}\n-----\n"
+    )
+    print('------')
+    
 
 #setting up tokens.py
 # if os.path.exists(os.getcwd()+"./properties/tokens.json"):
@@ -38,13 +49,6 @@ client = commands.Bot(
 
 
 logging.basicConfig(level=logging.INFO)
-
-@client.event
-async def on_ready():
-    print(
-        f"-----\nLogged in as: {client.user.name} : {client.user.id}\n-----\n"
-    )
-    print('------')
 
 
 @client.command(hidden=True)
@@ -91,11 +95,6 @@ async def logout_error(ctx, error):
         raise error
 
 
-# pong command (checks bot latency)
-@client.command(aliases=['pong'], description='check bot latency', hidden=True)
-async def ping(ctx):
-    """Bot Is dead"""
-    await ctx.send(f'Pong! {round(client.latency*1000)}ms')
     
 client.colors = {
     "WHITE": 0xFFFFFF,
