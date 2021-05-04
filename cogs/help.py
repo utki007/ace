@@ -72,7 +72,7 @@ class Help(commands.Cog, name="Help command"):
         help.set_author(name=ctx.guild.name,
                               icon_url=ctx.guild.icon_url)
         help.set_footer(
-            text=f"Developed by utki007 & Jay", icon_url=ctx.self.client.user.avatar_url)
+            text=f"Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
         # help.set_thumbnail(
         #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
         await ctx.send(embed = help)
