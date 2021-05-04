@@ -28,10 +28,6 @@ class Help(commands.Cog, name="Help command"):
             timestamp=datetime.datetime.utcnow()
         )
         help.add_field(
-            name="<a:TGK_sparkles:838838345316040744> __Channel Utils__",
-            value="Manage channel \n`purge` , `slowmode` ",
-            inline = False)
-        help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Donation Tracker__",
             value="Track all donations made to the server \n`bal` , `nick` , `regDonation`, `splDonation`",
             inline = False)
@@ -40,8 +36,8 @@ class Help(commands.Cog, name="Help command"):
             value="Track and Conduct a Heist \n`heist` , `hlock`",
             inline = False)
         help.add_field(
-            name="<a:TGK_sparkles:838838345316040744> __Locks__",
-            value="Secure the server \n`dankdown` , `dankup` , `lock` , `unlock`",
+            name="<a:TGK_sparkles:838838345316040744> __Channel Management__",
+            value="Secure the server \n`dankdown` , `dankup` , `lock` ,`slowmode` , `unlock`",
             inline = False)
         help.set_author(name=ctx.guild.name,
                               icon_url=ctx.guild.icon_url)
@@ -51,31 +47,31 @@ class Help(commands.Cog, name="Help command"):
         #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
         await ctx.send(embed = help)
 
-    @help.command(name="channel",aliases = ["c",'ch',"purge","s","slowmode"])
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
-    async def channel(self, ctx):
-        help = discord.Embed(
-            title = "Channel Utils",
-            description = f"Manage channels with ease",
-            color = ctx.author.color,
-            timestamp=datetime.datetime.utcnow()
-        )
-        help.add_field(
-            name="<a:TGK_sparkles:838838345316040744> __Purge__",
-            value="usage = `?purge @user 5` ",
-            inline = False)
-        help.add_field(
-            name="<a:TGK_sparkles:838838345316040744> __Slowmode__",
-            value=f"usage = `?[slowmode|s|sm] [time]`\n"
-                  f"ex = `?s 1m` , `?s` ,`?s 6h`",
-            inline = False)
-        help.set_author(name=ctx.guild.name,
-                              icon_url=ctx.guild.icon_url)
-        help.set_footer(
-            text=f"Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
-        # help.set_thumbnail(
-        #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
-        await ctx.send(embed = help)
+    # @help.command(name="channel",aliases = ["c",'ch',"purge","s","slowmode"])
+    # @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
+    # async def channel(self, ctx):
+    #     help = discord.Embed(
+    #         title = "Channel Utils",
+    #         description = f"Manage channels with ease",
+    #         color = ctx.author.color,
+    #         timestamp=datetime.datetime.utcnow()
+    #     )
+    #     help.add_field(
+    #         name="<a:TGK_sparkles:838838345316040744> __Purge__",
+    #         value="usage = `?purge @user 5` ",
+    #         inline = False)
+    #     help.add_field(
+    #         name="<a:TGK_sparkles:838838345316040744> __Slowmode__",
+    #         value=f"usage = `?[slowmode|s|sm] [time]`\n"
+    #               f"ex = `?s 1m` , `?s` ,`?s 6h`",
+    #         inline = False)
+    #     help.set_author(name=ctx.guild.name,
+    #                           icon_url=ctx.guild.icon_url)
+    #     help.set_footer(
+    #         text=f"Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
+    #     # help.set_thumbnail(
+    #     #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
+    #     await ctx.send(embed = help)
         
     @help.command(name="Donation",aliases = ["donation",'dono',"Dono","d","bal" , "nick" , "regDonation", "splDonation"])
     @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
@@ -135,7 +131,7 @@ class Help(commands.Cog, name="Help command"):
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Conduct a Heist__",
             value=  f"Usage = `?heist <req_role> <title> [flags]` \n"
-                    f"Flags are:\n**1.** `--amt` : heist amount in int\n"
+                    f"Flags are:\n**1.** `--amt` : heist amount\n"
                     f"**2.** `--starter` : member who's going to start the heist\n"
                     f"**3.** `--role` : member who bypass or get early unlock\n",
             inline = False)
@@ -154,7 +150,7 @@ class Help(commands.Cog, name="Help command"):
         await ctx.send(embed = help)
    
             
-    @help.command(name="lock",aliases = ["l",'Lock',"unlock","ul","dankdown","dankup"])
+    @help.command(name="Channel",aliases = ["ch","c","slowmode",'Lock',"unlock","ul","dankdown","dankup"])
     @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
     async def lock(self, ctx):
         help = discord.Embed(
@@ -180,11 +176,16 @@ class Help(commands.Cog, name="Help command"):
                     f"**2.** `?[lock|l] role` - locks channel for role\n",
             inline = False)
         help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Slowmode__",
+            value=f"usage = `?[slowmode|s|sm] [time]`\n"
+                  f"ex = `?s 1m` , `?s` ,`?s 6h`",
+            inline = False)
+        help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Unlock__",
             value= f"**Examples: **  `?[unlock|ul] <state> <role>`\n"
                     f"**1.** `?[unlock|ul]` - unlocks channel for <@&787566421592899614>\n"
-                    f"**2.** `?[unlock|l] true role` - unlocks channel for role with state true\n"
-                    f"**3.** `?[unlock|l] false role` - unlocks channel for role with state false\n",
+                    f"**2.** `?[unlock|ul] true role` - unlocks channel for role with state true\n"
+                    f"**3.** `?[unlock|ul] false role` - unlocks channel for role with state false\n",
             inline = False)
         
         help.set_author(name=ctx.guild.name,

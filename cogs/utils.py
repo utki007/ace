@@ -195,22 +195,22 @@ class utils(commands.Cog):
         # await ctx.send("Dank is LockedUp")
         await lock_status.edit(content=f"Dank is LockedUp")
 
-    # purge bot messages
-    @commands.command(name="purge", description="Use this commands when dank comes back offline",
-        usage="",aliases = ["p"],hidden = True)
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
-    async def test(
-        self, ctx,member: discord.Member,
-        num_messages: int = 2,
-    ):
-        """Clear all messagges of <User> withing the last [n=100] messages"""
-        channel = ctx.message.channel
+    # # purge bot messages
+    # @commands.command(name="purge", description="Use this commands when dank comes back offline",
+    #     usage="",aliases = ["p"],hidden = True)
+    # @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
+    # async def test(
+    #     self, ctx,member: discord.Member,
+    #     num_messages: int = 2,
+    # ):
+    #     """Clear all messagges of <User> withing the last [n=100] messages"""
+    #     channel = ctx.message.channel
 
-        def check(msg):
-            return msg.author.id == member.id
+    #     def check(msg):
+    #         return msg.author.id == member.id
 
-        await ctx.message.delete()
-        await channel.purge(limit=num_messages, check=check, before=None)
+    #     await ctx.message.delete()
+    #     await channel.purge(limit=num_messages, check=check, before=None)
     
     @commands.command(name="dankup", description="Use this commands when dank comes back offline",
         usage="",aliases = ["du"],hidden = True)
