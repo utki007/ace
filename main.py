@@ -30,6 +30,26 @@ async def on_ready():
         f"-----\nLogged in as: {client.user.name} : {client.user.id}\n-----\n"
     )
     print('------')
+    
+
+#setting up tokens.py
+# if os.path.exists(os.getcwd()+"./properties/tokens.json"):
+#    with open("./properties/tokens.json") as f:
+#        configData = json.load(f)
+# else:
+#    configTemplate = {
+#        "token": "",
+#        "mongo": ""
+#    }
+#    with open(os.getcwd()+"./properties/tokens.json", "w+") as f:
+#        json.dump(configTemplate, f)
+# client.botToken = configData["token"]
+# client.connection_url = configData["mongo"]
+#use the .env to get your mongo link here
+
+
+logging.basicConfig(level=logging.INFO)
+
 
 @client.command(hidden=True)
 @commands.has_permissions(administrator=True)
@@ -100,26 +120,5 @@ client.colors = {
 }
 client.color_list = [c for c in client.colors.values()]
 
-
-# local host
-# if os.path.exists(os.getcwd()+"./properties/tokens.json"):
-#    with open("./properties/tokens.json") as f:
-#        configData = json.load(f)
-# else:
-#    configTemplate = {
-#        "token": "",
-#        "mongo": ""
-#    }
-#    with open(os.getcwd()+"./properties/tokens.json", "w+") as f:
-#        json.dump(configTemplate, f)
-
-# client.botToken = configData["token"]
-# client.connection_url = configData["mongo"]
-
-
-
-# heroku
-client.connection_url = os.environ['MongoConnectionUrl']
-client.botToken = os.environ['BOT_TOKEN']
-
-client.run(client.botToken)
+client.run(os.environ['BOT_TOKEN'])
+# client.run(client.botToken)
