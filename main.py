@@ -101,7 +101,7 @@ client.colors = {
 client.color_list = [c for c in client.colors.values()]
 
 
-#setting up tokens.py
+# local host
 # if os.path.exists(os.getcwd()+"./properties/tokens.json"):
 #    with open("./properties/tokens.json") as f:
 #        configData = json.load(f)
@@ -113,12 +113,13 @@ client.color_list = [c for c in client.colors.values()]
 #    with open(os.getcwd()+"./properties/tokens.json", "w+") as f:
 #        json.dump(configTemplate, f)
 
-# local host
-# client.connection_url = os.environ['MongoConnectionUrl']
-# client.botToken = os.environ['BOT_TOKEN']
+# client.botToken = configData["token"]
+# client.connection_url = configData["mongo"]
+
+
 
 # heroku
-client.botToken = configData["token"]
-client.connection_url = configData["mongo"]
+client.connection_url = os.environ['MongoConnectionUrl']
+client.botToken = os.environ['BOT_TOKEN']
 
 client.run(client.botToken)
