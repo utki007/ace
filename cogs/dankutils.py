@@ -32,7 +32,7 @@ class dankutils(commands.Cog, name="Dank Utility"):
                 for word in word_list:
                     if word in messageContent:
                         time.sleep(3)
-                        return await message.channel.send("If you'd like to stop receiving pings, check out <#785882615202316298> for `<@&810593886720098304>` role!!!")
+                        return await message.channel.send("If you'd like to stop receiving pings, check out <#785882615202316298> for `@〖 🔕。No Partnership 〗` role!!!")
 
 
 def setup(client):

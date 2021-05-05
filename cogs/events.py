@@ -22,32 +22,16 @@ class Events(commands.Cog):
         ignored = (commands.CommandNotFound, commands.UserInputError)
         if isinstance(error, ignored):
             return
-
-        if isinstance(error, commands.CommandOnCooldown):
-            # If the command is currently on cooldown trip this
-            m, s = divmod(error.retry_after, 60)
-            h, m = divmod(m, 60)
-            if int(h) == 0 and int(m) == 0:
-                await ctx.send(f" You must wait {int(s)} seconds to use this command!")
-            elif int(h) == 0 and int(m) != 0:
-                await ctx.send(
-                    f" You must wait {int(m)} minutes and {int(s)} seconds to use this command!"
-                )
-            else:
-                await ctx.send(
-                    f" You must wait {int(h)} hours, {int(m)} minutes and {int(s)} seconds to use this command!"
-                )
-        elif isinstance(error, commands.CheckFailure):
-            # If the command has failed a check, trip this
-            await ctx.send("Hey! You lack permission to use this command.")
-        elif isinstance(error, commands.MissingRequiredArgument):
-            # If the command has failed a check, trip this
-            await ctx.send("Pass in the required arguments")
+        
+        if isinstance(error, commands.NoPrivateMessage):
+            await ctx.author.send('This command cannot be used in private messages.')
+        elif isinstance(error, commands.DisabledCommand):
+            await ctx.author.send('Sorry. This command is disabled and cannot be used.')
         elif isinstance(error, commands.CommandInvokeError):
-                # If the command has failed a check, trip this
-            await ctx.send("Pass in the required arguments")
-        else:
-            raise error
+            print(f'In {ctx.command.qualified_name}:', file=sys.stderr)
+            traceback.print_tb(error.original.__traceback__)
+            print(
+                f'{error.original.__class__.__name__}: {error.original}', file=sys.stderr)
 
     
     @tasks.loop(seconds=240)
