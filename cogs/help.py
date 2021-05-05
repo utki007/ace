@@ -24,7 +24,7 @@ class Help(commands.Cog, name="Help command"):
         help = discord.Embed(
             # title = "Help",
             description = f"Use `?help <command>` to know more",
-            color = ctx.author.color,
+            color = 0x9e3bff,
             timestamp=datetime.datetime.utcnow()
         )
         help.add_field(
@@ -46,32 +46,6 @@ class Help(commands.Cog, name="Help command"):
         # help.set_thumbnail(
         #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
         await ctx.send(embed = help)
-
-    # @help.command(name="channel",aliases = ["c",'ch',"purge","s","slowmode"])
-    # @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
-    # async def channel(self, ctx):
-    #     help = discord.Embed(
-    #         title = "Channel Utils",
-    #         description = f"Manage channels with ease",
-    #         color = ctx.author.color,
-    #         timestamp=datetime.datetime.utcnow()
-    #     )
-    #     help.add_field(
-    #         name="<a:TGK_sparkles:838838345316040744> __Purge__",
-    #         value="usage = `?purge @user 5` ",
-    #         inline = False)
-    #     help.add_field(
-    #         name="<a:TGK_sparkles:838838345316040744> __Slowmode__",
-    #         value=f"usage = `?[slowmode|s|sm] [time]`\n"
-    #               f"ex = `?s 1m` , `?s` ,`?s 6h`",
-    #         inline = False)
-    #     help.set_author(name=ctx.guild.name,
-    #                           icon_url=ctx.guild.icon_url)
-    #     help.set_footer(
-    #         text=f"Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
-    #     # help.set_thumbnail(
-    #     #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
-    #     await ctx.send(embed = help)
         
     @help.command(name="Donation",aliases = ["donation",'dono',"Dono","d","bal" , "nick" , "regDonation", "splDonation"])
     @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)

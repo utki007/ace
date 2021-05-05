@@ -7,7 +7,7 @@ import math
 import datetime
 
 
-class utils(commands.Cog):
+class channel(commands.Cog):
     def __init__(self, client):
         self.client = client
         
@@ -311,4 +311,4 @@ class utils(commands.Cog):
  
         
 def setup(client):
-    client.add_cog(utils(client))
+    client.add_cog(channel(client))

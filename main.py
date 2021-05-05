@@ -84,7 +84,7 @@ async def reload(ctx, extension):
 # @commands.has_permissions(administrator=True)
 @commands.is_owner()
 async def logout(ctx):
-    await ctx.send(f'Hey {ctx.author.mention}, I am now logging out.')
+    await ctx.send(f'I am now logging out :wave: \n ')
     await client.logout()
 
 
