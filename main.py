@@ -45,8 +45,10 @@ async def on_ready():
 #        json.dump(configTemplate, f)
 # client.botToken = configData["token"]
 # client.connection_url = configData["mongo"]
-#use the .env to get your mongo link here
 
+# for heroku
+client.botToken = os.environ['BOT_TOKEN']
+client.botToken = os.environ['MongoConnectionUrl']
 
 logging.basicConfig(level=logging.INFO)
 
@@ -120,5 +122,7 @@ client.colors = {
 }
 client.color_list = [c for c in client.colors.values()]
 
-client.run(os.environ['BOT_TOKEN'])
-# client.run(client.botToken)
+
+
+# client.run(os.environ['BOT_TOKEN'])
+client.run(client.botToken)

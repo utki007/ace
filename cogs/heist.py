@@ -32,7 +32,7 @@ class heist(commands.Cog, name="Heist Planner"):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-    @commands.command(name="heist", description="Setup an Heist", usage="<role> <title> <flags>")
+    @commands.command(name="heist", description="Setup an Heist", usage="<role>")
     @commands.has_permissions(administrator=True)
     # @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
     async def start(self, ctx, req_role: str, *args: str):
@@ -260,17 +260,8 @@ class heist(commands.Cog, name="Heist Planner"):
             await ctx.channel.edit(sync_permissions=True)
             await ctx.send(embed=timesup)
 
-    @start.error
-    async def start_error(ctx, error):
-        """ Will be triggered in case of an error in heist command """
-        if isinstance(error, commands.CheckFailure):
-            await ctx.send(f"Hey {ctx.author.mention},You don't have permissions.")
-        elif isinstance(error, commands.MissingRequiredArgument):
-            await ctx.send(f"Hey {ctx.author.mention},You did not use the command correctly!! \n`[p]heist <role> <title> <--amt (amount) --starter (name.id or name.mention)>")
-        else:
-            raise ctx.send(f"we erred")
 
-    @commands.command(name="reset", description="Reset any channel", hidden=True)
+    @commands.command(name="hlock", description="Reset any channel",aliases = ["reset"], hidden=True)
     @commands.is_owner()
     async def hlock(self, ctx):
 

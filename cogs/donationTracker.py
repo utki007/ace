@@ -15,8 +15,8 @@ class donationTracker(commands.Cog,name="Donation Tracker"):
 
     def __init__(self, client):
         self.client = client
-        self.mongoconnection = os.environ['MongoConnectionUrl']
-        # self.mongoconnection = self.client.connection_url
+        # self.mongoconnection = os.environ['MongoConnectionUrl']
+        self.mongoconnection = self.client.connection_url
         self.myclient = pymongo.MongoClient(self.mongoconnection)
         self.mydb = self.myclient['TGK']
         self.mycol = self.mydb["donorBank"]
