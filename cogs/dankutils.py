@@ -73,7 +73,18 @@ class dankutils(commands.Cog, name="Dank Utility"):
     async def taxcalculate(self,ctx, number: float):
         """Finding tax"""
         number = int(float(number))
-        await ctx.send(math.ceil((number*100)/92))
+        result = math.ceil((number*100)/92)
+        e = discord.Embed(
+            color= 0x9e3bff,
+            title=f"Tax Calculator",
+            description =   f"Amount expected to pay: <:TGK_DMC:830520214021603350> **{result:,}**\n"
+                            f"Amount lost by tax: <:TGK_DMC:830520214021603350> **{result-number:,}**\n"
+                            f"Tax rate: **8%**"
+        )
+        e.set_footer(
+                text=f"Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
+        await ctx.send(f"**{result}**",delete_after= 60)
+        await ctx.send(embed=e)
     
     
 def setup(client):
