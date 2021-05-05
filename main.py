@@ -48,7 +48,7 @@ async def on_ready():
 
 # for heroku
 client.botToken = os.environ['BOT_TOKEN']
-client.botToken = os.environ['MongoConnectionUrl']
+client.connection_url = os.environ['MongoConnectionUrl']
 
 logging.basicConfig(level=logging.INFO)
 
