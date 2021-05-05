@@ -8,3 +8,4 @@ buttons==0.1.9
 Paginator==0.5.1
 emojis==0.6.0
 TagScriptEngine==2.3.0
+pyparsing==2.4.6
