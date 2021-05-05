@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import pymongo
 import dns
-import time as tm
+import time 
 import asyncio
 import math
 import datetime
@@ -31,7 +31,8 @@ class dankutils(commands.Cog, name="Dank Utility"):
             if len(messageContent) > 0:
                 for word in word_list:
                     if word in messageContent:
-                        return await message.channel.send("If you'd like to stop receiving pings, check out <#785882615202316298> for the <@&810593886720098304> role!")
+                        time.sleep(3)
+                        return await message.channel.send("If you'd like to stop receiving pings, check out <#785882615202316298> for `<@&810593886720098304>` role!!!")
 
 
 def setup(client):
