@@ -17,8 +17,11 @@ class dankutils(commands.Cog, name="Dank Utility"):
         self.client = client
 
     @commands.Cog.listener()
-    async def on_message(self, message):
+    async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+        
+    @commands.Cog.listener()
+    async def on_message(self, message):
         if message.author.id == 235148962103951360:
             return
         if message.channel.id == 806988762299105330:
