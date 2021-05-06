@@ -135,7 +135,7 @@ class heist(commands.Cog, name="Heist Planner"):
         # starter embed
         tm.sleep(2)
         starter_embed = discord.Embed(
-            title=f"<a:tick:823850808264097832>   *{starter_role}* added to  **{starter.name}**  ",
+            title=f" :white_check_mark: | *{starter_role}* added to  **{starter.name}**  ",
             # description=f"Channel has been locked. Good luck guys. \n",
             # color= 0x228b22
             color=0x008000
