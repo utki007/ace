@@ -14,7 +14,7 @@ import shlex
 import colour
 from colour import Color
 
-class poll(commands.Cog, name="Server Utility"):
+class serverutils(commands.Cog, name="Server Utility"):
     
     def __init__(self, client):
         self.client = client
@@ -65,4 +65,4 @@ class poll(commands.Cog, name="Server Utility"):
         await ctx.send(embed=color)
     
 def setup(client):
-    client.add_cog(poll(client))
+    client.add_cog(serverutils(client))
