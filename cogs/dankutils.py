@@ -62,12 +62,17 @@ class dankutils(commands.Cog, name="Dank Utility"):
         output_string = output.body.replace("{m:", "").replace("}", "")
         e = discord.Embed(
             color= 0x9e3bff,
-            title=f"Calculated: `{int(float(output_string)):,}`",
-            description=f"Raw: `{int(float(output_string))}`",
+            title=f"**Calculated:** `{int(float(output_string)):,}`",
+            description=f"**Calculated in:** {round((end - start) * 1000, 3)} ms",
             timestamp=datetime.datetime.utcnow()
         )
-        e.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/GNOME_Calculator_icon_2018.svg/250px-GNOME_Calculator_icon_2018.svg.png")
+        e.set_thumbnail(url="https://cdn.discordapp.com/emojis/839930681412419675.png?v=1")
         # e.set_footer(text=f"Calculated in {round((end - start) * 1000, 3)} ms")
+        url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={int(float(output_string)):,}&font=lobster&font_size=28"
+        e.set_image(url=url)
+        e.set_footer(
+                text=f"Developed by utki007 & Jay")
+        e.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         await ctx.send(embed=e)
     
     @commands.command(aliases=["tc","taxc"])
@@ -78,13 +83,21 @@ class dankutils(commands.Cog, name="Dank Utility"):
         e = discord.Embed(
             color= 0x9e3bff,
             title=f"Tax Calculator",
-            description =   f"Amount expected to pay: <:TGK_DMC:830520214021603350> **{result:,}**\n"
-                            f"Amount lost by tax: <:TGK_DMC:830520214021603350> **{result-number:,}**\n"
-                            f"Tax rate: **8%**"
+            timestamp=datetime.datetime.utcnow()     ,       
+            description =  # f"**{'Amount expected to pay':^25}** <:TGK_DMC:830520214021603350> `{result:,}`\n"
+                            f"**{'Amount lost by tax:':^25}** <:TGK_DMC:830520214021603350> `{result-number:,}`\n"
+                            f"**{'Tax rate:':^25}** `8%`"
         )
+        url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={result:,}&font=lobster&font_size=28"
+        e.set_image(url=url)
+        e.set_thumbnail(url="https://cdn.discordapp.com/attachments/837999751068778517/839937512587657236/tax.gif")
         e.set_footer(
-                text=f"Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
-        await ctx.send(f"**{result}**",delete_after= 60)
+                text=f"Developed by utki007 & Jay")
+        e.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+        await ctx.send(f"`pls give {result}`",delete_after= 30)
+        # https://ipsumimage.appspot.com/320x100,ff0000?f=ffffff&l=30px|Hosted+on+GAE
+        # https://fakeimg.pl/280x100/ff0000/ffffff/?retina=1&text=45,756,456&font=lobster&font_size=52
+        
         await ctx.send(embed=e)
         
 def setup(client):
