@@ -66,6 +66,7 @@ class dankutils(commands.Cog, name="Dank Utility"):
             description=f"Raw: `{int(float(output_string))}`",
             timestamp=datetime.datetime.utcnow()
         )
+        e.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/GNOME_Calculator_icon_2018.svg/250px-GNOME_Calculator_icon_2018.svg.png")
         # e.set_footer(text=f"Calculated in {round((end - start) * 1000, 3)} ms")
         await ctx.send(embed=e)
     
@@ -85,7 +86,6 @@ class dankutils(commands.Cog, name="Dank Utility"):
                 text=f"Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
         await ctx.send(f"**{result}**",delete_after= 60)
         await ctx.send(embed=e)
-    
-    
+        
 def setup(client):
     client.add_cog(dankutils(client))
