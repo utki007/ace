@@ -61,7 +61,7 @@ class poll(commands.Cog, name="Server Utility"):
         color.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         color.set_thumbnail(url=url)
         color.set_footer(
-                text=f"Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
+                text=f"Developed by utki007 & Jay")
         await ctx.send(embed=color)
     
 def setup(client):
