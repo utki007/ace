@@ -66,7 +66,7 @@ class dankutils(commands.Cog, name="Dank Utility"):
             description=f"**Calculated in:** {round((end - start) * 1000, 3)} ms",
             timestamp=datetime.datetime.utcnow()
         )
-        e.set_thumbnail(url="https://cdn.discordapp.com/emojis/839930681412419675.png?v=1")
+        # e.set_thumbnail(url="https://cdn.discordapp.com/emojis/839930681412419675.png?v=1")
         # e.set_footer(text=f"Calculated in {round((end - start) * 1000, 3)} ms")
         url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={int(float(output_string)):,}&font=lobster&font_size=28"
         e.set_image(url=url)
@@ -90,7 +90,7 @@ class dankutils(commands.Cog, name="Dank Utility"):
         )
         url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={result:,}&font=lobster&font_size=28"
         e.set_image(url=url)
-        e.set_thumbnail(url="https://cdn.discordapp.com/attachments/837999751068778517/839937512587657236/tax.gif")
+        # e.set_thumbnail(url="https://cdn.discordapp.com/attachments/837999751068778517/839937512587657236/tax.gif")
         e.set_footer(
                 text=f"Developed by utki007 & Jay")
         e.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
