@@ -84,7 +84,7 @@ class dankutils(commands.Cog, name="Dank Utility"):
             color= 0x9e3bff,
             title=f"Tax Calculator",
             timestamp=datetime.datetime.utcnow()     ,       
-            description =  # f"**{'Amount expected to pay':^25}** <:TGK_DMC:830520214021603350> `{result:,}`\n"
+            description =   f"**{'Amount expected to pay':^25}** <:TGK_DMC:830520214021603350> `{result:,}`\n"
                             f"**{'Amount lost by tax:':^25}** <:TGK_DMC:830520214021603350> `{result-number:,}`\n"
                             f"**{'Tax rate:':^25}** `8%`"
         )

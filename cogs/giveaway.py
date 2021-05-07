@@ -17,7 +17,7 @@ class serverutils(commands.Cog, name="Server Utility"):
     
     @commands.command()
     @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
-    async def timer(self, ctx):
+    async def giveaway(self, ctx):
         await ctx.send("coming soon")
     
 def setup(client):

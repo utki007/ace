@@ -47,7 +47,7 @@ class Help(commands.Cog, name="Help command"):
         #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
         await ctx.send(embed = help)
         
-    @help.command(name="Donation",aliases = ["donation",'dono',"Dono","d","bal" , "nick" , "regDonation", "splDonation"])
+    @help.command(name="Donation",aliases = ["donation",'dono',"Dono","d","bal" , "nick","celeb" , "regDonation", "splDonation"])
     @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
     async def donation(self, ctx):
         help = discord.Embed(
