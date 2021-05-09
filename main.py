@@ -16,13 +16,12 @@ from asyncio import sleep
 
 description = '''This is what I have been programmed to do'''
 client = commands.Bot(
-    command_prefix='?',
+    command_prefix=commands.when_mentioned_or("?"),
     description=description,
     case_insensitive=True,
     intents= discord.Intents.all(),
     help_command = None
 )
-
 
 @client.event
 async def on_ready():
@@ -122,7 +121,19 @@ client.colors = {
 }
 client.color_list = [c for c in client.colors.values()]
 
-
+client.emojis_list = {
+    "DMC" : "<:TGK_DMC:830520214021603350>",
+    "Hi" : "<a:pikahi:785911570336186418>",
+    "Freeloader" : "<a:TGK_freeloader:840517161386377226>",
+    "Cross" : "<a:tgk_cross:840637370038353940>",
+    "Check" : "<a:tgk_check:840637950806458440>",
+    "Warrning" : "<:tgk_warning:840638147838738432>",
+    "SuccessTick" : "<a:success_tick:840639358834180107>",
+    "SuccessStatus" : "<:tgk_success_status:840639832681480202>", 
+    "BrokenStatus" : "<:tgk_broken_status:840640567103848459>",
+    "IssuesStatus" : "<:tgk_issues_status:840643265955233822>",
+    "Typing" : "<a:tgk_typing:840642605545160757>"
+}
 
 # client.run(os.environ['BOT_TOKEN'])
 client.run(client.botToken)

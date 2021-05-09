@@ -441,7 +441,7 @@ class dankItems(commands.Cog, name="Collectibles Tracker"):
                 description=f"`{'::': ^2}` `|{'Item Name': ^15}|{'Worth': ^10}|` \n"
                             f"`{'::': ^2}` `| :------------:|:--------:|` \n"
                             f"{desc}\n",
-                color=0xff0000
+                color=0x9e3bff
             )
         # embed.add_field(name=f"Total Donated Value: ",value=total,inline=True)
         embed.set_footer(
