@@ -439,7 +439,7 @@ class dankItems(commands.Cog, name="Collectibles Tracker"):
         embed = discord.Embed(
                 title=f"<a:TGK_Pandaswag:830525027341565982>  `{title:^15}`  <a:TGK_Pandaswag:830525027341565982>",
                 description=f"`{'::': ^2}` `|{'Item Name': ^15}|{'Worth': ^13}|` \n"
-                            f"`{'::': ^2}` `| :------------:|:----------:|` \n"
+                            f"`{'::': ^2}` `| :------------:|:-----------:|` \n"
                             f"{desc}\n",
                 color=0x9e3bff
             )
