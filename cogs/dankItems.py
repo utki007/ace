@@ -430,7 +430,7 @@ class dankItems(commands.Cog, name="Collectibles Tracker"):
             # await ctx.channel.send(df['itemName'][ind][0])
             
             donationCost = "donationCost"
-            desc = desc + f"{df['emoji'][ind]: ^3} `|{df['itemName'][ind][0].title(): ^15}|{'⏣'+f'{int(df[donationCost][ind]):,}': >10}|` \n"
+            desc = desc + f"{df['emoji'][ind]: ^3} `|{df['itemName'][ind][0].title(): ^15}|{'⏣'+f'{int(df[donationCost][ind]):,}': >13}|` \n"
 
         # await ctx.send(desc)
 
@@ -438,8 +438,8 @@ class dankItems(commands.Cog, name="Collectibles Tracker"):
         
         embed = discord.Embed(
                 title=f"<a:TGK_Pandaswag:830525027341565982>  `{title:^15}`  <a:TGK_Pandaswag:830525027341565982>",
-                description=f"`{'::': ^2}` `|{'Item Name': ^15}|{'Worth': ^10}|` \n"
-                            f"`{'::': ^2}` `| :------------:|:--------:|` \n"
+                description=f"`{'::': ^2}` `|{'Item Name': ^15}|{'Worth': ^13}|` \n"
+                            f"`{'::': ^2}` `| :------------:|:----------:|` \n"
                             f"{desc}\n",
                 color=0x9e3bff
             )
