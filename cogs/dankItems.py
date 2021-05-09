@@ -429,8 +429,8 @@ class dankItems(commands.Cog, name="Collectibles Tracker"):
     
             # await ctx.channel.send(df['itemName'][ind][0])
             
-            giveawayCost = "giveawayCost"
-            desc = desc + f"{df['emoji'][ind]: ^3} `|{df['itemName'][ind][0].title(): ^15}|{int(df['donationCost'][ind]): >10}|` \n"
+            donationCost = "donationCost"
+            desc = desc + f"{df['emoji'][ind]: ^3} `|{df['itemName'][ind][0].title(): ^15}|{'⏣'+f'{int(df[donationCost][ind]):,}': >10}|` \n"
 
         # await ctx.send(desc)
 
