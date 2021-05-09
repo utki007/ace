@@ -30,6 +30,7 @@ class dankutils(commands.Cog, name="Dank Utility"):
         
     @commands.Cog.listener()
     async def on_message(self, message):
+        # sticky bot functionality
         if message.author.id == 235148962103951360:
             return
         if message.channel.id == 806988762299105330:
@@ -41,6 +42,13 @@ class dankutils(commands.Cog, name="Dank Utility"):
                     if word in messageContent:
                         time.sleep(3)
                         return await message.channel.send("If you'd like to stop receiving pings, check out <#785882615202316298> for `@〖 🔕。No Partnership 〗` role!!!")
+        
+        if self.client.user.mentioned_in(message) and len('<@829423646358372422>')==len(self.client.user.mention):
+            await message.delete()
+            embed = discord.Embed(
+                color=self.client.colors["Success"], 
+                title=f'{self.client.emojis_list["Hi"]} | Do `?help` to know more!! ')
+            await message.channel.send(embed=embed) 
 
     async def convert_to_numeral(self,query):
         query = query.lower()
