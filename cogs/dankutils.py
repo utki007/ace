@@ -43,7 +43,7 @@ class dankutils(commands.Cog, name="Dank Utility"):
                         time.sleep(3)
                         return await message.channel.send("If you'd like to stop receiving pings, check out <#785882615202316298> for `@〖 🔕。No Partnership 〗` role!!!")
         
-        if self.client.user.mentioned_in(message) and self.client.user.id ==829423646358372422:
+        if self.client.user.mentioned_in(message) and len(message) == len(self.client.user.mention) :
             await message.delete()
             embed = discord.Embed(
                 color=self.client.colors["Success"], 
