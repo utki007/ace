@@ -8,7 +8,7 @@ import datetime
 import time as tm
 
 
-class channel(commands.Cog, description="Channel utils"):
+class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or setup a timer"):
     def __init__(self, client):
         self.client = client
         
@@ -169,4 +169,4 @@ class channel(commands.Cog, description="Channel utils"):
 
         
 def setup(client):
-    client.add_cog(channel(client))
+    client.add_cog(giveaway(client))
