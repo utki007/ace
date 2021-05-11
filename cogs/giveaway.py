@@ -161,6 +161,7 @@ class serverutils(commands.Cog, name="Server Utility"):
         await timer.edit(embed=e)
         
         await ctx.send(f"{', '.join(user.mention for user in users)}",delete_after=1)
+        await ctx.send(f"{name.title()} has Ended {timer.jump_url}",delete_after=30)
         
 def setup(client):
     client.add_cog(serverutils(client))
