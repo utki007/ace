@@ -7,7 +7,7 @@ import math
 import datetime
 
 
-class channel(commands.Cog):
+class channel(commands.Cog, description="Channel utils"):
     def __init__(self, client):
         self.client = client
         
@@ -20,7 +20,6 @@ class channel(commands.Cog):
 
     @commands.command(name="slowmode", description="Set Slowmode In Current Channel", usage="[slowmode time 1m, 1s 1h max 6h]", aliases=['s', 'sm'],hidden = True)
     @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376) 
-    @commands.is_owner()
     async def slowmode(self, ctx, time: str = '0'):
 
         unit = ['h', 'H', 'm', 'M', 's', 'S']
@@ -56,7 +55,6 @@ class channel(commands.Cog):
         await ctx.message.delete()
 
     @commands.command(name="lock", description="Lock the channel", usage="role", aliases=['l'],hidden=True)
-    @commands.is_owner()
     @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
     async def lock(self, ctx,*, role: discord.Role = None):
 
@@ -80,7 +78,6 @@ class channel(commands.Cog):
         # role = discord.utils.get(ctx.guild.roles, id=820559294420221952)
 
     @commands.command(name="unlock", description=f"`[p]unlock true @role`", usage="<state> <role>", aliases=['ul'],hidden=True)
-    @commands.is_owner()
     @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
     async def unlock(self, ctx, state: bool = False, *,role: discord.Role = None):
 
@@ -119,7 +116,6 @@ class channel(commands.Cog):
         name="dankdown",
         description="Use this commands when dank is offline",
         usage="",aliases = ["dd"],hidden = True)
-    @commands.is_owner()
     @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
     async def dankdown(self, ctx):
         await ctx.message.delete()

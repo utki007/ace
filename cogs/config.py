@@ -12,7 +12,7 @@ import math
 import datetime
 
 
-class config(commands.Cog, name="config"):
+class config(commands.Cog, description="config"):
 
     def __init__(self, client):
         self.client = client

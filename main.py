@@ -13,6 +13,8 @@ import logging
 import asyncio
 from asyncio import sleep
 
+from utils.help import Help
+
 
 description = '''This is what I have been programmed to do'''
 client = commands.Bot(
@@ -20,7 +22,7 @@ client = commands.Bot(
     description=description,
     case_insensitive=True,
     intents= discord.Intents.all(),
-    help_command = None
+    help_command = Help()
 )
 
 @client.event
@@ -32,22 +34,22 @@ async def on_ready():
     
 
 #setting up tokens.py
-# if os.path.exists(os.getcwd()+"./properties/tokens.json"):
-#    with open("./properties/tokens.json") as f:
+#if os.path.exists(os.getcwd()+"./properties/tokens.json"):
+#   with open("./properties/tokens.json") as f:
 #        configData = json.load(f)
-# else:
+#else:
 #    configTemplate = {
-#        "token": "",
-#        "mongo": ""
+#    "token": "",
+#    "mongo": ""
 #    }
 #    with open(os.getcwd()+"./properties/tokens.json", "w+") as f:
 #        json.dump(configTemplate, f)
-# client.botToken = configData["token"]
-# client.connection_url = configData["mongo"]
+#client.botToken = configData["token"]
+#client.connection_url = configData["mongo"]
 
 # for heroku
-client.botToken = os.environ['BOT_TOKEN']
-client.connection_url = os.environ['MongoConnectionUrl']
+#client.botToken = os.environ['BOT_TOKEN']
+#client.connection_url = os.environ['MongoConnectionUrl']
 
 logging.basicConfig(level=logging.INFO)
 

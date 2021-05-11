@@ -14,7 +14,7 @@ import shlex
 import colour
 from colour import Color
 
-class serverutils(commands.Cog, name="Server Utility"):
+class serverutils(commands.Cog, description="Server Utility"):
     
     def __init__(self, client):
         self.client = client

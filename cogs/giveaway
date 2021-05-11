@@ -6,7 +6,7 @@ import asyncio
 import math
 import datetime
 
-class serverutils(commands.Cog, name="Server Utility"):
+class serverutils(commands.Cog, description="Server Utility"):
     
     def __init__(self, client):
         self.client = client

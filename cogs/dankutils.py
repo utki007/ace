@@ -13,7 +13,7 @@ import datetime
 import TagScriptEngine
 from TagScriptEngine import Interpreter, adapter, block
 
-class dankutils(commands.Cog, name="Dank Utility"):
+class dankutils(commands.Cog, description="Dank Utility"):
     
     def __init__(self, client):
         self.client = client

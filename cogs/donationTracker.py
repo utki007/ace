@@ -13,7 +13,7 @@ import time
 import datetime
 
 
-class donationTracker(commands.Cog, name="Donation Tracker"):
+class donationTracker(commands.Cog, description="Donation Tracker"):
 
     def __init__(self, client):
         self.client = client
