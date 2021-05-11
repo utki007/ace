@@ -60,7 +60,7 @@ class serverutils(commands.Cog, name="Server Utility"):
         timer = await ctx.send(embed=e)
         
         
-        await timer.add_reaction(f"{self.client.emojis_list['Hi']}")
+        await timer.add_reaction(f"{self.client.emojis_list['Timer']}")
         
         # await asyncio.sleep(cd)
         

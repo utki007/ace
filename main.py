@@ -132,7 +132,9 @@ client.emojis_list = {
     "SuccessStatus" : "<:tgk_success_status:840639832681480202>", 
     "BrokenStatus" : "<:tgk_broken_status:840640567103848459>",
     "IssuesStatus" : "<:tgk_issues_status:840643265955233822>",
-    "Typing" : "<a:tgk_typing:840642605545160757>"
+    "Typing" : "<a:tgk_typing:840642605545160757>",
+    "Timer" : "<a:tgk_timer:841624339169935390>",
+    "60sec" : "<a:tgk_cd:841625640880570369>"
 }
 
 # client.run(os.environ['BOT_TOKEN'])

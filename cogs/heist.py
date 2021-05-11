@@ -126,7 +126,7 @@ class heist(commands.Cog, name="Heist Planner"):
 
         await ctx.send(heist_ping.mention, embed=embed)
         # await ctx.send(embed=embed)
-        await ctx.send(" <a:timesand:832701552845389866> **Searching for heist in this channel**", delete_after=60)
+        await ctx.send(" {self.client.emojis_list['60sec']} **Searching for heist in this channel**", delete_after=60)
         # await self.create_heist_timer(timer)
 
         # dealing with starter role
