@@ -166,7 +166,10 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
         # change embed after timer ends
         await timer.edit(embed=e)
         
-        await ctx.send(f"{', '.join(user.mention for user in users)}",delete_after=1)
+        try:
+            await ctx.send(f"{', '.join(user.mention for user in users)}",delete_after=1)
+        except:
+            pass
         await ctx.send(f"{name.title()} has Ended {timer.jump_url}",delete_after=30)
         
 
