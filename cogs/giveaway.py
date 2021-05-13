@@ -145,24 +145,18 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
             users.remove(self.client.user)
         
         
-        
-        
-        for user in users:
-            dm = discord.Embed(
+        dm = discord.Embed(
                 color= ctx.author.colour,
                 title=f"{name.title()} has Ended",
                 description=f'**Timer has ended over [here]({timer.jump_url}) . Hurry Up!!**',
                 timestamp=end,
                 url = timer.jump_url
-            )
-            dm.set_footer(
+        )
+        dm.set_footer(
                     text=f"Ends at")
-            dm.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
-            try:
-                await user.send(embed=dm)
-            except:
-                pass
-    
+        dm.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+        
+            
         # change embed after timer ends
         await timer.edit(embed=e)
         
@@ -171,6 +165,11 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
         except:
             pass
         await ctx.send(f"{name.title()} has Ended {timer.jump_url}",delete_after=30)
+        for user in users:
+            try:
+                await user.send(embed=dm)
+            except:
+                pass
         
 
     # @commands.command(name = "stopwatch",aliases=["sw","watch"],usage = "<time> [name]")
