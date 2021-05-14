@@ -19,7 +19,8 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
     @commands.command(name = "timer",aliases=["t"],usage = "<time> [name]")
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
+    # @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
+    @commands.has_any_role(785842380565774368)
     async def timer(self, ctx,time ,*,name : str= "Timer"):
         
         unit = ['h', 'H', 'm', 'M', 's', 'S']
@@ -37,7 +38,9 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
         else:
             cd = int(time) if time else 0
         
-        
+        if cd>600:
+            await ctx.send("10 Mins is the maximum allowed time",delete_after=10)
+            return
         end = datetime.datetime.utcnow() + datetime.timedelta(seconds=cd)
         # cd = str(cd)
         # datetime.strptime(datetime_str, '%m/%d/%y %H:%M:%S')
