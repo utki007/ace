@@ -43,12 +43,12 @@ class dankutils(commands.Cog, description="Dank Utility"):
                         time.sleep(3)
                         return await message.channel.send("If you'd like to stop receiving pings, check out <#785882615202316298> for `@〖 🔕。No Partnership 〗` role!!!")
         
-        if self.client.user.mentioned_in(message) and len(message) == len(self.client.user.mention) :
-            await message.delete()
-            embed = discord.Embed(
-                color=self.client.colors["Success"], 
-                title=f'{self.client.emojis_list["Hi"]} | Do `?help` to know more!! ')
-            await message.channel.send(embed=embed) 
+        # if self.client.user.mentioned_in(message) and message.content == "<@810041263452848179>" :
+        #     await message.delete()
+        #     embed = discord.Embed(
+        #         color=self.client.colors["Success"], 
+        #         title=f'{self.client.emojis_list["Hi"]} | Do `?help` to know more!! ')
+        #     await message.channel.send(embed=embed) 
 
     async def convert_to_numeral(self,query):
         query = query.lower()
