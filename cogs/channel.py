@@ -217,7 +217,7 @@ class channel(commands.Cog, description="Channel utils"):
         channel = ctx.message.channel
 
         def check(msg):
-            return msg.author.id == 829423646358372422
+            return msg.author.id == 810041263452848179
 
         await ctx.message.delete()
         
