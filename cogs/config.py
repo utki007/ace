@@ -50,7 +50,7 @@ class config(commands.Cog, description="config"):
             await ctx.send(f':warning: {ctx.author.mention} Please provide valid status you dimwit!! :warning:')
 
     @commands.command()
-    @commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889)
+    # @commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889)
     async def say(self, ctx, text: str):
         banned = ["@here", "@everyone", "<@&"]
 
