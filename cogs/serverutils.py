@@ -63,6 +63,13 @@ class serverutils(commands.Cog, description="Server Utility"):
         color.set_footer(
                 text=f"Developed by utki007 & Jay")
         await ctx.send(embed=color)
-    
+  
+    # https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif
+    @commands.command(name="red_bar",description="To be used in public channels after completing a task",aliases=["rb"])
+    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
+    async def finish(self,ctx):
+        await ctx.message.delete()
+        await ctx.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif")  
+      
 def setup(client):
     client.add_cog(serverutils(client))
