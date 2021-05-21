@@ -12,7 +12,7 @@ import math
 import time
 import datetime
 
-class dankItems(commands.Cog, description="Collectibles Tracker"):
+class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All items given for giveaways are tracked here"):
     
     def __init__(self, client):
         self.client = client
