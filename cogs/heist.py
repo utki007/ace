@@ -34,54 +34,62 @@ class heist(commands.Cog, description="Heist Planner"):
 
     @commands.command(name="heist", description="Setup an Heist", usage="<role>")
     @commands.has_permissions(administrator=True)
-    # @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
-    async def start(self, ctx, req_role: str, *args: str):
+    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
+    async def start(self, ctx, req_role: str,amt: float,starter: discord.Member, *args: str):
+        
         await ctx.message.delete()
-
+        # role = discord.utils.get(ctx.guild.roles, id=role)
         heist_start = "is starting a bank robbery. They're trying to break into"
         police_raid = "rang the police on you and your gang, and you were arrested at the scene!"
-        default_role = discord.utils.get(ctx.guild.roles, id=self.default_role)
-        req_role = discord.utils.get(ctx.guild.roles, id=int(
-            req_role)) if req_role.lower() != "none" else default_role
-        heist_ping = discord.utils.get(ctx.guild.roles, id=self.heist_role)
+        
+        try:
+            default_role = discord.utils.get(ctx.guild.roles, id=self.default_role)
+            heist_ping = discord.utils.get(ctx.guild.roles, id=self.heist_role)
+        except:
+            warning = discord.Embed(
+            color=self.client.colors["RED"], 
+            description=f"{self.client.emojis_list['Warrning']} | Error with default Heist Role!!")
+            await ctx.send(embed = warning,delete_after=15)
+            return
+        try:
+            req_role = discord.utils.get(ctx.guild.roles, id=int(req_role)) if req_role.lower() != "none" else default_role
+        except:
+            warning = discord.Embed(
+            color=self.client.colors["RED"], 
+            description=f"{self.client.emojis_list['Warrning']} | Incorrect Req Role! Action Terminated!!")
+            await ctx.send(embed = warning,delete_after=15)
+            return
+        
         channel = ctx.channel
         host = ctx.author
 
-        # initializing
-        amt = 0
-        starter = 0
         role = []
         roles = []
         title = ""
+        ping = False
         long = False
 
         args = " ".join(args)
         l = args.split('--')
         l.remove('')
+        
+        if amt > 10000000:
+            long = True
+            if long:
+                time = "4 mins"
+            else:
+                time = "1 min 30 sec"
 
         # getting info from args string
         for i in l:
             var = i.split(" ")[0]
-            if var == "amt":
-                amt = int(i.split(" ")[1])
-                if amt > 10000000:
-                    long = True
-                if long:
-                    time = "4 mins"
-                else:
-                    time = "1 min 30 sec"
-            elif var == "starter":
-                starter = i.split(" ")[1]
-            elif var == "role":
+            if var == "role":
                 role = i.split(" ")[1:]
             elif var == "title":
                 title = " ".join(i.split(" ")[1:])
-                title = f"`{title.upper():^35}`"
-
-        # converting starter to a member object
-        if not str(starter).isdigit():
-            starter = starter[3:-1]
-        starter = await ctx.guild.fetch_member(int(starter))
+                title = f"`{title.title():^35}`"
+            elif var == "ping":
+                ping = True
 
         embedrole = f"<a:tgk_arrow:832387973281480746> Required role: {req_role.mention if req_role != ctx.guild.default_role else req_role} \n"
         # dealing with roles
@@ -124,8 +132,11 @@ class heist(commands.Cog, description="Heist Planner"):
         embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         # embed.set_image(url="https://cdn.discordapp.com/attachments/831970404762648586/833255266127970334/rob.gif")
 
-        await ctx.send(heist_ping.mention, embed=embed)
-        # await ctx.send(embed=embed)
+        if ping:
+            await ctx.send(heist_ping.mention, embed=embed)
+        else:
+            await ctx.send(embed=embed)
+            
         await ctx.send(f" {self.client.emojis_list['60sec']} **Searching for heist in this channel**", delete_after=60)
         # await self.create_heist_timer(timer)
 
@@ -135,20 +146,22 @@ class heist(commands.Cog, description="Heist Planner"):
         # starter embed
         tm.sleep(2)
         starter_embed = discord.Embed(
-            title=f" :white_check_mark: | *{starter_role}* added to  **{starter.name}**  ",
+            description=f" {self.client.emojis['SuccessTick']} | *{starter_role}* added to  **{starter.name}**  ",
             # description=f"Channel has been locked. Good luck guys. \n",
             # color= 0x228b22
-            color=0x008000
+            color=self.client.colors["Success"]
         )
         # starter_embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
 
         await starter.add_roles(starter_role)
-        await ctx.send(embed=starter_embed, delete_after=5)
+        await ctx.send(embed=starter_embed, delete_after=15)
         await ctx.send(f"{starter.mention} start the heist", delete_after=15)
 
         try:
             await self.client.wait_for("message", check=lambda m: m.author.id == 270904126974590976 and heist_start in m.content, timeout=59)
             # await ctx.send('https://tenor.com/view/ready-to-rob-pops-mask-robbing-mask-hiding-robbery-gif-13865160')
+            # await asyncio.sleep(5)
+            await starter.remove_roles(starter_role)
             flag = 0
             if role:
                 for i in role:
@@ -170,7 +183,7 @@ class heist(commands.Cog, description="Heist Planner"):
 
                     await channel.set_permissions(i, overwrite=overwrite)
                     await ctx.send(embed=unlock_embed)
-                tm.sleep(20)
+                    tm.sleep(10)
                 flag = 1
 
             unlock_embed = discord.Embed(
@@ -191,8 +204,7 @@ class heist(commands.Cog, description="Heist Planner"):
             await channel.set_permissions(req_role, overwrite=overwrite)
             await ctx.send(embed=unlock_embed)
 
-            await asyncio.sleep(5)
-            await starter.remove_roles(starter_role)
+            
 
             if flag:
                 if long:
