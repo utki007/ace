@@ -43,6 +43,23 @@ class dankutils(commands.Cog, description="Dank Utility"):
                         time.sleep(3)
                         return await message.channel.send("If you'd like to stop receiving pings, check out <#785882615202316298> for `@〖 🔕。No Partnership 〗` role!!!")
         
+        # if message.author.id ==270904126974590976  and message.channel.id == 804782373652398190:
+        #     word_list = ['type']
+        #     messageContent = message.content.lower()
+        #     # if  "Type `h` to hit, type `s` to stand, or type `e` to end the game." in message.content:
+        #     #     return
+            
+        #     if len(messageContent) > 0:
+        #         if 'type `' in messageContent:
+        #             if "type `h` to **hit**, type `s` to **stand**, or type `e` to **end** the game." in messageContent:
+        #                 messageContent = "none"
+        #                 pass
+        #             else:
+        #                 messageContent = str(messageContent).split("type")[1]
+
+        #                 messageContent.replace("﻿", "")
+        #                 await message.channel.send(messageContent)
+        
         # if self.client.user.mentioned_in(message) and message.content == "<@810041263452848179>" :
         #     await message.delete()
         #     embed = discord.Embed(
