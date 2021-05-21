@@ -65,11 +65,12 @@ class serverutils(commands.Cog, description="Server Utility"):
         await ctx.send(embed=color)
   
     # https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif
+    # https://media.giphy.com/media/dAjMIUQRUDslMz8tUR/giphy.gif
     @commands.command(name="bar",description="To be used in public channels after completing a task")
     @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
     async def finish(self,ctx):
         await ctx.message.delete()
-        await ctx.send("https://media.giphy.com/media/dAjMIUQRUDslMz8tUR/giphy.gif")  
+        await ctx.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif")  
       
 def setup(client):
     client.add_cog(serverutils(client))
