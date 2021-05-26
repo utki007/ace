@@ -143,9 +143,21 @@ class partnership(commands.Cog, name="Partnership Manager",description= "Manages
             await ctx.send(embed = warning,delete_after=15)
            
         
-    
-  
-    
+    @commands.command(name="Grinders", description="Ping Grinders Heist", aliases=['grind','hg'])
+    @commands.is_owner()
+    async def removepartner(self, ctx, channel:str, link:str):
+        await ctx.message.delete()
+        await ctx.send(
+            f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
+            # f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
+            f":small_blue_diamond: | **Server:** {link} \n"
+            f":small_orange_diamond: | **Channel:** {channel}\n\n "
+            f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
+        )
+        await ctx.send("<@&836228842397106176>",delete_after=1)
+        await ctx.author.send(f"`?hg {channel} {link}`")
+        
+
     
 def setup(client):
     client.add_cog(partnership(client))
