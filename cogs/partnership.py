@@ -24,6 +24,8 @@ class partnership(commands.Cog, name="Partnership Manager",description= "Manages
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+        # for tgk
+        self.logChannel = int(838042561486258247)
 
     @commands.group(name= "Partnership",description= "Moderator only Command to add/remove partnership pings",usage="add/remove member pings[optional]",aliases = ["psh"])
     @commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376)
@@ -49,7 +51,7 @@ class partnership(commands.Cog, name="Partnership Manager",description= "Manages
         for i in pings.split(" "):
             if i.isnumeric():
                 # await ctx.send(f"Numeric : `{i}`")
-                role = "<@" + i + ">"
+                role = "<@&" + i + ">"
                 pp.append(role)
             elif i.lower() == "everyone":
                 # await ctx.send(f"Everyone : `{i}`")
@@ -74,11 +76,27 @@ class partnership(commands.Cog, name="Partnership Manager",description= "Manages
             color=self.client.colors["Success"], 
             description=f'{self.client.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!')
         await ctx.send(embed=embed)
-    
+
+        # for logging
+        logg = discord.Embed(
+                 title="__Partner Logging__",
+                 description=f'{self.client.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!',
+                 colour=self.client.colors["Success"],
+                 timestamp=datetime.datetime.utcnow()
+        )
+
+        logg.set_footer(text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
+
+        channel = self.client.get_channel(self.logChannel)
+        try:
+            await channel.send(embed=logg)
+        except:
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠", delete_after=30)
+            pass
     
     @partnership.command(name="remove", description="Remove a Partner", aliases=['r'])
     @commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376)
-    async def removepartner(self, ctx, member:discord.Member):        
+    async def rpartner(self, ctx, member:discord.Member):        
         try:
             await ctx.message.delete()
         except:
@@ -104,6 +122,23 @@ class partnership(commands.Cog, name="Partnership Manager",description= "Manages
             color=self.client.colors["Success"], 
             description=f"{self.client.emojis_list['SuccessTick']} |{member.mention}'s partnership data has been erased!!!")
         await ctx.send(embed=embed)
+
+        # for logging
+        logg = discord.Embed(
+                 title="__Partner Logging__",
+                 description=f'{self.client.emojis_list["SuccessTick"]} |{member.mention} is now removed!!!',
+                 colour=self.client.colors["Success"],
+                 timestamp=datetime.datetime.utcnow()
+        )
+
+        logg.set_footer(text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
+
+        channel = self.client.get_channel(self.logChannel)
+        try:
+            await channel.send(embed=logg)
+        except:
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠", delete_after=30)
+            pass
     
     @commands.command(name="ping_heist", description="Ping your Heist", aliases=['ph'])
     # @commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376)
@@ -145,7 +180,7 @@ class partnership(commands.Cog, name="Partnership Manager",description= "Manages
         
     @commands.command(name="Grinders", description="Ping Grinders Heist", aliases=['grind','hg'])
     @commands.is_owner()
-    async def removepartner(self, ctx, channel:str, link:str):
+    async def grind(self, ctx, channel:str, link:str):
         await ctx.message.delete()
         await ctx.send(
             f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
