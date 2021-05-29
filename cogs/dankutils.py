@@ -66,6 +66,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
                     await message.channel.send("null")
                 else:
                     await message.channel.send(message.content)
+                    await message.channel.send("@utki007 🥂#0007")
         
         # if message.author.id ==270904126974590976  and message.channel.id == 804782373652398190:
         #     word_list = ['type']
