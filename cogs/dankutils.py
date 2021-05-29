@@ -31,7 +31,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 
         # for discount
         self.shop = 799106512889839637
-        self.percentageThreshhold = 55
+        self.percentageThreshhold = 60
 
     @commands.Cog.listener()
     async def on_message(self, message):
