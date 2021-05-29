@@ -6,15 +6,16 @@ import pandas as pd
 import numpy as np
 import pymongo
 import dns
-import time 
+import time
 import asyncio
 import math
 import datetime
 import TagScriptEngine
 from TagScriptEngine import Interpreter, adapter, block
 
+
 class dankutils(commands.Cog, description="Dank Utility"):
-    
+
     def __init__(self, client):
         self.client = client
         blocks = [
@@ -27,10 +28,10 @@ class dankutils(commands.Cog, description="Dank Utility"):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
-        
+
         # for discount
         self.shop = 797512848778723368
-        
+
     @commands.Cog.listener()
     async def on_message(self, message):
         # sticky bot functionality
@@ -45,40 +46,49 @@ class dankutils(commands.Cog, description="Dank Utility"):
                     if word in messageContent:
                         time.sleep(3)
                         return await message.channel.send("If you'd like to stop receiving pings, check out <#785882615202316298> for `@〖 🔕。No Partnership 〗` role!!!")
-        
+
         # if message.channel.id == 840215557097390131 and message.author.id != self.client.user.id:838646783785697290
-        if message.channel.id == 840215557097390131 and message.author.id != self.client.user.id:#838646783785697290:    
+        # 838646783785697290:
+        if message.channel.id == 840215557097390131 and message.author.id != self.client.user.id:
             embeds = message.embeds
             for embed in embeds:
                 # await message.channel.send(embed = embed)
                 dict = embed.to_dict()
                 await message.channel.send(f"Before split {dict}")
-                dict["description"] = dict["description"].split("[[")[0]
-                await message.channel.send(f"After split {dict}")
+                # dict["description"] = dict["description"].split("[[")[0]
+                # await message.channel.send(f"After split {dict}")
+                
+                description = dict["description"].split("\n\n")
+                price = int(description[1].split(" ")[1])
+                percentage = (description[1].split(" ")[2].split("[[")[1])
+                newdescription = dict["description"].split("\n\n")[0].split(":")[1]
+                title = dict["title"].split(":")
+                newtitle = title[0]
+                name = title[1]
+                
+                print(f'{percentage}')
                 dunlock = discord.Embed(
-                    title=f'{dict["title"]}',
-                    description=f'{dict["description"]}',
-                    color=0x1ABC9C,
-                    timestamp=datetime.datetime.utcnow()
+                    title=f'{newtitle}',
+                    description=f'**{name}** {self.client.emojis_list["right"]} {self.client.emojis_list["DMC"]} **{price:,}** ({percentage} off!!)\n'
+                                f'{newdescription}',
+                    color=0x1ABC9C
                 )
                 dunlock.set_footer(
-                text=f"Developed by utki007 & Jay")#, icon_url=f'{dict["thumbnail"]["url"]}')
-                dunlock.set_thumbnail(url=f'{dict["thumbnail"]}')
+                    text=f"Developed by utki007 & Jay", icon_url=f'https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024')
+                dunlock.set_thumbnail(url=f'{str(dict["thumbnail"]["url"])}')
                 await message.channel.send(embed=dunlock)
-                if message.content == "":
-                    await message.channel.send("null")
-                else:
-                    await message.channel.send(message.content)
-                    await message.channel.send("@utki007 🥂#0007")
+                if message.content != "":
+                    await channelnew.send(message.content)
+                    await channelnew.send("@utki007 🥂#0007")
                 channelnew = self.client.get_channel(self.shop)
-                await message.channelnew.send(embed=dunlock)
-                
+                await channelnew.send(embed=dunlock,content=f"**{name}** is on **{percentage} off!!**")
+
         # if message.author.id ==270904126974590976  and message.channel.id == 804782373652398190:
         #     word_list = ['type']
         #     messageContent = message.content.lower()
         #     # if  "Type `h` to hit, type `s` to stand, or type `e` to end the game." in message.content:
         #     #     return
-            
+
         #     if len(messageContent) > 0:
         #         if 'type `' in messageContent:
         #             if "type `h` to **hit**, type `s` to **stand**, or type `e` to **end** the game." in messageContent:
@@ -89,13 +99,13 @@ class dankutils(commands.Cog, description="Dank Utility"):
 
         #                 messageContent.replace("﻿", "")
         #                 await message.channel.send(messageContent)
-        
+
         # if self.client.user.mentioned_in(message) and message.content == "<@810041263452848179>" :
         #     await message.delete()
         #     embed = discord.Embed(
-        #         color=self.client.colors["Success"], 
+        #         color=self.client.colors["Success"],
         #         title=f'{self.client.emojis_list["Hi"]} | Do `?help` to know more!! ')
-        #     await message.channel.send(embed=embed) 
+        #     await message.channel.send(embed=embed)
 
     async def convert_to_numeral(self,query):
         query = query.lower()
