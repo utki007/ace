@@ -55,7 +55,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
             for embed in embeds:
                 # await message.channel.send(embed = embed)
                 dict = embed.to_dict()
-                await message.channel.send(f"Before split {dict}")
+                # await message.channel.send(f"Before split {dict}")
                 
                 description = dict["description"].split("\n\n")
                 price = int(description[1].split(" ")[1])
