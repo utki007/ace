@@ -55,33 +55,35 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 # await message.channel.send(embed = embed)
                 dict = embed.to_dict()
                 await message.channel.send(f"Before split {dict}")
-                # dict["description"] = dict["description"].split("[[")[0]
-                # await message.channel.send(f"After split {dict}")
                 
                 description = dict["description"].split("\n\n")
                 price = int(description[1].split(" ")[1])
-                percentage = (description[1].split(" ")[2].split("[[")[1])
+                percentage = description[1].split(" ")[2]
+                percentage = percentage.replace("[","",100)
+                percentage = percentage.replace("]","",100)
+                percentage = percentage.replace("*","",100)
+                percentage = percentage.replace("_","",100)              
                 newdescription = dict["description"].split("\n\n")[0].split(":")[1]
                 title = dict["title"].split(":")
                 newtitle = title[0]
                 name = title[1]
+                content = f"**{name}** is on **{percentage}** off!!"
                 
-                print(f'{percentage}')
-                dunlock = discord.Embed(
+                ad = discord.Embed(
                     title=f'{newtitle}',
                     description=f'**{name}** {self.client.emojis_list["right"]} {self.client.emojis_list["DMC"]} **{price:,}** ({percentage} off!!)\n'
                                 f'{newdescription}',
                     color=0x1ABC9C
                 )
-                dunlock.set_footer(
+                ad.set_footer(
                     text=f"Developed by utki007 & Jay", icon_url=f'https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024')
-                dunlock.set_thumbnail(url=f'{str(dict["thumbnail"]["url"])}')
-                await message.channel.send(embed=dunlock)
+                ad.set_thumbnail(url=f'{str(dict["thumbnail"]["url"])}')
+                await message.channel.send(embed=ad)
                 if message.content != "":
                     await channelnew.send(message.content)
                     await channelnew.send("@utki007 🥂#0007")
                 channelnew = self.client.get_channel(self.shop)
-                await channelnew.send(embed=dunlock,content=f"**{name}** is on **{percentage} off!!**")
+                await channelnew.send(embed=ad,content=content)
 
         # if message.author.id ==270904126974590976  and message.channel.id == 804782373652398190:
         #     word_list = ['type']
