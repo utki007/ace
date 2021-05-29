@@ -44,7 +44,7 @@ else:
     client.botToken = os.environ['BOT_TOKEN']
     client.connection_url = os.environ['MongoConnectionUrl']
 
-logging.basicConfig(level=logging.INFO)
+# logging.basicConfig(level=logging.INFO)
 
 
 @client.command(hidden=True)
