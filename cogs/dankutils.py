@@ -82,7 +82,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 ad.set_thumbnail(url=f'{str(dict["thumbnail"]["url"])}')
                 await message.channel.send(embed=ad)
                 if message.content != "":
-                    await channelnew.send(message.content)
+                    content = f"<@&799517544674230272>" + content
                     await channelnew.send("@utki007 🥂#0007")
                 channelnew = self.client.get_channel(self.shop)
                 await channelnew.send(embed=ad,content=content)
