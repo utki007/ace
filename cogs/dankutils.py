@@ -49,26 +49,31 @@ class dankutils(commands.Cog, description="Dank Utility"):
             for embed in embeds:
                 await message.channel.send(embed = embed)
                 try:
-                    await message.channel.send(embed=embed.to_dict())
+                    await message.channel.send(embed.to_dict())
                 except:
                     pass
                 dict = embed.to_dict()
+                await message.channel.send(dict)
                 dict["description"] = dict["description"].split("[[")[0]
+                await message.channel.send(f"After split {dict}")
                 try:
                     await message.channel.send(dict)
                 except:
                     pass
                 dunlock = discord.Embed(
                     title=f'{dict["title"]}',
-                    description='{dict["description"]}',
-                    color=0x78AB46,
+                    description=f'{dict["description"]}',
+                    color=0x1ABC9C,
                     timestamp=datetime.datetime.utcnow()
                 )
                 dunlock.set_footer(
-                text=f"Developed by utki007 & Jay", icon_url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
-                dunlock.set_thumbnail(
-                    url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
+                text=f"Developed by utki007 & Jay", icon_url=f'dict["thumbnail"]["url"]')
+                dunlock.set_thumbnail(url=f'dict["thumbnail"]["url"]')
                 await message.channel.send(embed=dunlock)
+                if message.content == "":
+                    await message.channel.send("null")
+                else:
+                    await message.channel.send(message.content)
         
         # if message.author.id ==270904126974590976  and message.channel.id == 804782373652398190:
         #     word_list = ['type']
