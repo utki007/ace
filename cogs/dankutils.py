@@ -28,6 +28,9 @@ class dankutils(commands.Cog, description="Dank Utility"):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
         
+        # for discount
+        self.shop = 797512848778723368
+        
     @commands.Cog.listener()
     async def on_message(self, message):
         # sticky bot functionality
@@ -67,7 +70,9 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 else:
                     await message.channel.send(message.content)
                     await message.channel.send("@utki007 🥂#0007")
-        
+                channelnew = self.client.get_channel(self.shop)
+                await message.channelnew.send(embed=dunlock)
+                
         # if message.author.id ==270904126974590976  and message.channel.id == 804782373652398190:
         #     word_list = ['type']
         #     messageContent = message.content.lower()
