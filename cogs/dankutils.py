@@ -31,7 +31,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
     @commands.Cog.listener()
     async def on_message(self, message):
         # sticky bot functionality
-        if message.author.id == 235148962103951360:
+        if message.author.id == 235148962103951360 and message.channel.id == 806988762299105330:
             return
         if message.channel.id == 806988762299105330:
             word_list = ['discord.gg']
@@ -42,6 +42,33 @@ class dankutils(commands.Cog, description="Dank Utility"):
                     if word in messageContent:
                         time.sleep(3)
                         return await message.channel.send("If you'd like to stop receiving pings, check out <#785882615202316298> for `@〖 🔕。No Partnership 〗` role!!!")
+        
+        # if message.channel.id == 840215557097390131 and message.author.id != self.client.user.id:838646783785697290
+        if message.channel.id == 840215557097390131 and message.author.id != self.client.user.id:#838646783785697290:    
+            embeds = message.embeds
+            for embed in embeds:
+                await message.channel.send(embed = embed)
+                try:
+                    await message.channel.send(embed=embed.to_dict())
+                except:
+                    pass
+                dict = embed.to_dict()
+                dict["description"] = dict["description"].split("[[")[0]
+                try:
+                    await message.channel.send(dict)
+                except:
+                    pass
+                dunlock = discord.Embed(
+                    title=f'{dict["title"]}',
+                    description='{dict["description"]}',
+                    color=0x78AB46,
+                    timestamp=datetime.datetime.utcnow()
+                )
+                dunlock.set_footer(
+                text=f"Developed by utki007 & Jay", icon_url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
+                dunlock.set_thumbnail(
+                    url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
+                await message.channel.send(embed=dunlock)
         
         # if message.author.id ==270904126974590976  and message.channel.id == 804782373652398190:
         #     word_list = ['type']
