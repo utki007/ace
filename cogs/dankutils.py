@@ -68,13 +68,15 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 newtitle = title[0]
                 name = title[1]
                 content = f"**{name}** is on **{percentage}** off!!"
+                fieldHeaderContent = f'**{name}** {self.client.emojis_list["right"]} {self.client.emojis_list["DMC"]} **{price:,}** (_{percentage}_ off!!)\n\n'
+                               
                 
                 ad = discord.Embed(
                     title=f'{newtitle}',
-                    description=f'**{name}** {self.client.emojis_list["right"]} {self.client.emojis_list["DMC"]} **{price:,}** ({percentage} off!!)\n\n'
-                                f'{newdescription}',
-                    color=0x1ABC9C
+                    color=0x1ABC9C,
+                    timestamp=datetime.datetime.utcnow()
                 )
+                ad.add_field(name=fieldHeaderContent,value=f'_{newdescription}_',inline=False)
                 ad.set_footer(
                     text=f"Developed by utki007 & Jay", icon_url=f'https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024')
                 ad.set_thumbnail(url=f'{str(dict["thumbnail"]["url"])}')
