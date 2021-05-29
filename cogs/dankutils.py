@@ -84,11 +84,9 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 ad.set_footer(
                     text=f"Developed by utki007 & Jay", icon_url=f'https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024')
                 ad.set_thumbnail(url=f'{str(dict["thumbnail"]["url"])}')
-                await message.channel.send(embed=ad)
-                if message.content != "":
-                    await channelnew.send("@utki007 🥂#0007")
                 channelnew = self.client.get_channel(self.shop)
                 await channelnew.send(embed=ad,content=content)
+                await message.channel.send(embed=ad)
 
         # if message.author.id ==270904126974590976  and message.channel.id == 804782373652398190:
         #     word_list = ['type']
