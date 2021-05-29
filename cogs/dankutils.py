@@ -31,6 +31,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 
         # for discount
         self.shop = 797512848778723368
+        self.percentageThreshhold = 55
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -62,14 +63,18 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 percentage = percentage.replace("[","",100)
                 percentage = percentage.replace("]","",100)
                 percentage = percentage.replace("*","",100)
-                percentage = percentage.replace("_","",100)              
+                percentage = percentage.replace("_","",100)
+                percentage = percentage.replace("%","",100)              
                 newdescription = dict["description"].split("\n\n")[0].split(":")[1]
                 title = dict["title"].split(":")
                 newtitle = title[0]
                 name = title[1]
-                content = f"**{name}** is on **{percentage}** off!!"
-                fieldHeaderContent = f'**{name}** {self.client.emojis_list["right"]} {self.client.emojis_list["DMC"]} **{price:,}** (_{percentage}_ off!!)\n\n'
-                               
+                content = f"**{name}** is on **{percentage}%** off!!"
+                fieldHeaderContent = f'**{name}** {self.client.emojis_list["right"]} {self.client.emojis_list["DMC"]} **{price:,}** (_{percentage}%_ off!!)\n\n'
+                if percentage> self.percentageThreshhold:
+                    content = f"<@&799517544674230272>" + content 
+                else:
+                    content = content            
                 
                 ad = discord.Embed(
                     title=f'{newtitle}',
@@ -82,7 +87,6 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 ad.set_thumbnail(url=f'{str(dict["thumbnail"]["url"])}')
                 await message.channel.send(embed=ad)
                 if message.content != "":
-                    content = f"<@&799517544674230272>" + content
                     await channelnew.send("@utki007 🥂#0007")
                 channelnew = self.client.get_channel(self.shop)
                 await channelnew.send(embed=ad,content=content)
