@@ -62,8 +62,8 @@ class dankutils(commands.Cog, description="Dank Utility"):
                     timestamp=datetime.datetime.utcnow()
                 )
                 dunlock.set_footer(
-                text=f"Developed by utki007 & Jay", icon_url=f'{dict["thumbnail"]["url"]}')
-                dunlock.set_thumbnail(url=f'{dict["thumbnail"]["url"]}')
+                text=f"Developed by utki007 & Jay")#, icon_url=f'{dict["thumbnail"]["url"]}')
+                dunlock.set_thumbnail(url=f'{dict["thumbnail"]}')
                 await message.channel.send(embed=dunlock)
                 if message.content == "":
                     await message.channel.send("null")
