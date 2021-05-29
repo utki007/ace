@@ -47,19 +47,11 @@ class dankutils(commands.Cog, description="Dank Utility"):
         if message.channel.id == 840215557097390131 and message.author.id != self.client.user.id:#838646783785697290:    
             embeds = message.embeds
             for embed in embeds:
-                await message.channel.send(embed = embed)
-                try:
-                    await message.channel.send(embed.to_dict())
-                except:
-                    pass
+                # await message.channel.send(embed = embed)
                 dict = embed.to_dict()
-                await message.channel.send(dict)
+                await message.channel.send(f"Before split {dict}")
                 dict["description"] = dict["description"].split("[[")[0]
                 await message.channel.send(f"After split {dict}")
-                try:
-                    await message.channel.send(dict)
-                except:
-                    pass
                 dunlock = discord.Embed(
                     title=f'{dict["title"]}',
                     description=f'{dict["description"]}',
