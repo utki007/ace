@@ -30,7 +30,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
         # for discount
-        self.shop = 797512848778723368
+        self.shop = 799106512889839637
         self.percentageThreshhold = 55
 
     @commands.Cog.listener()
@@ -64,7 +64,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 percentage = percentage.replace("]","",100)
                 percentage = percentage.replace("*","",100)
                 percentage = percentage.replace("_","",100)
-                percentage = percentage.replace("%","",100)              
+                percentage = int(percentage.replace("%","",100))              
                 newdescription = dict["description"].split("\n\n")[0].split(":")[1]
                 title = dict["title"].split(":")
                 newtitle = title[0]
@@ -135,13 +135,13 @@ class dankutils(commands.Cog, description="Dank Utility"):
         output_string = output.body.replace("{m:", "").replace("}", "")
         e = discord.Embed(
             color= 0x9e3bff,
-            title=f"**Calculated:** `{int(float(output_string)):,}`",
+            title=f"**Calculated:** `{float(output_string):,}`",
             description=f"**Calculated in:** {round((end - start) * 1000, 3)} ms",
             timestamp=datetime.datetime.utcnow()
         )
         # e.set_thumbnail(url="https://cdn.discordapp.com/emojis/839930681412419675.png?v=1")
         # e.set_footer(text=f"Calculated in {round((end - start) * 1000, 3)} ms")
-        url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={int(float(output_string)):,}&font=lobster&font_size=28"
+        url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={float(output_string):,}&font=lobster&font_size=28"
         e.set_image(url=url)
         e.set_footer(
                 text=f"Developed by utki007 & Jay")
