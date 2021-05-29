@@ -71,7 +71,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 
                 ad = discord.Embed(
                     title=f'{newtitle}',
-                    description=f'**{name}** {self.client.emojis_list["right"]} {self.client.emojis_list["DMC"]} **{price:,}** ({percentage} off!!)\n'
+                    description=f'**{name}** {self.client.emojis_list["right"]} {self.client.emojis_list["DMC"]} **{price:,}** ({percentage} off!!)\n\n'
                                 f'{newdescription}',
                     color=0x1ABC9C
                 )
