@@ -34,22 +34,15 @@ async def on_ready():
     
 
 #setting up tokens.py
-#if os.path.exists(os.getcwd()+"./properties/tokens.json"):
-#   with open("./properties/tokens.json") as f:
-#        configData = json.load(f)
-#else:
-#    configTemplate = {
-#    "token": "",
-#    "mongo": ""
-#    }
-#    with open(os.getcwd()+"./properties/tokens.json", "w+") as f:
-#        json.dump(configTemplate, f)
-#client.botToken = configData["token"]
-#client.connection_url = configData["mongo"]
-
-# for heroku
-client.botToken = os.environ['BOT_TOKEN']
-client.connection_url = os.environ['MongoConnectionUrl']
+if os.path.exists(os.getcwd()+"./properties/tokens.json"):
+    with open("./properties/tokens.json") as f:
+        configData = json.load(f)
+    client.botToken = configData["token"]
+    client.connection_url = configData["mongo"]
+else:
+    # for heroku
+    client.botToken = os.environ['BOT_TOKEN']
+    client.connection_url = os.environ['MongoConnectionUrl']
 
 logging.basicConfig(level=logging.INFO)
 
@@ -136,7 +129,8 @@ client.emojis_list = {
     "IssuesStatus" : "<:tgk_issues_status:840643265955233822>",
     "Typing" : "<a:tgk_typing:840642605545160757>",
     "Timer" : "<a:tgk_timer:841624339169935390>",
-    "60sec" : "<a:tgk_cd:841625640880570369>"
+    "60sec" : "<a:tgk_cd:841625640880570369>",
+    "right" :"<a:yellowrightarrow:801446308778344468>"
 }
 
 # client.run(os.environ['BOT_TOKEN'])
