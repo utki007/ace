@@ -28,14 +28,14 @@ class partnership(commands.Cog, name="Partnership Manager",description= "Manages
         self.logChannel = int(838042561486258247)
 
     @commands.group(name= "Partnership",description= "Moderator only Command to add/remove partnership pings",usage="add/remove member pings[optional]",aliases = ["psh"])
-    @commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def partnership(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send(f"use `help partnership` or `help psh` to know more!!!")
             await ctx.send_help("partnership")
         
     @partnership.command(name="add", description="Add a Partner with Pings", aliases=['a'])
-    @commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def addpartner(self, ctx, member:discord.Member,*,pings: str):        
         try:
             await ctx.message.delete()
@@ -95,7 +95,7 @@ class partnership(commands.Cog, name="Partnership Manager",description= "Manages
             pass
     
     @partnership.command(name="remove", description="Remove a Partner", aliases=['r'])
-    @commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376), commands.is_owner())
     async def rpartner(self, ctx, member:discord.Member):        
         try:
             await ctx.message.delete()
@@ -179,7 +179,7 @@ class partnership(commands.Cog, name="Partnership Manager",description= "Manages
            
         
     @commands.command(name="Grinders", description="Ping Grinders Heist", aliases=['grind','hg'])
-    @commands.is_owner()
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376), commands.is_owner())
     async def grind(self, ctx, channel:str, link:str):
         await ctx.message.delete()
         await ctx.send(
@@ -191,8 +191,6 @@ class partnership(commands.Cog, name="Partnership Manager",description= "Manages
         )
         await ctx.send("<@&836228842397106176>",delete_after=1)
         await ctx.author.send(f"`?hg {channel} {link}`")
-        
-
-    
+           
 def setup(client):
     client.add_cog(partnership(client))

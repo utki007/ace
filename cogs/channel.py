@@ -17,9 +17,8 @@ class channel(commands.Cog, description="Channel utils"):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-
     @commands.command(name="slowmode", description="Set Slowmode In Current Channel", usage="[slowmode time 1m, 1s 1h max 6h]", aliases=['s', 'sm'],hidden = True)
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376) 
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def slowmode(self, ctx, time: str = '0'):
 
         unit = ['h', 'H', 'm', 'M', 's', 'S']
@@ -55,7 +54,7 @@ class channel(commands.Cog, description="Channel utils"):
         await ctx.message.delete()
 
     @commands.command(name="lock", description="Lock the channel", usage="role", aliases=['l'],hidden=True)
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def lock(self, ctx,*, role: discord.Role = None):
 
         channel = ctx.channel        
@@ -78,7 +77,7 @@ class channel(commands.Cog, description="Channel utils"):
         # role = discord.utils.get(ctx.guild.roles, id=820559294420221952)
 
     @commands.command(name="unlock", description=f"`[p]unlock true @role`", usage="<state> <role>", aliases=['ul'],hidden=True)
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def unlock(self, ctx, state: bool = False, *,role: discord.Role = None):
 
         channel = ctx.channel        
@@ -116,7 +115,7 @@ class channel(commands.Cog, description="Channel utils"):
         name="dankdown",
         description="Use this commands when dank is offline",
         usage="",aliases = ["dd"],hidden = True)
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
     async def dankdown(self, ctx):
         await ctx.message.delete()
         lock_status = await ctx.send("Locking up Dank Channels")
@@ -210,7 +209,7 @@ class channel(commands.Cog, description="Channel utils"):
     
     @commands.command(name="dankup", description="Use this commands when dank comes back offline",
         usage="",aliases = ["du"],hidden = True)
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
     async def dankup(self, ctx):
         
         # delete the message sent by bot while locking

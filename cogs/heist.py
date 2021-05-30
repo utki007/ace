@@ -33,8 +33,7 @@ class heist(commands.Cog, description="Heist Planner"):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
     @commands.command(name="heist", description="Setup an Heist", usage="<role>")
-    @commands.has_permissions(administrator=True)
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376), commands.is_owner())
     async def start(self, ctx, req_role: str,amt: float,starter: discord.Member, *args: str):
         
         await ctx.message.delete()
@@ -274,7 +273,7 @@ class heist(commands.Cog, description="Heist Planner"):
 
 
     @commands.command(name="hlock", description="Reset any channel",aliases = ["reset"], hidden=True)
-    @commands.is_owner()
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def hlock(self, ctx):
 
         lock_embed = discord.Embed(

@@ -61,9 +61,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 
             percentage = description[1].split(" ")[2]
             chars = ["[", "]", "*", "%"]
-            await self.new_method(message, dict, price, percentage, chars)
 
-    
             for ch in chars:
                 if ch in percentage:
                     percentage = percentage.replace(ch, "", 100)

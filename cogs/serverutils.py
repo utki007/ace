@@ -24,7 +24,7 @@ class serverutils(commands.Cog, description="Server Utility"):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
     
     @commands.command(no_pm=True)
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def poll(self, ctx, *, question: str):
         """
         Quick and easy yes/no poll, for multiple answers, see !quickpoll
@@ -46,8 +46,8 @@ class serverutils(commands.Cog, description="Server Utility"):
         await msg.add_reaction(yes_thumb)
         await msg.add_reaction(no_thumb)
   
-    @commands.command(aliases=["co","col"])
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376, 787259553225637889)
+    @commands.command(name="colour",aliases=["co","col"])
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def colour(self,ctx,color:discord.Color):
         await ctx.message.delete()
         name = Color(str(color))
@@ -67,7 +67,7 @@ class serverutils(commands.Cog, description="Server Utility"):
     # https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif
     # https://media.giphy.com/media/dAjMIUQRUDslMz8tUR/giphy.gif
     @commands.command(name="bar",description="To be used in public channels after completing a task")
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def finish(self,ctx):
         await ctx.message.delete()
         await ctx.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif")  

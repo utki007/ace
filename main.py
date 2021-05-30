@@ -48,14 +48,14 @@ else:
 
 
 @client.command(hidden=True)
-@commands.has_permissions(administrator=True)
+@commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
 async def load(ctx, extension):
     client.load_extension(f'cogs.{extension}')
     await ctx.send(f'The {extension} is successfully Loaded.')
 
 
 @client.command(hidden=True)
-@commands.has_permissions(administrator=True)
+@commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
 async def unload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
     await ctx.send(f'The {extension} is successfully unloaded.')
@@ -66,7 +66,7 @@ for filename in os.listdir('./cogs'):
 
 
 @client.command(hidden=True)
-@commands.has_permissions(administrator=True)
+@commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
 async def reload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
     client.load_extension(f'cogs.{extension}')
@@ -76,7 +76,7 @@ async def reload(ctx, extension):
 
 @client.command(name="logout", description="shutdown bot", aliases=['dc'], hidden=True)
 # @commands.has_permissions(administrator=True)
-@commands.is_owner()
+@commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
 async def logout(ctx):
     await ctx.send(f'I am now logging out :wave: \n ')
     await client.logout()

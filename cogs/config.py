@@ -22,7 +22,7 @@ class config(commands.Cog, description="config"):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
     @commands.command(name="activity", description="Change Bot activity", usage="[activity]", hidden=True)
-    @commands.has_permissions(administrator=True)
+    @commands.check_any(commands.has_permissions(administrator=True), commands.is_owner())
     async def activity(self, ctx, *, activity: str = None):
         if activity == None:
             activity = f'over {ctx.guild.member_count} members '
@@ -35,7 +35,7 @@ class config(commands.Cog, description="config"):
         await message.edit(content=f"Pong! `{round(self.client.latency * 1000)}ms`")
 
     @commands.command(name="Status", description="Change Bot Status to online & Dnd & idle", usage="[dnd & idle & online]", hidden=True)
-    @commands.has_permissions(administrator=True)
+    @commands.check_any(commands.has_permissions(administrator=True), commands.is_owner())
     async def status(self, ctx, arg):
         if arg.lower() == 'dnd':
             await self.client.change_presence(status=discord.Status.dnd)
@@ -50,7 +50,7 @@ class config(commands.Cog, description="config"):
             await ctx.send(f':warning: {ctx.author.mention} Please provide valid status you dimwit!! :warning:')
 
     @commands.command()
-    @commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def say(self, ctx,*, text: str):
         banned = ["@here", "@everyone", "<@&"]
 
