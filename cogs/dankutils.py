@@ -66,8 +66,8 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 if ch in percentage:
                     percentage = percentage.replace(ch, "", 100)
             percentage = int(percentage.replace("%", "",100))
-            newdescription = dict["description"].split("\n\n")[
-                                                           0].split(":")[1:]
+            newdescription = "".join(dict["description"].split("\n\n")[
+                                                           0].split(":")[1:])
             title = dict["title"].split(":")
             newtitle = title[0]
             name = title[1]
