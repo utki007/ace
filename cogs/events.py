@@ -71,17 +71,17 @@ class Events(commands.Cog):
         activity = f'over {member} members '
         await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{activity}"),status= discord.Status.dnd)
 
-    @tasks.loop(seconds=4000)
-    async def clean(self):      
+    # @tasks.loop(seconds=4000)
+    # async def clean(self):      
         
-        channel = self.bot.get_channel(self.work)
-        await channel.purge(limit=100)
+    #     channel = self.bot.get_channel(self.work)
+    #     await channel.purge(limit=100)
         
-        channel = self.bot.get_channel(self.heist_grinders)
-        await channel.purge(limit=100)
+    #     channel = self.bot.get_channel(self.heist_grinders)
+    #     await channel.purge(limit=100)
 
-        channel = self.bot.get_channel(self.heist_scout)
-        await channel.purge(limit=20)
+    #     channel = self.bot.get_channel(self.heist_scout)
+    #     await channel.purge(limit=20)
         
 
         
