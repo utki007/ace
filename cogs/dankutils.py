@@ -79,7 +79,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 content = content
             ad = discord.Embed(
                     title=f'{newtitle}',
-                    color=0x1ABC9C
+                    color=0x9e3bff
                 )
             ad.add_field(name=fieldHeaderContent, value=f'_{newdescription}_',inline=False)
             ad.set_footer(
