@@ -96,7 +96,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
         query = query.replace("b", "000000000",100)  
         return query
 
-    @commands.command(aliases=["calc", "c"])
+    @commands.command(anme="calculate",aliases=["calc", "c","cal"])
     async def calculate(self, ctx, *, query):
         """Math"""
         query = await self.convert_to_numeral(query)
