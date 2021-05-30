@@ -117,7 +117,8 @@ client.colors = {
 client.color_list = [c for c in client.colors.values()]
 
 client.emojis_list = {
-    "DMC" : "<:TGK_DMC:830520214021603350>",
+    # "DMC" : "<:TGK_DMC:830520214021603350>",
+    "DMC" : "⏣",
     "Hi" : "<a:pikahi:785911570336186418>",
     "Freeloader" : "<a:TGK_freeloader:840517161386377226>",
     "Cross" : "<a:tgk_cross:840637370038353940>",
