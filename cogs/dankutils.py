@@ -46,7 +46,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 for word in word_list:
                     if word in messageContent:
                         time.sleep(3)
-                        return await message.channel.send("If you'd like to stop receiving pings, check out <#785882615202316298> for `@〖 🔕。No Partnership 〗` role!!!")
+                        return await message.channel.send("If you'd like to stop receiving pings, check out <#848631258137362452> for `@〖 🔕。No Partnership 〗` role!!!")
 
         # if message.channel.id == 840215557097390131 and message.author.id != self.client.user.id:838646783785697290
         # 838646783785697290:
