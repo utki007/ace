@@ -1,5 +1,6 @@
 # importing the required libraries
 import discord
+from discord import message
 from discord.ext import commands, tasks
 import os
 import pandas as pd
@@ -162,8 +163,9 @@ class dankutils(commands.Cog, description="Dank Utility"):
             timestamp=datetime.datetime.utcnow()
         )
         # fl.set_author(name=ctx.guild.name, icon_url="https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024")
-        fl.set_footer(text=f"Developed by utki007 & Jay",icon = self.client.user.avatar_url)
+        fl.set_footer(text=f"Developed by utki007 & Jay",icon_url = self.client.user.avatar_url)
         fl.set_thumbnail(url=f'https://cdn.discordapp.com/emojis/831301479691845632.gif?v=1')
+        await ctx.message.delete()
         await ctx.send(embed=fl)
     
 def setup(client):
