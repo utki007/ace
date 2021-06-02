@@ -89,7 +89,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
             await channelnew.send(embed=ad, content=content)
             # await message.channel.send(embed=ad)
 
-        await self.client.process_commands(message)
+        # await self.client.process_commands(message)
         
     async def convert_to_numeral(self, query):
         query = query.lower()
@@ -98,7 +98,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
         query = query.replace("b", "000000000",100)  
         return query
 
-    @commands.command(anme="calculate",aliases=["calc", "c","cal"])
+    @commands.command(name="calculate",aliases=["calc", "c","cal"])
     async def calculate(self, ctx, *, query):
         """Math"""
         query = await self.convert_to_numeral(query)
@@ -124,7 +124,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
         e.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         await ctx.send(embed=e)
 
-    @commands.command(aliases=["tc", "taxc"])
+    @commands.command(name="Calculate Tax",aliases=["tc", "taxc","taxcalculate"])
     async def taxcalculate(self, ctx, number: float):
         """Finding tax"""
         number = int(float(number))
