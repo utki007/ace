@@ -62,6 +62,7 @@ class partnership(commands.Cog, name="Partnership Manager",description= "Manages
             else:
                 # await ctx.send(f"else : `{i}`")
                 await ctx.send(embed=embed)
+                return
         
         partners = {}
         with open('./properties/partnerships.json','r') as f:
