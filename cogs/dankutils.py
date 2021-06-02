@@ -155,14 +155,14 @@ class dankutils(commands.Cog, description="Dank Utility"):
         fl = discord.Embed(
             title=f'{self.client.emojis_list["banHammer"]} Freeloader Perks {self.client.emojis_list["banHammer"]}',
             description =   f'{self.client.emojis_list["rightArrow"]} 14 Days temporary ban \n'
-                            f'{self.client.emojis_list["rightArrow"]} Miss daily heists, events and giveaways.'
-                            f'{self.client.emojis_list["rightArrow"]} Multiple freeloads, Permanent ban.'
-                            f'{self.client.emojis_list["rightArrow"]} Lament why you left such a POG server.',
+                            f'{self.client.emojis_list["rightArrow"]} Miss daily heists, events and giveaways \n'
+                            f'{self.client.emojis_list["rightArrow"]} Multiple freeloads, Permanent ban \n'
+                            f'{self.client.emojis_list["rightArrow"]} Lament why you left such a POG server \n',
             color=self.client.colors["RED"],
             timestamp=datetime.datetime.utcnow()
         )
-        fl.set_author(name=ctx.guild.name, icon_url="https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024")
-        fl.set_footer(text=f"Developed by utki007 & Jay")
+        # fl.set_author(name=ctx.guild.name, icon_url="https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024")
+        fl.set_footer(text=f"ACE | Developed by utki007 & Jay",icon = self.client.user.icon_url)
         fl.set_thumbnail(url=f'https://cdn.discordapp.com/emojis/831301479691845632.gif?v=1')
         await ctx.send(embed=fl)
     
