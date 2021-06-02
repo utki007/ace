@@ -12,7 +12,7 @@ import math
 import datetime
 
 
-class heist(commands.Cog, description="Heist Planner"):
+class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
 
     def __init__(self, client):
         self.client = client
@@ -312,4 +312,4 @@ class heist(commands.Cog, description="Heist Planner"):
 
 
 def setup(client):
-    client.add_cog(heist(client))
+    client.add_cog(dankHeist(client))
