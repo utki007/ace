@@ -154,10 +154,10 @@ class dankutils(commands.Cog, description="Dank Utility"):
     async def freeloader(self, ctx):
         fl = discord.Embed(
             title=f'{self.client.emojis_list["banHammer"]} Freeloader Perks {self.client.emojis_list["banHammer"]}',
-            description =   f'{self.client.emojis_list["rightArrow"]} 14 Days temporary ban \n'
-                            f'{self.client.emojis_list["rightArrow"]} Miss daily heists, events and giveaways \n'
-                            f'{self.client.emojis_list["rightArrow"]} Multiple freeloads, Permanent ban \n'
-                            f'{self.client.emojis_list["rightArrow"]} Lament why you left such a POG server \n',
+            description =   f'{self.client.emojis_list["rightArrow"]} 14 Days temporary ban.\n'
+                            f'{self.client.emojis_list["rightArrow"]} Miss daily heists, events and giveaways.\n'
+                            f'{self.client.emojis_list["rightArrow"]} Multiple freeloads, Permanent ban.\n'
+                            f'{self.client.emojis_list["rightArrow"]} Lament why you left such a POG server.\n',
             color=self.client.colors["RED"],
             timestamp=datetime.datetime.utcnow()
         )
