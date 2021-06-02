@@ -32,7 +32,7 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-    @commands.command(name="heist", description="Setup an Heist", usage="<role>")
+    @commands.command(name="heist", description="Setup an Heist")
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376), commands.is_owner())
     async def start(self, ctx, req_role: str,amt: float,starter: discord.Member, *args: str):
         
