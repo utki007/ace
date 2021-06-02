@@ -149,6 +149,22 @@ class dankutils(commands.Cog, description="Dank Utility"):
 
         await ctx.send(embed=e)
 
-
+    @commands.command(name="FreeLoader",aliases=["fl"],description="Lists Freeloader Perks")
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    async def freeloader(self, ctx):
+        fl = discord.Embed(
+            title=f'{self.client.emojis_list["banHammer"]} Freeloader Perks {self.client.emojis_list["banHammer"]}',
+            description =   f'{self.client.emojis_list["rightArrow"]} 14 Days temporary ban \n'
+                            f'{self.client.emojis_list["rightArrow"]} Miss daily heists, events and giveaways.'
+                            f'{self.client.emojis_list["rightArrow"]} Multiple freeloads, Permanent ban.'
+                            f'{self.client.emojis_list["rightArrow"]} Lament why you left such a POG server.',
+            color=self.client.colors["RED"],
+            timestamp=datetime.datetime.utcnow()
+        )
+        fl.set_author(name=ctx.guild.name, icon_url="https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024")
+        fl.set_footer(text=f"Developed by utki007 & Jay")
+        fl.set_thumbnail(url=f'https://cdn.discordapp.com/emojis/831301479691845632.gif?v=1')
+        await ctx.send(embed=fl)
+    
 def setup(client):
     client.add_cog(dankutils(client))
