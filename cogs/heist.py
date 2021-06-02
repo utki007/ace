@@ -47,7 +47,7 @@ class heist(commands.Cog, description="Heist Planner"):
         except:
             warning = discord.Embed(
             color=self.client.colors["RED"], 
-            description=f"{self.client.emojis_list['Warrning']} | Error with default Heist Role!!")
+            description=f"{self.client.emojis_list['Warrning']} | Error with default Heist Roles!!")
             await ctx.send(embed = warning,delete_after=15)
             return
         try:
@@ -55,7 +55,7 @@ class heist(commands.Cog, description="Heist Planner"):
         except:
             warning = discord.Embed(
             color=self.client.colors["RED"], 
-            description=f"{self.client.emojis_list['Warrning']} | Incorrect Req Role! Action Terminated!!")
+            description=f"{self.client.emojis_list['Warrning']} | Incorrect Req Role! Heist Terminated!!")
             await ctx.send(embed = warning,delete_after=15)
             return
         
@@ -74,10 +74,10 @@ class heist(commands.Cog, description="Heist Planner"):
         
         if amt > 10000000:
             long = True
-            if long:
-                time = "4 mins"
-            else:
-                time = "1 min 30 sec"
+        if long:
+            time = "4 mins"
+        else:
+            time = "1 min 30 sec"
 
         # getting info from args string
         for i in l:
@@ -86,7 +86,7 @@ class heist(commands.Cog, description="Heist Planner"):
                 role = i.split(" ")[1:]
             elif var == "title":
                 title = " ".join(i.split(" ")[1:])
-                title = f"`{title.title():^35}`"
+                title = f"**{title.title()}**"
             elif var == "ping":
                 ping = True
 
@@ -103,14 +103,14 @@ class heist(commands.Cog, description="Heist Planner"):
         title = title if title else "Heist Time"
         embed = discord.Embed(
             title=f"<a:tgk_run:832700446711611422>       **{title:^20}**       <a:tgk_run:832700446711611422> ",
-            description=f"━━━━━━━━━━━━━━━ \n",
+            description=f"▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ \n",
                         # f"<a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762>  \n",
             color=ctx.author.color
         )
         embed.add_field(
             name=f"**{'Heist Information'}**",
             value=f"<a:TGK_Pandaswag:830525027341565982> **Host :** <a:tgk_arrow:832387973281480746> **{ctx.author.name}** \n"
-            f"<a:tgk_rainmoney:832674084340629564> **Amount :** <a:tgk_arrow:832387973281480746> <:TGK_DMC:830520214021603350> **{amt:,}** !!!\n\n",
+            f"<a:tgk_rainmoney:832674084340629564> **Amount :** <a:tgk_arrow:832387973281480746> <:TGK_DMC:830520214021603350> **{int(amt):,}** !!!\n\n",
             # f"<a:timesand:832701552845389866> **Time :** <a:tgk_arrow:832387973281480746> **{time}**"
             inline=False
         )
@@ -123,8 +123,8 @@ class heist(commands.Cog, description="Heist Planner"):
         )
         embed.add_field(
             name=f"**{'Requirements: '}**",
-            value=f"{embedrole} \n\n"
-            f"━━━━━━━━━━━━━━━ \n",
+            value=f"{embedrole} \n"
+            f"▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ \n",
             inline=False
         )
 
@@ -145,12 +145,11 @@ class heist(commands.Cog, description="Heist Planner"):
         # starter embed
         tm.sleep(2)
         starter_embed = discord.Embed(
-            description=f" {self.client.emojis['SuccessTick']} | *{starter_role}* added to  **{starter.name}**  ",
+            description=f" {self.client.emojis_list['SuccessTick']} | *{starter_role}* added to  **{starter.name}**  ",
             # description=f"Channel has been locked. Good luck guys. \n",
             # color= 0x228b22
             color=self.client.colors["Success"]
         )
-        # starter_embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
 
         await starter.add_roles(starter_role)
         await ctx.send(embed=starter_embed, delete_after=15)
@@ -205,16 +204,10 @@ class heist(commands.Cog, description="Heist Planner"):
 
             
 
-            if flag:
-                if long:
-                    timeout = 200
-                else:
-                    timeout = 60
+            if long:
+                timeout = 265
             else:
-                if long:
-                    timeout = 225
-                else:
-                    timeout = 75
+                timeout = 85
 
             try:
                 # police = discord.Embed(
@@ -238,7 +231,7 @@ class heist(commands.Cog, description="Heist Planner"):
                 lock_embed.set_thumbnail(
                     url="https://cdn.discordapp.com/emojis/801343188945207297.gif?v=1")
 
-                await self.client.wait_for("message", check=lambda m: m.author.id == 270904126974590976 and ("Time is up to join" in m.content or "sorry lady, you're not popular enough and didn't get enough people to rob the bank" in m.content), timeout=220)
+                await self.client.wait_for("message", check=lambda m: m.author.id == 270904126974590976 and ("Time is up to join" in m.content or "you're not popular enough and didn't get enough people to rob the bank" in m.content), timeout=220)
                 await ctx.channel.edit(sync_permissions=True)
                 await ctx.send(embed=lock_embed)
 

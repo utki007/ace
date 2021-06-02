@@ -87,8 +87,10 @@ class dankutils(commands.Cog, description="Dank Utility"):
             ad.set_thumbnail(url=f'{str(dict["thumbnail"]["url"])}')
             channelnew = self.client.get_channel(self.shop)
             await channelnew.send(embed=ad, content=content)
-            await message.channel.send(embed=ad)
+            # await message.channel.send(embed=ad)
 
+        await self.client.process_commands(message)
+        
     async def convert_to_numeral(self, query):
         query = query.lower()
         query = query.replace("k", "000",100)
