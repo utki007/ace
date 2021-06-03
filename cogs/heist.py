@@ -41,6 +41,18 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         heist_start = "is starting a bank robbery. They're trying to break into"
         police_raid = "rang the police on you and your gang, and you were arrested at the scene!"
         
+        category = [785841152553123861,797512848778723368]
+        
+        unauthorized = discord.Embed(
+            color=self.client.colors["RED"], 
+            title = f"Unauthorized to use this command!!!",
+            description=f"{self.client.emojis_list['Warrning']} | Can't use the command in Staff Chats!")
+        
+        
+        if ctx.channel.id in category or ctx.channel.category.id in category:
+            await ctx.send(embed=unauthorized)
+            return
+        
         try:
             default_role = discord.utils.get(ctx.guild.roles, id=self.default_role)
             heist_ping = discord.utils.get(ctx.guild.roles, id=self.heist_role)
@@ -90,46 +102,48 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
             elif var == "ping":
                 ping = True
 
-        embedrole = f"<a:tgk_arrow:832387973281480746> Required role: {req_role.mention if req_role != ctx.guild.default_role else req_role} \n"
+        embedrole = f"**_Required Role:_** \n<a:tgk_arrow:832387973281480746> {req_role.mention if req_role != ctx.guild.default_role else req_role} **\n**\n"
         # dealing with roles
         if role:
-            embedrole = embedrole + f"<a:tgk_arrow:832387973281480746> Bypass role: "
+            embedrole = embedrole + f"**_Bypass Roles:_** \n"
         for i in range(len(role)):
-            if i != 0:
-                embedrole = embedrole + f" , "
+            # if i != 0:
+            #     embedrole = embedrole + f" , "
             role[i] = discord.utils.get(ctx.guild.roles, id=int(role[i]))
-            embedrole = embedrole + f"{role[i].mention}"
+            embedrole = embedrole + f"<a:tgk_arrow:832387973281480746> {role[i].mention} \n"
 
         title = title if title else "Heist Time"
         embed = discord.Embed(
-            title=f"<a:tgk_run:832700446711611422>       **{title:^20}**       <a:tgk_run:832700446711611422> ",
-            description=f"▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ \n",
-                        # f"<a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762><a:tgk_doubleline:832388079926771762>  \n",
-            color=ctx.author.color
+            title=f"<a:bhaago:821993760492879872> **{title}** <a:bhaago:821993760492879872> ",
+            description=f"═════════════════════════ \n",
+            color=0xffd700,
+            timestamp=datetime.datetime.utcnow()
         )
         embed.add_field(
-            name=f"**{'Heist Information'}**",
-            value=f"<a:TGK_Pandaswag:830525027341565982> **Host :** <a:tgk_arrow:832387973281480746> **{ctx.author.name}** \n"
-            f"<a:tgk_rainmoney:832674084340629564> **Amount :** <a:tgk_arrow:832387973281480746> <:TGK_DMC:830520214021603350> **{int(amt):,}** !!!\n\n",
-            # f"<a:timesand:832701552845389866> **Time :** <a:tgk_arrow:832387973281480746> **{time}**"
+            name=f"**_{'Heist Information: '}_**",
+            value=f"<a:flymoney:803336135803404301> | **{ctx.author.name}** \n"
+            f"<a:TGK_paisa_hi_paisa_hoga:849509579565301780> |  **⏣ {int(amt):,}** !!!\n"
+            f"<a:timesand:832701552845389866> | **{time}**\n─────────────────────────",
             inline=False
         )
         embed.add_field(
-            name=f"**{'Checklist: '}**",
-            value=f"<a:tgk_arrow:832387973281480746> Withdraw <:TGK_DMC:830520214021603350> **{2000:,}** \n"
-            f"<a:tgk_arrow:832387973281480746> Keep life saver in inventory \n"
-            f"<a:tgk_arrow:832387973281480746> you will have **{time}** to join \n",
+            name=f"**_{'Checklist: '}_**",
+            value=f"<a:tgk_arrow:832387973281480746> Keep **⏣ {2000:,}** in wallet. \n"
+            f"<a:tgk_arrow:832387973281480746> Use **Lifesaver** or **Apple**. \n"
+            f"<a:tgk_arrow:832387973281480746> Disable **Passive Mode**. \n"
+            f"<a:tgk_arrow:832387973281480746> Type **Join Heist** to participate. \n",
+            # f"<a:tgk_arrow:832387973281480746> you will have **{time}** to join. \n",
             inline=False
         )
         embed.add_field(
-            name=f"**{'Requirements: '}**",
-            value=f"{embedrole} \n"
-            f"▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ \n",
+            name=f"─────────────────────────",
+            value=f"{embedrole} \n",
+            # f"══════════════════════════ \n**\n**",
             inline=False
         )
 
-        embed.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
-        # embed.set_image(url="https://cdn.discordapp.com/attachments/831970404762648586/833255266127970334/rob.gif")
+        embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+        embed.set_image(url="https://cdn.discordapp.com/attachments/837999751068778517/849867795801440266/ezgif.com-gif-maker.gif")
 
         if ping:
             await ctx.send(heist_ping.mention, embed=embed)

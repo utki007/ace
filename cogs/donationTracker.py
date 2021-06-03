@@ -263,9 +263,11 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         for i in dict["event"]:
             l.append(i["name"])
         df = pd.DataFrame(list)
+        # await ctx.send(l)
 
-        df = df[["_id", "name", "bal"]].head(number).sort_values(by= "bal", ascending = False)
-        # await ctx.send(top3)
+        df = df[["_id", "name", "bal"]].sort_values(by= "bal", ascending = False)
+        df = df.head()
+        # await ctx.send(df)
 
         desc = ""
         spl = 'bal'
