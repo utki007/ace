@@ -283,6 +283,19 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def hlock(self, ctx):
 
+        category = [785841152553123861,797512848778723368]
+        
+        unauthorized = discord.Embed(
+            color=self.client.colors["RED"], 
+            title = f"Unauthorized to use this command!!!",
+            description=f"{self.client.emojis_list['Warrning']} | Can use it only in Heist Channels!")
+        
+        
+        if ctx.channel.id in category or ctx.channel.category.id in category:
+            await ctx.send(embed=unauthorized)
+            return
+        
+        
         lock_embed = discord.Embed(
             title=f"<a:tgk_run:832700446711611422>       **{'Channel Locked'}**       <a:tgk_run:832700446711611422> ",
             description=f"Channel has been locked. Good luck guys. \n",
