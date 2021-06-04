@@ -191,7 +191,7 @@ class partnership(commands.Cog, name="Partnership Manager",description= "Manages
             f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
         )
         await ctx.send("<@&836228842397106176>",delete_after=1)
-        await ctx.author.send(f"`?hg {channel} {link}`")
+        await ctx.author.send(f"```?hg {channel} {link}``` \n {link}")
            
 def setup(client):
     client.add_cog(partnership(client))
