@@ -127,7 +127,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
         # for logging
         logg = discord.Embed(
-            title="__Gambler's Kingdom Logging Registry__",
+            title="__Donation Added__",
             description=f"{ctx.author.mention} added <:TGK_DMC:830520214021603350> **{amount:,}** to {member.mention} bal [here]({ctx.message.jump_url})",
             colour=0x78AB46
         )
@@ -225,7 +225,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
         # for logging
         logg = discord.Embed(
-            title="__Gambler's Kingdom Logging Registry__",
+            title="__Donation Removed__",
             description=f"{ctx.author.mention} removed **{amount:,}** from {member.mention} bal [here]({ctx.message.jump_url})",
             colour=0xE74C3C
         )
@@ -358,7 +358,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
             # for logging
             logg = discord.Embed(
-                title="__Gambler's Kingdom Logging Registry__",
+                title="__Nick Changed__",
                 description=f"{ctx.author.mention} changed  {member.mention} name to  **{nick[:15]}** [here]({ctx.message.jump_url})",
                 colour=ctx.author.colour
             )
@@ -404,7 +404,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
             # for logging
             logg = discord.Embed(
-                title="__Gambler's Kingdom Logging Registry__",
+                title="__Nick Changed__",
                 description=f"{ctx.author.mention} changed name to  **{nick[:15]}** [here]({ctx.message.jump_url})",
                 colour=ctx.author.colour
             )
@@ -614,7 +614,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
         # for logging
         logg = discord.Embed(
-            title="__Gambler's Kingdom Logging Registry__",
+            title="__Donation Added__",
             description=f"{ctx.author.mention} added <:TGK_DMC:830520214021603350> **{amount:,}** to {member.mention} bal [here]({ctx.message.jump_url}) \n{spldono}]",
             colour=ctx.author.colour
         )
@@ -736,7 +736,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             
         # for logging
         logg = discord.Embed(
-            title="__Gambler's Kingdom Logging Registry__",
+            title="__Donation Removed__",
             description=f"{ctx.author.mention} removed **{amount:,}** from {member.mention} bal  [here]({ctx.message.jump_url}) {spldono}\n",
             colour=ctx.author.colour
         )
