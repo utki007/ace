@@ -13,3 +13,4 @@ pillow
 image==1.5.33
 colour==0.1.5
 webcolors==1.11.1
+discord-webhook==0.13.0
