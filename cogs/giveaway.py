@@ -79,7 +79,11 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
         # await asyncio.sleep(cd)
         loop=True
         while loop:
-            await asyncio.sleep(2)
+            
+            if cd>300:
+                await asyncio.sleep(5)
+            else:
+                await asyncio.sleep(2)
             timer_left = str(end - datetime.datetime.utcnow())
             if timer_left[0]=="-":
                 timer_left = "00:00:00.00"
