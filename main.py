@@ -13,7 +13,7 @@ import logging
 import asyncio
 from asyncio import sleep
 
-from utils.help import Help
+# from utils.help import Help
 
 
 description = '''This is what I have been programmed to do'''
@@ -22,7 +22,7 @@ client = commands.Bot(
     description=description,
     case_insensitive=True,
     intents= discord.Intents.all(),
-    help_command = Help()
+    help_command = None
 )
 
 @client.event

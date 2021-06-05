@@ -19,7 +19,7 @@ class Help(commands.Cog, name="Help command"):
     @commands.group(
         name="help", aliases=["h", "commands"], description="The help command!",hidden = True,invoke_without_command = True
     )
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def help(self, ctx):
         help = discord.Embed(
             # title = "Help",
@@ -48,7 +48,7 @@ class Help(commands.Cog, name="Help command"):
         await ctx.send(embed = help)
         
     @help.command(name="Donation",aliases = ["donation",'dono',"Dono","d","bal" , "nick","celeb" , "regDonation", "splDonation"])
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def donation(self, ctx):
         help = discord.Embed(
             title = "Donation Tracker",
@@ -94,7 +94,7 @@ class Help(commands.Cog, name="Help command"):
         await ctx.send(embed = help)
     
     @help.command(name="heist",aliases = ["Heist",'h',"hlock"])
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def heist(self, ctx):
         help = discord.Embed(
             title = "Heist Tracker",
@@ -105,9 +105,10 @@ class Help(commands.Cog, name="Help command"):
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Conduct a Heist__",
             value=  f"Usage = `?heist <req_role> <title> [flags]` \n"
-                    f"Flags are:\n**1.** `--amt` : heist amount\n"
+                    f"Flags are:\n**1.** `--title` : heist title\n"
                     f"**2.** `--starter` : member who's going to start the heist\n"
-                    f"**3.** `--role` : member who bypass or get early unlock\n",
+                    f"**3.** `--ping` : to ping heist\n"
+                    f"**4.** `--role` : member who bypass or get early unlock\n",
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Lock a Heist Channel__",
@@ -125,7 +126,7 @@ class Help(commands.Cog, name="Help command"):
    
             
     @help.command(name="Channel",aliases = ["ch","c","slowmode",'Lock',"unlock","ul","dankdown","dankup"])
-    @commands.has_any_role(785842380565774368,799037944735727636, 785845265118265376)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def lock(self, ctx):
         help = discord.Embed(
             title = "Channel Management",
