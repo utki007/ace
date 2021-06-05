@@ -40,7 +40,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         dict["_id"] = user.id
         dict["name"] = user.name[0:15]
         dict["bal"] = 0
-        dict["event"] = [{"name": "750", "bal": 0}]
+        dict["event"] = [{"name": "750", "bal": 0},{"name": "2k", "bal": 0}]
         self.mycol.insert_one(dict)
 
     @commands.group(name="donation", aliases=['dono'])
