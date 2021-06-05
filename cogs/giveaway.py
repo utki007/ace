@@ -81,6 +81,8 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
         while loop:
             
             if cd>300:
+                await asyncio.sleep(10)
+            elif cd>120:
                 await asyncio.sleep(5)
             else:
                 await asyncio.sleep(2)
@@ -91,7 +93,7 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
                 break
             timer_left = datetime.datetime.strptime(timer_left,'%H:%M:%S.%f')
             sleep = (timer_left.hour * 60 + timer_left.minute) * 60 + timer_left.second + (timer_left.microsecond/1e6)
-            cd = cd-sleep
+            cd = sleep
             
             # tm.sleep(3)
             # timer_left = timer_left - datetime.timedelta(seconds=3)
