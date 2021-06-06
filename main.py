@@ -133,7 +133,9 @@ client.emojis_list = {
     "60sec" : "<a:tgk_cd:841625640880570369>",
     "right" :"<a:yellowrightarrow:801446308778344468>",
     "banHammer" : "<a:tgk_banhammer:849699763065585734>",
-    "rightArrow" : "<a:yellowrightarrow:801446308778344468>"
+    "rightArrow" : "<a:yellowrightarrow:801446308778344468>",
+    "1⃣" : "<:tgk_one:850901272511905825>",
+    "2⃣" : "<:tgk_two:850901431074160640>"
 }
 
 # client.run(os.environ['BOT_TOKEN'])
