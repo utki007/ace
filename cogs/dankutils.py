@@ -168,5 +168,19 @@ class dankutils(commands.Cog, description="Dank Utility"):
         await ctx.message.delete()
         await ctx.send(embed=fl)
     
+    
+    @commands.command(name="banFreeloader",aliases=["bfl"],description="Lists Freeloader Perks")
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    async def banFreeloader(self, ctx,number:int= 100):
+        guild = self.client.get_guild(785839283847954433)
+        # fetch_messages = await ctx.channel.history().find(lambda m: guild.get_member(m.author.id) is not None)
+        # await ctx.send(fetch_messages)
+        counter = 0
+        async for message in ctx.channel.history(limit=number):
+            if guild.get_member(message.author.id) is None:
+                counter += 1
+                await ctx.send(message.author.mention)
+        await ctx.send(counter)
+        
 def setup(client):
     client.add_cog(dankutils(client))
