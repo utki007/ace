@@ -183,7 +183,8 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 counter += 1
                 l.append(message.author.id)
                 # await ctx.author.send(message.author.id)
-        await ctx.author.send(l)
+        if l != []:
+            await ctx.author.send(l)
         
 def setup(client):
     client.add_cog(dankutils(client))
