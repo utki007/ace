@@ -175,12 +175,15 @@ class dankutils(commands.Cog, description="Dank Utility"):
         guild = self.client.get_guild(785839283847954433)
         # fetch_messages = await ctx.channel.history().find(lambda m: guild.get_member(m.author.id) is not None)
         # await ctx.send(fetch_messages)
+        await ctx.message.delete()
         counter = 0
+        l = []
         async for message in ctx.channel.history(limit=number):
             if guild.get_member(message.author.id) is None:
                 counter += 1
-                await ctx.send(message.author.mention)
-        await ctx.send(counter)
+                l.append(message.author.id)
+                # await ctx.author.send(message.author.id)
+        await ctx.author.send(l)
         
 def setup(client):
     client.add_cog(dankutils(client))
