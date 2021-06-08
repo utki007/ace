@@ -177,7 +177,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
     
     @commands.command(name="banFreeloader",aliases=["bfl"],description="Lists Freeloader Perks")
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636), commands.is_owner())
-    async def banFreeloader(self, ctx,number:int= 100,duration:str = "7"):
+    async def banFreeloader(self, ctx,number:int= 100,duration:str = "14"):
         guild = self.client.get_guild(ctx.guild.id)
         # fetch_messages = await ctx.channel.history().find(lambda m: guild.get_member(m.author.id) is not None)
         # await ctx.send(fetch_messages)
