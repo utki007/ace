@@ -347,7 +347,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             if flag == 0:
                 await ctx.message.add_reaction("❌")
                 await ctx.send(f"⚠ {ctx.author.mention}, Donor Doesn't Exist. Can't Change nick!! ⚠")
-                await member.send(f"⚠ Uh oh {member.mention}, Dank donation not found!! ⚠")
+                await member.send(f"⚠ Uh oh {member.mention}, Dank donation is zero!! ⚠")
             else:
                 newvalues = {"$set": {"name": nick[0:15]}}
                 self.mycol.update_one(myquery, newvalues)
@@ -393,7 +393,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             if flag == 0:
                 await ctx.message.add_reaction("❌")
                 await ctx.send(f"⚠ {ctx.author.mention}, Donor Doesn't Exist. Can't Change nick!! ⚠")
-                await member.send(f"⚠ Uh oh {member.mention}, Dank donation not found!! ⚠")
+                await member.send(f"⚠ Uh oh {member.mention}, Dank donation is zero!! ⚠")
             else:
                 newvalues = {"$set": {"name": nick[0:15]}}
                 self.mycol.update_one(myquery, newvalues)
@@ -443,7 +443,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             flag = 1
 
         if flag == 0:
-            await ctx.send(f"⚠ Uh oh {member.mention}, Dank donation not found!! ⚠")
+            await ctx.send(f"⚠ Uh oh {member.mention}, Dank donation is zero!! ⚠")
             await ctx.message.add_reaction("❌")
             return
         else:
