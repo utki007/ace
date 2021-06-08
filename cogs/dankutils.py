@@ -25,6 +25,12 @@ class dankutils(commands.Cog, description="Dank Utility"):
             block.RangeBlock(),
         ]
         self.engine = Interpreter(blocks)
+        
+        # db connection for tempban
+        self.mongoconnection = self.client.connection_url2
+        self.myclient = pymongo.MongoClient(self.mongoconnection)
+        self.mydb = self.myclient['tgk_database']
+        self.mycol = self.mydb["bans"]
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -170,22 +176,66 @@ class dankutils(commands.Cog, description="Dank Utility"):
     
     
     @commands.command(name="banFreeloader",aliases=["bfl"],description="Lists Freeloader Perks")
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
-    async def banFreeloader(self, ctx,number:int= 100):
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636), commands.is_owner())
+    async def banFreeloader(self, ctx,number:int= 100,duration:str = "7"):
         guild = self.client.get_guild(ctx.guild.id)
         # fetch_messages = await ctx.channel.history().find(lambda m: guild.get_member(m.author.id) is not None)
         # await ctx.send(fetch_messages)
         await ctx.message.delete()
         counter = 0
+        duration = int(duration) * 86400
         l = []
+        banList = []
         async for message in ctx.channel.history(limit=number):
             if guild.get_member(message.author.id) is None:
                 counter += 1
                 l.append(message.author.id)
-                # await ctx.author.send(message.author.id)
+                banList.append(message.author)
+        
+        banList = list(set(banList))     
+        # await ctx.send(banList[0].id)
+        for user in banList:
+            data = {
+                    '_id': user.id,
+                    'BannedAt': datetime.datetime.now(),
+                    'BanDuration': duration,
+                    'BanedBy': ctx.author.id,
+                    'guildId': ctx.guild.id,
+            }
+                
+            myquery = {"_id": user.id}
+            info = self.mycol.find(myquery)
+            flag = 0
+            dict = {}
+            for x in info:
+                dict = x
+                flag = 1
+        
+            # if flag == 0:
+            #     self.mycol.insert_one(data)
+            # else:
+            #     newvalues = {"$set": {"BanDuration": duration}}
+            #     dict["BanDuration"] = duration
+            #     self.mycol.update_one(myquery, newvalues)
+            try:
+                if flag == 0:
+                    self.mycol.insert_one(data)
+                else:
+                    newvalues = {"$set": {"BanDuration": duration}}
+                    dict["BanDuration"] = datetime.timedelta(seconds=duration)
+                    self.mycol.update_one(myquery, newvalues)
+            except:
+                await ctx.send(f"{user.id} data could not be inserted in Databse. Aborting immediately!!")
+                continue
+            try:
+                await ctx.guild.ban(user,reason = "Freeloading")
+                await ctx.send(f"{self.client.emojis_list['SuccessTick']} | Successfully banned **_{user.name}_** for **{int(duration/ 86400)}** days!!")
+            except:
+                await ctx.send(f"{self.client.emojis_list['Warrning']} | Unable to ban **_{user.name}_** (user.id)")
+                
         l = list(set(l))
         if l != []:
             await ctx.author.send(l)
-        
+       
 def setup(client):
     client.add_cog(dankutils(client))
