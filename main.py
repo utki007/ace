@@ -39,10 +39,12 @@ if os.path.exists(os.getcwd()+"./properties/tokens.json"):
         configData = json.load(f)
     client.botToken = configData["token"]
     client.connection_url = configData["mongo"]
+    client.connection_url2 = configData["mongoBanDB"]
 else:
     # for heroku
     client.botToken = os.environ['BOT_TOKEN']
     client.connection_url = os.environ['MongoConnectionUrl']
+    client.connection_url2 = os.environ["mongoBanDB"]
 
 # logging.basicConfig(level=logging.INFO)
 
