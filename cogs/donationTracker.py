@@ -138,7 +138,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         channel = self.client.get_channel(self.logChannel)
         registry = self.client.get_channel(self.registry)
         try:
-            await registry.send(embed=display)
+            if ctx.channel.id != registry.id:
+                await registry.send(embed=display)
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
             pass
@@ -221,7 +222,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             pass 
         registry = self.client.get_channel(self.registry)
         try:
-            await registry.send(embed=display)
+            if ctx.channel.id != registry.id:
+                await registry.send(embed=display)
         except:
             pass
         try:
@@ -615,7 +617,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             pass
         registry = self.client.get_channel(self.registry)
         try:
-            await registry.send(embed=display)
+            if ctx.channel.id != registry.id:
+                await registry.send(embed=display)
         except:
             pass 
         try:
@@ -742,7 +745,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             pass 
         registry = self.client.get_channel(self.registry)
         try:
-            await registry.send(embed=display)
+            if ctx.channel.id != registry.id:
+                await registry.send(embed=display)
         except:
             pass
         try:
