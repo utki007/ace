@@ -223,7 +223,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         try:
             await registry.send(embed=display)
         except:
-            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
             pass
         try:
             await ctx.message.delete()
@@ -618,7 +617,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         try:
             await registry.send(embed=display)
         except:
-            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
             pass 
         try:
             await ctx.message.delete()
@@ -746,7 +744,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         try:
             await registry.send(embed=display)
         except:
-            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
             pass
         try:
             await ctx.message.delete()
