@@ -24,6 +24,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         self.mycol = self.mydb["donorBank"]
         # for tgk
         self.logChannel = int(838042561486258247)
+        self.registry = int(851500261193416754)
 
         # donor bank properties
         self.bal = "bal"
@@ -135,9 +136,14 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         logg.set_footer(text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
         channel = self.client.get_channel(self.logChannel)
+        registry = self.client.get_channel(self.registry)
+        try:
+            await registry.send(embed=display)
+        except:
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
+            pass
         try:
             await channel.send(embed=logg)
-           
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
             pass
@@ -174,7 +180,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             self.mycol.update_one(myquery, newvalues)
             # await ctx.message.add_reaction("✔")
         except:
-            await ctx.send(f"⚠  {ctx.author.mention} , I am unable add bal to the database. Try again later!!. ⚠")
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to add bal to the database. Try again later!!. ⚠")
             return
             
         
@@ -213,6 +219,12 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠",delete_after=30)
             pass 
+        registry = self.client.get_channel(self.registry)
+        try:
+            await registry.send(embed=display)
+        except:
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
+            pass
         try:
             await ctx.message.delete()
         except:
@@ -336,7 +348,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             if flag == 0:
                 await ctx.message.add_reaction("❌")
                 await ctx.send(f"⚠ {ctx.author.mention}, Donor Doesn't Exist. Can't Change nick!! ⚠")
-                await member.send(f"⚠ {member.mention}, Please donate to change your nick!! ⚠")
+                await member.send(f"⚠ Uh oh {member.mention}, Dank donation not found!! ⚠")
             else:
                 newvalues = {"$set": {"name": nick[0:15]}}
                 self.mycol.update_one(myquery, newvalues)
@@ -382,7 +394,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             if flag == 0:
                 await ctx.message.add_reaction("❌")
                 await ctx.send(f"⚠ {ctx.author.mention}, Donor Doesn't Exist. Can't Change nick!! ⚠")
-                await member.send(f"⚠ {member.mention}, Please donate to change your nick!! ⚠")
+                await member.send(f"⚠ Uh oh {member.mention}, Dank donation not found!! ⚠")
             else:
                 newvalues = {"$set": {"name": nick[0:15]}}
                 self.mycol.update_one(myquery, newvalues)
@@ -432,7 +444,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             flag = 1
 
         if flag == 0:
-            await ctx.send(f"⚠ {member.mention}, Please donate to check balance!! ⚠")
+            await ctx.send(f"⚠ Uh oh {member.mention}, Dank donation not found!! ⚠")
             await ctx.message.add_reaction("❌")
             return
         else:
@@ -601,6 +613,12 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             await ctx.send(embed=display)
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠",delete_after=30)
+            pass
+        registry = self.client.get_channel(self.registry)
+        try:
+            await registry.send(embed=display)
+        except:
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
             pass 
         try:
             await ctx.message.delete()
@@ -724,6 +742,12 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠",delete_after=30)
             pass 
+        registry = self.client.get_channel(self.registry)
+        try:
+            await registry.send(embed=display)
+        except:
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
+            pass
         try:
             await ctx.message.delete()
         except:
