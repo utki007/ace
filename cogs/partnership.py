@@ -171,7 +171,7 @@ class partnership(commands.Cog, name="Partnership Manager",description= "Manages
             return
         
         if ctx.channel.id == self.partnerheist:
-            await ctx.send(f'`{" ".join(map(str,pp))}`')
+            await ctx.send(f'{" ".join(map(str,pp))} **Join up**!!!')
         else:
             warning = discord.Embed(
             color=self.client.colors["RED"], 
