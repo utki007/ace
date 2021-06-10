@@ -191,7 +191,7 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
 
                     overwrite = channel.overwrites_for(i)
                     overwrite.send_messages = True
-                    overwrite.view_channel = True
+                    # overwrite.view_channel = True
 
                     await channel.set_permissions(i, overwrite=overwrite)
                     await ctx.send(embed=unlock_embed)
@@ -211,7 +211,7 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
 
             overwrite = channel.overwrites_for(req_role)
             overwrite.send_messages = True
-            overwrite.view_channel = True
+            # overwrite.view_channel = True
             
             await channel.set_permissions(req_role, overwrite=overwrite)
             await ctx.send(embed=unlock_embed)
