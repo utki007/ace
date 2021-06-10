@@ -584,7 +584,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         # showing donor balance
         display = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-            description=f"\n**Amount Credited: **<:TGK_DMC:830520214021603350> {amount:,}\n"
+            description=f"\n**Amount Credited to {name} Spl.: **<:TGK_DMC:830520214021603350> {amount:,}\n"
                         f"**Total Donation: **<:TGK_DMC:830520214021603350> {dict[self.bal]:,} \n"
                         f"{spldono}\n"
                         f"**_Sanctioned By: _** {ctx.author.mention}\n"
@@ -725,7 +725,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
         dmMessage = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK Donation Bank__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-            description=f"\n**Amount Debited: **<:TGK_DMC:830520214021603350> {amount:,}\n"
+            description=f"\n**Amount Debited from {name} Spl.: **<:TGK_DMC:830520214021603350> {amount:,}\n"
                         # f"**By: ** {ctx.author.mention}\n"
                         f"**Total Donation: **<:TGK_DMC:830520214021603350> {dict[self.bal]:,} \n\n"
                         f"{spldono}\n"
