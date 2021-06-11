@@ -130,7 +130,7 @@ class channel(commands.Cog, description="Channel utils"):
             dank_grind = self.client.get_channel(836477044128612422)
             
             donate_here = self.client.get_channel(812711254790897714)
-            grinder_donation = self.client.get_channel(836642929593548800)
+            grinder_donation = self.client.get_channel(851663580620521472)
             trade_zone = self.client.get_channel(814959157073412156)
 
             override_dank_1 = dank_1.overwrites_for(default_role)
@@ -232,7 +232,7 @@ class channel(commands.Cog, description="Channel utils"):
             dank_grind = self.client.get_channel(836477044128612422)
             
             donate_here = self.client.get_channel(812711254790897714)
-            grinder_donation = self.client.get_channel(836642929593548800)
+            grinder_donation = self.client.get_channel(851663580620521472)
             trade_zone = self.client.get_channel(814959157073412156)
 
             override_dank_1 = dank_1.overwrites_for(default_role)
