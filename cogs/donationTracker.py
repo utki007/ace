@@ -25,6 +25,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         # for tgk
         self.logChannel = int(838042561486258247)
         self.registry = int(851500261193416754)
+        self.celebRegistry = int(853159513267896360)
 
         # donor bank properties
         self.bal = "bal"
@@ -615,7 +616,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠",delete_after=30)
             pass
-        registry = self.client.get_channel(self.registry)
+        registry = self.client.get_channel(self.celebRegistry)
         try:
             if ctx.channel.id != registry.id:
                 await registry.send(embed=display)
@@ -743,7 +744,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠",delete_after=30)
             pass 
-        registry = self.client.get_channel(self.registry)
+        registry = self.client.get_channel(self.celebRegistry)
         try:
             if ctx.channel.id != registry.id:
                 await registry.send(embed=display)
