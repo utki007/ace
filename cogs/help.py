@@ -188,7 +188,7 @@ class Help(commands.Cog, name="Help command"):
             name="<a:TGK_sparkles:838838345316040744> __Update Items__",
             value=  f"Change/add item worth \n"
                     f"Ex: `?item [update|u] <emoji> <giveawayCost> \n <donationCost> <emoji_url> <name_of_item>`\n"
-                    f"**Admin Only Command**",
+                    f"_Admin Only Command_",
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Add Items__",
@@ -202,12 +202,12 @@ class Help(commands.Cog, name="Help command"):
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __List__",
-            value=  f"**List of Items in Celeb Inventory ** \n"
+            value=  f"List of Items in Celeb Inventory  \n"
                     f"Ex: `?item [list|l] `",
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Worthlist__",
-            value=f"**Worth of Items in Inventory ** \n"
+            value=f"Worth of Items in Inventory  \n"
                     f"Ex: `?item [worthlist|wl|worth] `",
             inline = False)
         
