@@ -187,7 +187,7 @@ class Help(commands.Cog, name="Help command"):
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Update Items__",
             value=  f"Change/add item worth \n"
-                    f"Ex: `?item [update|u] <emoji> <giveawayCost> <donationCost> <emoji_url> <name_of_item>`\n"
+                    f"Ex: `?item [update|u] <emoji> <giveawayCost> \n <donationCost> <emoji_url> <name_of_item>`\n"
                     f"**Admin Only Command**",
             inline = False)
         help.add_field(
