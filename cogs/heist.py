@@ -1,5 +1,6 @@
 # importing the required libraries
 import discord
+from discord import message
 from discord.ext import commands, tasks
 import os
 import pandas as pd
@@ -279,10 +280,10 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
             await ctx.send(embed=timesup)
 
 
-    @commands.command(name="hlock", description="Reset any channel",aliases = ["reset"], hidden=True)
+    @commands.command(name="hlock", description="Reset any channel",aliases = ["hl","reset"], hidden=True)
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def hlock(self, ctx):
-
+        await ctx.message.delete()
         category = [785841152553123861,797512848778723368]
         
         unauthorized = discord.Embed(

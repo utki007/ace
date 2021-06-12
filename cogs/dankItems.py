@@ -301,7 +301,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
     
     @item.command(name="info", description="Check Item Info from Inventory", aliases=['information'])
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
-    async def info(self, ctx,name):
+    async def info(self, ctx,name,amount:int=1):
         async with ctx.typing():
                 
             myquery = {"itemName": name}
@@ -321,9 +321,9 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
             
             embed = discord.Embed(
                 title=f"    **{dict['itemName'][0].title()}\n**   ",
-                description=f"**Total Items:** {dict['quantity']}\n"
+                description=f"**Total Items:** {amount}\n"
                             f"**Unit Cost:** {self.client.emojis_list['DMC']} **{dict['donationCost']:,}**\n"
-                            f"**Items Worth:** {self.client.emojis_list['DMC']} **{dict['quantity']*dict['donationCost']:,}**\n",
+                            f"**Items Worth:** {self.client.emojis_list['DMC']} **{amount*dict['donationCost']:,}**\n",
                 color=self.client.colors["DARK_GOLD"],
                 timestamp=datetime.datetime.utcnow()
             )

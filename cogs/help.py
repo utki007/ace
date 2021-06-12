@@ -28,6 +28,10 @@ class Help(commands.Cog, name="Help command"):
             timestamp=datetime.datetime.utcnow()
         )
         help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Item Tracker__",
+            value="Track all donations made to the server \n`add` , `remove` , `list`, `info`, `worthlist`",
+            inline = False)
+        help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Donation Tracker__",
             value="Track all donations made to the server \n`bal` , `nick` , `regDonation`, `splDonation`",
             inline = False)
@@ -171,6 +175,49 @@ class Help(commands.Cog, name="Help command"):
         #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
         await ctx.send(embed = help)
 
-    
+    @help.command(name="item",aliases = ["items","wl","worthlist","list"])
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    async def item(self, ctx):
+        help = discord.Embed(
+            title = "Item Management",
+            description = f"Track Items Efficiently",
+            color = ctx.author.color,
+            timestamp=datetime.datetime.utcnow()
+        )
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Update Items__",
+            value=  f"Change/add item worth \n"
+                    f"Ex: `?item [update|u] <emoji> <giveawayCost> <donationCost> <emoji_url> <name_of_item>`\n"
+                    f"**Admin Only Command**",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Add Items__",
+            value=  f"Add Items to Celeb Inventory \n"
+                    f"Ex: `?item [add|a] <name> <quantity> `",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Remove Items__",
+            value=  f"Remove Items to Celeb Inventory \n"
+                    f"Ex: `?item [remove|r] <name> <quantity> `",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __List__",
+            value=  f"**List of Items in Celeb Inventory ** \n"
+                    f"Ex: `?item [list|l] `",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Worthlist__",
+            value=f"**Worth of Items in Inventory ** \n"
+                    f"Ex: `?item [worthlist|wl|worth] `",
+            inline = False)
+        
+        help.set_author(name=ctx.guild.name,
+                              icon_url=ctx.guild.icon_url)
+        help.set_footer(
+            text=f"Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
+        # help.set_thumbnail(
+        #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
+        await ctx.send(embed = help)
+        
 def setup(bot):
     bot.add_cog(Help(bot))
