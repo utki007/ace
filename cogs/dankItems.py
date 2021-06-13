@@ -55,7 +55,8 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
     async def update(self, ctx,emoji : discord.Emoji,giveawayCost:float,donationCost: float,url:str, *name):
         giveawayCost = int(giveawayCost)
         donationCost = int(donationCost)
-        for i in name:
+        name = list(name)
+        for i in range(len(name)):
             name[i] = name[i].lower()
         myquery = {"itemName": name[0]}
         info = self.mycol.find(myquery)
