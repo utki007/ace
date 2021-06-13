@@ -402,7 +402,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
             return
         
         
-    @item.command(name="worth", description="List of Items in Inventory", aliases=['wl','worthlist'])
+    @item.command(name="worth", description="Worth of Items in Inventory", aliases=['wl','worthlist'])
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def worth(self, ctx,number: int = 5):
         if number<5:
