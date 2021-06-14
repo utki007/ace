@@ -124,7 +124,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         try:
             await member.send(embed=dmMessage)
         except:
-            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:",delete_after=30)
+            am = discord.AllowedMentions(
+                users=False,  # Whether to ping individual user @mentions
+            )
+            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:",delete_after=30, allowed_mentions=am)
             pass
 
         # for logging
@@ -234,7 +237,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         try:
             await member.send(embed=dmMessage)
         except:
-            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:",delete_after=30)
+            am = discord.AllowedMentions(
+                users=False,  # Whether to ping individual user @mentions
+            )
+            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:",delete_after=30, allowed_mentions=am)
             pass
 
         # for logging
@@ -629,7 +635,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         try:
             await member.send(embed=dmMessage)
         except:
-            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:",delete_after=30)
+            am = discord.AllowedMentions(
+                users=False,  # Whether to ping individual user @mentions
+            )
+            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:", allowed_mentions=am,delete_after=30)
             pass
 
         # for logging
@@ -757,7 +766,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         try:
             await member.send(embed=dmMessage)
         except:
-            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:",delete_after=30)
+            am = discord.AllowedMentions(
+                users=False,  # Whether to ping individual user @mentions
+            )
+            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:",delete_after=30, allowed_mentions=am)
             pass
             
         # for logging
