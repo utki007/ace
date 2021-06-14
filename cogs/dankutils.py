@@ -53,7 +53,13 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 for word in word_list:
                     if word in messageContent:
                         time.sleep(3)
-                        return await message.channel.send("If you'd like to stop receiving pings, check out <#848631258137362452> for <@&810593886720098304> role!!!")
+                        am = discord.AllowedMentions(
+                            users=False,  # Whether to ping individual user @mentions
+                            everyone=False,  # Whether to ping @everyone or @here mentions
+                            roles=False,  # Whether to ping role @mentions
+                            replied_user=False,  # Whether to ping on replies to messages
+                        )
+                        return await message.channel.send("If you'd like to stop receiving pings, check out <#848631258137362452> for <@&810593886720098304> role!!!", allowed_mentions=am)
 
         # if message.channel.id == 840215557097390131 and message.author.id != self.client.user.id:838646783785697290
         # 838646783785697290:
