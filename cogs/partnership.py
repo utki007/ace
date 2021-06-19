@@ -147,7 +147,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
     @commands.command(name="ping_heist", description="Ping your Heist", aliases=['ph'])
     # @commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376)
     @commands.cooldown(1, 57600, commands.BucketType.user)
-    async def pingheist(self, ctx):
+    async def pingheist(self, ctx,*, text: str=''):
         try:
             await ctx.message.delete()
         except:
@@ -172,8 +172,15 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         if pp == []:
             await ctx.send(embed=unauthorized, delete_after=30)
             return
-
+        am = discord.AllowedMentions(
+            users=False,  # Whether to ping individual user @mentions
+            everyone=False,  # Whether to ping @everyone or @here mentions
+            roles=False,  # Whether to ping role @mentions
+            replied_user=False,  # Whether to ping on replies to messages
+        )
         if ctx.channel.id == self.partnerheist:
+            if text != "":
+                await ctx.send(text,allowed_mentions=am)
             await ctx.send(f'{" ".join(map(str,pp))} **Join up**!!!')
         else:
             warning = discord.Embed(
