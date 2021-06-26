@@ -28,8 +28,8 @@ class Help(commands.Cog, name="Help command"):
             timestamp=datetime.datetime.utcnow()
         )
         help.add_field(
-            name="<a:TGK_sparkles:838838345316040744> __Item Tracker__",
-            value="Track all donations made to the server \n`add` , `remove` , `list`, `info`, `worthlist`",
+            name="<a:TGK_sparkles:838838345316040744> __Channel Management__",
+            value="Secure the server \n`dankdown` , `dankup` , `lock` ,`slowmode` , `unlock`",
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Donation Tracker__",
@@ -40,8 +40,12 @@ class Help(commands.Cog, name="Help command"):
             value="Track and Conduct a Heist \n`heist` , `hlock`, `thanks`",
             inline = False)
         help.add_field(
-            name="<a:TGK_sparkles:838838345316040744> __Channel Management__",
-            value="Secure the server \n`dankdown` , `dankup` , `lock` ,`slowmode` , `unlock`",
+            name="<a:TGK_sparkles:838838345316040744> __Item Tracker__",
+            value="Track all donations made to the server \n`add` , `remove` , `list`, `info`, `worthlist`",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Partnership Tracker__",
+            value="Track all donations made to the server \n`partnership` , `ping_heist` , `blacklist`",
             inline = False)
         help.set_author(name=ctx.guild.name,
                               icon_url=ctx.guild.icon_url)
@@ -204,6 +208,52 @@ class Help(commands.Cog, name="Help command"):
             name="<a:TGK_sparkles:838838345316040744> __Remove Items__",
             value=  f"Remove Items to Celeb Inventory \n"
                     f"Ex: `?item [remove|r] <name> <quantity> `",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __List__",
+            value=  f"List of Items in Celeb Inventory  \n"
+                    f"Ex: `?item [list|l] `",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Worthlist__",
+            value=f"Worth of Items in Inventory  \n"
+                    f"Ex: `?item [worthlist|wl|worth] `",
+            inline = False)
+        
+        help.set_author(name=ctx.guild.name,
+                              icon_url=ctx.guild.icon_url)
+        help.set_footer(
+            text=f"Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
+        # help.set_thumbnail(
+        #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
+        await ctx.send(embed = help)
+      
+     
+
+    
+    @help.command(name="partnership",aliases = ["psh","bl","ph","ping_heist","blacklist"])
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    async def partnership(self, ctx):
+        help = discord.Embed(
+            title = "Partnership Tracker",
+            description = f"Track Partnerships Efficiently",
+            color = ctx.author.color,
+            timestamp=datetime.datetime.utcnow()
+        )
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Ping Heist__",
+            value=  f"Ping your Heist \n"
+                    f"Ex: `?[ping_heist|ph] <ad(optional)>`\n",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Blacklist__",
+            value=  f"Blacklist a Partner \n"
+                    f"Ex: `?[blacklist|bl] [update|u] <serverId> <serverName> <reason> `",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Check Partner__",
+            value=  f"Check if a partner is blacklisted \n"
+                    f"Ex: `?[blacklist|bl] [information|info] <serverId>`",
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __List__",
