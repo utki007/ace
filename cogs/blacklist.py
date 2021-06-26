@@ -140,44 +140,45 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
     @blacklist.command(name="information", description="Check if a server is blacklisted", aliases=['info'])
     @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916), commands.is_owner())
     async def info(self, ctx, serverId: int):
-        async with ctx.typing():
+        
+        await ctx.message.delete()
+        myquery = {"_id": serverId}
+        info = self.mycol.find(myquery)
+        flag = 0
+        dict = {}
+        for x in info:
+            dict = x
+            flag = 1
 
-            myquery = {"_id": serverId}
-            info = self.mycol.find(myquery)
-            flag = 0
-            dict = {}
-            for x in info:
-                dict = x
-                flag = 1
-
-            if flag == 0:
-                embed = discord.Embed(
-                    color=self.client.colors["Success"],
-                    description=f'{self.client.emojis_list["SuccessTick"]} | {ctx.author.mention}, you are authorized to do partnership with them.')
-                try:
-                    await ctx.author.send(embed=embed)
-                except:
-                    await ctx.channel.send(embed=embed, delete_after=10)
-                return
-
-            dm = discord.Embed(
-                title=f"    **{dict['serverName'].title()}\n**   ",
-                description= f"**Server ID:** {dict['_id']}\n"
-                            f"**Server Name:** {dict['serverName'].title()}\n"
-                            f"**Reason:** {dict['reason']}\n",
-                color = self.client.colors["DARK_GOLD"],
-                timestamp = datetime.datetime.utcnow()
-            )
-            dm.set_footer(text = f"Developed by utki007 & Jay",
-                             icon_url = ctx.guild.icon_url)
+        if flag == 0:
             embed = discord.Embed(
-                    color=self.client.colors["RED"],
-                    description=f'{self.client.emojis_list["Warrning"]} | {ctx.author.mention}, you are **unauthorized** to do Partner with them. Contact Senior Staff.')
-                    
+                color=self.client.colors["Success"],
+                description=f'{self.client.emojis_list["SuccessTick"]} | {ctx.author.mention}, you are authorized to do partnership with them.')
             try:
-                await ctx.author.send(embed=dm)
+                await ctx.author.send(embed=embed)
             except:
-                await ctx.channel.send(embed=embed, delete_after=10)
+                await ctx.channel.send(embed=embed, delete_after=5)
+            return
+
+        dm = discord.Embed(
+            title=f"    **{dict['serverName'].title()}\n**   ",
+            description= f"**Server ID:** {dict['_id']}\n"
+                        f"**Server Name:** {dict['serverName'].title()}\n"
+                        f"**Reason:** {dict['reason']}\n",
+            color = self.client.colors["DARK_GOLD"],
+            timestamp = datetime.datetime.utcnow()
+        )
+        dm.set_footer(text = f"Developed by utki007 & Jay", icon_url = ctx.guild.icon_url)
+        embed = discord.Embed(
+                color=self.client.colors["RED"],
+                description=f'{self.client.emojis_list["Warrning"]} | {ctx.author.mention}, you are **unauthorized** to do Partner with them. Contact Senior Staff.')
+                    
+        try:
+            await ctx.author.send(embed=dm)
+        except:
+            pass
+            
+        await ctx.channel.send(embed=embed, delete_after=10)
             
 def setup(client):
     client.add_cog(blacklist(client))
