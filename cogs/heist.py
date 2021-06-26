@@ -320,8 +320,10 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
             roles=False,  # Whether to ping role @mentions
             replied_user=False,  # Whether to ping on replies to messages
         )
-        await ctx.send(f"Make sure to Thank our Amazing <@&836228842397106176>'s  for the heist in <#785847439579676672>", allowed_mentions=am)
-    
+        await ctx.message.delete()
+        ty = await ctx.send(f"Make sure to Thank our Amazing <@&836228842397106176>'s  for the heist in <#785847439579676672>", allowed_mentions=am)
+        await ty.add_reaction(f'<:thanks:835922028473221130>')
+        
     # async def create_heist_timer(self,ctx,msg):
     #     try:
     #         for i in range(8,-1,-1):
