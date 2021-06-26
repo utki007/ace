@@ -32,9 +32,9 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
     
-    async def create_partner(self, ctx, member, pings):
+    async def create_partner(self, ctx, id, pings):
         dict = {}
-        dict["_id"] = member
+        dict["_id"] = id
         dict["pings"] = pings
         self.mycol.insert_one(dict)    
 
@@ -74,7 +74,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 await ctx.send(embed=embed)
                 return
 
-        myquery = {"_id": member}
+        myquery = {"_id": member.id}
         info = self.mycol.find(myquery)
         flag = 0
         dict = {}
@@ -84,7 +84,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
         if flag == 0:
             try:
-                await self.create_partner(self, ctx, member, pp)
+                await self.create_partner( ctx, member.id, pp)
                 embed = discord.Embed(
                     color=self.client.colors["Success"],
                     description=f'{self.client.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!')
@@ -137,7 +137,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         except:
             pass
         
-        myquery = {"_id": member}
+        myquery = {"_id": member.id}
         info = self.mycol.find(myquery)
         flag = 0
         dict = {}
