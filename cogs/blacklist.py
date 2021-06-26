@@ -162,7 +162,7 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
 
             dm = discord.Embed(
                 title=f"    **{dict['serverName'].title()}\n**   ",
-                description= f"**Server ID:** {dict['serverId']}\n"
+                description= f"**Server ID:** {dict['_id']}\n"
                             f"**Server Name:** {dict['serverName'].title()}\n"
                             f"**Reason:** {dict['reason']}\n",
                 color = self.client.colors["DARK_GOLD"],
