@@ -199,18 +199,19 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             title=f"Unauthorized to use this command!!!",
             description=f"{self.client.emojis_list['Warrning']} | If you think it's a mistake, do reach out to an Owner/Admin!!!\n Repeatetive usage may lead to a blacklist!")
 
-        partners = {}
-        with open('./properties/partnerships.json', 'r') as f:
-            partners = json.load(f)
-
-        try:
-            pp = partners[str(ctx.author.id)]
-        except:
-            pass
-
-        if pp == []:
+        
+        myquery = {"_id": ctx.author.id}
+        info = self.mycol.find(myquery)
+        flag = 0
+        dict = {}
+        for x in info:
+            dict = x
+            flag = 1
+        
+        if flag == 0:
             await ctx.send(embed=unauthorized, delete_after=30)
             return
+            
         am = discord.AllowedMentions(
             users=False,  # Whether to ping individual user @mentions
             everyone=False,  # Whether to ping @everyone or @here mentions
