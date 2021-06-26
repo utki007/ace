@@ -65,7 +65,7 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
             except:
                 embed = discord.Embed(
                     color=self.client.colors["RED"],
-                    description=f'{self.client.emojis_list["Warrning"]} | Unable to blacklist them. Contact my Jay or utki.')
+                    description=f'{self.client.emojis_list["Warrning"]} | Unable to blacklist them. Contact Jay or utki.')
                 await ctx.channel.send(embed=embed)
                 return
 

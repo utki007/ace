@@ -18,15 +18,25 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
     def __init__(self, client):
         self.client = client
-
+        self.mongoconnection = self.client.connection_url
+        self.myclient = pymongo.MongoClient(self.mongoconnection)
+        self.mydb = self.myclient['TGK']
+        self.mycol = self.mydb["partnerships"]
+        
         # channel ids
         self.partnerheist = 806988762299105330
+        # for tgk
+        self.logChannel = int(858233010860326962)
 
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
-        # for tgk
-        self.logChannel = int(838042561486258247)
+    
+    async def create_partner(self, ctx, member, pings):
+        dict = {}
+        dict["_id"] = member
+        dict["pings"] = pings
+        self.mycol.insert_one(dict)    
 
     @commands.group(name="Partnership", description="Moderator only Command to add/remove partnership pings", usage="add/remove member pings[optional]", aliases=["psh"])
     @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916), commands.is_owner())
@@ -64,19 +74,42 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 await ctx.send(embed=embed)
                 return
 
-        partners = {}
-        with open('./properties/partnerships.json', 'r') as f:
-            partners = json.load(f)
+        myquery = {"_id": member}
+        info = self.mycol.find(myquery)
+        flag = 0
+        dict = {}
+        for x in info:
+            dict = x
+            flag = 1
 
-        partners[str(member.id)] = pp
-
-        with open('./properties/partnerships.json', 'w') as f:
-            json.dump(partners, f, indent=4)
-
-        embed = discord.Embed(
-            color=self.client.colors["Success"],
-            description=f'{self.client.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!')
-        await ctx.send(embed=embed)
+        if flag == 0:
+            try:
+                await self.create_partner(self, ctx, member, pp)
+                embed = discord.Embed(
+                    color=self.client.colors["Success"],
+                    description=f'{self.client.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!')
+                await ctx.send(embed=embed)
+                return
+            except:
+                embed = discord.Embed(
+                    color=self.client.colors["RED"],
+                    description=f'{self.client.emojis_list["Warrning"]} | Unable to add them. Contact Jay or utki.')
+                await ctx.channel.send(embed=embed)
+                return
+        
+        try:
+            newvalues = {"$set": {"pings": pp}}
+            self.mycol.update_one(myquery, newvalues)
+            embed = discord.Embed(
+                    color=self.client.colors["Success"],
+                    description=f'{self.client.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!')
+            await ctx.send(embed=embed)
+        except:
+            embed = discord.Embed(
+                    color=self.client.colors["RED"],
+                    description=f'{self.client.emojis_list["BrokenStatus"]} | Unable to add them. Contact Jay or utki.')
+            await ctx.channel.send(embed=embed)
+            return
 
         # for logging
         logg = discord.Embed(
@@ -103,28 +136,35 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             await ctx.message.delete()
         except:
             pass
+        
+        myquery = {"_id": member}
+        info = self.mycol.find(myquery)
+        flag = 0
+        dict = {}
+        for x in info:
+            dict = x
+            flag = 1
 
-        partners = {}
-        with open('./properties/partnerships.json', 'r') as f:
-            partners = json.load(f)
-
-        try:
-            del partners[str(member.id)]
-        except:
+        if flag == 0:
             embed = discord.Embed(
                 color=self.client.colors["RED"],
                 description=f"{self.client.emojis_list['Warrning']} | {member.mention}'s Partnership data not found!!!")
             await ctx.send(embed=embed)
             return
-
-        with open('./properties/partnerships.json', 'w') as f:
-            json.dump(partners, f, indent=4)
-
-        embed = discord.Embed(
-            color=self.client.colors["Success"],
-            description=f"{self.client.emojis_list['SuccessTick']} |{member.mention}'s partnership data has been erased!!!")
-        await ctx.send(embed=embed)
-
+        
+        try:
+            self.mycol.remove(myquery)
+            embed = discord.Embed(
+                color=self.client.colors["Success"],
+                description=f"{self.client.emojis_list['SuccessTick']} |{member.mention}'s partnership data has been erased!!!")
+            await ctx.send(embed=embed)
+        except:
+            embed = discord.Embed(
+                    color=self.client.colors["RED"],
+                    description=f'{self.client.emojis_list["BrokenStatus"]} | Unable to erase data. Contact Jay or utki.')
+            await ctx.channel.send(embed=embed)
+            return
+        
         # for logging
         logg = discord.Embed(
             title="__Partner Logging__",
