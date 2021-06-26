@@ -37,7 +37,7 @@ class Help(commands.Cog, name="Help command"):
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Heist Tracker__",
-            value="Track and Conduct a Heist \n`heist` , `hlock`",
+            value="Track and Conduct a Heist \n`heist` , `hlock`, `thanks`",
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Channel Management__",
@@ -97,7 +97,7 @@ class Help(commands.Cog, name="Help command"):
         #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
         await ctx.send(embed = help)
     
-    @help.command(name="heist",aliases = ["Heist",'h',"hlock"])
+    @help.command(name="heist",aliases = ["Heist",'h',"hlock","reset","thanks"])
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def heist(self, ctx):
         help = discord.Embed(
@@ -117,7 +117,12 @@ class Help(commands.Cog, name="Help command"):
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Lock a Heist Channel__",
             value=  f"Use it when you need to lock the channel for all heisters\n"
-                    f"**Usage**: `?hlock`",
+                    f"**Usage**: `?[hlock|reset]`",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Thank you note__",
+            value=  f"Use it when you need to send a thank you note\n"
+                    f"**Usage**: `?[thanks|ty]`",
             inline = False)
         
         help.set_author(name=ctx.guild.name,
