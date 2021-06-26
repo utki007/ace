@@ -255,16 +255,6 @@ class Help(commands.Cog, name="Help command"):
             value=  f"Check if a partner is blacklisted \n"
                     f"Ex: `?[blacklist|bl] [information|info] <serverId>`",
             inline = False)
-        help.add_field(
-            name="<a:TGK_sparkles:838838345316040744> __List__",
-            value=  f"List of Items in Celeb Inventory  \n"
-                    f"Ex: `?item [list|l] `",
-            inline = False)
-        help.add_field(
-            name="<a:TGK_sparkles:838838345316040744> __Worthlist__",
-            value=f"Worth of Items in Inventory  \n"
-                    f"Ex: `?item [worthlist|wl|worth] `",
-            inline = False)
         
         help.set_author(name=ctx.guild.name,
                               icon_url=ctx.guild.icon_url)
