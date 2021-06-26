@@ -33,7 +33,6 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
     async def partnership(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send(f"use `help partnership` or `help psh` to know more!!!")
-            await ctx.send_help("partnership")
 
     @partnership.command(name="add", description="Add a Partner with Pings", aliases=['a'])
     @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916), commands.is_owner())

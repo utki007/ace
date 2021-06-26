@@ -45,7 +45,7 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
     @blacklist.command(name="update", description="Add/Update Blacklisted Servers", aliases=['u'])
     @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376), commands.is_owner())
     async def update(self, ctx, serverId: int, serverName: str, *reason):
-        # reason = ' '.join([str(elem) for elem in reason])
+        reason = ' '.join([str(elem) for elem in reason])
         myquery = {"_id": serverId}
         info = self.mycol.find(myquery)
         flag = 0
