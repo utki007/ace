@@ -311,6 +311,17 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         await ctx.channel.edit(sync_permissions=True)
         await ctx.send(embed=lock_embed)
 
+    @commands.command(name="Thanks", description="Reset any channel",aliases = ["ty"], hidden=True)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    async def thanks(self, ctx):
+        am = discord.AllowedMentions(
+            users=False,  # Whether to ping individual user @mentions
+            everyone=False,  # Whether to ping @everyone or @here mentions
+            roles=False,  # Whether to ping role @mentions
+            replied_user=False,  # Whether to ping on replies to messages
+        )
+        await ctx.send(f"Make sure to Thank our Amazing <@&836228842397106176>'s  for the heist in <#785847439579676672>", allowed_mentions=am)
+    
     # async def create_heist_timer(self,ctx,msg):
     #     try:
     #         for i in range(8,-1,-1):
