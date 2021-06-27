@@ -18,7 +18,7 @@ from asyncio import sleep
 
 description = '''This is what I have been programmed to do'''
 client = commands.Bot(
-    command_prefix=commands.when_mentioned_or("?"),
+    command_prefix=commands.when_mentioned_or(["?","? "]),
     description=description,
     case_insensitive=True,
     intents= discord.Intents.all(),
