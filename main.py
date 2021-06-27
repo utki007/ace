@@ -133,11 +133,9 @@ client.emojis_list = {
     "Typing" : "<a:tgk_typing:840642605545160757>",
     "Timer" : "<a:tgk_timer:841624339169935390>",
     "60sec" : "<a:tgk_cd:841625640880570369>",
-    "right" :"<a:yellowrightarrow:801446308778344468>",
     "banHammer" : "<a:tgk_banhammer:849699763065585734>",
     "rightArrow" : "<a:yellowrightarrow:801446308778344468>",
-    "1⃣" : "<:tgk_one:850901272511905825>",
-    "2⃣" : "<:tgk_two:850901431074160640>"
+    "leftArrow" : "<a:tgk_leftarrow:858674346477617172>"
 }
 
 # client.run(os.environ['BOT_TOKEN'])
