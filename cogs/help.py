@@ -19,7 +19,7 @@ class Help(commands.Cog, name="Help command"):
     @commands.group(
         name="help", aliases=["h", "commands"], description="The help command!",hidden = True,invoke_without_command = True
     )
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     async def help(self, ctx):
         help = discord.Embed(
             # title = "Help",
@@ -45,7 +45,7 @@ class Help(commands.Cog, name="Help command"):
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Partnership Tracker__",
-            value="Track all donations made to the server \n`partnership` , `ping_heist` , `blacklist`",
+            value="Track all donations made to the server \n`partnership`, `pings` , `ping_heist` , `blacklist`",
             inline = False)
         help.set_author(name=ctx.guild.name,
                               icon_url=ctx.guild.icon_url)
@@ -56,12 +56,12 @@ class Help(commands.Cog, name="Help command"):
         await ctx.send(embed = help)
         
     @help.command(name="Donation",aliases = ["donation",'dono',"Dono","d","bal" , "nick","celeb" , "regDonation", "splDonation"])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     async def donation(self, ctx):
         help = discord.Embed(
             title = "Donation Tracker",
             description = f"Track all Donations",
-            color = ctx.author.color,
+            color = 0x9e3bff,
             timestamp=datetime.datetime.utcnow()
         )
         help.add_field(
@@ -102,12 +102,12 @@ class Help(commands.Cog, name="Help command"):
         await ctx.send(embed = help)
     
     @help.command(name="heist",aliases = ["Heist",'h',"hlock","reset","thanks"])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     async def heist(self, ctx):
         help = discord.Embed(
             title = "Heist Tracker",
             description = f"Track and conduct a Heist",
-            color = ctx.author.color,
+            color = 0x9e3bff,
             timestamp=datetime.datetime.utcnow()
         )
         help.add_field(
@@ -139,12 +139,12 @@ class Help(commands.Cog, name="Help command"):
    
             
     @help.command(name="Channel",aliases = ["ch","c","slowmode",'Lock',"unlock","ul","dankdown","dankup"])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     async def lock(self, ctx):
         help = discord.Embed(
             title = "Channel Management",
             description = f"Secure the Server",
-            color = ctx.author.color,
+            color = 0x9e3bff,
             timestamp=datetime.datetime.utcnow()
         )
         help.add_field(
@@ -185,12 +185,12 @@ class Help(commands.Cog, name="Help command"):
         await ctx.send(embed = help)
 
     @help.command(name="item",aliases = ["items","wl","worthlist","list"])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     async def item(self, ctx):
         help = discord.Embed(
             title = "Item Management",
             description = f"Track Items Efficiently",
-            color = ctx.author.color,
+            color = 0x9e3bff,
             timestamp=datetime.datetime.utcnow()
         )
         help.add_field(
@@ -232,14 +232,19 @@ class Help(commands.Cog, name="Help command"):
 
     
     @help.command(name="partnership",aliases = ["psh","bl","ph","ping_heist","blacklist"])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     async def partnership(self, ctx):
         help = discord.Embed(
             title = "Partnership Tracker",
             description = f"Track Partnerships Efficiently",
-            color = ctx.author.color,
+            color = 0x9e3bff,
             timestamp=datetime.datetime.utcnow()
         )
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Ping Count__",
+            value=  f"Check out ping counts \n"
+                    f"Ex: `?pings`",
+            inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Ping Heist__",
             value=  f"Ping your Heist \n"

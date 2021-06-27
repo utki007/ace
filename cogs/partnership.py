@@ -296,7 +296,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         ping1 = discord.Embed(
                 title=f"    **Single Pings for Partnership\n**   ",
                 description= singlePings,
-                color=0x78AB46,
+                color=0x9e3bff,
                 timestamp=datetime.datetime.utcnow()
         )
         ping1.set_footer(
@@ -308,7 +308,10 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         
         df = pd.DataFrame(dpings)
         df2 = df.sort_values(by= "pingCount", ascending = False)
-        await ctx.message.delete()
+        try:
+            await ctx.message.delete()
+        except:
+            pass
         
         rows = len(df2.index)
         
@@ -332,7 +335,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             ping2 = discord.Embed(
                 title=f"    **Double Pings for Partnership\n**   ",
                 description= doublePings,
-                color=0x78AB46,
+                color=0x9e3bff,
                 timestamp=datetime.datetime.utcnow()
             )
             ping2.set_footer(
@@ -342,6 +345,9 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         
         message = await ctx.send(embed = ping1)
         await message.add_reaction(self.client.emojis_list["leftArrow"])
+        await message.add_reaction(self.client.emojis_list["left"])
+        await message.add_reaction(self.client.emojis_list["stop"])
+        await message.add_reaction(self.client.emojis_list["right"])
         await message.add_reaction(self.client.emojis_list["rightArrow"])
 
         def check(reaction, user):
@@ -352,13 +358,19 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
         while True:
             if  str(reaction) == self.client.emojis_list["leftArrow"]:
+                await message.edit(embed = pages[0])
+            elif str(reaction) == self.client.emojis_list["left"]:
                 if i > 0:
                     i -= 1
                     await message.edit(embed = pages[i])
-            elif str(reaction) == self.client.emojis_list["rightArrow"]:
+            elif str(reaction) == self.client.emojis_list["right"]:
                 if i < len(pages):
                     i += 1
                     await message.edit(embed = pages[i])
+            elif  str(reaction) == self.client.emojis_list["rightArrow"]:
+                await message.edit(embed = pages[len(pages)-1])
+            elif  str(reaction) == self.client.emojis_list["stop"]:
+                await message.clear_reactions()
             
             try:
                 reaction, user = await self.client.wait_for('reaction_add', timeout = 30.0, check = check)
