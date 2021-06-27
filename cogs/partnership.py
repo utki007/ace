@@ -1,5 +1,6 @@
 # importing the required libraries
 import discord
+from discord import embeds
 from discord.ext import commands, tasks
 import os
 import pandas as pd
@@ -13,6 +14,15 @@ import time
 import datetime
 import json
 
+
+def commonPing(role1, role2):
+    ping1 = set(role1)
+    ping2 = set(role2)
+
+    if len(ping1.intersection(ping2)) > 0:
+        return(len(ping1.intersection(ping2)))  
+    else:
+        return(-1)
 
 class partnership(commands.Cog, name="Partnership Manager", description="Manages all partnerships with TGK"):
 
@@ -184,7 +194,6 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             pass
 
     @commands.command(name="ping_heist", description="Ping your Heist", aliases=['ph'])
-    # @commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376)
     @commands.cooldown(1, 57600, commands.BucketType.user)
     async def pingheist(self, ctx,*, text: str=''):
         try:
@@ -245,7 +254,120 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         )
         await ctx.send("<@&836228842397106176>", delete_after=1)
         await ctx.author.send(f"```?hg {channel} {link}``` \n {channel} {link} ")
+    
+    @commands.command(name="pings", description="Check Partner Pings")
+    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376), commands.is_owner())
+    async def pings(self, ctx):
+        
+        
+        guild = self.client.get_guild(785839283847954433)
+        
+        heist = discord.utils.get(guild.roles, id=804068344612913163 )
+        partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
+        outsideHeist = discord.utils.get(guild.roles, id=806795854475165736)
+        danker = discord.utils.get(guild.roles, id=801392998465404958)
+        partnership = discord.utils.get(guild.roles, id=797448080223109120)
+        nopartner = discord.utils.get(guild.roles, id=797448080223109120)
+        
+        l = [heist,partnerHeist,outsideHeist,danker,partnership]
+        
+        spings = {"name" : [],"pingCount":[]}
+        for i in l:
+            spings["name"].append(i.mention)
+            spings["pingCount"].append(len(i.members))
+        
+        # for double pings 
+        res = [(a, b) for idx, a in enumerate(l) for b in l[idx + 1:]]
+        dpings = {"pingCount":[],"role1":[],"role2":[]}
+        for i in res:
+            role1,role2 = i
+            dpings["pingCount"].append(len(role1.members) + len(role2.members)-commonPing(role1.members,role2.members))
+            dpings["role1"].append(role1)
+            dpings["role2"].append(role2)
+            
+        df = pd.DataFrame(spings)
+        df1 = df.sort_values(by= "pingCount", ascending = False)
+        
+        singlePings = "**\n**"
+        
+        for idx in df1.index:
+            singlePings = singlePings + f'{df1["name"][idx]} {self.client.emojis_list["rightArrow"]}  {df1["pingCount"][idx]}\n **\n**'
+        
+        ping1 = discord.Embed(
+                title=f"    **Single Pings for Partnership\n**   ",
+                description= singlePings,
+                color=0x78AB46,
+                timestamp=datetime.datetime.utcnow()
+        )
+        ping1.set_footer(
+            text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+        ping1.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
+        pages = [ping1]
+        
+        
+        
+        df = pd.DataFrame(dpings)
+        df2 = df.sort_values(by= "pingCount", ascending = False)
+        await ctx.message.delete()
+        
+        rows = len(df2.index)
+        
+        for i in np.arange(0,rows,3):
+            if i + 3 < rows:
+                temp = df2[i:i+3]
+            else:
+                temp = df2[i:]
+            
+        
+            doublePings = "**\n**"
+        
+        
+            for idx in temp.index:
+                doublePings = doublePings + f'{temp["role1"][idx].mention} {self.client.emojis_list["rightArrow"]}  {len(temp["role1"][idx].members)}\n'
+                doublePings = doublePings + f'{temp["role2"][idx].mention} {self.client.emojis_list["rightArrow"]}  {len(temp["role2"][idx].members)}\n'
+                doublePings = doublePings + f'**_Unique Members:_** {self.client.emojis_list["rightArrow"]}  **{temp["pingCount"][idx]}**\n **\n**'
+        
+        
 
+            ping2 = discord.Embed(
+                title=f"    **Double Pings for Partnership\n**   ",
+                description= doublePings,
+                color=0x78AB46,
+                timestamp=datetime.datetime.utcnow()
+            )
+            ping2.set_footer(
+                text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+            ping2.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
+            pages.append(ping2)
+        
+        message = await ctx.send(embed = ping1)
+        await message.add_reaction(self.client.emojis_list["leftArrow"])
+        await message.add_reaction(self.client.emojis_list["rightArrow"])
+
+        def check(reaction, user):
+            return user == ctx.author
+
+        i = 0
+        reaction = None
+
+        while True:
+            if  str(reaction) == self.client.emojis_list["leftArrow"]:
+                if i > 0:
+                    i -= 1
+                    await message.edit(embed = pages[i])
+            elif str(reaction) == self.client.emojis_list["rightArrow"]:
+                if i < len(pages):
+                    i += 1
+                    await message.edit(embed = pages[i])
+            
+            try:
+                reaction, user = await self.client.wait_for('reaction_add', timeout = 30.0, check = check)
+                await message.remove_reaction(reaction, user)
+            except:
+                break
+
+        await message.clear_reactions()
+        
     # @commands.command(name="dontpingme", aliases=['dp'])
     # async def dont_ping_me(self, ctx: commands.Context):
     #     am = discord.AllowedMentions(
