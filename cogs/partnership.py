@@ -14,6 +14,8 @@ import time
 import datetime
 import json
 
+# helper functions
+from utils.custom_pagination import *
 
 def commonPing(role1, role2):
     ping1 = set(role1)
@@ -344,41 +346,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             pages.append(ping2)
         
         message = await ctx.send(embed = ping1)
-        await message.add_reaction(self.client.emojis_list["leftArrow"])
-        await message.add_reaction(self.client.emojis_list["left"])
-        await message.add_reaction(self.client.emojis_list["stop"])
-        await message.add_reaction(self.client.emojis_list["right"])
-        await message.add_reaction(self.client.emojis_list["rightArrow"])
-
-        def check(reaction, user):
-            return user == ctx.author
-
-        i = 0
-        reaction = None
-
-        while True:
-            if  str(reaction) == self.client.emojis_list["leftArrow"]:
-                await message.edit(embed = pages[0])
-            elif str(reaction) == self.client.emojis_list["left"]:
-                if i > 0:
-                    i -= 1
-                    await message.edit(embed = pages[i])
-            elif str(reaction) == self.client.emojis_list["right"]:
-                if i < len(pages):
-                    i += 1
-                    await message.edit(embed = pages[i])
-            elif  str(reaction) == self.client.emojis_list["rightArrow"]:
-                await message.edit(embed = pages[len(pages)-1])
-            elif  str(reaction) == self.client.emojis_list["stop"]:
-                await message.clear_reactions()
-            
-            try:
-                reaction, user = await self.client.wait_for('reaction_add', timeout = 30.0, check = check)
-                await message.remove_reaction(reaction, user)
-            except:
-                break
-
-        await message.clear_reactions()
+        await addPages(self.client,ctx,message,pages)
         
     # @commands.command(name="dontpingme", aliases=['dp'])
     # async def dont_ping_me(self, ctx: commands.Context):
@@ -388,8 +356,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
     #         roles=False,  # Whether to ping role @mentions
     #         replied_user=False,  # Whether to ping on replies to messages
     #     )
-    #     await ctx.send(f"Hello, {ctx.author.mention}", allowed_mentions=am)
-
+    #     message = await ctx.send(f"Hello, {ctx.author.mention}", allowed_mentions=am)
 
 def setup(client):
     client.add_cog(partnership(client))
