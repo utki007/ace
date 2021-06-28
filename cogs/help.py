@@ -1,8 +1,6 @@
 from discord.ext import commands
 import asyncio
 import discord
-from discord.ext.buttons import Paginator
-from utils.util import Pag
 import asyncio
 import math
 import datetime
