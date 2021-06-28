@@ -14,31 +14,27 @@ import datetime
 import TagScriptEngine
 from TagScriptEngine import Interpreter, adapter, block
 
+# import convertor
+from utils.convertor import *
 
 class dankutils(commands.Cog, description="Dank Utility"):
 
     def __init__(self, client):
         self.client = client
-        blocks = [
-            block.MathBlock(),
-            block.RandomBlock(),
-            block.RangeBlock(),
-        ]
-        self.engine = Interpreter(blocks)
-        
+
         # db connection for tempban
         self.mongoconnection = self.client.connection_url2
         self.myclient = pymongo.MongoClient(self.mongoconnection)
         self.mydb = self.myclient['tgk_database']
         self.mycol = self.mydb["bans"]
+        
+        # for discount
+        self.shop = 799106512889839637
+        self.percentageThreshhold = 60
 
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
-
-        # for discount
-        self.shop = 799106512889839637
-        self.percentageThreshhold = 60
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -85,7 +81,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
             newtitle = title[0]
             name = title[1]
             content = f"**{name}** is on sale at **{percentage}%** off!!"
-            fieldHeaderContent = f'**{name}** {self.client.emojis_list["rightArrow"]} {self.client.emojis_list["DMC"]} **{price:,}** (_{percentage}%_ off!!)\n\n'
+            fieldHeaderContent = f'**{name}** {self.client.emojis_list["right"]} {self.client.emojis_list["DMC"]} **{price:,}** (_{percentage}%_ off!!)\n\n'
             if percentage > self.percentageThreshhold:
                 content = f"<@&799517544674230272>" + content
             else:
@@ -104,21 +100,12 @@ class dankutils(commands.Cog, description="Dank Utility"):
 
         # await self.client.process_commands(message)
         
-    async def convert_to_numeral(self, query):
-        query = query.lower()
-        query = query.replace("k", "e3",100)
-        query = query.replace("m", "e6",100)       
-        query = query.replace("b", "e12",100)  
-        return query
-
     @commands.command(name="calculate",aliases=["calc", "c","cal"])
     async def calculate(self, ctx, *, query):
         """Math"""
-        query = await self.convert_to_numeral(query)
-        query = query.replace(",", "")
-        engine_input = "{m:" + query + "}"
         start = time.time()
-        output = self.engine.process(engine_input)
+        query = await convert_to_numeral(query)
+        output = await calculate(query)
         end = time.time()
 
         output_string = output.body.replace("{m:", "").replace("}", "")
@@ -128,8 +115,6 @@ class dankutils(commands.Cog, description="Dank Utility"):
             description=f"**Calculated in:** {round((end - start) * 1000, 3)} ms",
             timestamp=datetime.datetime.utcnow()
         )
-        # e.set_thumbnail(url="https://cdn.discordapp.com/emojis/839930681412419675.png?v=1")
-        # e.set_footer(text=f"Calculated in {round((end - start) * 1000, 3)} ms")
         url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={round(float(output_string),2):,}&font=lobster&font_size=28"
         e.set_image(url=url)
         e.set_footer(
@@ -152,13 +137,10 @@ class dankutils(commands.Cog, description="Dank Utility"):
         )
         url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={result:,}&font=lobster&font_size=28"
         e.set_image(url=url)
-        # e.set_thumbnail(url="https://cdn.discordapp.com/attachments/837999751068778517/839937512587657236/tax.gif")
         e.set_footer(
             text=f"Developed by utki007 & Jay")
         e.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         await ctx.send(f"`pls give {result}`", delete_after= 30)
-        # https://ipsumimage.appspot.com/320x100,ff0000?f=ffffff&l=30px|Hosted+on+GAE
-        # https://fakeimg.pl/280x100/ff0000/ffffff/?retina=1&text=45,756,456&font=lobster&font_size=52
 
         await ctx.send(embed=e)
 
