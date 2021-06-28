@@ -13,9 +13,6 @@ import logging
 import asyncio
 from asyncio import sleep
 
-# from utils.help import Help
-
-
 description = '''This is what I have been programmed to do'''
 client = commands.Bot(
     command_prefix=["? ","?"],
@@ -77,7 +74,6 @@ async def reload(ctx, extension):
 
 
 @client.command(name="logout", description="shutdown bot", aliases=['dc'], hidden=True)
-# @commands.has_permissions(administrator=True)
 @commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
 async def logout(ctx):
     await ctx.send(f'I am now logging out :wave: \n ')
@@ -119,7 +115,6 @@ client.colors = {
 client.color_list = [c for c in client.colors.values()]
 
 client.emojis_list = {
-    # "DMC" : "<:TGK_DMC:830520214021603350>",
     "DMC" : "⏣",
     "Hi" : "<a:pikahi:785911570336186418>",
     "Freeloader" : "<a:TGK_freeloader:840517161386377226>",
