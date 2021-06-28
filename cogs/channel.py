@@ -6,6 +6,8 @@ import asyncio
 import math
 import datetime
 
+from utils.convertor import *
+
 
 class channel(commands.Cog, description="Channel utils"):
     def __init__(self, client):
@@ -19,23 +21,12 @@ class channel(commands.Cog, description="Channel utils"):
 
     @commands.command(name="slowmode", description="Set Slowmode In Current Channel", usage="[slowmode time 1m, 1s 1h max 6h]", aliases=['s', 'sm'],hidden = True)
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
-    async def slowmode(self, ctx, time: str = '0'):
+    async def slowmode(self, ctx, timer: str = '0'):
 
-        unit = ['h', 'H', 'm', 'M', 's', 'S']
-
-        cd = 0
-        if time[-1] in unit:
-            unit = time[-1]
-            cd = int(time[:-1])
-            if unit == 'h' or unit == 'H':
-                cd = cd * 60 * 60
-            elif unit == 'm' or unit == 'M':
-                cd = cd * 60
-            else:
-                cd = cd
-        else:
-            cd = int(time) if time else 0
-
+        timer = await convert_to_time(timer)
+        timer = await calculate(timer)
+        cd = timer
+        
         # await ctx.message.delete()
         if cd > 21600:
             await ctx.send(f"Slowmode interval can't be greater than 6 hours.")
@@ -44,12 +35,17 @@ class channel(commands.Cog, description="Channel utils"):
             await ctx.send(f"Slowmode has been removed!! 🎉")
         else:
             await ctx.channel.edit(slowmode_delay=cd)
-            if unit == 'h' or unit == 'H':
-                await ctx.send(f'Slowmode interval is now **{int(cd/3600)} hours**.')
-            elif unit == 'm' or unit == 'M':
-                await ctx.send(f'Slowmode interval is now **{int(cd/60)} mins**.')
-            else:
-                await ctx.send(f'Slowmode interval is now **{cd} secs**.')
+            timer = datetime.datetime.strptime(str(datetime.timedelta(seconds=cd)), '%H:%M:%S')
+            cd = int(cd)
+            desc = f''
+            if timer.hour>0:
+                desc = desc + f' {timer.hour} hours '
+            if timer.minute>0:
+                desc = desc + f' {timer.minute} minutes '
+            if timer.second>0:
+                desc = desc + f' {timer.second} seconds '
+                
+            await ctx.send(f'Slowmode interval is now **{desc}**.')
 
         await ctx.message.delete()
 
@@ -74,7 +70,6 @@ class channel(commands.Cog, description="Channel utils"):
         embed = discord.Embed(
             color=0x78AB46, description=f':white_check_mark: | Locked **{channel}** for {role.mention}')
         await channel.send(embed=embed)
-        # role = discord.utils.get(ctx.guild.roles, id=820559294420221952)
 
     @commands.command(name="unlock", description=f"`[p]unlock true @role`", usage="<state> <role>", aliases=['ul'],hidden=True)
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
