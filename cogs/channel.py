@@ -24,8 +24,7 @@ class channel(commands.Cog, description="Channel utils"):
     async def slowmode(self, ctx, timer: str = '0'):
 
         timer = await convert_to_time(timer)
-        timer = await calculate(timer)
-        cd = timer
+        cd = await calculate(timer)
         
         # await ctx.message.delete()
         if cd > 21600:

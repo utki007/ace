@@ -9,6 +9,7 @@ import datetime
 import time as tm
 import discord_webhook
 from discord_webhook import DiscordWebhook,DiscordEmbed
+from utils.convertor import *
 
 
 class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or setup a timer"):
@@ -26,20 +27,8 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
     async def timer(self, ctx,time ,*,name : str= "Timer"):
         
         await ctx.message.delete()    
-        unit = ['h', 'H', 'm', 'M', 's', 'S']
-
-        cd = 0
-        if time[-1] in unit:
-            unit = time[-1]
-            cd = int(time[:-1])
-            if unit == 'h' or unit == 'H':
-                cd = cd * 60 * 60
-            elif unit == 'm' or unit == 'M':
-                cd = cd * 60
-            else:
-                cd = cd
-        else:
-            cd = int(time) if time else 0
+        time = await convert_to_time(time)
+        cd = await calculate(time)
         
         unauthorized = discord.Embed(
             color=self.client.colors["RED"], 
