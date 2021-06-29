@@ -108,14 +108,13 @@ class dankutils(commands.Cog, description="Dank Utility"):
         output = await calculate(query)
         end = time.time()
 
-        output_string = output.body.replace("{m:", "").replace("}", "")
         e = discord.Embed(
             color=0x9e3bff,
-            title=f"**Calculated:** `{round(float(output_string),2):,}`",
+            title=f"**Calculated:** `{round(float(output),2):,}`",
             description=f"**Calculated in:** {round((end - start) * 1000, 3)} ms",
             timestamp=datetime.datetime.utcnow()
         )
-        url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={round(float(output_string),2):,}&font=lobster&font_size=28"
+        url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={round(float(output),2):,}&font=lobster&font_size=28"
         e.set_image(url=url)
         e.set_footer(
             text=f"Developed by utki007 & Jay")

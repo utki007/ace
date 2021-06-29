@@ -17,7 +17,7 @@ async def convert_to_time(query):
     query = f"{query}0"
     return query
     
-async def convert_to_numeral(self, query):
+async def convert_to_numeral(query):
     query = query.lower()
     query = query.replace("k", "e3",100)
     query = query.replace("m", "e6",100)       
