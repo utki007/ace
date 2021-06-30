@@ -171,7 +171,7 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
         dm.set_footer(text = f"Developed by utki007 & Jay", icon_url = ctx.guild.icon_url)
         embed = discord.Embed(
                 color=self.client.colors["RED"],
-                description=f'{self.client.emojis_list["Warrning"]} | {ctx.author.mention}, you are **unauthorized** to do Partner with them. Contact Senior Staff.')
+                description=f'{self.client.emojis_list["Warrning"]} | {ctx.author.mention}, you are **unauthorized** to do partnership with them. Contact Senior Staff.')
                     
         try:
             await ctx.author.send(embed=dm)
