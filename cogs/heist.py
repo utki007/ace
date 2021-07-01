@@ -326,7 +326,7 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         
     @commands.command(name="ReactionRole", description="Reset any channel",aliases = ["rr"], hidden=True)
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
-    async def thanks(self, ctx):
+    async def rr(self, ctx):
         guild = self.client.get_guild(785839283847954433)
         
         heist = discord.utils.get(guild.roles, id=804068344612913163)
