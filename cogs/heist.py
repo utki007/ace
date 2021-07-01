@@ -324,6 +324,73 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         ty = await ctx.send(f"Make sure to Thank our Amazing <@&836228842397106176>'s  for the heist in <#785847439579676672>", allowed_mentions=am)
         await ty.add_reaction(f'<:thanks:835922028473221130>')
         
+    @commands.command(name="ReactionRole", description="Reset any channel",aliases = ["rr"], hidden=True)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    async def thanks(self, ctx):
+        guild = self.client.get_guild(785839283847954433)
+        
+        heist = discord.utils.get(guild.roles, id=804068344612913163)
+        danker = discord.utils.get(guild.roles, id=801392998465404958)
+        partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
+        giveaway = discord.utils.get(guild.roles, id=800685251276963861)
+        partnership = discord.utils.get(guild.roles, id=797448080223109120)
+        
+        l = [heist,danker,partnerHeist,giveaway,partnership]
+        
+        # <a:Partner:859833234660655126>
+        # <a:giveaway:854662921250537492> 
+        # <a:rarepepe:801693036911263744>
+        # <a:heist:853518041484886057>
+        # <a:peperobber:804070327344562217>
+        
+        rr = discord.Embed(
+                title=f"    **Some important self roles\n**   ",
+                description= f"<a:heist:853518041484886057> {self.client.emojis_list['right']} {heist.mention}\n"
+                            f"<a:rarepepe:801693036911263744> {self.client.emojis_list['right']} {danker.mention}\n"
+                            f"<a:peperobber:804070327344562217> {self.client.emojis_list['right']} {partnerHeist.mention}\n"
+                            f"<a:giveaway:854662921250537492> {self.client.emojis_list['right']} {giveaway.mention}\n"
+                            f"<a:Partner:859833234660655126> {self.client.emojis_list['right']} {partnership.mention}\n",
+                color=0x9e3bff
+                # ,
+                # timestamp=datetime.datetime.utcnow()
+        )
+        rr.set_footer(
+            text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+        await ctx.message.delete()
+        message = await ctx.send(embed=rr)
+        
+        await message.add_reaction("<a:heist:853518041484886057>")
+        await message.add_reaction("<a:rarepepe:801693036911263744>")
+        await message.add_reaction("<a:peperobber:804070327344562217>")
+        await message.add_reaction("<a:giveaway:854662921250537492>")
+        await message.add_reaction("<a:Partner:859833234660655126>")
+        
+        reaction = None
+
+        while True:
+            if  str(reaction) == "<a:heist:853518041484886057>":
+                if heist not in user.roles:
+                    await user.add_roles(heist)
+            elif str(reaction) == "<a:rarepepe:801693036911263744>":
+                if danker not in user.roles:
+                    await user.add_roles(danker)
+            elif str(reaction) == "<a:peperobber:804070327344562217>":
+                if partnerHeist not in user.roles:
+                    await user.add_roles(partnerHeist)
+            elif  str(reaction) == "<a:giveaway:854662921250537492>":
+                if giveaway not in user.roles:
+                    await user.add_roles(giveaway)
+            elif str(reaction) == "<a:Partner:859833234660655126>":
+                if partnership not in user.roles:
+                    await user.add_roles(partnership)
+            try:
+                reaction, user = await self.client.wait_for('reaction_add', timeout = 600.0)
+                # await message.remove_reaction(reaction, user)
+            except:
+                break
+        
+        await message.clear_reactions()
+        
     # async def create_heist_timer(self,ctx,msg):
     #     try:
     #         for i in range(8,-1,-1):
