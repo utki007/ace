@@ -81,7 +81,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
             newtitle = title[0]
             name = title[1]
             content = f"**{name}** is on sale at **{percentage}%** off!!"
-            fieldHeaderContent = f'**{name}** {self.client.emojis_list["right"]} {self.client.emojis_list["DMC"]} **{price:,}** (_{percentage}%_ off!!)\n\n'
+            fieldHeaderContent = f'**{name}** {self.client.emojis_list["rightArrow"]} {self.client.emojis_list["DMC"]} **{price:,}** (_{percentage}%_ off!!)\n\n'
             if percentage > self.percentageThreshhold:
                 content = f"<@&799517544674230272>" + content
             else:
