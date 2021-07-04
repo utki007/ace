@@ -87,6 +87,7 @@ class serverutils(commands.Cog, description="Server Utility"):
             roles=False,  # Whether to ping role @mentions
             replied_user=False,  # Whether to ping on replies to messages
         )
+        await ctx.message.delete()
         message = await ctx.send(f"Starting assigning gamer role to memebers ... ", allowed_mentions=am)
         j = 0
         for i in users:
