@@ -103,7 +103,7 @@ class serverutils(commands.Cog, description="Server Utility"):
         if j != 0:    
             await ctx.send(f"Took {round((end - start) * 1000, 3)} ms to assign role to {j} members")
         else:
-            await message.edit(f"No user is left to be assigned gamer role!")
+            await message.edit(content=f"No user is left to be assigned {gamer.mention} role!", allowed_mentions=am)
     
     # https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif
     # https://media.giphy.com/media/dAjMIUQRUDslMz8tUR/giphy.gif
