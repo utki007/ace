@@ -2,14 +2,10 @@
 import discord
 from discord import message
 from discord.ext import commands, tasks
-import os
 import pandas as pd
 import numpy as np
-import pymongo
-import dns
 import time as tm
 import asyncio
-import math
 import datetime
 
 

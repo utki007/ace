@@ -65,52 +65,44 @@ class serverutils(commands.Cog, description="Server Utility"):
                 text=f"Developed by utki007 & Jay")
         await ctx.send(embed=color)
   
-    def to_keycap(self,c):
-        return '\N{KEYCAP TEN}' if c == 10 else str(c) + '\u20e3'
     
-    # @commands.command(no_pm=True)
-    # async def quickpoll(self, ctx, *, questions_and_choices: str):
-    #     """
-    #     delimit questions and answers by either | or , 
-    #     supports up to 10 choices
-    #     """
-    #     if "|" in questions_and_choices:
-    #         delimiter = "|"
-    #     elif "," in questions_and_choices:
-    #         delimiter = ","
-    #     else:
-    #         delimiter = None
-    #     if delimiter is not None:
-    #         questions_and_choices = questions_and_choices.split(delimiter)
-    #     else:
-    #         questions_and_choices = shlex.split(questions_and_choices)
-
-    #     if len(questions_and_choices) < 3:
-    #         return await ctx.send('Need at least 1 question with 2 choices.')
-    #     elif len(questions_and_choices) > 11:
-    #         return await ctx.send('You can only have up to 10 choices.')
-
-    #     perms = ctx.channel.permissions_for(ctx.guild.me)
-    #     if not (perms.read_message_history or perms.add_reactions):
-    #         return await ctx.send('Need Read Message History and Add Reactions permissions.')
-
-    #     question = questions_and_choices[0]
-    #     choices = [(self.to_keycap(e), v)
-    #                for e, v in enumerate(questions_and_choices[1:], 1)]
-
-    #     try:
-    #         await ctx.message.delete()
-    #     except:
-    #         pass
-
-    #     fmt = '{0} asks: {1}\n\n{2}'
-    #     answer = '\n'.join('%s: %s' % t for t in choices)
-    #     await ctx.send(f"answer is \n{type(answer)}")
-    #     poll = await ctx.send(fmt.format(ctx.message.author, question.replace("@", "@\u200b"), answer.replace("@", "@\u200b")))
-    #     # await ctx.send(poll)
-    #     for emoji, _ in choices:
-    #         await poll.add_reaction(self.client.emojis_list[str(emoji)])
-    #     # await ctx.send(choices)
+    # guild = self.bot.get_guild(785839283847954433)
+        # members = guild.members
+    @commands.command(name="gamer")
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636), commands.is_owner())
+    async def gamer(self,ctx):
+        
+        start = time.time()
+        
+        guild = self.client.get_guild(785839283847954433)
+        users = guild.members
+        
+        gamer = discord.utils.get(guild.roles, id=790667905330970674)
+        bgmi = discord.utils.get(guild.roles, id=795711140108697630)
+        rookie = discord.utils.get(guild.roles, id=811307404703957003)
+        
+        am = discord.AllowedMentions(
+            users=False,  # Whether to ping individual user @mentions
+            everyone=False,  # Whether to ping @everyone or @here mentions
+            roles=False,  # Whether to ping role @mentions
+            replied_user=False,  # Whether to ping on replies to messages
+        )
+        
+        j = 0
+        for i in users:
+            if bgmi in i.roles and rookie in i.roles and gamer not in i.roles:
+                try:
+                    await i.add_roles(gamer)
+                    await ctx.author.send(f"{i.name} has been given {gamer.mention} role.", allowed_mentions=am)
+                    j = j + 1
+                except:
+                    await ctx.send(f"Failed to assign {gamer.mention} role to {i.mention}", allowed_mentions=am)
+        
+        end = time.time()
+        if j != 0:    
+            await ctx.send(f"Took {round((end - start) * 1000, 3)} ms to assign role to {j} members")
+        else:
+            await ctx.send(f"No user is left to be assigned gamer role!")
     
     # https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif
     # https://media.giphy.com/media/dAjMIUQRUDslMz8tUR/giphy.gif
