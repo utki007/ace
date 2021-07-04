@@ -79,7 +79,7 @@ class serverutils(commands.Cog, description="Server Utility"):
         
         gamer = discord.utils.get(guild.roles, id=790667905330970674)
         bgmi = discord.utils.get(guild.roles, id=795711140108697630)
-        rookie = discord.utils.get(guild.roles, id=811307404703957003)
+        trainee = discord.utils.get(guild.roles, id=811307500321505320)
         
         am = discord.AllowedMentions(
             users=False,  # Whether to ping individual user @mentions
@@ -90,7 +90,7 @@ class serverutils(commands.Cog, description="Server Utility"):
         
         j = 0
         for i in users:
-            if bgmi in i.roles and rookie in i.roles and gamer not in i.roles:
+            if bgmi in i.roles and trainee in i.roles and gamer not in i.roles:
                 try:
                     await i.add_roles(gamer)
                     await ctx.author.send(f"{i.name} has been given {gamer.mention} role.", allowed_mentions=am)
