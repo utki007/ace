@@ -87,13 +87,13 @@ class serverutils(commands.Cog, description="Server Utility"):
             roles=False,  # Whether to ping role @mentions
             replied_user=False,  # Whether to ping on replies to messages
         )
-        
+        message = await ctx.send(f"Starting assigning gamer role to memebers ... ", allowed_mentions=am)
         j = 0
         for i in users:
             if bgmi in i.roles and trainee in i.roles and gamer not in i.roles:
                 try:
                     await i.add_roles(gamer)
-                    await ctx.author.send(f"{i.name} has been given {gamer.mention} role.", allowed_mentions=am)
+                    await ctx.send(f"{i.name} has been given {gamer.mention} role.", allowed_mentions=am)
                     j = j + 1
                 except:
                     await ctx.send(f"Failed to assign {gamer.mention} role to {i.mention}", allowed_mentions=am)
@@ -102,7 +102,7 @@ class serverutils(commands.Cog, description="Server Utility"):
         if j != 0:    
             await ctx.send(f"Took {round((end - start) * 1000, 3)} ms to assign role to {j} members")
         else:
-            await ctx.send(f"No user is left to be assigned gamer role!")
+            await message.edit(f"No user is left to be assigned gamer role!")
     
     # https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif
     # https://media.giphy.com/media/dAjMIUQRUDslMz8tUR/giphy.gif
