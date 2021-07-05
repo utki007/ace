@@ -245,13 +245,15 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
     @commands.command(name="Grinders", description="Ping Grinders Heist", aliases=['grind', 'hg'])
     @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376), commands.is_owner())
-    async def grind(self, ctx, channel: str, link: str):
+    async def grind(self, ctx, channel: int, link: str):
         await ctx.message.delete()
+        if "://" not in link:
+            link = "https://discord.gg/" + link
         await ctx.send(
             f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
             # f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
             f":small_blue_diamond: | **Server:** {link} \n"
-            f":small_orange_diamond: | **Channel:** {channel}\n\n "
+            f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
             f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
         )
         await ctx.send("<@&836228842397106176>", delete_after=1)
