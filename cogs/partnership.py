@@ -249,16 +249,33 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         await ctx.message.delete()
         if "://" not in link:
             link = "https://discord.gg/" + link
-        await ctx.send(
-            f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
-            # f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
-            f":small_blue_diamond: | **Server:** {link} \n"
-            f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
-            f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
-        )
         user = self.client.get_user(301657045248114690)
-        await ctx.send("<@&836228842397106176>", delete_after=1)
-        await user.send(f"```?hg {channel} {link}``` \n {channel} {link} ")
+        if ctx.channel.id == 846766444695650345:
+            await ctx.send(
+                f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
+                # f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
+                f":small_blue_diamond: | **Server:** {link} \n"
+                f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
+                f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
+            )
+            await ctx.send("<@&836228842397106176>", delete_after=1)
+            await user.send(f"```?hg {channel} {link}``` \n {channel} {link} ")
+        elif ctx.guild.id == 838646783785697290:
+            await ctx.send(
+                f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
+                # f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
+                f":small_blue_diamond: | **Server:** {link} \n"
+                f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
+                f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
+            )
+            await ctx.send("<@&836228842397106176>", delete_after=1)
+            await user.send(f"```?hg {channel} {link}``` \n {channel} {link} ")
+        else:
+            message = await ctx.send(
+                f"To be used only in Heist channels. Let me report this!"
+            )
+            await user.send(f"```?hg {channel} {link}``` \n {channel} {link} \n used here {message.jump_url}")
+            
     
     @commands.command(name="pings", description="Check Partner Pings")
     @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376), commands.is_owner())
