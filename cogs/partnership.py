@@ -259,7 +259,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
             )
             await ctx.send("<@&836228842397106176>", delete_after=1)
-            await user.send(f"```?hg <#{channel}> {link}``` \n {channel} {link} ")
+            await user.send(f"```?hg {channel} {link}``` \n <#{channel}> {link} ")
         elif ctx.guild.id == 838646783785697290:
             await ctx.send(
                 f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
@@ -269,12 +269,12 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
             )
             await ctx.send("<@&836228842397106176>", delete_after=1)
-            await user.send(f"```?hg <#{channel}> {link}``` \n {channel} {link} ")
+            await user.send(f"```?hg {channel} {link}``` \n <#{channel}> {link} ")
         else:
             message = await ctx.send(
                 f"To be used only in Heist channels. Let me report this!"
             )
-            await user.send(f"```?hg {channel} {link}``` \n <#{channel}> {link} \n used here {message.jump_url}")
+            await user.send(f"<#{channel}> {link} \n used here {message.jump_url}")
             
     
     @commands.command(name="pings", description="Check Partner Pings")
