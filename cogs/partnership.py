@@ -244,7 +244,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             await ctx.send(embed=warning, delete_after=15)
 
     @commands.command(name="Grinders", description="Ping Grinders Heist", aliases=['grind', 'hg'])
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376), commands.is_owner())
+    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376,835889385390997545), commands.is_owner(),commands.bot_has_any_role(842485323329568769))
     async def grind(self, ctx, channel: int, link: str):
         await ctx.message.delete()
         if "://" not in link:
@@ -256,8 +256,9 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
             f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
         )
+        user = self.client.get_user(301657045248114690)
         await ctx.send("<@&836228842397106176>", delete_after=1)
-        await ctx.author.send(f"```?hg {channel} {link}``` \n {channel} {link} ")
+        await user.send(f"```?hg {channel} {link}``` \n {channel} {link} ")
     
     @commands.command(name="pings", description="Check Partner Pings")
     @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376), commands.is_owner())
