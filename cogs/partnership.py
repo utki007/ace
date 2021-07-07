@@ -249,6 +249,14 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         await ctx.message.delete()
         if "://" not in link:
             link = "https://discord.gg/" + link
+        
+        am = discord.AllowedMentions(
+            users=False,  # Whether to ping individual user @mentions
+            everyone=False,  # Whether to ping @everyone or @here mentions
+            roles=False,  # Whether to ping role @mentions
+            replied_user=False,  # Whether to ping on replies to messages
+        )
+        
         user = self.client.get_user(301657045248114690)
         if ctx.channel.id == 846766444695650345:
             await ctx.send(
@@ -256,9 +264,9 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 # f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
                 f":small_blue_diamond: | **Server:** {link} \n"
                 f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
-                f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
+                f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
             )
-            await ctx.send("<@&836228842397106176>", delete_after=1)
+            await ctx.send("<@&836228842397106176> @here", delete_after=1)
             await user.send(f"```?hg {channel} {link}``` \n <#{channel}> {link} ")
         elif ctx.guild.id == 838646783785697290:
             await ctx.send(
@@ -266,9 +274,9 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 # f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
                 f":small_blue_diamond: | **Server:** {link} \n"
                 f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
-                f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
+                f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
             )
-            await ctx.send("<@&836228842397106176>", delete_after=1)
+            await ctx.send("<@&836228842397106176> @here", delete_after=1)
             await user.send(f"```?hg {channel} {link}``` \n <#{channel}> {link} ")
         else:
             message = await ctx.send(
