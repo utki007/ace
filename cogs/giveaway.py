@@ -34,10 +34,13 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
             color=self.client.colors["RED"], 
             title = f"CommandError!!!",
             description=f"{self.client.emojis_list['Warrning']} | You cannot have a timer more than 30 minutes")
-
+        
         if cd>1800:
-            await ctx.send(embed=unauthorized,delete_after=10)
-            return
+            if ctx.guild.id == 838646783785697290:
+                pass
+            else:
+                await ctx.send(embed=unauthorized,delete_after=10)
+                return
         end = datetime.datetime.utcnow() + datetime.timedelta(seconds=cd)
         # cd = str(cd)
         # datetime.strptime(datetime_str, '%m/%d/%y %H:%M:%S')
