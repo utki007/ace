@@ -12,6 +12,9 @@ import math
 import time
 import datetime
 
+# helper functions
+from utils.convertor import *
+
 
 class donationTracker(commands.Cog, description="Donation Tracker"):
 
@@ -31,10 +34,13 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         self.bal = "bal"
         self.name = "name"
         self.id = "_id"
+        
+        
 
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+        
 
     # add a donator if he doesn't exist
     async def create_donor(self, user):
@@ -152,7 +158,24 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
             pass
-
+        
+        roles_added = await donor_roles(self.client,dict[self.bal],member)
+        
+        am = discord.AllowedMentions(
+            users=False,  # Whether to ping individual user @mentions
+            everyone=False,  # Whether to ping @everyone or @here mentions
+            roles=False,  # Whether to ping role @mentions
+            replied_user=False,  # Whether to ping on replies to messages
+        )
+        
+        try:
+            if roles_added !=[]:
+                for i in roles_added:
+                    await ctx.send(f"{self.client.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
+        except:
+            await ctx.send(f"{ctx.author.mention}, Unable to add donor roles!")
+            pass
+            
     @donation.command(name="remove", description="Remove donation from a member", usage="<member> <amount>", aliases=['r'])
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
     async def rdono(self, ctx, member: discord.Member, amount: float):
@@ -258,6 +281,23 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
            
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
+            pass
+        
+        roles_added = await donor_roles(self.client,dict[self.bal],member)
+        
+        am = discord.AllowedMentions(
+            users=False,  # Whether to ping individual user @mentions
+            everyone=False,  # Whether to ping @everyone or @here mentions
+            roles=False,  # Whether to ping role @mentions
+            replied_user=False,  # Whether to ping on replies to messages
+        )
+        
+        try:
+            if roles_added !=[]:
+                for i in roles_added:
+                    await ctx.send(f"{self.client.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
+        except:
+            await ctx.send(f"{ctx.author.mention}, Unable to add donor roles!")
             pass
 
     @donation.command(name="leaderboard", description="Checout top donators", usage="", aliases=['lb'])
@@ -531,7 +571,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         if ctx.invoked_subcommand is None:
             await ctx.send(f"use `help celeb` to know more!!!")
 
-    @celeb.command(name="add", description="Add donation to a special event", usage="<event-name> <member> <amount>")
+    @celeb.command(name="add", description="Add donation to a special event", usage="<event-name> <member> <amount>",aliases=["a"])
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def add(self, ctx, name: str, member: discord.Member, amount: float):
 
@@ -657,8 +697,25 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
             pass
+        
+        roles_added = await donor_roles(self.client,dict[self.bal],member)
+        
+        am = discord.AllowedMentions(
+            users=False,  # Whether to ping individual user @mentions
+            everyone=False,  # Whether to ping @everyone or @here mentions
+            roles=False,  # Whether to ping role @mentions
+            replied_user=False,  # Whether to ping on replies to messages
+        )
+        
+        try:
+            if roles_added !=[]:
+                for i in roles_added:
+                    await ctx.send(f"{self.client.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
+        except:
+            await ctx.send(f"{ctx.author.mention}, Unable to add donor roles!")
+            pass
 
-    @celeb.command(name="remove", description="Remove donation from a special", usage="<event-name> <member> <amount>")
+    @celeb.command(name="remove", description="Remove donation from a special", usage="<event-name> <member> <amount>",aliases=["r"])
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
     async def remove(self, ctx, name: str, member: discord.Member, amount: float):
 
@@ -787,6 +844,23 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
            
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
+            pass
+        
+        roles_added = await donor_roles(self.client,dict[self.bal],member)
+        
+        am = discord.AllowedMentions(
+            users=False,  # Whether to ping individual user @mentions
+            everyone=False,  # Whether to ping @everyone or @here mentions
+            roles=False,  # Whether to ping role @mentions
+            replied_user=False,  # Whether to ping on replies to messages
+        )
+        
+        try:
+            if roles_added !=[]:
+                for i in roles_added:
+                    await ctx.send(f"{self.client.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
+        except:
+            await ctx.send(f"{ctx.author.mention}, Unable to add donor roles!")
             pass
 
     @celeb.command(name="lb", description="Remove donation from a special", usage="<event-name>")

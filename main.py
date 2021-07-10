@@ -27,6 +27,17 @@ async def on_ready():
     print(
         f"-----\nLogged in as: {client.user.name} : {client.user.id}\n-----\n"
     )
+    guild = client.get_guild(785839283847954433)
+    client.role_dict = {
+        "1" : discord.utils.get(guild.roles, id=810128078789410846),
+        "5" : discord.utils.get(guild.roles, id=810128257491795979),
+        "10" : discord.utils.get(guild.roles, id=810128946791579679),
+        "15" : discord.utils.get(guild.roles, id=810128522365763615),
+        "50" : discord.utils.get(guild.roles, id=810128688267919381),
+        "100" : discord.utils.get(guild.roles, id=810129351692648479),
+        "250" : discord.utils.get(guild.roles, id=810129497931513868),
+        "500" : discord.utils.get(guild.roles, id=810129641473703956)
+    }
     print('------')
     
 

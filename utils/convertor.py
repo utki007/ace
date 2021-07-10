@@ -1,6 +1,8 @@
 import time
+import discord
 from TagScriptEngine import Interpreter, adapter, block
 from discord.ext.buttons import Paginator
+from discord.ext import commands,tasks
 
 blocks = [
     block.MathBlock(),
@@ -9,6 +11,19 @@ blocks = [
 ]
 engine = Interpreter(blocks)
 
+async def donor_roles(client,query,user):
+    role_dict = client.role_dict    
+    roles_added = []
+    for roles in role_dict.keys():
+        actual_value = int(roles) * 1000000
+        if float(actual_value)<float(query):
+            if role_dict[roles] not in user.roles:
+                await user.add_roles(role_dict[roles])
+                roles_added.append(role_dict[roles])
+        else:
+            break
+    return roles_added
+        
 async def convert_to_time(query):
     query = query.lower()
     query = query.replace("h", "*3600+",1)
