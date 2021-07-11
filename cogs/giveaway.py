@@ -323,10 +323,40 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
         except:
             pass
         try : 
-            await ctx.send(f"{tdata['title']} {message.jump_url}",delete_after=30)
+            await ctx.send(f"{tdata['title']} has ended {message.jump_url}",delete_after=30)
         except:
             pass
         
+    @commands.command(name = "tping")
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    async def tresume(self, ctx,message_id:int):
+        await ctx.message.delete()
+        message_id = int(message_id)
+        channel = ctx.channel
+        message = await channel.fetch_message(message_id)
+        if message is None:
+            return await ctx.send(f"No timer found!")
+        embeds = message.embeds
+        for embed in embeds:
+            tdata = embed.to_dict()
+            
+        new_msg = await ctx.channel.fetch_message(message.id)
+        
+        users = set()
+        
+        for reaction in new_msg.reactions:
+            async for user in reaction.users():
+                users.add(user)
+            users.remove(self.client.user)     
+        
+        try:
+            await ctx.send(f"{', '.join(user.mention for user in users)}",delete_after=1)
+        except:
+            pass
+        try : 
+            await ctx.send(f"{tdata['title']} has ended {message.jump_url}",delete_after=30)
+        except:
+            pass
         
     # @commands.command(name = "stopwatch",aliases=["sw"],usage = "<time> [name]")
     # @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
