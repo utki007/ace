@@ -199,7 +199,7 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
         message = await channel.fetch_message(message_id)
         if message is None:
             return await ctx.send(f"No timer found!")
-        await ctx.message.add_reaction(f'{self.client.emojis_list["SuccessTick"]}')
+        
         users = await message.reactions[0].users().flatten()
         
         
@@ -211,10 +211,16 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
         date_time_str = date_time_str.replace("T", " ", 1)
         date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')   
         timer_left = str(date_time_obj - datetime.datetime.utcnow())
-        timer_left = datetime.datetime.strptime(timer_left,'%H:%M:%S.%f')
+        try:
+            timer_left = datetime.datetime.strptime(timer_left,'%H:%M:%S.%f')
+        except:
+            await ctx.message.add_reaction(f'{self.client.emojis_list["Cross"]}')
+            return
         sleep = (timer_left.hour * 60 + timer_left.minute) * 60 + timer_left.second + (timer_left.microsecond/1e6)
         cd = sleep
-            
+        
+        await ctx.message.add_reaction(f'{self.client.emojis_list["SuccessTick"]}')    
+        
         desc = f''
         flag = 0
         if timer_left.hour>0:
