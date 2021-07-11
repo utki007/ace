@@ -43,7 +43,11 @@ class Help(commands.Cog, name="Help command"):
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Partnership Tracker__",
-            value="Track all donations made to the server \n`partnership`, `pings` , `ping_heist` , `blacklist`",
+            value="Track all server partnerships \n`partnership`, `pings` , `ping_heist` , `blacklist`",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Timer Management__",
+            value="Manage timers \n`tstart`, `tend` , `tresume/trestart` , `tping`",
             inline = False)
         help.set_author(name=ctx.guild.name,
                               icon_url=ctx.guild.icon_url)
@@ -226,7 +230,43 @@ class Help(commands.Cog, name="Help command"):
         #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
         await ctx.send(embed = help)
       
-     
+    @help.command(name="timer",aliases = ["tstart","t","tresume","trestart","tping","tend"])
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
+    async def timer(self, ctx):
+        help = discord.Embed(
+            title = "Timer Management",
+            description = f"Manage Timers Efficiently",
+            color = 0x9e3bff,
+            timestamp=datetime.datetime.utcnow()
+        )
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Start Timer__",
+            value=  f"Usage: `?[tstart|t] <time>` \n"
+                    f"Ex: `?t 5m4s`\n",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __End Timer__",
+            value=  f"Ends all timers \n"
+                    f"Ex: `?[tend]`\n",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Restart Timer__",
+            value=  f"Use when a timer break down \n"
+                    f"Ex: `?[tresume|trestart] <messageId>`",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Ping People__",
+            value=  f"Ping users from a broken timer \n"
+                    f"Ex: `?tping <messageId>`",
+            inline = False)
+        
+        help.set_author(name=ctx.guild.name,
+                              icon_url=ctx.guild.icon_url)
+        help.set_footer(
+            text=f"Developed by utki007 & Jay", icon_url=self.client.user.avatar_url)
+        # help.set_thumbnail(
+        #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
+        await ctx.send(embed = help)
 
     
     @help.command(name="partnership",aliases = ["psh","bl","ph","ping_heist","blacklist"])
