@@ -22,7 +22,7 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-    @commands.command(name = "timer",aliases=["t"],usage = "<time> [name]")
+    @commands.command(name = "timer",aliases=["t","tstart"],usage = "<time> [name]")
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def timer(self, ctx,time ,*,name : str= "Timer"):
         
@@ -69,6 +69,7 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
         await timer.add_reaction(f"{self.client.emojis_list['Timer']}")
         
         # await asyncio.sleep(cd)
+        global loop
         loop=True
         while loop:
             
@@ -181,9 +182,55 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
         try: 
             await ctx.author.send(embed=dm)
         except:
-            await ctx.send(f"{ctx.author.mention} your dms are closed",delete_after=60)
+            pass
         
+    @commands.command(name = "tend")
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    async def tend(self, ctx):
+        await ctx.message.add_reaction(f'{self.client.emojis_list["SuccessTick"]}')
+        global loop
+        loop=False
     
+    # @commands.command(name = "tresume")
+    # @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    # async def tresume(self, ctx):    
+        # message_id = int(message_id)
+        # channel = ctx.channel
+        # message = await channel.fetch_message(message_id)
+        # if message is None:
+        #     return await ctx.send(f"No timer found!")
+        
+        # users = await message.reactions[0].users().flatten()
+        
+        
+        # embeds = message.embeds
+        # for embed in embeds:
+        #     tdata = embed.to_dict()
+        
+        # tdata["title"] =  f"Timer has Ended"
+        # tdata["description"] = f"**Timer ended**"
+        
+        # await message.edit(embed=embed.from_dict(tdata))
+        
+        # new_msg = await ctx.channel.fetch_message(message.id)
+        
+        # users = set()
+        
+        # for reaction in new_msg.reactions:
+        #     async for user in reaction.users():
+        #         users.add(user)
+        #     users.remove(self.client.user)     
+        
+        # try:
+        #     await ctx.send(f"{', '.join(user.mention for user in users)}",delete_after=1)
+        # except:
+        #     pass
+        # try : 
+        #     await ctx.send(f"{tdata['title']} {message.jump_url}",delete_after=30)
+        # except:
+        #     pass
+        
+        
     # @commands.command(name = "stopwatch",aliases=["sw"],usage = "<time> [name]")
     # @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     # async def stopwatch(self, ctx,time ,*,name : str= "Timer"):    
