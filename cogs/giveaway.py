@@ -191,44 +191,135 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
         global loop
         loop=False
     
-    # @commands.command(name = "tresume")
-    # @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
-    # async def tresume(self, ctx):    
-        # message_id = int(message_id)
-        # channel = ctx.channel
-        # message = await channel.fetch_message(message_id)
-        # if message is None:
-        #     return await ctx.send(f"No timer found!")
+    @commands.command(name = "tresume",aliases = ["trestart"])
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    async def tresume(self, ctx,message_id:int):    
+        message_id = int(message_id)
+        channel = ctx.channel
+        message = await channel.fetch_message(message_id)
+        if message is None:
+            return await ctx.send(f"No timer found!")
+        await ctx.message.add_reaction(f'{self.client.emojis_list["SuccessTick"]}')
+        users = await message.reactions[0].users().flatten()
         
-        # users = await message.reactions[0].users().flatten()
         
+        embeds = message.embeds
+        for embed in embeds:
+            tdata = embed.to_dict()
         
-        # embeds = message.embeds
-        # for embed in embeds:
-        #     tdata = embed.to_dict()
+        date_time_str = tdata["timestamp"].split("+")[0]
+        date_time_str = date_time_str.replace("T", " ", 1)
+        date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')   
+        timer_left = str(date_time_obj - datetime.datetime.utcnow())
+        timer_left = datetime.datetime.strptime(timer_left,'%H:%M:%S.%f')
+        sleep = (timer_left.hour * 60 + timer_left.minute) * 60 + timer_left.second + (timer_left.microsecond/1e6)
+        cd = sleep
+            
+        desc = f''
+        flag = 0
+        if timer_left.hour>0:
+            desc = desc + f' {timer_left.hour} hours '
+            flag = 1
+        if timer_left.minute>0:
+            desc = desc + f' {timer_left.minute} minutes '
+            flag = 1
+        if timer_left.second>0:
+            desc = desc + f' {timer_left.second} seconds '
+            flag = 1
         
-        # tdata["title"] =  f"Timer has Ended"
-        # tdata["description"] = f"**Timer ended**"
+        if flag == 0:
+            desc = f'Timer Ended'
         
-        # await message.edit(embed=embed.from_dict(tdata))
+        e = discord.Embed(
+            color= ctx.author.colour,
+            title=f"{tdata['title']}",
+            description=f'**{desc}**',
+            timestamp=date_time_obj
+        )
+        e.set_footer(
+                text=f"Ends at")
+        await message.edit(embed=e)     
         
-        # new_msg = await ctx.channel.fetch_message(message.id)
+        global loop
+        loop=True
+        while loop:
+            
+            if cd>300:
+                await asyncio.sleep(10)
+            elif cd>120:
+                await asyncio.sleep(5)
+            else:
+                await asyncio.sleep(2)
+            timer_left = str(date_time_obj - datetime.datetime.utcnow())
+            if timer_left[0]=="-":
+                timer_left = "00:00:00.00"
+                loop = False
+                break
+            timer_left = datetime.datetime.strptime(timer_left,'%H:%M:%S.%f')
+            sleep = (timer_left.hour * 60 + timer_left.minute) * 60 + timer_left.second + (timer_left.microsecond/1e6)
+            cd = sleep
+            
+            # tm.sleep(3)
+            # timer_left = timer_left - datetime.timedelta(seconds=3)
+            # cd = cd-3
+            
+            desc = f''
+            flag = 0
+            if timer_left.hour>0:
+                desc = desc + f' {timer_left.hour} hours '
+                flag = 1
+            if timer_left.minute>0:
+                desc = desc + f' {timer_left.minute} minutes '
+                flag = 1
+            if timer_left.second>0:
+                desc = desc + f' {timer_left.second} seconds '
+                flag = 1
+            
+            if flag == 0:
+                break    
+            e = discord.Embed(
+                color= discord.Color(random.choice(self.client.color_list)),
+                title=f"{tdata['title']}",
+                description=f'**{desc}**',
+                timestamp=date_time_obj
+            )
+            e.set_footer(
+                    text=f"Ends at")
+            # e.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+            
+            await message.edit(embed=e)
+            
+        # timer end message
+        desc = f'timer ended'
+                
+        e = discord.Embed(
+                color= ctx.author.colour,
+                title=f"{tdata['title']}",
+                description=f'**{desc}**',
+                timestamp=date_time_obj
+        )
+        e.set_footer(
+                    text=f"Ends at")
+        # e.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+        await message.edit(embed=e)
         
-        # users = set()
+        new_msg = await ctx.channel.fetch_message(message.id)
         
-        # for reaction in new_msg.reactions:
-        #     async for user in reaction.users():
-        #         users.add(user)
-        #     users.remove(self.client.user)     
+        users = set()
         
-        # try:
-        #     await ctx.send(f"{', '.join(user.mention for user in users)}",delete_after=1)
-        # except:
-        #     pass
-        # try : 
-        #     await ctx.send(f"{tdata['title']} {message.jump_url}",delete_after=30)
-        # except:
-        #     pass
+        for reaction in new_msg.reactions:
+            async for user in reaction.users():
+                users.add(user)
+            users.remove(self.client.user)     
+        
+        try:
+            await ctx.send(f"{', '.join(user.mention for user in users)}",delete_after=1)
+        except:
+            pass
+        try : 
+            await ctx.send(f"{tdata['title']} {message.jump_url}",delete_after=30)
+        except:
+            pass
         
         
     # @commands.command(name = "stopwatch",aliases=["sw"],usage = "<time> [name]")
