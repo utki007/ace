@@ -329,7 +329,7 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
         
     @commands.command(name = "tping")
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
-    async def tresume(self, ctx,message_id:int):
+    async def tping(self, ctx,message_id:int):
         await ctx.message.delete()
         message_id = int(message_id)
         channel = ctx.channel
