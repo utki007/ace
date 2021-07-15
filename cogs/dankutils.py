@@ -215,6 +215,11 @@ class dankutils(commands.Cog, description="Dank Utility"):
                 await ctx.send(f"{user.id} data could not be inserted in Databse. Aborting immediately!!")
                 continue
             try:
+                try:
+                    entry = await ctx.guild.fetch_ban(user)
+                    return await ctx.send(f"{self.client.emojis_list['Warrning']} | Unable to ban **_{user.name}_** (user.id)",delete_after = 20)
+                except:
+                    pass
                 await ctx.guild.ban(user,reason = "Freeloading")
                 await ctx.send(f"{self.client.emojis_list['SuccessTick']} | Successfully banned **_{user.name}_** for **{int(duration/ 86400)}** days!!")
             except:
