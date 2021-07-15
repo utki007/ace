@@ -217,13 +217,13 @@ class dankutils(commands.Cog, description="Dank Utility"):
             try:
                 try:
                     entry = await ctx.guild.fetch_ban(user)
-                    return await ctx.send(f"{self.client.emojis_list['Warrning']} | Unable to ban **_{user.name}_** (user.id)",delete_after = 20)
+                    return await ctx.send(f"{self.client.emojis_list['Warrning']} |  **_{user.name.title()}_** is already banned. ({user.id})",delete_after = 5)
                 except:
                     pass
                 await ctx.guild.ban(user,reason = "Freeloading")
                 await ctx.send(f"{self.client.emojis_list['SuccessTick']} | Successfully banned **_{user.name}_** for **{int(duration/ 86400)}** days!!")
             except:
-                await ctx.send(f"{self.client.emojis_list['Warrning']} | Unable to ban **_{user.name}_** (user.id)")
+                await ctx.send(f"{self.client.emojis_list['Warrning']} | Unable to ban **_{user.name}_** ({user.id})")
                 
         l = list(set(l))
         if l != []:
