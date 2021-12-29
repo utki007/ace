@@ -380,7 +380,7 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
                 if partnership not in user.roles:
                     await user.add_roles(partnership)
             try:
-                reaction, user = await self.client.wait_for('reaction_add', timeout = 600.0)
+                reaction, user = await self.client.wait_for('reaction_add', timeout = 6000.0)
                 # await message.remove_reaction(reaction, user)
             except:
                 break
