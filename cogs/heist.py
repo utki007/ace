@@ -341,11 +341,11 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         
         rr = discord.Embed(
                 title=f"    **Some important self roles\n**   ",
-                description= f"<a:heist:853518041484886057> {self.client.emojis_list['right']} {heist.mention}\n"
+                description= f"<a:heist:925617827447177247> {self.client.emojis_list['right']} {heist.mention}\n"
                             f"<a:rarepepe:801693036911263744> {self.client.emojis_list['right']} {danker.mention}\n"
-                            f"<a:peperobber:804070327344562217> {self.client.emojis_list['right']} {partnerHeist.mention}\n"
-                            f"<a:giveaway:854662921250537492> {self.client.emojis_list['right']} {giveaway.mention}\n"
-                            f"<a:Partner:859833234660655126> {self.client.emojis_list['right']} {partnership.mention}\n",
+                            f"<a:peperobber:925618641112813598> {self.client.emojis_list['right']} {partnerHeist.mention}\n"
+                            f"<a:giveaway:925619075936317440> {self.client.emojis_list['right']} {giveaway.mention}\n"
+                            f"<a:Partner:925618902673817700> {self.client.emojis_list['right']} {partnership.mention}\n",
                 color=0x9e3bff
                 # ,
                 # timestamp=datetime.datetime.utcnow()
@@ -355,28 +355,28 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         await ctx.message.delete()
         message = await ctx.send(embed=rr)
         
-        await message.add_reaction("<a:heist:853518041484886057>")
+        await message.add_reaction("<a:heist:925617827447177247>")
         await message.add_reaction("<a:rarepepe:801693036911263744>")
-        await message.add_reaction("<a:peperobber:804070327344562217>")
-        await message.add_reaction("<a:giveaway:854662921250537492>")
-        await message.add_reaction("<a:Partner:859833234660655126>")
+        await message.add_reaction("<a:peperobber:925618641112813598>")
+        await message.add_reaction("<a:giveaway:925619075936317440>")
+        await message.add_reaction("<a:Partner:925618902673817700>")
         
         reaction = None
 
         while True:
-            if  str(reaction) == "<a:heist:853518041484886057>":
+            if  str(reaction) == "<a:heist:925617827447177247>":
                 if heist not in user.roles:
                     await user.add_roles(heist)
             elif str(reaction) == "<a:rarepepe:801693036911263744>":
                 if danker not in user.roles:
                     await user.add_roles(danker)
-            elif str(reaction) == "<a:peperobber:804070327344562217>":
+            elif str(reaction) == "<a:peperobber:925618641112813598>":
                 if partnerHeist not in user.roles:
                     await user.add_roles(partnerHeist)
-            elif  str(reaction) == "<a:giveaway:854662921250537492>":
+            elif  str(reaction) == "<a:giveaway:925619075936317440>":
                 if giveaway not in user.roles:
                     await user.add_roles(giveaway)
-            elif str(reaction) == "<a:Partner:859833234660655126>":
+            elif str(reaction) == "<a:Partner:925618902673817700>":
                 if partnership not in user.roles:
                     await user.add_roles(partnership)
             try:
