@@ -47,7 +47,7 @@ class Help(commands.Cog, name="Help command"):
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Timer Management__",
-            value="Manage timers \n`tstart`, `tend` , `tresume/trestart` , `tping`",
+            value="Manage timers \n`tstart`, `tend` , `tresume/trestart` , `tping`, `get_time`",
             inline = False)
         help.set_author(name=ctx.guild.name,
                               icon_url=ctx.guild.icon_url)
@@ -258,6 +258,12 @@ class Help(commands.Cog, name="Help command"):
             name="<a:TGK_sparkles:838838345316040744> __Ping People__",
             value=  f"Ping users from a broken timer \n"
                     f"Ex: `?tping <messageId>`",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Get Timestamp__",
+            value=  f"Get Time in Discord format \n"
+                    f"Usage: `?[get_time|gt] <time>` \n"
+                    f"Ex: `?gt 5m4s`\n",
             inline = False)
         
         help.set_author(name=ctx.guild.name,
