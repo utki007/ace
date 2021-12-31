@@ -362,12 +362,15 @@ class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def gettime(self, ctx,time):
         
+        await ctx.message.delete()
         time = await convert_to_time(time)
         cd = await calculate(time)
         
         end = datetime.datetime.utcnow() + datetime.timedelta(seconds=cd)
         await ctx.send(
             f"<t:{int(datetime.datetime.timestamp(end))}:t> (<t:{int(datetime.datetime.timestamp(end))}:R>)\n"
+        )
+        await ctx.send(
             f"```<t:{int(datetime.datetime.timestamp(end))}:t> (<t:{int(datetime.datetime.timestamp(end))}:R>)```\n"
         )
     
