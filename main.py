@@ -11,7 +11,12 @@ import numpy as np
 import json
 import logging
 import asyncio
+import motor.motor_asyncio
 from asyncio import sleep
+from discord_slash import SlashCommand
+from discord_slash.model import SlashCommandPermissionType
+from discord_slash.utils.manage_commands import create_permission
+from utils.mongo import Document
 
 description = '''This is what I have been programmed to do'''
 client = commands.Bot(
@@ -21,6 +26,8 @@ client = commands.Bot(
     intents= discord.Intents.all(),
     help_command = None
 )
+slash = SlashCommand(client, sync_commands=False, sync_on_cog_reload=False)
+
 
 @client.event
 async def on_ready():
@@ -51,8 +58,8 @@ if os.path.exists(os.getcwd()+"./properties/tokens.json"):
 else:
     # for heroku
     client.botToken = os.environ['BOT_TOKEN']
-    client.connection_url = os.environ['MongoConnectionUrl']
-    client.connection_url2 = os.environ["mongoBanDB"]
+    #client.connection_url = os.environ['MongoConnectionUrl']
+    #client.connection_url2 = os.environ["mongoBanDB"]
 
 # logging.basicConfig(level=logging.INFO)
 
@@ -84,7 +91,10 @@ async def reload(ctx, extension):
 
 
 
-@client.command(name="logout", description="shutdown bot", aliases=['dc'], hidden=True)
+@slash.slash(name="Logout", description="Shutdown bot", default_permission=False, guild_ids=[785839283847954433],permissions={
+    785839283847954433:[create_permission(488614633670967307, SlashCommandPermissionType.USER, True),
+                    create_permission(301657045248114690, SlashCommandPermissionType.USER, True)]
+})
 @commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
 async def logout(ctx):
     await ctx.send(f'I am now logging out :wave: \n ')
@@ -147,4 +157,6 @@ client.emojis_list = {
     "stop" : "<:tgk_stop:858740746868621313>"
 }
 
-client.run(client.botToken)
+if __name__ == "__main__":
+    client.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(client.connection_url))
+    client.run(client.botToken)
