@@ -15,11 +15,11 @@ import datetime
 
 class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner or a server"):
 
-    def __init__(self, client):
-        self.client = client
-        self.mongoconnection = self.client.connection_url
-        self.myclient = pymongo.MongoClient(self.mongoconnection)
-        self.mydb = self.myclient['TGK']
+    def __init__(self,bot):
+        self.bot= bot
+        self.mongoconnection = self.bot.connection_url
+        self.mybot = pymongo.MongoClient(self.mongoconnection)
+        self.mydb = self.mybot['TGK']
         self.mycol = self.mydb["blacklistServers"]
         # for tgk
         self.logChannel = int(858233010860326962)
@@ -58,14 +58,14 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
             try:
                 await self.create_blacklist(ctx, serverId, serverName, reason)
                 embed = discord.Embed(
-                    color=self.client.colors["Success"],
-                    description=f'{self.client.emojis_list["SuccessTick"]} | **{serverName.title()}** is successfully blacklisted!! ')
+                    color=self.bot.colors["Success"],
+                    description=f'{self.bot.emojis_list["SuccessTick"]} | **{serverName.title()}** is successfully blacklisted!! ')
                 await ctx.channel.send(embed=embed)
                 return
             except:
                 embed = discord.Embed(
-                    color=self.client.colors["RED"],
-                    description=f'{self.client.emojis_list["Warrning"]} | Unable to blacklist them. Contact Jay or utki.')
+                    color=self.bot.colors["RED"],
+                    description=f'{self.bot.emojis_list["Warrning"]} | Unable to blacklist them. Contact Jay or utki.')
                 await ctx.channel.send(embed=embed)
                 return
 
@@ -73,16 +73,16 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
             newvalues = {"$set": {"serverName": serverName, "reason": reason}}
             self.mycol.update_one(myquery, newvalues)
             embed = discord.Embed(
-                    color=self.client.colors["Success"],
-                    title=f'{self.client.emojis_list["SuccessTick"]} | **{serverName.title()}** Blacklist reason updated successfully!! ',
+                    color=self.bot.colors["Success"],
+                    title=f'{self.bot.emojis_list["SuccessTick"]} | **{serverName.title()}** Blacklist reason updated successfully!! ',
                     description=f"**Server ID:** {serverId}\n"
                                 f"**Server Name:** _{serverName.title()}_\n"
                                 f"**Reason:** _{reason}_ \n")
             await ctx.channel.send(embed=embed)
         except:
             embed = discord.Embed(
-                    color=self.client.colors["RED"],
-                    description=f'{self.client.emojis_list["BrokenStatus"]} | Unable to update them. Contact Jay or utki.')
+                    color=self.bot.colors["RED"],
+                    description=f'{self.bot.emojis_list["BrokenStatus"]} | Unable to update them. Contact Jay or utki.')
             await ctx.channel.send(embed=embed)
             return
 
@@ -126,7 +126,7 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
     #             title=f"<a:TGK_Pandaswag:830525027341565982>  `{title:^18}`  <a:TGK_Pandaswag:830525027341565982>",
     #             description=f"{'<a:waveygirl:801398880352337961>': ^3} `|{'Item Name': ^15}|{'Quan.': ^6}|{'Cost': >4}  |` \n"
     #                         f"{desc}\n"
-    #                         f"**Total Donated Value:** {self.client.emojis_list['DMC']} `{total:,}`",
+    #                         f"**Total Donated Value:** {self.bot.emojis_list['DMC']} `{total:,}`",
     #             color=0xff0000
     #         )
     #     # embed.add_field(name=f"Total Donated Value: ",value=total,inline=True)
@@ -152,8 +152,8 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
 
         if flag == 0:
             embed = discord.Embed(
-                color=self.client.colors["Success"],
-                description=f'{self.client.emojis_list["SuccessTick"]} | {ctx.author.mention}, you are authorized to do partnership with them.')
+                color=self.bot.colors["Success"],
+                description=f'{self.bot.emojis_list["SuccessTick"]} | {ctx.author.mention}, you are authorized to do partnership with them.')
             try:
                 await ctx.author.send(embed=embed)
             except:
@@ -165,13 +165,13 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
             description= f"**Server ID:** {dict['_id']}\n"
                         f"**Server Name:** {dict['serverName'].title()}\n"
                         f"**Reason:** {dict['reason']}\n",
-            color = self.client.colors["DARK_GOLD"],
+            color = self.bot.colors["DARK_GOLD"],
             timestamp = datetime.datetime.utcnow()
         )
         dm.set_footer(text = f"Developed by utki007 & Jay", icon_url = ctx.guild.icon_url)
         embed = discord.Embed(
-                color=self.client.colors["RED"],
-                description=f'{self.client.emojis_list["Warrning"]} | {ctx.author.mention}, you are **unauthorized** to do partnership with them. Contact Senior Staff.')
+                color=self.bot.colors["RED"],
+                description=f'{self.bot.emojis_list["Warrning"]} | {ctx.author.mention}, you are **unauthorized** to do partnership with them. Contact Senior Staff.')
                     
         try:
             await ctx.author.send(embed=dm)
@@ -180,5 +180,5 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
             
         await ctx.channel.send(embed=embed, delete_after=10)
             
-def setup(client):
-    client.add_cog(blacklist(client))
+def setup(bot):
+   bot.add_cog(blacklist(bot))
