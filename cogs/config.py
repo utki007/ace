@@ -10,7 +10,21 @@ import time as tm
 import asyncio
 import math
 import datetime
+from discord_slash.utils.manage_commands import create_option, create_choice
+from discord_slash import cog_ext, SlashContext, cog_ext, SlashContext
+from discord_slash.utils.manage_commands import create_option, create_choice, create_permission
+from discord_slash.model import SlashCommandPermissionType
 
+staff_perm = {
+    785839283847954433:
+    [
+        create_permission(785842380565774368, SlashCommandPermissionType.ROLE, True),
+        create_permission(799037944735727636, SlashCommandPermissionType.ROLE, True),
+        create_permission(785845265118265376, SlashCommandPermissionType.ROLE, True),
+        create_permission(787259553225637889, SlashCommandPermissionType.ROLE, True),
+        create_permission(843775369470672916, SlashCommandPermissionType.ROLE, True),
+    ]
+}
 
 class config(commands.Cog, description="config"):
 
@@ -62,6 +76,25 @@ class config(commands.Cog, description="config"):
                 return
         await ctx.message.delete()
         await ctx.send(text)
+    
+    @cog_ext.cog_slash(name="say", description="simple say command",guild_ids=[785839283847954433], default_permission=False, permissions=staff_perm,
+		options=[create_option(name="str", description="Type Thing that bot need to send", option_type=3, required=True),
+		create_option(name="reply", description="Enter Message id you want to reply", option_type=3, required=False),
+		create_option(name="ping", description="you want to ping the user ?", option_type=5, required=False)]
+		)
+    @commands.cooldown(3,60 , commands.BucketType.user)
+    async def say(self, ctx, str:str, reply: int=None, ping: bool=True):
+        if reply:
+            try:
+                message = await ctx.channel.fetch_message(reply)
+            except:
+                return await ctx.send("make Sure your in the same chanenl as message or check your message id",hidden=True)
+
+            await message.reply(f"{str}", mention_author=ping, allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False, here=False))
+            await ctx.send(f"You Said: {str}\nTo {message.author.name}", hidden=True)
+        if not reply:
+            await ctx.channel.send(f"{str}",allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
+            await ctx.send(f"You Said: {str} in {ctx.channel.mention}", hidden=True)
 
 def setup(client):
     client.add_cog(config(client))
