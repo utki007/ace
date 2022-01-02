@@ -26,8 +26,7 @@ client = commands.Bot(
     intents= discord.Intents.all(),
     help_command = None
 )
-slash = SlashCommand(client, sync_commands=False, sync_on_cog_reload=False)
-
+slash = SlashCommand(client, sync_commands=True, sync_on_cog_reload=True)
 
 @client.event
 async def on_ready():
@@ -58,8 +57,8 @@ if os.path.exists(os.getcwd()+"./properties/tokens.json"):
 else:
     # for heroku
     client.botToken = os.environ['BOT_TOKEN']
-    #client.connection_url = os.environ['MongoConnectionUrl']
-    #client.connection_url2 = os.environ["mongoBanDB"]
+    client.connection_url = os.environ['MongoConnectionUrl']
+    client.connection_url2 = os.environ["mongoBanDB"]
 
 # logging.basicConfig(level=logging.INFO)
 
