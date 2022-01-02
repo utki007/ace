@@ -1,4 +1,3 @@
 properties/tokens.json
 *.pyc
 .venv
-.env
