@@ -28,7 +28,7 @@ staff_perm = {
         create_permission(799037944735727636, SlashCommandPermissionType.ROLE, True),
         create_permission(785845265118265376, SlashCommandPermissionType.ROLE, True),
         create_permission(787259553225637889, SlashCommandPermissionType.ROLE, True),
-        create_permission(843775369470672916, SlashCommandPermissionType.ROLE, True),
+        create_permission(803230347575820289, SlashCommandPermissionType.ROLE, True),
     ]
 }
 
@@ -414,7 +414,7 @@ class giveaway(commands.Cog):
 			data['b_role'] = None
 
 		if note:
-			embed = discord.Embed(description=f"**Note:**\n{note}", color=0x2f3136)
+			embed = discord.Embed(description=f"**Note:**\n{note}", color=0x9e3bff)
 			await ctx.channel.send(embed=embed)
 
 		await self.bot.give.upsert(data)
