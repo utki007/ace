@@ -28,8 +28,8 @@ staff_perm = {
 
 class config(commands.Cog, description="config"):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self,bot):
+        self.bot= bot
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -40,25 +40,25 @@ class config(commands.Cog, description="config"):
     async def activity(self, ctx, *, activity: str = None):
         if activity == None:
             activity = f'over {ctx.guild.member_count} members '
-        await self.client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{activity}"), status=discord.Status.dnd)
+        await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{activity}"), status=discord.Status.dnd)
         await ctx.send(f'Bot activity is Updated')
 
     @commands.command()
     async def ping(self, ctx):
         message = await ctx.send(f'Pong! ')
-        await message.edit(content=f"Pong! `{round(self.client.latency * 1000)}ms`")
+        await message.edit(content=f"Pong! `{round(self.bot.latency * 1000)}ms`")
 
     @commands.command(name="Status", description="Change Bot Status to online & Dnd & idle", usage="[dnd & idle & online]", hidden=True)
     @commands.check_any(commands.has_permissions(administrator=True), commands.is_owner())
     async def status(self, ctx, arg):
         if arg.lower() == 'dnd':
-            await self.client.change_presence(status=discord.Status.dnd)
+            await self.bot.change_presence(status=discord.Status.dnd)
             await ctx.send('Bot status is Updated')
         elif arg.lower() == 'online':
-            await self.client.change_presence(status=discord.Status.online)
+            await self.bot.change_presence(status=discord.Status.online)
             await ctx.send('Bot status is Updated')
         elif arg.lower() == 'idle':
-            await self.client.change_presence(status=discord.Status.idle)
+            await self.bot.change_presence(status=discord.Status.idle)
             await ctx.send('Bot status is Updated')
         else:
             await ctx.send(f':warning: {ctx.author.mention} Please provide valid status you dimwit!! :warning:')
@@ -90,11 +90,11 @@ class config(commands.Cog, description="config"):
             except:
                 return await ctx.send("make Sure your in the same chanenl as message or check your message id",hidden=True)
 
-            await message.reply(f"{str}", mention_author=ping, allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False, here=False))
+            await message.reply(f"{str}", mention_author=ping, allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
             await ctx.send(f"You Said: {str}\nTo {message.author.name}", hidden=True)
         if not reply:
             await ctx.channel.send(f"{str}",allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
             await ctx.send(f"You Said: {str} in {ctx.channel.mention}", hidden=True)
 
-def setup(client):
-    client.add_cog(config(client))
+def setup(bot):
+   bot.add_cog(config(bot))
