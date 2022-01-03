@@ -11,24 +11,36 @@ import numpy as np
 import json
 import logging
 import asyncio
+import motor.motor_asyncio
 from asyncio import sleep
+from discord_slash import SlashCommand
+from discord_slash.model import SlashCommandPermissionType
+from discord_slash.utils.manage_commands import create_permission
+from utils.mongo import Document
 
 description = '''This is what I have been programmed to do'''
-client = commands.Bot(
+bot = commands.Bot(
     command_prefix=["? ","?"],
     description=description,
     case_insensitive=True,
     intents= discord.Intents.all(),
     help_command = None
 )
+bot.giveaway = {}
+slash = SlashCommand(bot, sync_commands=True, sync_on_cog_reload=True)
 
-@client.event
+@bot.event
 async def on_ready():
     print(
-        f"-----\nLogged in as: {client.user.name} : {client.user.id}\n-----\n"
+        f"-----\nLogged in as: {bot.user.name} : {bot.user.id}\n-----\n"
     )
-    guild = client.get_guild(785839283847954433)
-    client.role_dict = {
+
+    currentGive = await bot.give.get_all()
+    for give in currentGive:
+        bot.giveaway[give["_id"]] = give
+
+    guild = bot.get_guild(785839283847954433)
+    bot.role_dict = {
         "1" : discord.utils.get(guild.roles, id=810128078789410846),
         "5" : discord.utils.get(guild.roles, id=810128257491795979),
         "10" : discord.utils.get(guild.roles, id=810128946791579679),
@@ -45,50 +57,50 @@ async def on_ready():
 if os.path.exists(os.getcwd()+"./properties/tokens.json"):
     with open("./properties/tokens.json") as f:
         configData = json.load(f)
-    client.botToken = configData["token"]
-    client.connection_url = configData["mongo"]
-    client.connection_url2 = configData["mongoBanDB"]
+    bot.botToken = configData["token"]
+    bot.connection_url = configData["mongo"]
+    bot.connection_url2 = configData["mongoBanDB"]
+    bot.amari = configData["amari"]
 else:
     # for heroku
-    client.botToken = os.environ['BOT_TOKEN']
-    client.connection_url = os.environ['MongoConnectionUrl']
-    client.connection_url2 = os.environ["mongoBanDB"]
+    bot.botToken = os.environ['BOT_TOKEN']
+    bot.connection_url = os.environ['MongoConnectionUrl']
+    bot.connection_url2 = os.environ["mongoBanDB"]
+    bot.amari = os.environ["amari"]
 
 # logging.basicConfig(level=logging.INFO)
 
 
-@client.command(hidden=True)
+@bot.command(hidden=True)
 @commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
 async def load(ctx, extension):
-    client.load_extension(f'cogs.{extension}')
+    bot.load_extension(f'cogs.{extension}')
     await ctx.send(f'The {extension} is successfully Loaded.')
 
 
-@client.command(hidden=True)
+@bot.command(hidden=True)
 @commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
 async def unload(ctx, extension):
-    client.unload_extension(f'cogs.{extension}')
+    bot.unload_extension(f'cogs.{extension}')
     await ctx.send(f'The {extension} is successfully unloaded.')
 
-for filename in os.listdir('./cogs'):
-    if filename.endswith('.py'):
-        client.load_extension(f'cogs.{filename[:-3]}')
-
-
-@client.command(hidden=True)
+@bot.command(hidden=True)
 @commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
 async def reload(ctx, extension):
-    client.unload_extension(f'cogs.{extension}')
-    client.load_extension(f'cogs.{extension}')
+    bot.unload_extension(f'cogs.{extension}')
+    bot.load_extension(f'cogs.{extension}')
     await ctx.send(f'The {extension} is successfully reloaded.')
 
 
 
-@client.command(name="logout", description="shutdown bot", aliases=['dc'], hidden=True)
+@slash.slash(name="Logout", description="Shutdown bot", default_permission=False, guild_ids=[785839283847954433],permissions={
+    785839283847954433:[create_permission(488614633670967307, SlashCommandPermissionType.USER, True),
+                    create_permission(301657045248114690, SlashCommandPermissionType.USER, True)]
+})
 @commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
 async def logout(ctx):
     await ctx.send(f'I am now logging out :wave: \n ')
-    await client.logout()
+    await bot.logout()
 
 
 @logout.error
@@ -101,7 +113,7 @@ async def logout_error(ctx, error):
 
 
     
-client.colors = {
+bot.colors = {
     "WHITE": 0xFFFFFF,
     "AQUA": 0x1ABC9C,
     "GREEN": 0x2ECC71,
@@ -123,9 +135,9 @@ client.colors = {
     "DARK_NAVY": 0x2C3E50,
     "Success":0x78AB46
 }
-client.color_list = [c for c in client.colors.values()]
+bot.color_list = [c for c in bot.colors.values()]
 
-client.emojis_list = {
+bot.emojis_list = {
     "DMC" : "⏣",
     "Hi" : "<a:pikahi:785911570336186418>",
     "Freeloader" : "<a:TGK_freeloader:840517161386377226>",
@@ -147,4 +159,14 @@ client.emojis_list = {
     "stop" : "<:tgk_stop:858740746868621313>"
 }
 
-client.run(client.botToken)
+if __name__ == "__main__":
+    bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
+    bot.db = bot.mongo["TGK"]
+    bot.give = Document(bot.db, "giveaway")
+    bot.endgive = Document(bot.db, "back_up_giveaway")
+
+    for file in os.listdir('./cogs'):
+        if file.endswith(".py") and not file.startswith("_")and not file.startswith('temp'):
+            bot.load_extension(f"cogs.{file[:-3]}")
+
+    bot.run(bot.botToken)

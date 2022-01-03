@@ -18,12 +18,12 @@ from utils.convertor import *
 
 class donationTracker(commands.Cog, description="Donation Tracker"):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, bot):
+        self.bot= bot
         # self.mongoconnection = os.environ['MongoConnectionUrl']
-        self.mongoconnection = self.client.connection_url
-        self.myclient = pymongo.MongoClient(self.mongoconnection)
-        self.mydb = self.myclient['TGK']
+        self.mongoconnection = self.bot.connection_url
+        self.mybot = pymongo.MongoClient(self.mongoconnection)
+        self.mydb = self.mybot['TGK']
         self.mycol = self.mydb["donorBank"]
         # for tgk
         self.logChannel = int(838042561486258247)
@@ -145,8 +145,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
         logg.set_footer(text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
-        channel = self.client.get_channel(self.logChannel)
-        registry = self.client.get_channel(self.registry)
+        channel = self.bot.get_channel(self.logChannel)
+        registry = self.bot.get_channel(self.registry)
         try:
             if ctx.channel.id != registry.id:
                 await registry.send(embed=display)
@@ -159,7 +159,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
             pass
         
-        roles_added = await donor_roles(self.client,dict[self.bal],member)
+        roles_added = await donor_roles(self.bot,dict[self.bal],member)
         
         am = discord.AllowedMentions(
             users=False,  # Whether to ping individual user @mentions
@@ -171,7 +171,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         try:
             if roles_added !=[]:
                 for i in roles_added:
-                    await ctx.send(f"{self.client.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
+                    await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
         except:
             await ctx.send(f"{ctx.author.mention}, Unable to add donor roles!")
             pass
@@ -247,7 +247,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠",delete_after=30)
             pass 
-        registry = self.client.get_channel(self.registry)
+        registry = self.bot.get_channel(self.registry)
         try:
             if ctx.channel.id != registry.id:
                 await registry.send(embed=display)
@@ -275,7 +275,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
         logg.set_footer(text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
-        channel = self.client.get_channel(self.logChannel)
+        channel = self.bot.get_channel(self.logChannel)
         try:
             await channel.send(embed=logg)
            
@@ -283,7 +283,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
             pass
         
-        roles_added = await donor_roles(self.client,dict[self.bal],member)
+        roles_added = await donor_roles(self.bot,dict[self.bal],member)
         
         am = discord.AllowedMentions(
             users=False,  # Whether to ping individual user @mentions
@@ -295,7 +295,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         try:
             if roles_added !=[]:
                 for i in roles_added:
-                    await ctx.send(f"{self.client.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
+                    await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
         except:
             await ctx.send(f"{ctx.author.mention}, Unable to add donor roles!")
             pass
@@ -373,7 +373,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
         embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
         # embed.set_footer(
-        #     text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
+        #     text=f"{self.bot.user.name} | Developed by utki007 and Jay", icon_url=self.bot.user.avatar_url)
         # embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
         # embed.set_image(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
         await ctx.message.delete()
@@ -426,7 +426,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             logg.set_footer(
                 text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
-            channel = self.client.get_channel(self.logChannel)
+            channel = self.bot.get_channel(self.logChannel)
             await channel.send(embed=logg)
 
         else:
@@ -457,7 +457,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             )
 
             display.set_footer(
-                text=f"{self.client.user.name} | Developed by utki007 and Jay", icon_url=self.client.user.avatar_url)
+                text=f"{self.bot.user.name} | Developed by utki007 and Jay", icon_url=self.bot.user.avatar_url)
 
             await ctx.send(embed=display)
             await member.send(f"your nick has been changed to  **{nick[:15]}** [here]({ctx.message.jump_url})")
@@ -472,7 +472,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             logg.set_footer(
                 text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
-            channel = self.client.get_channel(self.logChannel)
+            channel = self.bot.get_channel(self.logChannel)
             await channel.send(embed=logg)
 
     @commands.command(name="bal", description="Check your donation balance", usage="<member>", aliases=['balance'])
@@ -662,7 +662,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠",delete_after=30)
             pass
-        registry = self.client.get_channel(self.celebRegistry)
+        registry = self.bot.get_channel(self.celebRegistry)
         try:
             if ctx.channel.id != registry.id:
                 await registry.send(embed=display)
@@ -690,7 +690,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
         logg.set_footer(text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
-        channel = self.client.get_channel(self.logChannel)
+        channel = self.bot.get_channel(self.logChannel)
         try:
             await channel.send(embed=logg)
            
@@ -698,7 +698,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
             pass
         
-        roles_added = await donor_roles(self.client,dict[self.bal],member)
+        roles_added = await donor_roles(self.bot,dict[self.bal],member)
         
         am = discord.AllowedMentions(
             users=False,  # Whether to ping individual user @mentions
@@ -710,7 +710,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         try:
             if roles_added !=[]:
                 for i in roles_added:
-                    await ctx.send(f"{self.client.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
+                    await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
         except:
             await ctx.send(f"{ctx.author.mention}, Unable to add donor roles!")
             pass
@@ -810,7 +810,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠",delete_after=30)
             pass 
-        registry = self.client.get_channel(self.celebRegistry)
+        registry = self.bot.get_channel(self.celebRegistry)
         try:
             if ctx.channel.id != registry.id:
                 await registry.send(embed=display)
@@ -838,7 +838,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
         logg.set_footer(text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
-        channel = self.client.get_channel(self.logChannel)
+        channel = self.bot.get_channel(self.logChannel)
         try:
             await channel.send(embed=logg)
            
@@ -846,7 +846,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
             pass
         
-        roles_added = await donor_roles(self.client,dict[self.bal],member)
+        roles_added = await donor_roles(self.bot,dict[self.bal],member)
         
         am = discord.AllowedMentions(
             users=False,  # Whether to ping individual user @mentions
@@ -858,7 +858,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         try:
             if roles_added !=[]:
                 for i in roles_added:
-                    await ctx.send(f"{self.client.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
+                    await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
         except:
             await ctx.send(f"{ctx.author.mention}, Unable to add donor roles!")
             pass
@@ -936,5 +936,5 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         await ctx.send(embed=embed)
 
 
-def setup(client):
-    client.add_cog(donationTracker(client))
+def setup(bot):
+    bot.add_cog(donationTracker(bot))

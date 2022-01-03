@@ -5,13 +5,27 @@ from discord.ext import commands
 import asyncio
 import math
 import datetime
-
 from utils.convertor import *
 
+from discord_slash.utils.manage_commands import create_option, create_choice
+from discord_slash import cog_ext, SlashContext, cog_ext, SlashContext
+from discord_slash.utils.manage_commands import create_option, create_choice, create_permission
+from discord_slash.model import SlashCommandPermissionType
+
+staff_perm = {
+    785839283847954433:
+    [
+        create_permission(785842380565774368, SlashCommandPermissionType.ROLE, True),
+        create_permission(799037944735727636, SlashCommandPermissionType.ROLE, True),
+        create_permission(785845265118265376, SlashCommandPermissionType.ROLE, True),
+        create_permission(787259553225637889, SlashCommandPermissionType.ROLE, True),
+        create_permission(843775369470672916, SlashCommandPermissionType.ROLE, True),
+    ]
+}
 
 class channel(commands.Cog, description="Channel utils"):
-    def __init__(self, client):
-        self.client = client
+    def __init__(self,bot):
+        self.bot= bot
         
         self.default_role = 787566421592899614
 
@@ -19,7 +33,8 @@ class channel(commands.Cog, description="Channel utils"):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-    @commands.command(name="slowmode", description="Set Slowmode In Current Channel", usage="[slowmode time 1m, 1s 1h max 6h]", aliases=['s', 'sm'],hidden = True)
+    @cog_ext.cog_slash(name="slowmode", description="Set Slowmode In Current Channel", guild_ids=[785839283847954433], default_permission=False, permissions=staff_perm,
+        options=[create_option(name="timer", description="Enter slowmod time", required=False, option_type=3)])
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def slowmode(self, ctx, timer: str = '0'):
 
@@ -28,7 +43,7 @@ class channel(commands.Cog, description="Channel utils"):
         
         # await ctx.message.delete()
         if cd > 21600:
-            await ctx.send(f"Slowmode interval can't be greater than 6 hours.")
+            await ctx.send(f"Slowmode interval can't be greater than 6 hours.", hidden=True)
         elif cd == 0:
             await ctx.channel.edit(slowmode_delay=cd)
             await ctx.send(f"Slowmode has been removed!! 🎉")
@@ -46,10 +61,10 @@ class channel(commands.Cog, description="Channel utils"):
                 
             await ctx.send(f'Slowmode interval is now **{desc}**.')
 
-        await ctx.message.delete()
-
-    @commands.command(name="lock", description="Lock the channel", usage="role", aliases=['l'],hidden=True)
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @cog_ext.cog_slash(name="lock", description="Lock the channel", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm,
+        options=[
+            create_option(name="role", description="Enter role to lock channel for it", required=False, option_type=8)
+        ])
     async def lock(self, ctx,*, role: discord.Role = None):
 
         channel = ctx.channel        
@@ -63,15 +78,16 @@ class channel(commands.Cog, description="Channel utils"):
         overwrite = channel.overwrites_for(role)
         overwrite.send_messages = False
 
-        await ctx.message.delete()
         await channel.set_permissions(role, overwrite=overwrite)
-
+        await ctx.send(f"Locked {channel.mention} for {role.mention}", hidden=True)
         embed = discord.Embed(
             color=0x78AB46, description=f':white_check_mark: | Locked **{channel}** for {role.mention}')
         await channel.send(embed=embed)
 
-    @commands.command(name="unlock", description=f"`[p]unlock true @role`", usage="<state> <role>", aliases=['ul'],hidden=True)
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @cog_ext.cog_slash(name="unlock", description="unlock the channel", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm,
+    options=[
+        create_option(name="role", description="Enter role to Unlock channel for it", required=False, option_type=8)
+    ])
     async def unlock(self, ctx, state: bool = False, *,role: discord.Role = None):
 
         channel = ctx.channel        
@@ -96,7 +112,7 @@ class channel(commands.Cog, description="Channel utils"):
         else:
             msg = f':white_check_mark: | Unlocked **{channel}** for {role.mention}'
         
-        await ctx.message.delete()
+        await ctx.send(f"Locked {channel.mention} for {role.mention}", hidden=True)
         await channel.set_permissions(role, overwrite=overwrite)
 
         embed = discord.Embed(
@@ -117,15 +133,15 @@ class channel(commands.Cog, description="Channel utils"):
             default_role = discord.utils.get(ctx.guild.roles, id=self.default_role)
             lv = discord.utils.get(ctx.guild.roles, id=811307500321505320)
 
-            dank_1 = self.client.get_channel(799364834927968336)
-            dank_2 = self.client.get_channel(799378297855279125)
-            dank_pre = self.client.get_channel(812724720675061770)
-            dank_vip = self.client.get_channel(822409174271918120)
-            dank_grind = self.client.get_channel(836477044128612422)
+            dank_1 = self.bot.get_channel(799364834927968336)
+            dank_2 = self.bot.get_channel(799378297855279125)
+            dank_pre = self.bot.get_channel(812724720675061770)
+            dank_vip = self.bot.get_channel(822409174271918120)
+            dank_grind = self.bot.get_channel(836477044128612422)
             
-            donate_here = self.client.get_channel(812711254790897714)
-            grinder_donation = self.client.get_channel(851663580620521472)
-            trade_zone = self.client.get_channel(814959157073412156)
+            donate_here = self.bot.get_channel(812711254790897714)
+            grinder_donation = self.bot.get_channel(851663580620521472)
+            trade_zone = self.bot.get_channel(814959157073412156)
 
             override_dank_1 = dank_1.overwrites_for(default_role)
             override_dank_1.send_messages = False
@@ -219,15 +235,15 @@ class channel(commands.Cog, description="Channel utils"):
             default_role = discord.utils.get(ctx.guild.roles, id=self.default_role)
             lv = discord.utils.get(ctx.guild.roles, id=811307500321505320)
             
-            dank_1 = self.client.get_channel(799364834927968336)
-            dank_2 = self.client.get_channel(799378297855279125)
-            dank_pre = self.client.get_channel(812724720675061770)
-            dank_vip = self.client.get_channel(822409174271918120)
-            dank_grind = self.client.get_channel(836477044128612422)
+            dank_1 = self.bot.get_channel(799364834927968336)
+            dank_2 = self.bot.get_channel(799378297855279125)
+            dank_pre = self.bot.get_channel(812724720675061770)
+            dank_vip = self.bot.get_channel(822409174271918120)
+            dank_grind = self.bot.get_channel(836477044128612422)
             
-            donate_here = self.client.get_channel(812711254790897714)
-            grinder_donation = self.client.get_channel(851663580620521472)
-            trade_zone = self.client.get_channel(814959157073412156)
+            donate_here = self.bot.get_channel(812711254790897714)
+            grinder_donation = self.bot.get_channel(851663580620521472)
+            trade_zone = self.bot.get_channel(814959157073412156)
 
             override_dank_1 = dank_1.overwrites_for(default_role)
             override_dank_1.send_messages = None
@@ -299,5 +315,5 @@ class channel(commands.Cog, description="Channel utils"):
         await lock_status.edit(content=f"Dank is Unlocked")
  
         
-def setup(client):
-    client.add_cog(channel(client))
+def setup(bot):
+   bot.add_cog(channel(bot))

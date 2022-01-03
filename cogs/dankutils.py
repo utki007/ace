@@ -19,13 +19,13 @@ from utils.convertor import *
 
 class dankutils(commands.Cog, description="Dank Utility"):
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self,bot):
+        self.bot= bot
 
         # db connection for tempban
-        self.mongoconnection = self.client.connection_url2
-        self.myclient = pymongo.MongoClient(self.mongoconnection)
-        self.mydb = self.myclient['tgk_database']
+        self.mongoconnection = self.bot.connection_url2
+        self.mybot = pymongo.MongoClient(self.mongoconnection)
+        self.mydb = self.mybot['tgk_database']
         self.mycol = self.mydb["bans"]
         
         # for discount
@@ -57,9 +57,9 @@ class dankutils(commands.Cog, description="Dank Utility"):
                         )
                         return await message.channel.send("If you'd like to stop receiving pings, check out <#848631258137362452> for <@&810593886720098304> role!!!", allowed_mentions=am)
 
-        # if message.channel.id == 840215557097390131 and message.author.id != self.client.user.id:838646783785697290
+        # if message.channel.id == 840215557097390131 and message.author.id != self.bot.user.id:838646783785697290
         # 838646783785697290:
-        if message.channel.id == 840215557097390131 and message.author.id != self.client.user.id:
+        if message.channel.id == 840215557097390131 and message.author.id != self.bot.user.id:
             embeds = message.embeds
             dict = {}
             for embed in embeds:
@@ -81,7 +81,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
             newtitle = title[0]
             name = title[1]
             content = f"**{name}** is on sale at **{percentage}%** off!!"
-            fieldHeaderContent = f'**{name}** {self.client.emojis_list["rightArrow"]} {self.client.emojis_list["DMC"]} **{price:,}** (_{percentage}%_ off!!)\n\n'
+            fieldHeaderContent = f'**{name}** {self.bot.emojis_list["rightArrow"]} {self.bot.emojis_list["DMC"]} **{price:,}** (_{percentage}%_ off!!)\n\n'
             if percentage > self.percentageThreshhold:
                 content = f"<@&799517544674230272>" + content
             else:
@@ -94,11 +94,11 @@ class dankutils(commands.Cog, description="Dank Utility"):
             ad.set_footer(
                     text=f"Developed by utki007 & Jay", icon_url=f'https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024')
             ad.set_thumbnail(url=f'{str(dict["thumbnail"]["url"])}')
-            channelnew = self.client.get_channel(self.shop)
+            channelnew = self.bot.get_channel(self.shop)
             await channelnew.send(embed=ad, content=content)
             # await message.channel.send(embed=ad)
 
-        # await self.client.process_commands(message)
+        # await self.bot.process_commands(message)
         
     @commands.command(name="calculate",aliases=["calc", "c","cal"])
     async def calculate(self, ctx, *, query):
@@ -147,16 +147,16 @@ class dankutils(commands.Cog, description="Dank Utility"):
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def freeloader(self, ctx):
         fl = discord.Embed(
-            title=f'{self.client.emojis_list["banHammer"]} Freeloader Perks {self.client.emojis_list["banHammer"]}',
-            description =   f'{self.client.emojis_list["rightArrow"]} 14 Days temporary ban.\n'
-                            f'{self.client.emojis_list["rightArrow"]} Miss daily heists, events and giveaways.\n'
-                            f'{self.client.emojis_list["rightArrow"]} Multiple freeloads, Permanent ban.\n'
-                            f'{self.client.emojis_list["rightArrow"]} Lament why you left such a POG server.\n',
-            color=self.client.colors["RED"],
+            title=f'{self.bot.emojis_list["banHammer"]} Freeloader Perks {self.bot.emojis_list["banHammer"]}',
+            description =   f'{self.bot.emojis_list["rightArrow"]} 14 Days temporary ban.\n'
+                            f'{self.bot.emojis_list["rightArrow"]} Miss daily heists, events and giveaways.\n'
+                            f'{self.bot.emojis_list["rightArrow"]} Multiple freeloads, Permanent ban.\n'
+                            f'{self.bot.emojis_list["rightArrow"]} Lament why you left such a POG server.\n',
+            color=self.bot.colors["RED"],
             timestamp=datetime.datetime.utcnow()
         )
         # fl.set_author(name=ctx.guild.name, icon_url="https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024")
-        fl.set_footer(text=f"Developed by utki007 & Jay",icon_url = self.client.user.avatar_url)
+        fl.set_footer(text=f"Developed by utki007 & Jay",icon_url = self.bot.user.avatar_url)
         fl.set_thumbnail(url=f'https://cdn.discordapp.com/emojis/831301479691845632.gif?v=1')
         await ctx.message.delete()
         await ctx.send(embed=fl)
@@ -165,7 +165,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
     @commands.command(name="banFreeloader",aliases=["bfl"],description="Lists Freeloader Perks")
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636), commands.is_owner())
     async def banFreeloader(self, ctx,number:int= 100,duration:str = "14"):
-        guild = self.client.get_guild(ctx.guild.id)
+        guild = self.bot.get_guild(ctx.guild.id)
         # fetch_messages = await ctx.channel.history().find(lambda m: guild.get_member(m.author.id) is not None)
         # await ctx.send(fetch_messages)
         await ctx.message.delete()
@@ -217,17 +217,17 @@ class dankutils(commands.Cog, description="Dank Utility"):
             try:
                 try:
                     entry = await ctx.guild.fetch_ban(user)
-                    return await ctx.send(f"{self.client.emojis_list['Warrning']} |  **_{user.name.title()}_** is already banned. ({user.id})",delete_after = 5)
+                    return await ctx.send(f"{self.bot.emojis_list['Warrning']} |  **_{user.name.title()}_** is already banned. ({user.id})",delete_after = 5)
                 except:
                     pass
                 await ctx.guild.ban(user,reason = "Freeloading")
-                await ctx.send(f"{self.client.emojis_list['SuccessTick']} | Successfully banned **_{user.name}_** for **{int(duration/ 86400)}** days!!")
+                await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Successfully banned **_{user.name}_** for **{int(duration/ 86400)}** days!!")
             except:
-                await ctx.send(f"{self.client.emojis_list['Warrning']} | Unable to ban **_{user.name}_** ({user.id})")
+                await ctx.send(f"{self.bot.emojis_list['Warrning']} | Unable to ban **_{user.name}_** ({user.id})")
                 
         l = list(set(l))
         if l != []:
             await ctx.author.send(l)
        
-def setup(client):
-    client.add_cog(dankutils(client))
+def setup(bot):
+   bot.add_cog(dankutils(bot))
