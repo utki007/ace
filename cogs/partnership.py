@@ -28,11 +28,11 @@ def commonPing(role1, role2):
 
 class partnership(commands.Cog, name="Partnership Manager", description="Manages all partnerships with TGK"):
 
-    def __init__(self, bot):
-        self.bot= bot
-        self.mongoconnection = self.bot.connection_url
-        self.mybot = pymongo.MongoClient(self.mongoconnection)
-        self.mydb = self.mybot['TGK']
+    def __init__(self, client):
+        self.client = client
+        self.mongoconnection = self.client.connection_url
+        self.myclient = pymongo.MongoClient(self.mongoconnection)
+        self.mydb = self.myclient['TGK']
         self.mycol = self.mydb["partnerships"]
         
         # channel ids
@@ -67,8 +67,8 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         pp = []
 
         embed = discord.Embed(
-            color=self.bot.colors["RED"],
-            description=f'{self.bot.emojis_list["Warrning"]} | Invalid Role ID provided. Action Terminated!!!')
+            color=self.client.colors["RED"],
+            description=f'{self.client.emojis_list["Warrning"]} | Invalid Role ID provided. Action Terminated!!!')
 
         for i in pings.split(" "):
             if i.isnumeric():
@@ -98,14 +98,14 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             try:
                 await self.create_partner( ctx, member.id, pp)
                 embed = discord.Embed(
-                    color=self.bot.colors["Success"],
-                    description=f'{self.bot.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!')
+                    color=self.client.colors["Success"],
+                    description=f'{self.client.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!')
                 await ctx.send(embed=embed)
                 return
             except:
                 embed = discord.Embed(
-                    color=self.bot.colors["RED"],
-                    description=f'{self.bot.emojis_list["Warrning"]} | Unable to add them. Contact Jay or utki.')
+                    color=self.client.colors["RED"],
+                    description=f'{self.client.emojis_list["Warrning"]} | Unable to add them. Contact Jay or utki.')
                 await ctx.channel.send(embed=embed)
                 return
         
@@ -113,28 +113,28 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             newvalues = {"$set": {"pings": pp}}
             self.mycol.update_one(myquery, newvalues)
             embed = discord.Embed(
-                    color=self.bot.colors["Success"],
-                    description=f'{self.bot.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!')
+                    color=self.client.colors["Success"],
+                    description=f'{self.client.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!')
             await ctx.send(embed=embed)
         except:
             embed = discord.Embed(
-                    color=self.bot.colors["RED"],
-                    description=f'{self.bot.emojis_list["BrokenStatus"]} | Unable to add them. Contact Jay or utki.')
+                    color=self.client.colors["RED"],
+                    description=f'{self.client.emojis_list["BrokenStatus"]} | Unable to add them. Contact Jay or utki.')
             await ctx.channel.send(embed=embed)
             return
 
         # for logging
         logg = discord.Embed(
             title="__Partner Logging__",
-            description=f'{self.bot.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!',
-            colour=self.bot.colors["Success"],
+            description=f'{self.client.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!',
+            colour=self.client.colors["Success"],
             timestamp=datetime.datetime.utcnow()
         )
 
         logg.set_footer(
             text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
-        channel = self.bot.get_channel(self.logChannel)
+        channel = self.client.get_channel(self.logChannel)
         try:
             await channel.send(embed=logg)
         except:
@@ -159,36 +159,36 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
         if flag == 0:
             embed = discord.Embed(
-                color=self.bot.colors["RED"],
-                description=f"{self.bot.emojis_list['Warrning']} | {member.mention}'s Partnership data not found!!!")
+                color=self.client.colors["RED"],
+                description=f"{self.client.emojis_list['Warrning']} | {member.mention}'s Partnership data not found!!!")
             await ctx.send(embed=embed)
             return
         
         try:
             self.mycol.remove(myquery)
             embed = discord.Embed(
-                color=self.bot.colors["Success"],
-                description=f"{self.bot.emojis_list['SuccessTick']} |{member.mention}'s partnership data has been erased!!!")
+                color=self.client.colors["Success"],
+                description=f"{self.client.emojis_list['SuccessTick']} |{member.mention}'s partnership data has been erased!!!")
             await ctx.send(embed=embed)
         except:
             embed = discord.Embed(
-                    color=self.bot.colors["RED"],
-                    description=f'{self.bot.emojis_list["BrokenStatus"]} | Unable to erase data. Contact Jay or utki.')
+                    color=self.client.colors["RED"],
+                    description=f'{self.client.emojis_list["BrokenStatus"]} | Unable to erase data. Contact Jay or utki.')
             await ctx.channel.send(embed=embed)
             return
         
         # for logging
         logg = discord.Embed(
             title="__Partner Logging__",
-            description=f'{self.bot.emojis_list["SuccessTick"]} |{member.mention} is now removed!!!',
-            colour=self.bot.colors["Success"],
+            description=f'{self.client.emojis_list["SuccessTick"]} |{member.mention} is now removed!!!',
+            colour=self.client.colors["Success"],
             timestamp=datetime.datetime.utcnow()
         )
 
         logg.set_footer(
             text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
-        channel = self.bot.get_channel(self.logChannel)
+        channel = self.client.get_channel(self.logChannel)
         try:
             await channel.send(embed=logg)
         except:
@@ -206,9 +206,9 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         pp = []
 
         unauthorized = discord.Embed(
-            color=self.bot.colors["RED"],
+            color=self.client.colors["RED"],
             title=f"Unauthorized to use this command!!!",
-            description=f"{self.bot.emojis_list['Warrning']} | If you think it's a mistake, do reach out to an Owner/Admin!!!\n Repeatetive usage may lead to a blacklist!")
+            description=f"{self.client.emojis_list['Warrning']} | If you think it's a mistake, do reach out to an Owner/Admin!!!\n Repeatetive usage may lead to a blacklist!")
 
         
         myquery = {"_id": ctx.author.id}
@@ -239,8 +239,8 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             await ctx.send(f'{" ".join(map(str,pp))} **Join up**!!!')
         else:
             warning = discord.Embed(
-                color=self.bot.colors["RED"],
-                description=f"{self.bot.emojis_list['Warrning']} | Should only be used in <#{self.partnerheist}>!")
+                color=self.client.colors["RED"],
+                description=f"{self.client.emojis_list['Warrning']} | Should only be used in <#{self.partnerheist}>!")
             await ctx.send(embed=warning, delete_after=15)
 
     @commands.command(name="Grinders", description="Ping Grinders Heist", aliases=['grind', 'hg'])
@@ -257,7 +257,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             replied_user=False,  # Whether to ping on replies to messages
         )
         
-        user = self.bot.get_user(301657045248114690)
+        user = self.client.get_user(301657045248114690)
         if ctx.channel.id == 846766444695650345:
             await ctx.send(
                 f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
@@ -290,7 +290,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
     async def pings(self, ctx):
         
         
-        guild = self.bot.get_guild(785839283847954433)
+        guild = self.client.get_guild(785839283847954433)
         
         heist = discord.utils.get(guild.roles, id=804068344612913163 )
         partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
@@ -321,7 +321,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         singlePings = "**\n**"
         
         for idx in df1.index:
-            singlePings = singlePings + f'{df1["name"][idx]} {self.bot.emojis_list["rightArrow"]}  {df1["pingCount"][idx]}\n **\n**'
+            singlePings = singlePings + f'{df1["name"][idx]} {self.client.emojis_list["rightArrow"]}  {df1["pingCount"][idx]}\n **\n**'
         
         ping1 = discord.Embed(
                 title=f"    **Single Pings for Partnership\n**   ",
@@ -356,9 +356,9 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         
         
             for idx in temp.index:
-                doublePings = doublePings + f'{temp["role1"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(temp["role1"][idx].members)}\n'
-                doublePings = doublePings + f'{temp["role2"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(temp["role2"][idx].members)}\n'
-                doublePings = doublePings + f'**_Unique Members:_** {self.bot.emojis_list["rightArrow"]}  **{temp["pingCount"][idx]}**\n **\n**'
+                doublePings = doublePings + f'{temp["role1"][idx].mention} {self.client.emojis_list["rightArrow"]}  {len(temp["role1"][idx].members)}\n'
+                doublePings = doublePings + f'{temp["role2"][idx].mention} {self.client.emojis_list["rightArrow"]}  {len(temp["role2"][idx].members)}\n'
+                doublePings = doublePings + f'**_Unique Members:_** {self.client.emojis_list["rightArrow"]}  **{temp["pingCount"][idx]}**\n **\n**'
         
         
 
@@ -374,7 +374,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             pages.append(ping2)
         
         message = await ctx.send(embed = ping1)
-        await addPages(self.bot,ctx,message,pages)
+        await addPages(self.client,ctx,message,pages)
         
     # @commands.command(name="dontpingme", aliases=['dp'])
     # async def dont_ping_me(self, ctx: commands.Context):
@@ -386,5 +386,5 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
     #     )
     #     message = await ctx.send(f"Hello, {ctx.author.mention}", allowed_mentions=am)
 
-def setup(bot):
-    bot.add_cog(partnership(bot))
+def setup(client):
+    client.add_cog(partnership(client))

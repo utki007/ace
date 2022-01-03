@@ -12,9 +12,9 @@ from discord_webhook import DiscordWebhook,DiscordEmbed
 from utils.convertor import *
 
 
-class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or setup a timer"):
-    def __init__(self, bot):
-        self.bot= bot
+class giveaway(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or setup a timer"):
+    def __init__(self, client):
+        self.client = client
         
         self.default_role = 787566421592899614
 
@@ -31,9 +31,9 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
         cd = await calculate(time)
         
         unauthorized = discord.Embed(
-            color=self.bot.colors["RED"], 
+            color=self.client.colors["RED"], 
             title = f"CommandError!!!",
-            description=f"{self.bot.emojis_list['Warrning']} | You cannot have a timer more than 30 minutes")
+            description=f"{self.client.emojis_list['Warrning']} | You cannot have a timer more than 30 minutes")
         
         if cd>1800:
             if ctx.guild.id == 838646783785697290:
@@ -66,7 +66,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
         timer = await ctx.send(embed=e)
         
         
-        await timer.add_reaction(f"{self.bot.emojis_list['Timer']}")
+        await timer.add_reaction(f"{self.client.emojis_list['Timer']}")
         
         # await asyncio.sleep(cd)
         global loop
@@ -107,7 +107,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
             if flag == 0:
                 break    
             e = discord.Embed(
-                color= discord.Color(random.choice(self.bot.color_list)),
+                color= discord.Color(random.choice(self.client.color_list)),
                 title=f"{name.title()}",
                 description=f'**{desc}**',
                 timestamp=end
@@ -141,7 +141,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
         for reaction in new_msg.reactions:
             async for user in reaction.users():
                 users.add(user)
-            users.remove(self.bot.user) 
+            users.remove(self.client.user) 
         
         # for user in users:
             # dm = discord.Embed(
@@ -187,7 +187,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
     @commands.command(name = "tend")
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def tend(self, ctx):
-        await ctx.message.add_reaction(f'{self.bot.emojis_list["SuccessTick"]}')
+        await ctx.message.add_reaction(f'{self.client.emojis_list["SuccessTick"]}')
         global loop
         loop=False
     
@@ -214,12 +214,12 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
         try:
             timer_left = datetime.datetime.strptime(timer_left,'%H:%M:%S.%f')
         except:
-            await ctx.message.add_reaction(f'{self.bot.emojis_list["Cross"]}')
+            await ctx.message.add_reaction(f'{self.client.emojis_list["Cross"]}')
             return
         sleep = (timer_left.hour * 60 + timer_left.minute) * 60 + timer_left.second + (timer_left.microsecond/1e6)
         cd = sleep
         
-        await ctx.message.add_reaction(f'{self.bot.emojis_list["SuccessTick"]}')    
+        await ctx.message.add_reaction(f'{self.client.emojis_list["SuccessTick"]}')    
         
         desc = f''
         flag = 0
@@ -284,7 +284,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
             if flag == 0:
                 break    
             e = discord.Embed(
-                color= discord.Color(random.choice(self.bot.color_list)),
+                color= discord.Color(random.choice(self.client.color_list)),
                 title=f"{tdata['title']}",
                 description=f'**{desc}**',
                 timestamp=date_time_obj
@@ -316,7 +316,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
         for reaction in new_msg.reactions:
             async for user in reaction.users():
                 users.add(user)
-            users.remove(self.bot.user)     
+            users.remove(self.client.user)     
         
         try:
             await ctx.send(f"{', '.join(user.mention for user in users)}",delete_after=1)
@@ -347,7 +347,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
         for reaction in new_msg.reactions:
             async for user in reaction.users():
                 users.add(user)
-            users.remove(self.bot.user)     
+            users.remove(self.client.user)     
         
         try:
             await ctx.send(f"{', '.join(user.mention for user in users)}",delete_after=1)
@@ -379,11 +379,11 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
     # async def stopwatch(self, ctx,time ,*,name : str= "Timer"):    
         
     #     webhooks = await ctx.channel.webhooks()
-    #     webhook = discord.utils.get(webhooks, name= self.bot.user.name )
+    #     webhook = discord.utils.get(webhooks, name= self.client.user.name )
     #     url = "https://i.imgur.com/oBPXx0D.png"
         
     #     if webhook is None:
-    #         webhook = await ctx.channel.create_webhook(name=self.bot.user.name,reason = "For Timer Creation")
+    #         webhook = await ctx.channel.create_webhook(name=self.client.user.name,reason = "For Timer Creation")
     #     webhook = DiscordWebhook(url=webhook.url,username = ctx.author.name,avatar_url=str(ctx.author.avatar_url).split("?")[0])
 
     #     embed = DiscordEmbed(
@@ -427,9 +427,9 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
     #         cd = int(time) if time else 0
         
     #     unauthorized = discord.Embed(
-    #         color=self.bot.colors["RED"], 
+    #         color=self.client.colors["RED"], 
     #         title = f"CommandError!!!",
-    #         description=f"{self.bot.emojis_list['Warrning']} | You cannot have a timer more than 30 minutes")
+    #         description=f"{self.client.emojis_list['Warrning']} | You cannot have a timer more than 30 minutes")
 
     #     if cd>1800:
     #         await ctx.send(embed=unauthorized,delete_after=10)
@@ -447,15 +447,15 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
     #     if timer_left.second>0:
     #         desc = desc + f' {timer_left.second} seconds '
     #     embed = DiscordEmbed(
-    #         title=f"{name.title()}", description=f'**{desc} left...**', color=str(random.choice(self.bot.color_list))
+    #         title=f"{name.title()}", description=f'**{desc} left...**', color=str(random.choice(self.client.color_list))
     #     )
     #     # embed.set_timestamp(end)
-    #     embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar_url)
-    #     # e.set_author(name=self.bot.name, icon_url=self.bot.user.avatar_url)
+    #     embed.set_footer(text=self.client.user.name, icon_url=self.client.user.avatar_url)
+    #     # e.set_author(name=self.client.name, icon_url=self.client.user.avatar_url)
     #     webhook.add_embed(embed)
     #     webhook.execute()
         
-    #     # await timer.add_reaction(f"{self.bot.emojis_list['Timer']}")
+    #     # await timer.add_reaction(f"{self.client.emojis_list['Timer']}")
         
     #     # # await asyncio.sleep(cd)
     #     # loop=True
@@ -495,7 +495,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
     #     #     if flag == 0:
     #     #         break    
     #     #     e = discord.Embed(
-    #     #         color= discord.Color(random.choice(self.bot.color_list)),
+    #     #         color= discord.Color(random.choice(self.client.color_list)),
     #     #         title=f"{name.title()}",
     #     #         description=f'**{desc}**',
     #     #         timestamp=end
@@ -529,7 +529,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
     #     # for reaction in new_msg.reactions:
     #     #     async for user in reaction.users():
     #     #         users.add(user)
-    #     #     users.remove(self.bot.user) 
+    #     #     users.remove(self.client.user) 
         
     #     # # for user in users:
     #     #     # dm = discord.Embed(
@@ -574,5 +574,5 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
         
         
         
-def setup(bot):
-    bot.add_cog(timer(bot))
+def setup(client):
+    client.add_cog(giveaway(client))

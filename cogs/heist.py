@@ -11,8 +11,8 @@ import datetime
 
 class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
 
-    def __init__(self, bot):
-        self.bot= bot
+    def __init__(self, client):
+        self.client = client
 
         # some roles for tgk
         self.heist_role = 804068344612913163
@@ -41,9 +41,9 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         category = [785841152553123861,797512848778723368]
         
         unauthorized = discord.Embed(
-            color=self.bot.colors["RED"], 
+            color=self.client.colors["RED"], 
             title = f"Unauthorized to use this command!!!",
-            description=f"{self.bot.emojis_list['Warrning']} | Can't use the command in Staff Chats!")
+            description=f"{self.client.emojis_list['Warrning']} | Can't use the command in Staff Chats!")
         
         
         if ctx.channel.id in category or ctx.channel.category.id in category:
@@ -55,16 +55,16 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
             heist_ping = discord.utils.get(ctx.guild.roles, id=self.heist_role)
         except:
             warning = discord.Embed(
-            color=self.bot.colors["RED"], 
-            description=f"{self.bot.emojis_list['Warrning']} | Error with default Heist Roles!!")
+            color=self.client.colors["RED"], 
+            description=f"{self.client.emojis_list['Warrning']} | Error with default Heist Roles!!")
             await ctx.send(embed = warning,delete_after=15)
             return
         try:
             req_role = discord.utils.get(ctx.guild.roles, id=int(req_role)) if req_role.lower() != "none" else default_role
         except:
             warning = discord.Embed(
-            color=self.bot.colors["RED"], 
-            description=f"{self.bot.emojis_list['Warrning']} | Incorrect Req Role! Heist Terminated!!")
+            color=self.client.colors["RED"], 
+            description=f"{self.client.emojis_list['Warrning']} | Incorrect Req Role! Heist Terminated!!")
             await ctx.send(embed = warning,delete_after=15)
             return
         
@@ -147,7 +147,7 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         else:
             await ctx.send(embed=embed)
             
-        await ctx.send(f" {self.bot.emojis_list['60sec']} **Searching for heist in this channel**", delete_after=60)
+        await ctx.send(f" {self.client.emojis_list['60sec']} **Searching for heist in this channel**", delete_after=60)
         # await self.create_heist_timer(timer)
 
         # dealing with starter role
@@ -156,10 +156,10 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         # starter embed
         tm.sleep(2)
         starter_embed = discord.Embed(
-            description=f" {self.bot.emojis_list['SuccessTick']} | *{starter_role}* added to  **{starter.name}**  ",
+            description=f" {self.client.emojis_list['SuccessTick']} | *{starter_role}* added to  **{starter.name}**  ",
             # description=f"Channel has been locked. Good luck guys. \n",
             # color= 0x228b22
-            color=self.bot.colors["Success"]
+            color=self.client.colors["Success"]
         )
 
         await starter.add_roles(starter_role)
@@ -167,7 +167,7 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         await ctx.send(f"{starter.mention} start the heist", delete_after=15)
 
         try:
-            await self.bot.wait_for("message", check=lambda m: m.author.id == 270904126974590976 and heist_start in m.content, timeout=59)
+            await self.client.wait_for("message", check=lambda m: m.author.id == 270904126974590976 and heist_start in m.content, timeout=59)
             # await ctx.send('https://tenor.com/view/ready-to-rob-pops-mask-robbing-mask-hiding-robbery-gif-13865160')
             # await asyncio.sleep(5)
             await starter.remove_roles(starter_role)
@@ -242,7 +242,7 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
                 lock_embed.set_thumbnail(
                     url="https://cdn.discordapp.com/emojis/801343188945207297.gif?v=1")
 
-                await self.bot.wait_for("message", check=lambda m: m.author.id == 270904126974590976 and ("Time is up to join" in m.content or "you're not popular enough and didn't get enough people to rob the bank" in m.content), timeout=220)
+                await self.client.wait_for("message", check=lambda m: m.author.id == 270904126974590976 and ("Time is up to join" in m.content or "you're not popular enough and didn't get enough people to rob the bank" in m.content), timeout=220)
                 await ctx.channel.edit(sync_permissions=True)
                 await ctx.send(embed=lock_embed)
 
@@ -283,9 +283,9 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         category = [785841152553123861,797512848778723368]
         
         unauthorized = discord.Embed(
-            color=self.bot.colors["RED"], 
+            color=self.client.colors["RED"], 
             title = f"Unauthorized to use this command!!!",
-            description=f"{self.bot.emojis_list['Warrning']} | Can use it only in Heist Channels!")
+            description=f"{self.client.emojis_list['Warrning']} | Can use it only in Heist Channels!")
         
         
         if ctx.channel.id in category or ctx.channel.category.id in category:
@@ -323,7 +323,7 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
     @commands.command(name="ReactionRole", description="Reset any channel",aliases = ["rr"], hidden=True)
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def rr(self, ctx):
-        guild = self.bot.get_guild(785839283847954433)
+        guild = self.client.get_guild(785839283847954433)
         
         heist = discord.utils.get(guild.roles, id=804068344612913163)
         danker = discord.utils.get(guild.roles, id=801392998465404958)
@@ -341,11 +341,11 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         
         rr = discord.Embed(
                 title=f"    **Some important self roles\n**   ",
-                description= f"<a:heist:925617827447177247> {self.bot.emojis_list['right']} {heist.mention}\n"
-                            f"<a:rarepepe:801693036911263744> {self.bot.emojis_list['right']} {danker.mention}\n"
-                            f"<a:peperobber:925618641112813598> {self.bot.emojis_list['right']} {partnerHeist.mention}\n"
-                            f"<a:giveaway:925619075936317440> {self.bot.emojis_list['right']} {giveaway.mention}\n"
-                            f"<a:Partner:925618902673817700> {self.bot.emojis_list['right']} {partnership.mention}\n",
+                description= f"<a:heist:925617827447177247> {self.client.emojis_list['right']} {heist.mention}\n"
+                            f"<a:rarepepe:801693036911263744> {self.client.emojis_list['right']} {danker.mention}\n"
+                            f"<a:peperobber:925618641112813598> {self.client.emojis_list['right']} {partnerHeist.mention}\n"
+                            f"<a:giveaway:925619075936317440> {self.client.emojis_list['right']} {giveaway.mention}\n"
+                            f"<a:Partner:925618902673817700> {self.client.emojis_list['right']} {partnership.mention}\n",
                 color=0x9e3bff
                 # ,
                 # timestamp=datetime.datetime.utcnow()
@@ -380,7 +380,7 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
                 if partnership not in user.roles:
                     await user.add_roles(partnership)
             try:
-                reaction, user = await self.bot.wait_for('reaction_add', timeout = 6000.0)
+                reaction, user = await self.client.wait_for('reaction_add', timeout = 6000.0)
                 # await message.remove_reaction(reaction, user)
             except:
                 break
@@ -399,7 +399,7 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
 
     # async def message_from_utki(self,ctx,msg):
     #     try:
-    #         await self.bot.wait_for("message", check=lambda m: m.author.id == 301657045248114690 and "pog" in m.content, timeout=10)
+    #         await self.client.wait_for("message", check=lambda m: m.author.id == 301657045248114690 and "pog" in m.content, timeout=10)
     #         # await msg.delete()
     #         await ctx.send("Cancelled")
     #         return
@@ -415,5 +415,5 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         # await ctx.send(datetime.datetime.utcnow())
 
 
-def setup(bot):
-    bot.add_cog(dankHeist(bot))
+def setup(client):
+    client.add_cog(dankHeist(client))

@@ -9,11 +9,8 @@ Paginator==0.5.1
 emojis==0.6.0
 TagScriptEngine==2.3.0
 pyparsing==2.4.6
-discord-py-slash-command==3.0.1
-motor==2.3.1
 pillow
 image==1.5.33
 colour==0.1.5
 webcolors==1.11.1
 discord-webhook==0.13.0
-humanfriendly==9.2

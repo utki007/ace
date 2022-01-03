@@ -17,8 +17,8 @@ import shlex
 
 class serverutils(commands.Cog, description="Server Utility"):
     
-    def __init__(self, bot):
-        self.bot= bot
+    def __init__(self, client):
+        self.client = client
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -74,7 +74,7 @@ class serverutils(commands.Cog, description="Server Utility"):
         
         start = time.time()
         
-        guild = self.bot.get_guild(785839283847954433)
+        guild = self.client.get_guild(785839283847954433)
         users = guild.members
         
         gamer = discord.utils.get(guild.roles, id=790667905330970674)
@@ -113,5 +113,5 @@ class serverutils(commands.Cog, description="Server Utility"):
         await ctx.message.delete()
         await ctx.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif")  
       
-def setup(bot):
-    bot.add_cog(serverutils(bot))
+def setup(client):
+    client.add_cog(serverutils(client))
