@@ -44,7 +44,7 @@ async def on_ready():
         "1" : discord.utils.get(guild.roles, id=810128078789410846),
         "5" : discord.utils.get(guild.roles, id=810128257491795979),
         "10" : discord.utils.get(guild.roles, id=810128946791579679),
-        "15" : discord.utils.get(guild.roles, id=810128522365763615),
+        "25" : discord.utils.get(guild.roles, id=810128522365763615),
         "50" : discord.utils.get(guild.roles, id=810128688267919381),
         "100" : discord.utils.get(guild.roles, id=810129351692648479),
         "250" : discord.utils.get(guild.roles, id=810129497931513868),
