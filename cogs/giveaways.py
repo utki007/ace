@@ -626,7 +626,7 @@ class giveaway(commands.Cog):
 
 
    
-		msg += f" {self.bot.emojis_list['pinkdot']} **Host** : {host.mention} \n\n {role.mention} \n\n"
+		msg += f" {self.bot.emojis_list['pinkdot']} **Host** : {host.mention} \n\n"
 		msg = await ctx.send(msg, allowed_mentions=am)
 		await ctx.channel.send(f"**\n**")
 		await ctx.channel.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif")
