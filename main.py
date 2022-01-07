@@ -156,7 +156,8 @@ bot.emojis_list = {
     "leftArrow" : "<a:tgk_leftarrow:858674346477617172>",
     "left" : "<a:tgk_left:858729283588587521>",
     "right" : "<a:tgk_right:858729390065057803>",
-    "stop" : "<:tgk_stop:858740746868621313>"
+    "stop" : "<:tgk_stop:858740746868621313>",
+    "pinkdot" : "<:tgk_pinkdot:928932787610865675>"
 }
 
 if __name__ == "__main__":

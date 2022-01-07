@@ -327,7 +327,7 @@ class giveaway(commands.Cog):
 		base_permissions=staff_perm, base_default_permission=False,
 		options=[
 				create_option(name="time", description="How long the giveaway should last? i.e. 15s , 30m/h/d", option_type=3, required=True),
-				create_option(name="price", description="price of the giveaway", option_type=3, required=True),
+				create_option(name="prize", description="price of the giveaway", option_type=3, required=True),
 				create_option(name="winners", description="Number of the winners.", option_type=4, required=True),
 				create_option(name="required_role", description="Required role to join the giveaway",option_type=8, required=False),
 				create_option(name="bypass_role", description="bypass role to bypass the required role",option_type=8, required=False),
@@ -337,7 +337,7 @@ class giveaway(commands.Cog):
 				create_option(name="note", description="any note you want to add", option_type=3, required=False)
 			]
 		)
-	async def gstart(self, ctx, time, price, winners,required_role=None, bypass_role=None, amari_level: int=None, weekly_amari: int=None,  host: discord.Member=None,note: str=None):
+	async def gstart(self, ctx, time, prize, winners,required_role=None, bypass_role=None, amari_level: int=None, weekly_amari: int=None,  host: discord.Member=None,note: str=None):
 		await ctx.defer()
 		time = await TimeConverter().convert(ctx, time)
 		if time < 15:
@@ -351,7 +351,7 @@ class giveaway(commands.Cog):
 		weekly_amari = weekly_amari if weekly_amari else None
 		host = host if host else ctx.author
 
-		embed_dict = {'type': 'rich', 'title': price, 'color': 10370047,
+		embed_dict = {'type': 'rich', 'title': prize, 'color': 10370047,
 		'description': f"Use enter button to join!!\nEnds: <t:{end_time}:R> (<t:{end_time}:F>)\nWinner: {winners}\nHosted By: {host.mention}",
 		'fields': [],}
 		if required_role == None:
@@ -591,7 +591,45 @@ class giveaway(commands.Cog):
 		except KeyError:
 			pass
 
+	@cog_ext.cog_slash(name="event",description="Host an Event", guild_ids=guild_ids,
+		default_permission=False,permissions=staff_perm,
+		options=[
+      			create_option(name="name", description="Name of the event", option_type=3, required=True),
+				create_option(name="sponsor", description="Can be host too", required=True, option_type=6),
+    			create_option(name="message", description="Note from Sponsor", option_type=3, required=True),
+       			create_option(name="prize", description="Prize of the giveaway", option_type=3, required=True),
+				create_option(name="channel", description="Event channel", required=True, option_type=7),
+				create_option(name="winners", description="Number of the winners.", option_type=4, required=False)
+    	]
+	)
+	async def gstart(self, ctx, name, sponsor: discord.Member, message, prize, channel, winners: int = 1):
+		
+		# time = await TimeConverter().convert(ctx, time)
+		host = ctx.author
+
+		am = discord.AllowedMentions(
+            users=False,  # Whether to ping individual user @mentions
+            everyone=False,  # Whether to ping @everyone or @here mentions
+            roles= True,  # Whether to ping role @mentions
+            replied_user=False,  # Whether to ping on replies to messages
+        )
+		role = discord.utils.get(ctx.guild.roles, id=836925033506275399 )
 
 
+		msg = f"__**{name}**__ \n\n" + f" {self.bot.emojis_list['pinkdot']} **Prize** : {prize} \n"
+		if (winners != 1):
+			msg += f" {self.bot.emojis_list['pinkdot']} **Winners** : {winners} \n" 
+		msg +=	f" {self.bot.emojis_list['pinkdot']} **Channel** : {channel.mention} \n"
+		msg = msg + f" {self.bot.emojis_list['pinkdot']} **Sponsor** : {sponsor.mention} \n" 
+		msg = msg +	f" {self.bot.emojis_list['pinkdot']} **Message** : {message} \n" 
+		# msg = msg +	f" {self.bot.emojis_list['pinkdot']} **Prize** : {prize} \n" 
+
+
+   
+		msg += f" {self.bot.emojis_list['pinkdot']} **Host** : {host.mention} \n\n {role.mention} \n\n"
+		msg = await ctx.send(msg, allowed_mentions=am)
+		await ctx.channel.send(f"**\n**")
+		await ctx.channel.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif")
+  		
 def setup(bot):
 	bot.add_cog(giveaway(bot))
