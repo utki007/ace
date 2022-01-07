@@ -335,8 +335,8 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         
         
         lock_embed = discord.Embed(
-            title=f"<a:tgk_run:832700446711611422>       **{'Channel Locked'}**       <a:tgk_run:832700446711611422> ",
-            description=f"Channel has been locked. Good luck guys. \n",
+            title=f"<a:tgk_run:832700446711611422>       **{'Channel Synced'}**       <a:tgk_run:832700446711611422> ",
+            description=f"Channel reset. Everyone can view now. Good luck guys. \n",
             color=ctx.author.color,
             timestamp=datetime.datetime.utcnow()
         )

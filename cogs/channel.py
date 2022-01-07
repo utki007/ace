@@ -86,7 +86,8 @@ class channel(commands.Cog, description="Channel utils"):
 
     @cog_ext.cog_slash(name="unlock", description="unlock the channel", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm,
     options=[
-        create_option(name="role", description="Enter role to Unlock channel for it", required=False, option_type=8)
+        create_option(name="role", description="Enter role to Unlock channel for it", required=False, option_type=8),
+        create_option(name="state", description="Enter Stats of lock", required=False, option_type=5)
     ])
     async def unlock(self, ctx, state: bool = False, *,role: discord.Role = None):
 
@@ -112,14 +113,90 @@ class channel(commands.Cog, description="Channel utils"):
         else:
             msg = f':white_check_mark: | Unlocked **{channel}** for {role.mention}'
         
-        await ctx.send(f"Locked {channel.mention} for {role.mention}", hidden=True)
+        await ctx.send(f"Unlocked {channel.mention} for {role.mention} with state `{state}`", hidden=True)
         await channel.set_permissions(role, overwrite=overwrite)
 
         embed = discord.Embed(
             color=0x78AB46, description=f'{msg}')
         await channel.send(embed=embed)
 
+    @cog_ext.cog_slash(name="hide", description="Hide the channel", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm,
+        options=[
+            create_option(name="role", description="Enter role to hide channel for it", required=False, option_type=8)
+        ])
+    async def hide(self, ctx,*, role: discord.Role = None):
 
+        channel = ctx.channel        
+        if role == int:
+            role = discord.utils.get(ctx.guild.roles, id=role)
+        elif role == None:
+            role = discord.utils.get(ctx.guild.roles, id=self.default_role)
+        else:
+            role = discord.utils.get(ctx.guild.roles, name=f"{role}")
+
+        overwrite = channel.overwrites_for(role)
+        # overwrite.send_messages = False
+        overwrite.view_channel = False
+
+        await channel.set_permissions(role, overwrite=overwrite)
+        await ctx.send(f"Hidden {channel.mention} for {role.mention}", hidden=True)
+        embed = discord.Embed(
+            color=0x78AB46, description=f':white_check_mark: | Hidden **{channel}** for {role.mention}')
+        await channel.send(embed=embed)
+
+    @cog_ext.cog_slash(name="unhide", description="Unhide the channel", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm,
+    options=[
+        create_option(name="state", description="Enter Stats of lock", required=False, option_type=5),
+        create_option(name="role1", description="Enter role to Unlock channel for it", required=False, option_type=8),
+        create_option(name="role2", description="Enter role to Unlock channel for it", required=False, option_type=8),
+        create_option(name="role3", description="Enter role to Unlock channel for it", required=False, option_type=8)
+    ])
+    async def unhide(self, ctx, state: bool = True, *,role1: discord.Role = None,role2: discord.Role = None,role3: discord.Role = None):
+
+        channel = ctx.channel        
+        role = discord.utils.get(ctx.guild.roles, id=self.default_role)
+
+        embedMention = ""
+        if role1 != None:
+            overwrite = channel.overwrites_for(role1)
+            if state == True:
+                overwrite.view_channel = True
+            elif state == False:
+                overwrite.view_channel = None
+            await channel.set_permissions(role1, overwrite=overwrite)
+            embedMention = embedMention + role1.mention + " "
+        if role2 != None:
+            overwrite = channel.overwrites_for(role2)
+            if state == True:
+                overwrite.view_channel = True
+            elif state == False:
+                overwrite.view_channel = None
+            await channel.set_permissions(role2, overwrite=overwrite)
+            embedMention = embedMention + role2.mention + " "
+        if role3 != None:
+            overwrite = channel.overwrites_for(role3)
+            if state == True:
+                overwrite.view_channel = True
+            elif state == False:
+                overwrite.view_channel = None
+            await channel.set_permissions(role3, overwrite=overwrite)
+            embedMention = embedMention + role3.mention + " "
+
+        if embedMention == "":
+            embedMention = role.mention
+            overwrite = channel.overwrites_for(role)
+            if state == True:
+                overwrite.view_channel = True
+            elif state == False:
+                overwrite.view_channel = None
+            await channel.set_permissions(role, overwrite=overwrite)
+            
+        msg = f':white_check_mark: | {embedMention} can view **{channel}** now'
+        
+        await ctx.send(f"{embedMention} can view **{channel}** now", hidden=True)
+        embed = discord.Embed(
+            color=0x78AB46, description=f'{msg}')
+        await channel.send(embed=embed)
     
     @commands.command(
         name="dankdown",
@@ -314,6 +391,16 @@ class channel(commands.Cog, description="Channel utils"):
             
         await lock_status.edit(content=f"Dank is Unlocked")
  
-        
+   
+    @cog_ext.cog_slash(name="sync", description="Sync the channel with channel category", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm)
+    async def sync(self, ctx):
+
+        channel = ctx.channel
+        await ctx.send(f" **{channel}** synced with **{channel.category.name}**", hidden=True)
+        embed = discord.Embed(
+            color=0x78AB46, description=f':white_check_mark: | **{channel}** synced with **{channel.category.name}**')
+        await ctx.channel.edit(sync_permissions=True)
+        await channel.send(embed=embed)
+   
 def setup(bot):
    bot.add_cog(channel(bot))
