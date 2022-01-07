@@ -602,7 +602,7 @@ class giveaway(commands.Cog):
 				create_option(name="winners", description="Number of the winners.", option_type=4, required=False)
     	]
 	)
-	async def gstart(self, ctx, name, sponsor: discord.Member, message, prize, channel, winners: int = 1):
+	async def event(self, ctx, name, sponsor: discord.Member, message, prize, channel, winners: int = 1):
 		
 		# time = await TimeConverter().convert(ctx, time)
 		host = ctx.author
