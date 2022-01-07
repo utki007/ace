@@ -608,10 +608,10 @@ class giveaway(commands.Cog):
 		host = ctx.author
 
 		am = discord.AllowedMentions(
-            users=False,  # Whether to ping individual user @mentions
-            everyone=False,  # Whether to ping @everyone or @here mentions
+            users=True,  # Whether to ping individual user @mentions
+            everyone=True,  # Whether to ping @everyone or @here mentions
             roles= True,  # Whether to ping role @mentions
-            replied_user=False,  # Whether to ping on replies to messages
+            replied_user=True,  # Whether to ping on replies to messages
         )
 		role = discord.utils.get(ctx.guild.roles, id=836925033506275399 )
 
