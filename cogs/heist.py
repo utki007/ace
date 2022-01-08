@@ -401,20 +401,20 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
 
         while True:
             if  str(reaction) == "<a:heist:925617827447177247>":
-                if heist not in user.roles:
-                    await user.add_roles(heist)
+                # if heist not in user.roles:
+                await user.add_roles(heist)
             elif str(reaction) == "<a:calendar:854663256420909066>":
-                if event not in user.roles:
-                    await user.add_roles(event)
+                # if event not in user.roles:
+                await user.add_roles(event)
             elif str(reaction) == "<a:peperobber:925618641112813598>":
-                if partnerHeist not in user.roles:
-                    await user.add_roles(partnerHeist)
+                # if partnerHeist not in user.roles:
+                await user.add_roles(partnerHeist)
             elif  str(reaction) == "<a:giveaway:925619075936317440>":
-                if giveaway not in user.roles:
-                    await user.add_roles(giveaway)
+                # if giveaway not in user.roles:
+                await user.add_roles(giveaway)
             elif str(reaction) == "<a:Partner:925618902673817700>":
-                if partnership not in user.roles:
-                    await user.add_roles(partnership)
+                # if partnership not in user.roles:
+                await user.add_roles(partnership)
             try:
                 reaction, user = await self.bot.wait_for('reaction_add', timeout = 6000.0)
                 # await message.remove_reaction(reaction, user)
