@@ -155,39 +155,19 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
         embed.set_image(url="https://cdn.discordapp.com/attachments/837999751068778517/849867795801440266/ezgif.com-gif-maker.gif")
 
-        if ping:
-            await announcement_channel.send(heist_ping.mention, embed=embed)
-        else:
-            await announcement_channel.send(embed=embed)
-        await heist_channel.send(embed=embed)
-        
-        a_info = discord.Embed(
-                color = self.bot.colors["RED"], 
-                description=f"{self.bot.emojis_list['Warrning']} | Viewlocking {heist_channel.mention} for {everyone_role} and {default_role.mention}")
         am = discord.AllowedMentions(
                             users=False,  # Whether to ping individual user @mentions
                             everyone=False,  # Whether to ping @everyone or @here mentions
                             roles=False,  # Whether to ping role @mentions
                             replied_user=False,  # Whether to ping on replies to messages
                         )
-        a_message = await announcement_channel.send(embed = a_info, allowed_mentions=am)
-        tm.sleep(3)
-        # lock heist channel for everyone and for newbie role
         
-        overwrite = heist_channel.overwrites_for(everyone_role)
-        # overwrite.send_messages = True
-        overwrite.view_channel = False
-        await heist_channel.set_permissions(everyone_role, overwrite=overwrite)
-
-        overwrite = heist_channel.overwrites_for(default_role)
-        # overwrite.send_messages = True
-        overwrite.view_channel = False
-        await heist_channel.set_permissions(default_role, overwrite=overwrite)
-        
-        embed = discord.Embed(
-            color=0x78AB46, description=f' {self.bot.emojis_list["Check"]} | ViewLocked **{heist_channel}** for {everyone_role} & {default_role.mention}')
-        await a_message.edit(embed=embed, allowed_mentions=am, delete_after=15)
-        
+        if ping:
+            await announcement_channel.send(heist_ping.mention, embed=embed)
+        else:
+            await announcement_channel.send(embed=embed)
+        await heist_channel.send(embed=embed)
+         
         if roles !=[]:
             role_string =  ", ".join(roles)+" & "+req_role.mention
         else:
@@ -238,6 +218,28 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         await heist_channel.set_permissions(req_role, overwrite=overwrite)
         await ctx.send(embed=unlock_embed)
         await a_roleinfo.edit(embed=unlock_embed)
+        
+        a_info = discord.Embed(
+                color = self.bot.colors["RED"], 
+                description=f"{self.bot.emojis_list['Warrning']} | Viewlocking {heist_channel.mention} for {everyone_role} and {default_role.mention}")
+        
+        a_message = await announcement_channel.send(embed = a_info, allowed_mentions=am)
+        tm.sleep(3)
+        # lock heist channel for everyone and for newbie role
+        
+        overwrite = heist_channel.overwrites_for(everyone_role)
+        # overwrite.send_messages = True
+        overwrite.view_channel = False
+        await heist_channel.set_permissions(everyone_role, overwrite=overwrite)
+
+        overwrite = heist_channel.overwrites_for(default_role)
+        # overwrite.send_messages = True
+        overwrite.view_channel = False
+        await heist_channel.set_permissions(default_role, overwrite=overwrite)
+        
+        embed = discord.Embed(
+            color=0x78AB46, description=f' {self.bot.emojis_list["Check"]} | ViewLocked **{heist_channel}** for {everyone_role} & {default_role.mention}')
+        await a_message.edit(embed=embed, allowed_mentions=am, delete_after=15)
 
         # await ctx.send('https://tenor.com/view/ready-to-rob-pops-mask-robbing-mask-hiding-robbery-gif-13865160')
 
@@ -267,9 +269,9 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
                     
                     
         if long:
-            timeout = 330
+            timeout = 430
         else:
-            timeout = 160
+            timeout = 260
 
         try:
             lock_embed = discord.Embed(
