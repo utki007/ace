@@ -368,20 +368,20 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         guild = self.bot.get_guild(785839283847954433)
         
         heist = discord.utils.get(guild.roles, id=804068344612913163)
-        danker = discord.utils.get(guild.roles, id=801392998465404958)
+        event = discord.utils.get(guild.roles, id=836925033506275399)
         partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
         giveaway = discord.utils.get(guild.roles, id=800685251276963861)
         partnership = discord.utils.get(guild.roles, id=797448080223109120)
         
-        l = [heist,danker,partnerHeist,giveaway,partnership]
+        # l = [heist,danker,partnerHeist,giveaway,partnership]
         
         rr = discord.Embed(
                 title=f"    **Some important self roles\n**   ",
                 description= f"<a:heist:925617827447177247> {self.bot.emojis_list['right']} {heist.mention}\n"
-                            f"<a:rarepepe:801693036911263744> {self.bot.emojis_list['right']} {danker.mention}\n"
                             f"<a:peperobber:925618641112813598> {self.bot.emojis_list['right']} {partnerHeist.mention}\n"
-                            f"<a:giveaway:925619075936317440> {self.bot.emojis_list['right']} {giveaway.mention}\n"
-                            f"<a:Partner:925618902673817700> {self.bot.emojis_list['right']} {partnership.mention}\n",
+                            f"<a:Partner:925618902673817700> {self.bot.emojis_list['right']} {partnership.mention}\n"
+                            f"<a:giveaway:925619075936317440> {self.bot.emojis_list['right']} {giveaway.mention}\n"                            
+                            f"<a:calendar:854663256420909066> {self.bot.emojis_list['right']} {event.mention}\n",
                 color=0x9e3bff
                 # ,
                 # timestamp=datetime.datetime.utcnow()
@@ -392,10 +392,10 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         message = await ctx.send(embed=rr)
         
         await message.add_reaction("<a:heist:925617827447177247>")
-        await message.add_reaction("<a:rarepepe:801693036911263744>")
         await message.add_reaction("<a:peperobber:925618641112813598>")
-        await message.add_reaction("<a:giveaway:925619075936317440>")
         await message.add_reaction("<a:Partner:925618902673817700>")
+        await message.add_reaction("<a:giveaway:925619075936317440>")
+        await message.add_reaction("<a:calendar:854663256420909066>")
         
         reaction = None
 
@@ -403,9 +403,9 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
             if  str(reaction) == "<a:heist:925617827447177247>":
                 if heist not in user.roles:
                     await user.add_roles(heist)
-            elif str(reaction) == "<a:rarepepe:801693036911263744>":
-                if danker not in user.roles:
-                    await user.add_roles(danker)
+            elif str(reaction) == "<a:calendar:854663256420909066>":
+                if event not in user.roles:
+                    await user.add_roles(event)
             elif str(reaction) == "<a:peperobber:925618641112813598>":
                 if partnerHeist not in user.roles:
                     await user.add_roles(partnerHeist)
