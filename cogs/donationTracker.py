@@ -352,7 +352,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
             if n > 0:
                 desc = desc + \
-                    f"|{rank: ^3}|{df['name'][ind]: ^15}|{f'{int(n / 10**(3 * millidx)):,}{millnames[millidx]}' :>12}  | \n"
+                    f"|{rank: ^3}|{df['name'][ind]: ^15}|{f'{int(n / 10**(3 * millidx)):,}{millnames[millidx]}' :>7}  | \n"
 
         member = ctx.author
         """Get to know the top donors"""
@@ -360,8 +360,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         bal = "bal"
         title = "𝕋𝔾𝕂'𝕤 𝕋𝕆ℙ 𝔻𝕆ℕ𝔸𝕋𝕆ℝ𝕊"
         embed = discord.Embed(
-            title=f"<a:TGK_Pandaswag:830525027341565982>  `{title:^30}`  <a:TGK_Pandaswag:830525027341565982>",
-            description=f"```|{'🏆': ^3}|{'Name': ^15}|{'Donated':>13} |\n"
+            title=f"<a:TGK_Pandaswag:830525027341565982>  `{title:^25}`  <a:TGK_Pandaswag:830525027341565982>",
+            description=f"```|{'🏆': ^3}|{'Name': ^15}|{'Donated':>8} |\n"
             f"{desc}```\n"
             f"To check your donation do `?bal`",
             colour=member.colour,
@@ -913,15 +913,15 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
             if n > 0:
                 desc = desc + \
-                    f"|{rank: ^3}|{df['name'][ind]: ^15}|{f'{int(n / 10**(3 * millidx)):,}{millnames[millidx]}' :>12}  | \n"
+                    f"|{rank: ^3}|{df['name'][ind]: ^15}|{f'{int(n / 10**(3 * millidx)):,}{millnames[millidx]}' :>7}  | \n"
 
         member = ctx.author
         """Get to know the top donors"""
         id = "name"
         bal = "bal"
         embed = discord.Embed(
-            title=f"<a:TGK_Pandaswag:830525027341565982> **TGK's {name.upper()} Spl. Top Donators** <a:TGK_Pandaswag:830525027341565982>",
-            description=f"```|{'🏆': ^3}|{'Name': ^15}|{'Donated':>13} |\n"
+            title=f"<a:TGK_Pandaswag:830525027341565982> **`TGK's {name.upper()} Spl. Donators`** <a:TGK_Pandaswag:830525027341565982>",
+            description=f"```|{'🏆': ^3}|{'Name': ^15}|{'Donated':>8} |\n"
             f"{desc}```\n\n",
             colour=member.colour,
             timestamp=datetime.datetime.utcnow()
