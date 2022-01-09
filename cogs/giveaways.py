@@ -620,13 +620,13 @@ class giveaway(commands.Cog):
 		if (winners != 1):
 			msg += f" {self.bot.emojis_list['pinkdot']} **Winners** : {winners} \n" 
 		msg +=	f" {self.bot.emojis_list['pinkdot']} **Channel** : {channel.mention} \n"
-		msg = msg + f" {self.bot.emojis_list['pinkdot']} **Sponsor** : __{sponsor}__ \n" 
+		msg = msg + f" {self.bot.emojis_list['pinkdot']} **Sponsor** : {sponsor.mention} \n" 
 		msg = msg +	f" {self.bot.emojis_list['pinkdot']} **Message** : {message} \n" 
 		# msg = msg +	f" {self.bot.emojis_list['pinkdot']} **Prize** : {prize} \n" 
 
 
    
-		msg += f" {self.bot.emojis_list['pinkdot']} **Host** : __{host}__ \n\n"
+		msg += f" {self.bot.emojis_list['pinkdot']} **Host** : {host.mention} \n\n"
 		# channel = self.bot.get_channel(837999751068778517)
 		# msg = await channel.fetch_message(929332591138578462)
 		# transcript_file = await discord.Attachment.to_file(msg.attachments[0])
