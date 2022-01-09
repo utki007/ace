@@ -608,10 +608,10 @@ class giveaway(commands.Cog):
 		host = ctx.author
 
 		am = discord.AllowedMentions(
-            users=True,  # Whether to ping individual user @mentions
-            everyone=True,  # Whether to ping @everyone or @here mentions
+            users=False,  # Whether to ping individual user @mentions
+            everyone=False,  # Whether to ping @everyone or @here mentions
             roles= True,  # Whether to ping role @mentions
-            replied_user=True,  # Whether to ping on replies to messages
+            replied_user=False,  # Whether to ping on replies to messages
         )
 		role = discord.utils.get(ctx.guild.roles, id=836925033506275399 )
 
@@ -627,8 +627,11 @@ class giveaway(commands.Cog):
 
    
 		msg += f" {self.bot.emojis_list['pinkdot']} **Host** : {host.mention} \n\n"
-		msg = await ctx.send(msg, allowed_mentions=am)
-		await ctx.channel.send(f"**\n**")
+		# channel = self.bot.get_channel(837999751068778517)
+		# msg = await channel.fetch_message(929332591138578462)
+		# transcript_file = await discord.Attachment.to_file(msg.attachments[0])
+		await ctx.send(msg, allowed_mentions=am)
+		await ctx.channel.send(f"**<@&836925033506275399>**")
 		await ctx.channel.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif")
   		
 def setup(bot):
