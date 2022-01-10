@@ -286,7 +286,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             
     
     @commands.command(name="pings", description="Check Partner Pings")
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376), commands.is_owner())
+    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 831405039830564875), commands.is_owner())
     async def pings(self, ctx):
         
         
