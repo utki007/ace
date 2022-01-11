@@ -360,7 +360,7 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         )
         await ctx.message.delete()
         ty = await ctx.send(f"Make sure to Thank our Amazing <@&836228842397106176>'s  for the heist in <#785847439579676672>", allowed_mentions=am)
-        await ty.add_reaction(f'<:thanks:835922028473221130>')
+        await ty.add_reaction(f'<:thankyou:930419246792601640>')
         
     @commands.command(name="ReactionRole", description="Reset any channel",aliases = ["rr"], hidden=True)
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
