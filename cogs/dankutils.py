@@ -55,7 +55,8 @@ class dankutils(commands.Cog, description="Dank Utility"):
                             roles=False,  # Whether to ping role @mentions
                             replied_user=False,  # Whether to ping on replies to messages
                         )
-                        return await message.channel.send("If you'd like to stop receiving pings, check out <#848631258137362452> for <@&810593886720098304> role!!!", allowed_mentions=am)
+                        return await message.channel.send("If you'd like to stop receiving pings, check out <#848631258137362452> for <@&810593886720098304> role!!! \n\n "
+                        f"However, having <@&806795854475165736> makes <@&810593886720098304> useless, so remove <@&806795854475165736> role.", allowed_mentions=am)
 
         # if message.channel.id == 840215557097390131 and message.author.id != self.bot.user.id:838646783785697290
         # 838646783785697290:
