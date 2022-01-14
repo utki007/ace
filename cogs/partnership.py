@@ -196,7 +196,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             pass
 
     @commands.command(name="ping_heist", description="Ping your Heist", aliases=['ph'])
-    # @commands.cooldown(1, 5760, commands.BucketType.user)
+    @commands.cooldown(1, 3600, commands.BucketType.user)
     async def pingheist(self, ctx,*, text: str=''):
         try:
             await ctx.message.delete()
