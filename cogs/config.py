@@ -39,7 +39,7 @@ class config(commands.Cog, description="config"):
     @commands.check_any(commands.has_permissions(administrator=True), commands.is_owner())
     async def activity(self, ctx, *, activity: str = None):
         if activity == None:
-            activity = f': {ctx.guild.member_count} members '
+            activity = f'over {ctx.guild.member_count} members '
         await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{activity}"), status=discord.Status.dnd)
         await ctx.send(f'Bot activity is Updated')
 

@@ -196,7 +196,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             pass
 
     @commands.command(name="ping_heist", description="Ping your Heist", aliases=['ph'])
-    @commands.cooldown(1, 57600, commands.BucketType.user)
+    # @commands.cooldown(1, 5760, commands.BucketType.user)
     async def pingheist(self, ctx,*, text: str=''):
         try:
             await ctx.message.delete()
@@ -237,6 +237,10 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             if text != "":
                 await ctx.send(text,allowed_mentions=am)
             await ctx.send(f'{" ".join(map(str,pp))} **Join up**!!!')
+        elif ctx.channel.category.id == 817049348977983506:
+            if text != "":
+                await ctx.send(text,allowed_mentions=am)
+            await ctx.send(f'{" ".join(map(str,pp))} **Join up**!!!') 
         else:
             warning = discord.Embed(
                 color=self.bot.colors["RED"],
