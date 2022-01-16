@@ -36,7 +36,7 @@ async def convert_to_numeral(query):
     query = query.lower()
     query = query.replace("k", "e3",100)
     query = query.replace("m", "e6",100)       
-    query = query.replace("b", "e12",100)  
+    query = query.replace("b", "e9",100)  
     return query
 
 async def calculate(query):
