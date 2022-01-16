@@ -171,7 +171,7 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
         dm.set_footer(text = f"Developed by utki007 & Jay", icon_url = ctx.guild.icon_url)
         embed = discord.Embed(
                 color=self.bot.colors["RED"],
-                description=f'{self.bot.emojis_list["Warrning"]} | {ctx.author.mention}, you are **unauthorized** to do partnership with them. Contact Senior Staff.')
+                description=f'{self.bot.emojis_list["Warrning"]} | {ctx.author.mention}, you are **unauthorized** to do partnership with them. Contact Owners!')
                     
         try:
             await ctx.author.send(embed=dm)
@@ -179,6 +179,33 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
             pass
             
         await ctx.channel.send(embed=embed, delete_after=10)
-            
+
+
+    @blacklist.command(name="list", description="View Blacklisted Servers", aliases=['view'])
+    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376), commands.is_owner())
+    async def list(self, ctx):
+        
+        myquery = self.mycol.find({}, {"_id": 1, "serverName": 1, "bal": 1, "reason": 1})
+
+        n = 0
+        list = []
+        # print the result:
+        for x in myquery:
+            dict = x
+            list.append(dict)
+        
+        for i in list:
+            try:
+                await ctx.send(
+                    f"**\n**\n**{i['serverName']}**\n"
+                    f"```ini\n"
+                    f"[ Server ID : {i['_id']}]\n"
+                    f"[ Reason : {i['reason']}]\n"
+                    f"```\n**\n**"
+                )
+            except:
+                await ctx.send(f"Unable send for {i}")
+    
+
 def setup(bot):
    bot.add_cog(blacklist(bot))

@@ -307,8 +307,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         if number<5:
             number = 5
             
-        myquery = self.mycol.find(
-            {}, {"_id": 1, "name": 1, "bal": 1, "event": 1})
+        myquery = self.mycol.find({}, {"_id": 1, "name": 1, "bal": 1, "event": 1})
 
         n = 0
         list = []
