@@ -1,7 +1,13 @@
+from ast import Delete
 import discord
 from discord.ext import commands,tasks
-
-
+from cogs.timer import *
+from utils.convertor import *
+import asyncio
+import math
+import datetime
+import time as tm
+import traceback
 
 class Events(commands.Cog):
     def __init__(self, bot):
@@ -71,18 +77,175 @@ class Events(commands.Cog):
         activity = f'over {member} members '
         await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{activity}"),status= discord.Status.dnd)
 
-    # @tasks.loop(seconds=4000)
-    # async def clean(self):      
+    
+    @commands.command(name = "l2l",aliases=["last_to_leave"],usage = "<time> [name]")
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    async def lasttoleave(self, ctx, channel : discord.VoiceChannel):
         
-    #     channel = self.bot.get_channel(self.work)
-    #     await channel.purge(limit=100)
-        
-    #     channel = self.bot.get_channel(self.heist_grinders)
-    #     await channel.purge(limit=100)
+        await ctx.message.delete()
+        # voice_channel = self.bot.get_channel(815849745905352737)
+        await ctx.send(
+            f"__**Random AFK Check**__\nReact on below timer to show your presence <:pepeHmm:928623994050072577>"
+        )
+        members_in_vc = []
+        for member in channel.members:
+            if member.bot == False:
+                members_in_vc.append(member.mention)
+        try:
+            await ctx.send(f"{', '.join(user for user in members_in_vc)}", delete_after = 1)
+        except:
+            await ctx.send(f"{ctx.author.mention}, Error occured!!")
+            return
 
-    #     channel = self.bot.get_channel(self.heist_scout)
-    #     await channel.purge(limit=20)
+        cd = 300
+        name = "Last to Leave "
+
+        end = datetime.datetime.utcnow() + datetime.timedelta(seconds=cd)
+        timer_left = datetime.datetime.strptime(str(datetime.timedelta(seconds=cd)), '%H:%M:%S')
+        cd = int(cd)
+        desc = f''
+        if timer_left.hour>0:
+            desc = desc + f' {timer_left.hour} hours '
+        if timer_left.minute>0:
+            desc = desc + f' {timer_left.minute} minutes '
+        if timer_left.second>0:
+            desc = desc + f' {timer_left.second} seconds '
         
+        e = discord.Embed(
+            color= ctx.author.colour,
+            title=f"{name.title()}",
+            description=f'**{desc}**',
+            timestamp=end
+        )
+        e.set_footer(
+                text=f"Ends at")
+        # e.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+        timer = await ctx.send(embed=e)
+        
+        
+        await timer.add_reaction(f"{self.bot.emojis_list['Timer']}")
+        
+        # await asyncio.sleep(cd)
+        global loop
+        loop=True
+        while loop:
+            
+            if cd>300:
+                await asyncio.sleep(10)
+            elif cd>120:
+                await asyncio.sleep(5)
+            else:
+                await asyncio.sleep(2)
+            timer_left = str(end - datetime.datetime.utcnow())
+            if timer_left[0]=="-":
+                timer_left = "00:00:00.00"
+                loop = False
+                break
+            timer_left = datetime.datetime.strptime(timer_left,'%H:%M:%S.%f')
+            sleep = (timer_left.hour * 60 + timer_left.minute) * 60 + timer_left.second + (timer_left.microsecond/1e6)
+            cd = sleep
+            
+            # tm.sleep(3)
+            # timer_left = timer_left - datetime.timedelta(seconds=3)
+            # cd = cd-3
+            
+            desc = f''
+            flag = 0
+            if timer_left.hour>0:
+                desc = desc + f' {timer_left.hour} hours '
+                flag = 1
+            if timer_left.minute>0:
+                desc = desc + f' {timer_left.minute} minutes '
+                flag = 1
+            if timer_left.second>0:
+                desc = desc + f' {timer_left.second} seconds '
+                flag = 1
+            
+            if flag == 0:
+                break    
+            e = discord.Embed(
+                color= discord.Color(random.choice(self.bot.color_list)),
+                title=f"{name.title()}",
+                description=f'**{desc}**',
+                timestamp=end
+            )
+            e.set_footer(
+                    text=f"Ends at")
+            # e.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+            
+            await timer.edit(embed=e)
+            
+        # timer end message
+        desc = f'timer ended'
+                
+        e = discord.Embed(
+                color= ctx.author.colour,
+                title=f"{name.title()}",
+                description=f'**{desc}**',
+                timestamp=end
+        )
+        e.set_footer(
+                    text=f"Ends at")
+        # e.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
+            
+        
+        
+        new_msg = await ctx.channel.fetch_message(timer.id)
+        
+        
+        users = set()
+        
+        for reaction in new_msg.reactions:
+            async for user in reaction.users():
+                users.add(user)
+            users.remove(self.bot.user) 
+        
+        dm = discord.Embed(
+                color= ctx.author.colour,
+                title=f"{name.title()} has Ended",
+                description=f'**Timer has ended over [here]({timer.jump_url}) . Hurry Up!!**',
+                timestamp=end,
+                url = timer.jump_url
+        )
+        dm.set_footer(text=f"Ends at")
+        
+    
+        # change embed after timer ends
+        await timer.edit(embed=e)
+
+        member_react = []
+
+        for i in users:
+            member_react.append(i.mention)
+        
+        await ctx.author.send(f"member present: {', '.join(user for user in members_in_vc)}")
+        await ctx.author.send(f"member reacted: {', '.join(user for user in member_react)}")
+
+        members_to_kick = []
+        
+        for user in members_in_vc:
+            if user not in member_react:
+               members_to_kick.append(user) 
+
+        await ctx.author.send(f"member to be kicked: {', '.join(user for user in members_to_kick)}")
+
+        am = discord.AllowedMentions(
+                            users=False,  # Whether to ping individual user @mentions
+                            everyone=False,  # Whether to ping @everyone or @here mentions
+                            roles=False,  # Whether to ping role @mentions
+                            replied_user=False,  # Whether to ping on replies to messages
+        )
+        for member in channel.members:
+            if member.bot == False:
+                if member.mention in members_to_kick:
+                    try:
+                        await member.edit(voice_channel=None)
+                        await ctx.send(f"{member.mention} has been kicked from `{channel.name}`, 2bad4them!", allowed_mentions=am)
+                    except:
+                        await ctx.send(f"unable to kick {member.mention} from {channel.mention} , {ctx.author.mention} do the needful!!")
+        
+        await ctx.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif")  
+        await ctx.send(f"Alright, onto the next round <a:excitedpepe:854666674606571530>!")
 
         
 def setup(bot):

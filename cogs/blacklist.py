@@ -86,57 +86,6 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
             await ctx.channel.send(embed=embed)
             return
 
-    # @item.command(name="list", description="List of Items in Inventory", aliases=['l'])
-    # @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
-    # async def list(self, ctx,number: int = 5):
-    #     if number<5:
-    #         number = 5
-
-    #     myquery = self.mycol.find(
-    #         {}, {"itemName": 1, "quantity": 1, "giveawayCost": 1, "emoji": 1})
-
-    #     n = 0
-    #     list = []
-    #     # print the result:
-    #     for x in myquery:
-    #         dict = x
-    #         list.append(dict)
-
-    #     # creating df
-    #     df = pd.DataFrame(list)
-    #     df["Total"] = df["giveawayCost"] * df["quantity"]
-    #     total = df["Total"].sum()
-
-    #     df = df[["itemName", "quantity", "giveawayCost","emoji"]].sort_values(by= "giveawayCost", ascending = False)
-
-    #     desc =""
-    #     for ind in df.index:
-
-    #         # await ctx.channel.send(df['itemName'][ind][0])
-
-    #         giveawayCost = "giveawayCost"
-    #         if df['quantity'][ind] > 0:
-    #             desc = desc + f"{df['emoji'][ind]: ^3} `|{df['itemName'][ind][0].title(): ^15}|{df['quantity'][ind]: ^6}|{int((df[giveawayCost][ind]*df['quantity'][ind])/1000000): >4} M|` \n"
-
-    #     # await ctx.send(desc)
-
-    #     title = "𝔻𝕆ℕ𝔸𝕋𝔼𝔻 𝕀𝕋𝔼𝕄𝕊"
-
-    #     embed = discord.Embed(
-    #             title=f"<a:TGK_Pandaswag:830525027341565982>  `{title:^18}`  <a:TGK_Pandaswag:830525027341565982>",
-    #             description=f"{'<a:waveygirl:801398880352337961>': ^3} `|{'Item Name': ^15}|{'Quan.': ^6}|{'Cost': >4}  |` \n"
-    #                         f"{desc}\n"
-    #                         f"**Total Donated Value:** {self.bot.emojis_list['DMC']} `{total:,}`",
-    #             color=0xff0000
-    #         )
-    #     # embed.add_field(name=f"Total Donated Value: ",value=total,inline=True)
-    #     embed.set_footer(
-    #         text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-    #     # embed.set_thumbnail(
-    #     #         url="https://cdn.discordapp.com/attachments/837999751068778517/840658188675317800/donate.gif")
-    #     await ctx.message.delete()
-    #     await ctx.send(embed=embed)
-
     @blacklist.command(name="information", description="Check if a server is blacklisted", aliases=['info'])
     @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916), commands.is_owner())
     async def info(self, ctx, serverId: int):
