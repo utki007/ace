@@ -79,25 +79,40 @@ class Events(commands.Cog):
 
     
     @commands.command(name = "l2l",aliases=["last_to_leave"],usage = "<time> [name]")
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
-    async def lasttoleave(self, ctx, channel : discord.VoiceChannel):
-        
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
+    async def lasttoleave(self, ctx):
         await ctx.message.delete()
-        # voice_channel = self.bot.get_channel(815849745905352737)
+        # if ctx.author.id == 701750457630195772:
+        #     await ctx.send(
+        #         f"Unauthorized to use this command <:pepeHmm:928623994050072577>"
+        #     )
+        #     return
+        # if ctx.channel.category.id != 929018813553442836:
+        #     await ctx.send(
+        #         f"This command shouldn't be used here <:pepeHmm:928623994050072577>"
+        #     )
+        #     return
+        
+        channel = self.bot.get_channel(932331319655014471)
         await ctx.send(
             f"__**Random AFK Check**__\nReact on below timer to show your presence <:pepeHmm:928623994050072577>"
         )
         members_in_vc = []
+        flag = 0
         for member in channel.members:
             if member.bot == False:
                 members_in_vc.append(member.mention)
+                flag = 1
         try:
             await ctx.send(f"{', '.join(user for user in members_in_vc)}", delete_after = 1)
         except:
-            await ctx.send(f"{ctx.author.mention}, Error occured!!")
+            if flag == 0:
+                await ctx.send(f"{ctx.author.mention}, No member present in {channel.mention}!!")
+            else:
+                await ctx.send(f"{ctx.author.mention}, Error occured!!")
             return
 
-        cd = 300
+        cd = 15
         name = "Last to Leave "
 
         end = datetime.datetime.utcnow() + datetime.timedelta(seconds=cd)
@@ -218,6 +233,7 @@ class Events(commands.Cog):
         for i in users:
             member_react.append(i.mention)
         
+        await ctx.author.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif") 
         await ctx.author.send(f"member present: {', '.join(user for user in members_in_vc)}")
         await ctx.author.send(f"member reacted: {', '.join(user for user in member_react)}")
 
@@ -244,8 +260,29 @@ class Events(commands.Cog):
                     except:
                         await ctx.send(f"unable to kick {member.mention} from {channel.mention} , {ctx.author.mention} do the needful!!")
         
+        count = 0
+        for member in channel.members:
+            if member.bot != True:
+                count+=1
         await ctx.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif")  
-        await ctx.send(f"Alright, onto the next round <a:excitedpepe:854666674606571530>!")
+        final_msg = await ctx.send(f"**{count}** more membersto go!")
+        await final_msg.add_reaction("<a:pandaswag:801013818896941066>")
+
+        guild = self.bot.get_guild(785839283847954433)
+        users = guild.members
+ 
+        l2l = discord.utils.get(guild.roles, id=932878981303246939)
+        
+        for i in users:
+            if i not in channel.members and l2l in i.roles:
+                try:
+                    await i.remove_roles(l2l)
+                except:
+                    await ctx.author.send(f"Failed to remove {l2l.mention} role from {i.mention}", allowed_mentions=am)
+        
+        await ctx.author.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif") 
+    
+
 
         
 def setup(bot):

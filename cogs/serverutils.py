@@ -14,6 +14,7 @@ import shlex
 import colour
 from colour import Color
 import shlex
+import random 
 
 class serverutils(commands.Cog, description="Server Utility"):
     
@@ -105,13 +106,13 @@ class serverutils(commands.Cog, description="Server Utility"):
         else:
             await message.edit(content=f"No user is left to be assigned {gamer.mention} role!", allowed_mentions=am)
     
-    # https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif
-    # https://media.giphy.com/media/dAjMIUQRUDslMz8tUR/giphy.gif
+    
     @commands.command(name="bar",description="To be used in public channels after completing a task")
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def finish(self,ctx):
         await ctx.message.delete()
-        await ctx.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif")  
+        l = ["https://media.giphy.com/media/dAjMIUQRUDslMz8tUR/giphy.gif","https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif"]
+        await ctx.send(random.choice(l))
       
 def setup(bot):
     bot.add_cog(serverutils(bot))
