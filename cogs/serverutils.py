@@ -89,7 +89,7 @@ class serverutils(commands.Cog, description="Server Utility"):
             replied_user=False,  # Whether to ping on replies to messages
         )
         await ctx.message.delete()
-        message = await ctx.send(f"Starting assigning gamer role to memebers ... ", allowed_mentions=am)
+        message = await ctx.send(f"Starting to assign gamer role to members ... ", allowed_mentions=am)
         j = 0
         for i in users:
             if bgmi in i.roles and trainee in i.roles and gamer not in i.roles:
@@ -106,29 +106,6 @@ class serverutils(commands.Cog, description="Server Utility"):
         else:
             await message.edit(content=f"No user is left to be assigned {gamer.mention} role!", allowed_mentions=am)
     
-    
-    @commands.command(name="l2lrole")
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636), commands.is_owner())
-    async def l2lrole(self,ctx):
-        channel = self.bot.get_channel(932331319655014471)
-        guild = self.bot.get_guild(785839283847954433)
-        users = guild.members
- 
-        am = discord.AllowedMentions(
-            users=False,  # Whether to ping individual user @mentions
-            everyone=False,  # Whether to ping @everyone or @here mentions
-            roles=False,  # Whether to ping role @mentions
-            replied_user=False,  # Whether to ping on replies to messages
-        )
-        
-        l2l = discord.utils.get(guild.roles, id=932878981303246939)
-        
-        for i in channel.members:
-            try:
-                await i.add_roles(l2l)
-            except:
-                await ctx.author.send(f"Failed to add {l2l.mention} role to {i.mention}", allowed_mentions=am)
-
     @commands.command(name="bar",description="To be used in public channels after completing a task")
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def finish(self,ctx):
