@@ -82,16 +82,16 @@ class Events(commands.Cog):
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
     async def lasttoleave(self, ctx):
         await ctx.message.delete()
-        # if ctx.author.id == 701750457630195772:
-        #     await ctx.send(
-        #         f"Unauthorized to use this command <:pepeHmm:928623994050072577>"
-        #     )
-        #     return
-        # if ctx.channel.category.id != 929018813553442836:
-        #     await ctx.send(
-        #         f"This command shouldn't be used here <:pepeHmm:928623994050072577>"
-        #     )
-        #     return
+        if ctx.author.id == 701750457630195772:
+            await ctx.send(
+                f"Unauthorized to use this command <:pepeHmm:928623994050072577>"
+            )
+            return
+        if ctx.channel.category.id != 929018813553442836:
+            await ctx.send(
+                f"This command shouldn't be used here <:pepeHmm:928623994050072577>"
+            )
+            return
         
         channel = self.bot.get_channel(932331319655014471)
         await ctx.send(
