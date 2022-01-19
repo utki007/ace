@@ -20,7 +20,7 @@ from utils.mongo import Document
 
 description = '''This is what I have been programmed to do'''
 bot = commands.Bot(
-    command_prefix=["? ","?"],
+    command_prefix=["? ","?","gk.","gk. "],
     description=description,
     case_insensitive=True,
     intents= discord.Intents.all(),
