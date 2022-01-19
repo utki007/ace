@@ -135,11 +135,13 @@ class dankutils(commands.Cog, description="Dank Utility"):
         query = await convert_to_numeral(query)
         output = await calculate(query)
         result = math.ceil(number*0.72)
-        result = math.ceil(query/output)
+        result = math.ceil(output/result)
+        
+        await ctx.message.delete()
 
         e = discord.Embed(
             color=0x9e3bff,
-            title=f"Tax Calculator",
+            title=f"Payouts Calculator",
             timestamp=datetime.datetime.utcnow()     ,
             description=    f"**{'Number of people joined:':^25}** `{number:,}`\n"
                             f"**{'Amount Heisted:':^25}** <:TGK_DMC:830520214021603350> `{output:,}`\n"
