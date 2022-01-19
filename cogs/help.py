@@ -19,6 +19,7 @@ class Help(commands.Cog, name="Help command"):
     )
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     async def help(self, ctx):
+        await ctx.message.delete()
         help = discord.Embed(
             # title = "Help",
             description = f"Use `?help <command>` to know more",
@@ -39,7 +40,11 @@ class Help(commands.Cog, name="Help command"):
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Item Tracker__",
-            value="Track all donations made to the server \n`add` , `remove` , `list`, `info`, `worthlist`",
+            value="Track all item donations made to the server \n`add` , `remove` , `list`, `info`, `worthlist`",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Last to Leave Manager__",
+            value="Manage L2L event \n`setup` , `afk/check` , `clean`",
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Partnership Tracker__",
@@ -60,6 +65,7 @@ class Help(commands.Cog, name="Help command"):
     @help.command(name="Donation",aliases = ["donation",'dono',"Dono","d","bal" , "nick","celeb" , "regDonation", "splDonation"])
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     async def donation(self, ctx):
+        await ctx.message.delete()
         help = discord.Embed(
             title = "Donation Tracker",
             description = f"Track all Donations",
@@ -106,6 +112,7 @@ class Help(commands.Cog, name="Help command"):
     @help.command(name="heist",aliases = ["Heist",'h',"hlock","reset","thanks"])
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     async def heist(self, ctx):
+        await ctx.message.delete()
         help = discord.Embed(
             title = "Heist Tracker",
             description = f"Track and conduct a Heist",
@@ -143,6 +150,7 @@ class Help(commands.Cog, name="Help command"):
     @help.command(name="Channel",aliases = ["ch","c","slowmode",'Lock',"unlock","ul","dankdown","dankup"])
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     async def lock(self, ctx):
+        await ctx.message.delete()
         help = discord.Embed(
             title = "Channel Management",
             description = f"Secure the Server",
@@ -189,6 +197,7 @@ class Help(commands.Cog, name="Help command"):
     @help.command(name="item",aliases = ["items","wl","worthlist","list"])
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     async def item(self, ctx):
+        await ctx.message.delete()
         help = discord.Embed(
             title = "Item Management",
             description = f"Track Items Efficiently",
@@ -233,6 +242,7 @@ class Help(commands.Cog, name="Help command"):
     @help.command(name="timer",aliases = ["tstart","t","tresume","trestart","tping","tend"])
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     async def timer(self, ctx):
+        await ctx.message.delete()
         help = discord.Embed(
             title = "Timer Management",
             description = f"Manage Timers Efficiently",
@@ -278,6 +288,7 @@ class Help(commands.Cog, name="Help command"):
     @help.command(name="partnership",aliases = ["psh","bl","ph","ping_heist","blacklist"])
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     async def partnership(self, ctx):
+        await ctx.message.delete()
         help = discord.Embed(
             title = "Partnership Tracker",
             description = f"Track Partnerships Efficiently",
@@ -312,6 +323,44 @@ class Help(commands.Cog, name="Help command"):
         # help.set_thumbnail(
         #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
         await ctx.send(embed = help)
+
+
+    
+    @help.command(name="l2l",aliases = ["lasttoleave","last","leave"])
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
+    async def l2l(self, ctx):
+
+        await ctx.message.delete()
+        help = discord.Embed(
+            title = "Last to Leave Event Manager",
+            description = f"Manage L2L Event Efficiently",
+            color = 0x9e3bff,
+            timestamp=datetime.datetime.utcnow()
+        )
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Pre Event Setup__",
+            value=  f"Gives everyone in channel L2L role \n"
+                    f"Ex: `?[lasttoleave|l2l] setup`",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Afk check__",
+            value=  f"Checks if people are afk or not with 5 minute timer \n"
+                    f"Ex: `?[lasttoleave|l2l] <afk/check>`\n",
+            inline = False)
+        help.add_field(
+            name="<a:TGK_sparkles:838838345316040744> __Clean__",
+            value=  f"Removes L2L role from people not in channel \n"
+                    f"Ex: `?[lasttoleave|l2l] clean`",
+            inline = False)
         
+        help.set_author(name=ctx.guild.name,
+                              icon_url=ctx.guild.icon_url)
+        help.set_footer(
+            text=f"Developed by utki007 & Jay", icon_url=self.bot.user.avatar_url)
+        # help.set_thumbnail(
+        #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
+        await ctx.send(embed = help)
+
+
 def setup(bot):
     bot.add_cog(Help(bot))
