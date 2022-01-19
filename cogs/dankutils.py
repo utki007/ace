@@ -127,25 +127,30 @@ class dankutils(commands.Cog, description="Dank Utility"):
         e.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
         await ctx.send(embed=e)
 
-    @commands.command(name="Calculate Tax",aliases=["tc", "taxc","taxcalculate"])
-    async def taxcalculate(self, ctx, number: float):
+    @commands.command(name="payouts",aliases=["pay"])
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    async def payouts(self, ctx, number: float, query):
         """Finding tax"""
-        number = int(float(number))
-        result = math.ceil((number*100)/92)
+        number = int(number)
+        query = await convert_to_numeral(query)
+        output = await calculate(query)
+        result = math.ceil(number*0.72)
+        result = math.ceil(query/output)
+
         e = discord.Embed(
             color=0x9e3bff,
             title=f"Tax Calculator",
             timestamp=datetime.datetime.utcnow()     ,
-            description=   f"**{'Amount expected to pay':^25}** <:TGK_DMC:830520214021603350> `{result:,}`\n"
-                            f"**{'Amount lost by tax:':^25}** <:TGK_DMC:830520214021603350> `{result-number:,}`\n"
-                            f"**{'Tax rate:':^25}** `8%`"
+            description=    f"**{'Number of people joined:':^25}** `{number:,}`\n"
+                            f"**{'Amount Heisted:':^25}** <:TGK_DMC:830520214021603350> `{output:,}`\n"
+                            f"**{'Expected Payouts:':^25}** <:TGK_DMC:830520214021603350> `{result:,}`\n"
         )
         url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={result:,}&font=lobster&font_size=28"
         e.set_image(url=url)
         e.set_footer(
             text=f"Developed by utki007 & Jay")
         e.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
-        await ctx.send(f"`pls give {result}`", delete_after= 30)
+        # await ctx.send(f"`pls give {result}`", delete_after= 30)
 
         await ctx.send(embed=e)
 
