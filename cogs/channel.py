@@ -374,8 +374,8 @@ class channel(commands.Cog, description="Channel utils"):
             await dank_spe.purge(limit=5, check=check, before=None)
             await dank_vip.purge(limit=5, check=check, before=None)
             await dank_grind.purge(limit=5, check=check, before=None)
-            await donate_here.purge(limit=5, check=check, before=None)
-            await grinder_donation.purge(limit=5, check=check, before=None)
+            await donate_here.purge(limit=1, check=check, before=None)
+            await grinder_donation.purge(limit=1, check=check, before=None)
             # await trade_zone.purge(limit=5, check=check, before=None)
             
             dunlock = discord.Embed(
