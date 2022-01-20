@@ -219,7 +219,7 @@ class channel(commands.Cog, description="Channel utils"):
             
             donate_here = self.bot.get_channel(812711254790897714)
             grinder_donation = self.bot.get_channel(851663580620521472)
-            trade_zone = self.bot.get_channel(814959157073412156)
+            # trade_zone = self.bot.get_channel(814959157073412156)
 
             override_dank_1 = dank_1.overwrites_for(default_role)
             override_dank_1.send_messages = False
@@ -245,8 +245,8 @@ class channel(commands.Cog, description="Channel utils"):
             override_grinder_donation = grinder_donation.overwrites_for(default_role)
             override_grinder_donation.send_messages = False
             
-            overide_trade_zone = trade_zone.overwrites_for(default_role)
-            overide_trade_zone.send_messages = False
+            # overide_trade_zone = trade_zone.overwrites_for(default_role)
+            # overide_trade_zone.send_messages = False
 
             await dank_1.set_permissions(default_role, overwrite=override_dank_1)
             await dank_2.set_permissions(default_role, overwrite=override_dank_2)
@@ -256,7 +256,7 @@ class channel(commands.Cog, description="Channel utils"):
             await dank_grind.set_permissions(default_role, overwrite=override_dank_grind)
             await donate_here.set_permissions(default_role, overwrite=overide_donate_here)
             await grinder_donation.set_permissions(default_role, overwrite=override_grinder_donation)
-            await trade_zone.set_permissions(default_role, overwrite=overide_trade_zone)
+            # await trade_zone.set_permissions(default_role, overwrite=overide_trade_zone)
             
             dlock = discord.Embed(
                 title=f"    **{'Why are Dank Memer channels Locked ?'}**   ",
@@ -278,7 +278,7 @@ class channel(commands.Cog, description="Channel utils"):
             await dank_grind.send(embed=dlock)
             await donate_here.send(embed=dlock)
             await grinder_donation.send(embed=dlock)
-            await trade_zone.send(embed=dlock)
+            # await trade_zone.send(embed=dlock)
 
         # await ctx.send("Dank is LockedUp")
         await lock_status.edit(content=f"Dank is LockedUp")
@@ -321,12 +321,13 @@ class channel(commands.Cog, description="Channel utils"):
             dank_1 = self.bot.get_channel(799364834927968336)
             dank_2 = self.bot.get_channel(799378297855279125)
             dank_pre = self.bot.get_channel(812724720675061770)
+            dank_spe = self.bot.get_channel(929613393097293874)
             dank_vip = self.bot.get_channel(822409174271918120)
             dank_grind = self.bot.get_channel(836477044128612422)
             
             donate_here = self.bot.get_channel(812711254790897714)
             grinder_donation = self.bot.get_channel(851663580620521472)
-            trade_zone = self.bot.get_channel(814959157073412156)
+            # trade_zone = self.bot.get_channel(814959157073412156)
 
             override_dank_1 = dank_1.overwrites_for(default_role)
             override_dank_1.send_messages = None
@@ -336,6 +337,9 @@ class channel(commands.Cog, description="Channel utils"):
 
             override_dank_pre = dank_pre.overwrites_for(default_role)
             override_dank_pre.send_messages = None
+
+            override_dank_spe = dank_spe.overwrites_for(default_role)
+            override_dank_spe.send_messages = None
 
             override_dank_vip = dank_vip.overwrites_for(default_role)
             override_dank_vip.send_messages = None
@@ -349,28 +353,30 @@ class channel(commands.Cog, description="Channel utils"):
             override_grinder_donation = grinder_donation.overwrites_for(default_role)
             override_grinder_donation.send_messages = None
             
-            overide_trade_zone = trade_zone.overwrites_for(default_role)
-            overide_trade_zone.send_messages = None
+            # overide_trade_zone = trade_zone.overwrites_for(default_role)
+            # overide_trade_zone.send_messages = None
 
             await dank_1.set_permissions(default_role, overwrite=override_dank_1)
             await dank_2.set_permissions(default_role, overwrite=override_dank_2)
             await dank_pre.set_permissions(default_role, overwrite=override_dank_pre)
+            await dank_spe.set_permissions(default_role, overwrite=override_dank_spe)
             await dank_vip.set_permissions(default_role, overwrite=override_dank_vip)
             await dank_grind.set_permissions(default_role, overwrite=override_dank_grind)
             await donate_here.set_permissions(default_role, overwrite=overide_donate_here)
             await grinder_donation.set_permissions(default_role, overwrite=override_grinder_donation)
-            await trade_zone.set_permissions(default_role, overwrite=overide_trade_zone)
+            # await trade_zone.set_permissions(default_role, overwrite=overide_trade_zone)
 
             
             # await channel.purge(limit=10, check=check, before=None)
-            await dank_1.purge(limit=1, check=check, before=None)
-            await dank_2.purge(limit=1, check=check, before=None)
-            await dank_pre.purge(limit=1, check=check, before=None)
-            await dank_vip.purge(limit=1, check=check, before=None)
-            await dank_grind.purge(limit=1, check=check, before=None)
-            await donate_here.purge(limit=1, check=check, before=None)
-            await grinder_donation.purge(limit=1, check=check, before=None)
-            await trade_zone.purge(limit=1, check=check, before=None)
+            await dank_1.purge(limit=5, check=check, before=None)
+            await dank_2.purge(limit=5, check=check, before=None)
+            await dank_pre.purge(limit=5, check=check, before=None)
+            await dank_spe.purge(limit=5, check=check, before=None)
+            await dank_vip.purge(limit=5, check=check, before=None)
+            await dank_grind.purge(limit=5, check=check, before=None)
+            await donate_here.purge(limit=5, check=check, before=None)
+            await grinder_donation.purge(limit=5, check=check, before=None)
+            # await trade_zone.purge(limit=5, check=check, before=None)
             
             dunlock = discord.Embed(
                 title=f"    **Channel has been Unlocked.\n**   ",
@@ -393,7 +399,7 @@ class channel(commands.Cog, description="Channel utils"):
             await dank_grind.send(embed=dunlock,delete_after=60)
             await donate_here.send(embed=dunlock,delete_after=60)
             await grinder_donation.send(embed=dunlock,delete_after=60)
-            await trade_zone.send(embed=dunlock,delete_after=60)
+            # await trade_zone.send(embed=dunlock,delete_after=60)
             
         await lock_status.edit(content=f"Dank is Unlocked")
  
