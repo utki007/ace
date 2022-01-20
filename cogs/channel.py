@@ -260,7 +260,7 @@ class channel(commands.Cog, description="Channel utils"):
             
             dlock = discord.Embed(
                 title=f"    **{'Why are Dank Memer channels Locked ?'}**   ",
-                description=f":lock:Dank Memer is offline. Keep an eye on #:robot:。bot・commands to check status of the bot.\n If the bot is online and the channel is still locked, ping a <@&785845265118265376>. \n",
+                description=f":lock:Dank Memer is offline. Keep an eye on <#785849567518130176> to check status of the bot.\n If the bot is online and the channel is still locked, raise a ticket from <#785901543349551104>. \n",
                 color=0xff0000,
                 timestamp=datetime.datetime.utcnow()
             )
@@ -363,14 +363,14 @@ class channel(commands.Cog, description="Channel utils"):
 
             
             # await channel.purge(limit=10, check=check, before=None)
-            await dank_1.purge(limit=10, check=check, before=None)
-            await dank_2.purge(limit=10, check=check, before=None)
-            await dank_pre.purge(limit=10, check=check, before=None)
-            await dank_vip.purge(limit=10, check=check, before=None)
-            await dank_grind.purge(limit=10, check=check, before=None)
-            await donate_here.purge(limit=10, check=check, before=None)
-            await grinder_donation.purge(limit=10, check=check, before=None)
-            await trade_zone.purge(limit=10, check=check, before=None)
+            await dank_1.purge(limit=1, check=check, before=None)
+            await dank_2.purge(limit=1, check=check, before=None)
+            await dank_pre.purge(limit=1, check=check, before=None)
+            await dank_vip.purge(limit=1, check=check, before=None)
+            await dank_grind.purge(limit=1, check=check, before=None)
+            await donate_here.purge(limit=1, check=check, before=None)
+            await grinder_donation.purge(limit=1, check=check, before=None)
+            await trade_zone.purge(limit=1, check=check, before=None)
             
             dunlock = discord.Embed(
                 title=f"    **Channel has been Unlocked.\n**   ",
