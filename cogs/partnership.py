@@ -248,7 +248,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             await ctx.send(embed=warning, delete_after=15)
 
     @commands.command(name="Grinders", description="Ping Grinders Heist", aliases=['grind', 'hg'])
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376,835889385390997545), commands.is_owner(),commands.bot_has_any_role(842485323329568769,933605749400166451))
+    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889,835889385390997545,836228842397106176), commands.is_owner(),commands.bot_has_any_role(842485323329568769,933605749400166451))
     async def grind(self, ctx, channel: int, link: str):
         await ctx.message.delete()
         if "://" not in link:
