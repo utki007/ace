@@ -212,6 +212,7 @@ class channel(commands.Cog, description="Channel utils"):
 
             dank_1 = self.bot.get_channel(799364834927968336)
             dank_2 = self.bot.get_channel(799378297855279125)
+            dank_spe = self.bot.get_channel(929613393097293874)
             dank_pre = self.bot.get_channel(812724720675061770)
             dank_vip = self.bot.get_channel(822409174271918120)
             dank_grind = self.bot.get_channel(836477044128612422)
@@ -228,6 +229,9 @@ class channel(commands.Cog, description="Channel utils"):
 
             override_dank_pre = dank_pre.overwrites_for(default_role)
             override_dank_pre.send_messages = False
+
+            override_dank_spe = dank_spe.overwrites_for(default_role)
+            override_dank_spe.send_messages = False
 
             override_dank_vip = dank_vip.overwrites_for(default_role)
             override_dank_vip.send_messages = False
@@ -247,6 +251,7 @@ class channel(commands.Cog, description="Channel utils"):
             await dank_1.set_permissions(default_role, overwrite=override_dank_1)
             await dank_2.set_permissions(default_role, overwrite=override_dank_2)
             await dank_pre.set_permissions(default_role, overwrite=override_dank_pre)
+            await dank_spe.set_permissions(default_role, overwrite=override_dank_spe)
             await dank_vip.set_permissions(default_role, overwrite=override_dank_vip)
             await dank_grind.set_permissions(default_role, overwrite=override_dank_grind)
             await donate_here.set_permissions(default_role, overwrite=overide_donate_here)
@@ -268,6 +273,7 @@ class channel(commands.Cog, description="Channel utils"):
             await dank_1.send(embed=dlock)
             await dank_2.send(embed=dlock)
             await dank_pre.send(embed=dlock)
+            await dank_spe.send(embed=dlock)
             await dank_vip.send(embed=dlock)
             await dank_grind.send(embed=dlock)
             await donate_here.send(embed=dlock)
