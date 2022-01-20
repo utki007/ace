@@ -62,7 +62,7 @@ class lasttoleave(commands.Cog, description="Last to Leave Manager"):
         members_in_vc = []
         flag = 0
         for member in channel.members:
-            if member.bot == False:
+            if member.bot == False and member.id not in bypass:
                 members_in_vc.append(member.mention)
                 flag = 1
         try:
@@ -78,7 +78,7 @@ class lasttoleave(commands.Cog, description="Last to Leave Manager"):
                 await ctx.send(f"{ctx.author.mention}, Error occured!!")
             return
 
-        cd = 5
+        cd = 300
         name = "Last to Leave "
 
         end = datetime.datetime.utcnow() + datetime.timedelta(seconds=cd)
