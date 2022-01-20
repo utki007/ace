@@ -395,6 +395,7 @@ class channel(commands.Cog, description="Channel utils"):
             await dank_1.send(embed=dunlock,delete_after=60)
             await dank_2.send(embed=dunlock,delete_after=60)
             await dank_pre.send(embed=dunlock,delete_after=60)
+            await dank_spe.send(embed=dunlock,delete_after=60)
             await dank_vip.send(embed=dunlock,delete_after=60)
             await dank_grind.send(embed=dunlock,delete_after=60)
             await donate_here.send(embed=dunlock,delete_after=60)
