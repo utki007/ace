@@ -248,7 +248,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             await ctx.send(embed=warning, delete_after=15)
 
     @commands.command(name="Grinders", description="Ping Grinders Heist", aliases=['grind', 'hg'])
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376,835889385390997545), commands.is_owner(),commands.bot_has_any_role(842485323329568769))
+    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376,835889385390997545), commands.is_owner(),commands.bot_has_any_role(842485323329568769,933605749400166451))
     async def grind(self, ctx, channel: int, link: str):
         await ctx.message.delete()
         if "://" not in link:
@@ -260,28 +260,42 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             roles=False,  # Whether to ping role @mentions
             replied_user=False,  # Whether to ping on replies to messages
         )
-        
+
+        # guild1 = self.bot.get_guild(785839283847954433)
+        # guild2 = self.bot.get_guild(838646783785697290)
+        # guild3 = self.bot.get_guild(927399549063004270)
+
+        channel1 = self.bot.get_channel(846766444695650345)
+        channel2 = self.bot.get_channel(840231915100569650)
+        channel3 = self.bot.get_channel(933605919055568898)
+
         user = self.bot.get_user(301657045248114690)
         if ctx.channel.id == 846766444695650345:
-            await ctx.send(
+            await channel1.send(
                 f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
                 # f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
                 f":small_blue_diamond: | **Server:** {link} \n"
                 f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
                 f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
             )
-            await ctx.send("<@&836228842397106176> @here", delete_after=1)
-            await user.send(f"```?hg {channel} {link}``` \n <#{channel}> {link} ")
-        elif ctx.guild.id == 838646783785697290:
-            await ctx.send(
+            await channel1.send("<@&836228842397106176> @here", delete_after=1)
+            await channel2.send(
                 f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
                 # f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
                 f":small_blue_diamond: | **Server:** {link} \n"
                 f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
                 f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
             )
-            await ctx.send("<@&836228842397106176> @here", delete_after=1)
-            await user.send(f"```?hg {channel} {link}``` \n <#{channel}> {link} ")
+            await channel2.send("@here", delete_after=1)
+            await channel3.send(
+                f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
+                # f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
+                f":small_blue_diamond: | **Server:** {link} \n"
+                f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
+                f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
+            )
+            await channel3.send("<@&836228842397106176> @here", delete_after=1)
+            await user.send(f"\n<#{channel}> {link} ")
         else:
             message = await ctx.send(
                 f"To be used only in Heist channels. Let me report this!"
