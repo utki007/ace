@@ -62,7 +62,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
                         await partnerHeists.purge(limit=10, check=check, before=None)
                         return await message.channel.send("If you'd like to stop receiving pings, check out <#848631258137362452> for <@&810593886720098304> role!!! \n"
                         f"||However, having <@&806795854475165736> makes <@&810593886720098304> useless, so remove <@&806795854475165736> role.||"
-                        f"\n**150 Mil Heist** <t:1642761032:R> <#927241961038045236> \nL2L for **Nitro** unlocks in <t:1642759230:R> <#933363028475396106>", allowed_mentions=am)
+                        f"\nL2L for **Nitro** locks in <t:1642764648:R> <#933363028475396106>", allowed_mentions=am)
 
         # if message.channel.id == 840215557097390131 and message.author.id != self.bot.user.id:838646783785697290
         # 838646783785697290:
@@ -211,13 +211,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
             for x in info:
                 dict = x
                 flag = 1
-        
-            # if flag == 0:
-            #     self.mycol.insert_one(data)
-            # else:
-            #     newvalues = {"$set": {"BanDuration": duration}}
-            #     dict["BanDuration"] = duration
-            #     self.mycol.update_one(myquery, newvalues)
+
             try:
                 if flag == 0:
                     self.mycol.insert_one(data)
