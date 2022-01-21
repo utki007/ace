@@ -26,6 +26,7 @@ async def donor_roles(client,query,user):
         
 async def convert_to_time(query):
     query = query.lower()
+    query = query.replace("d", "*86400+",1)
     query = query.replace("h", "*3600+",1)
     query = query.replace("m", "*60+",1)       
     query = query.replace("s", "*1+",1)  
