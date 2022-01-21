@@ -333,11 +333,11 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         heist = discord.utils.get(guild.roles, id=804068344612913163 )
         partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
         outsideHeist = discord.utils.get(guild.roles, id=806795854475165736)
-        danker = discord.utils.get(guild.roles, id=801392998465404958)
+        # danker = discord.utils.get(guild.roles, id=801392998465404958)
         partnership = discord.utils.get(guild.roles, id=797448080223109120)
         nopartner = discord.utils.get(guild.roles, id=797448080223109120)
         
-        l = [heist,partnerHeist,outsideHeist,danker,partnership]
+        l = [heist,partnerHeist,outsideHeist,partnership]
         
         spings = {"name" : [],"pingCount":[]}
         for i in l:
