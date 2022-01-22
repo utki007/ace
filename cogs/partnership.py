@@ -352,7 +352,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         dpings = {"pingCount":[],"role1":[],"role2":[]}
         for i in res:
             role1,role2 = i
-            dpings["pingCount"].append(set(channel_members).intersection(set(role1.members).union(set(role2.members))))
+            dpings["pingCount"].append(len(set(channel_members).intersection(set(role1.members).union(set(role2.members)))))
             dpings["role1"].append(role1)
             dpings["role2"].append(role2)
             
