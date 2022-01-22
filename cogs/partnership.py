@@ -416,6 +416,100 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         
         message = await ctx.send(embed = ping1)
         await addPages(self.bot,ctx,message,pages)
+
+    @commands.command(name="cpings", description="Check Channel Pings")
+    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 831405039830564875), commands.is_owner())
+    async def cpings(self, ctx):
+        
+        
+        guild = self.bot.get_guild(785839283847954433)
+        
+        heist = discord.utils.get(guild.roles, id=804068344612913163 )
+        partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
+        outsideHeist = discord.utils.get(guild.roles, id=806795854475165736)
+        danker = discord.utils.get(guild.roles, id=801392998465404958)
+        partnership = discord.utils.get(guild.roles, id=797448080223109120)
+        giveaway = discord.utils.get(guild.roles, id=800685251276963861)
+
+        channel = self.bot.get_channel(806988762299105330)
+        channel_members = channel.members
+        
+        l = [heist,partnerHeist,outsideHeist,partnership,danker,giveaway]
+        
+        spings = {"name" : [],"pingCount":[]}
+        for i in l:
+            spings["name"].append(i.mention)
+            spings["pingCount"].append(len(set(channel_members).intersection(set(i.members))))
+        
+        # for double pings 
+        res = [(a, b) for idx, a in enumerate(l) for b in l[idx + 1:]]
+        dpings = {"pingCount":[],"role1":[],"role2":[]}
+        for i in res:
+            role1,role2 = i
+            dpings["pingCount"].append(len(set(channel_members).intersection(set(role1.members).union(set(role2.members)))))
+            dpings["role1"].append(role1)
+            dpings["role2"].append(role2)
+            
+        df = pd.DataFrame(spings)
+        df1 = df.sort_values(by= "pingCount", ascending = False)
+        
+        singlePings = "**\n**"
+        
+        for idx in df1.index:
+            singlePings = singlePings + f'{df1["name"][idx]} {self.bot.emojis_list["rightArrow"]}  {df1["pingCount"][idx]}\n **\n**'
+        
+        ping1 = discord.Embed(
+                title=f"    **Single Pings for Partnership\n**   ",
+                description= singlePings,
+                color=0x9e3bff,
+                timestamp=datetime.datetime.utcnow()
+        )
+        ping1.set_footer(
+            text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+        ping1.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
+        pages = [ping1]
+        
+        
+        
+        df = pd.DataFrame(dpings)
+        df2 = df.sort_values(by= "pingCount", ascending = False)
+        try:
+            await ctx.message.delete()
+        except:
+            pass
+        
+        rows = len(df2.index)
+        
+        for i in np.arange(0,rows,3):
+            if i + 3 < rows:
+                temp = df2[i:i+3]
+            else:
+                temp = df2[i:]
+            
+        
+            doublePings = "**\n**"
+        
+        
+            for idx in temp.index:
+                doublePings = doublePings + f'{temp["role1"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(temp["role1"][idx].members)}\n'
+                doublePings = doublePings + f'{temp["role2"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(temp["role2"][idx].members)}\n'
+                doublePings = doublePings + f'**_Unique Members:_** {self.bot.emojis_list["rightArrow"]}  **{temp["pingCount"][idx]}**\n **\n**'
+        
+        
+
+            ping2 = discord.Embed(
+                title=f"    **Double Pings for Partnership\n**   ",
+                description= doublePings,
+                color=0x9e3bff,
+                timestamp=datetime.datetime.utcnow()
+            )
+            ping2.set_footer(
+                text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+            ping2.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
+            pages.append(ping2)
+        
+        message = await ctx.send(embed = ping1)
+        await addPages(self.bot,ctx,message,pages)
         
 def setup(bot):
     bot.add_cog(partnership(bot))
