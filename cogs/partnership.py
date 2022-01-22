@@ -414,15 +414,5 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         message = await ctx.send(embed = ping1)
         await addPages(self.bot,ctx,message,pages)
         
-    # @commands.command(name="dontpingme", aliases=['dp'])
-    # async def dont_ping_me(self, ctx: commands.Context):
-    #     am = discord.AllowedMentions(
-    #         users=False,  # Whether to ping individual user @mentions
-    #         everyone=False,  # Whether to ping @everyone or @here mentions
-    #         roles=False,  # Whether to ping role @mentions
-    #         replied_user=False,  # Whether to ping on replies to messages
-    #     )
-    #     message = await ctx.send(f"Hello, {ctx.author.mention}", allowed_mentions=am)
-
 def setup(bot):
     bot.add_cog(partnership(bot))
