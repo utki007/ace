@@ -280,7 +280,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
                 f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
             )
-            await channel1.send("<@&836228842397106176>", delete_after=1)
+            await channel1.send("<@&836228842397106176> @here", delete_after=1)
             await channel2.send(
                 f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
                 # f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
@@ -333,23 +333,26 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         heist = discord.utils.get(guild.roles, id=804068344612913163 )
         partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
         outsideHeist = discord.utils.get(guild.roles, id=806795854475165736)
-        # danker = discord.utils.get(guild.roles, id=801392998465404958)
+        danker = discord.utils.get(guild.roles, id=801392998465404958)
         partnership = discord.utils.get(guild.roles, id=797448080223109120)
         nopartner = discord.utils.get(guild.roles, id=797448080223109120)
+
+        channel = self.bot.get_channel(806988762299105330)
+        channel_members = channel.members
         
-        l = [heist,partnerHeist,outsideHeist,partnership]
+        l = [heist,danker, partnerHeist,outsideHeist,partnership]
         
         spings = {"name" : [],"pingCount":[]}
         for i in l:
             spings["name"].append(i.mention)
-            spings["pingCount"].append(len(i.members))
+            spings["pingCount"].append(len(set(channel_members).intersection(set(i.members))))
         
         # for double pings 
         res = [(a, b) for idx, a in enumerate(l) for b in l[idx + 1:]]
         dpings = {"pingCount":[],"role1":[],"role2":[]}
         for i in res:
             role1,role2 = i
-            dpings["pingCount"].append(len(role1.members) + len(role2.members)-commonPing(role1.members,role2.members))
+            dpings["pingCount"].append(set(channel_members).intersection(set(role1.members).union(set(role2.members))))
             dpings["role1"].append(role1)
             dpings["role2"].append(role2)
             
