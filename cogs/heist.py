@@ -424,5 +424,69 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         # await message.clear_reactions()
         await message.delete()
 
+    @commands.command(name="ReactionRole1", description="Gives Reaction role",aliases = ["rr1"], hidden=True)
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    async def rr1(self, ctx, *,Title: str = "Other self roles"):
+        guild = self.bot.get_guild(785839283847954433)
+        
+        giveaways = discord.utils.get(guild.roles, id=800685251276963861)
+        flash = discord.utils.get(guild.roles, id=822021066548969482)
+        other = discord.utils.get(guild.roles, id=848809346972516363)
+        event = discord.utils.get(guild.roles, id=836925033506275399)
+        movie = discord.utils.get(guild.roles, id=791347199119327252)
+        
+        # l = [heist,danker,partnerHeist,giveaway,partnership]
+        
+        rr = discord.Embed(
+                title=f"    **{Title}**   ",
+                description= f"<a:tadaa:806631994770849843> {self.bot.emojis_list['right']} {giveaways.mention}\n"
+                            f"<a:celebrate:817302382630273054>  {self.bot.emojis_list['right']} {flash.mention}\n"
+                            f"<a:tgk_gift:820323551520358440> {self.bot.emojis_list['right']} {other.mention}\n"
+                            f"<a:calendar:854663256420909066>  {self.bot.emojis_list['right']} {event.mention}\n"                            
+                            f"<a:tgk_movienight:842675039833030666> {self.bot.emojis_list['right']} {movie.mention}\n",
+                color=0x9e3bff
+                # ,
+                # timestamp=datetime.datetime.utcnow()
+        )
+        rr.set_footer(
+            text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+        await ctx.message.delete()
+        message = await ctx.send(embed=rr)
+        
+        await message.add_reaction("<a:tadaa:806631994770849843>")
+        await message.add_reaction("<a:celebrate:817302382630273054>")
+        await message.add_reaction("<a:tgk_gift:820323551520358440>")
+        await message.add_reaction("<a:calendar:854663256420909066>")
+        await message.add_reaction("<a:tgk_movienight:842675039833030666>")
+        
+        reaction = None
+
+        while True:
+            if  str(reaction) == "<a:tadaa:806631994770849843>":
+                # if heist not in user.roles:
+                await user.add_roles(giveaways, reason = "Reaction Role")
+            elif str(reaction) == "<a:celebrate:817302382630273054> ":
+                # if event not in user.roles:
+                await user.add_roles(flash, reason = "Reaction Role")
+            elif str(reaction) == "<a:tgk_gift:820323551520358440>":
+                # if partnerHeist not in user.roles:
+                await user.add_roles(other, reason = "Reaction Role")
+            elif  str(reaction) == "<a:Partner:925618902673817700>":
+                # if giveaway not in user.roles:
+                await user.add_roles(event, reason = "Reaction Role")
+            elif str(reaction) == "<a:tgk_movienight:842675039833030666>":
+                # if partnership not in user.roles:
+                await user.add_roles(movie, reason = "Reaction Role")
+            try:
+                reaction, user = await self.bot.wait_for('reaction_add', timeout = 6000)
+                # await message.remove_reaction(reaction, user)
+            except:
+                break
+        
+        # await message.clear_reactions()
+        await message.delete()
+
+    
+
 def setup(bot):
     bot.add_cog(dankHeist(bot))
