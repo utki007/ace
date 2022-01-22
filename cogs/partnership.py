@@ -340,7 +340,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         channel = self.bot.get_channel(806988762299105330)
         channel_members = channel.members
         
-        l = [heist,danker, partnerHeist,outsideHeist,partnership]
+        l = [heist,partnerHeist,outsideHeist,partnership]
         
         spings = {"name" : [],"pingCount":[]}
         for i in l:
