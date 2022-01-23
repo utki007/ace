@@ -1,5 +1,4 @@
 import datetime
-import asyncio 
 import re
 import random
 import discord
@@ -7,11 +6,10 @@ from discord.ext import commands, tasks
 from copy import deepcopy
 import datetime
 from dateutil.relativedelta import relativedelta
-from humanfriendly import format_timespan
-from discord_slash import cog_ext, SlashContext, cog_ext, SlashContext
-from discord_slash.utils.manage_commands import create_option, create_choice, create_permission
+from discord_slash import cog_ext, cog_ext
+from discord_slash.utils.manage_commands import create_option, create_permission
 from discord_slash.model import SlashCommandPermissionType
-from discord_slash.utils.manage_components import create_button, create_actionrow, wait_for_component
+from discord_slash.utils.manage_components import create_button, create_actionrow
 from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
 from amari import AmariClient
@@ -59,106 +57,92 @@ class giveaway(commands.Cog):
 	@tasks.loop(seconds=10)
 	async def check_givaway(self):
 		currentTime = datetime.datetime.now()
-		giveaway = deepcopy(self.bot.giveaway)
-		for key, value in giveaway.items():
-			ftime = value['start_time'] + relativedelta(seconds=value['end_time'])
+		giveaways = deepcopy(self.bot.giveaway)
+		for key, value in giveaways.items():
+			end_time = value['start_time'] + relativedelta(seconds=value['end_time'])
 
-			if currentTime >= ftime:
-				guild = self.bot.get_guild(value['guild'])
-				channel = guild.get_channel(value['channel'])
+			if currentTime >= end_time:
 				try:
-					message = await channel.fetch_message(key)
-				except:
-					await self.bot.give.delete(key)
-					try:
-						self.bot.giveaway.pop(key)
-					except KeyError:
-						pass
-					return
+					self.bot.giveaway.pop(value['_id'])
+				except KeyError:
+					pass
 
-				data = await self.bot.give.find(message.id)
-				host = guild.get_member(value['host'])
-				backup = {'_id': message.id, 'entries': [], 'channel': message.channel.id, 'time': datetime.datetime.now()}
-				for user in data['entries']:
-					backup['entries'].append(user)
-
-				winner_list = []
-
-				if len(data['entries']) < value['winners']:
-					embeds = message.embeds
-					for embed in embeds:
-						edict = embed.to_dict()
-
-					edict['title'] = f"{edict['title']} • Giveaway Has Ended"
-					edict['color'] = 15158332
-					edict['description'] = re.sub(r'(Ends)',r'Ended', edict['description'])
-					edict['description'] = re.sub(r'(Use)( )(enter)( )(button)( )(to)( )(join!!)',r'', edict['description'])
-					
-					emojig = self.bot.get_guild(815849745327194153)
-					emoji = await emojig.fetch_emoji(830525854013849680)
-					emoji2 = await emojig.fetch_emoji(830525854013849680)
-					exit = await emojig.fetch_emoji(840638147838738432)
-					buttons = [create_button(style=ButtonStyle.green, label="Enter", emoji=emoji2, disabled=True, custom_id="Giveaway:Enter"), create_button(style=ButtonStyle.red, label="Exit", disabled=True, custom_id="Giveaway:Exit", emoji=exit), create_button(style=ButtonStyle.blurple, label=f"Total Entries: {len(data['entries'])}", custom_id="Giveaway:Count", disabled=True, emoji=emoji)]
-					await message.edit(embed=embed.from_dict(edict), components=[create_actionrow(*buttons)])
-
-					small_embed = discord.Embed(description=f"No valid [entrants]({message.jump_url}) so the winner could not be determined", color=0x2f3136)
-					await message.reply(embed=small_embed)
-					await self.bot.give.delete(message.id)
-					try:
-						self.bot.giveaway.pop((data['_id']))
-					except KeyError:
-						pass
-					return 
-
-				entries = len(data['entries'])
-				while True:
-					member = random.choice(data['entries'])
-					data['entries'].remove(member)
-					member = guild.get_member(member)
-					winner_list.append(member.mention)
-					if len(winner_list) == value['winners']: break
-
-				if len(winner_list) >= value['winners']:
-					embeds = message.embeds
-					for embed in embeds:
-						gdata = embed.to_dict()
-					winners = ",".join(winner_list)
-					small_embed = discord.Embed(description=f"Total Entries: [{entries}]({message.jump_url})")
-					await message.reply(
-					f"Congratulations {winners}! You won the {gdata['title']}",embed=small_embed)
-
-					gdata['title'] = f"{gdata['title']} • Giveaway Has Ended"
-					gdata['description'] = re.sub(r'(Ends)',r'Ended', gdata['description'])
-					gdata['description'] = re.sub(r'(Use)( )(enter)( )(button)( )(to)( )(join!!)',r'', gdata['description'])
-					gdata['color'] = 15158332
-					field = {'name': "Winner!", 'value': ", ".join(winner_list), 'inline': False}
-					try:
-						gdata['fields'].append(field)
-					except KeyError:
-						gdata['fields'] = []
-						gdata['fields'].append(field)
-
-					emojig = self.bot.get_guild(815849745327194153)
-					emoji = await emojig.fetch_emoji(830525854013849680)
-					emoji2 = await emojig.fetch_emoji(830525854013849680)
-					exit = await emojig.fetch_emoji(840638147838738432)
-					buttons = [create_button(style=ButtonStyle.green, label="Enter", emoji=emoji2, disabled=True, custom_id="Giveaway:Enter"), create_button(style=ButtonStyle.red, label="Exit", disabled=True, custom_id="Giveaway:Exit", emoji=exit), create_button(style=ButtonStyle.blurple, label=f"Total Entries: {entries}", custom_id="Giveaway:Count", disabled=True, emoji=emoji)]
-					await message.edit(embed=embed.from_dict(gdata), components=[create_actionrow(*buttons)])
-					await self.bot.give.delete(message.id)
-
-					try:
-						self.bot.giveaway.pop(message.id)
-					except KeyError:
-						pass
-
-					print(backup)
-					await self.bot.endgive.upsert(backup)
-					await self.bot.give.delete(data)
+				self.bot.dispatch('giveaway_end', value['_id'])
+				print("custom Event Triggerd")
 
 	@check_givaway.before_loop
 	async def before_check_givaway(self):
 		await self.bot.wait_until_ready()
 	
+	@commands.Cog.listener()
+	async def on_giveaway_end(self, id: int):
+		giveaway_data = await self.bot.give.find(id)
+		emojig = self.bot.get_guild(815849745327194153)
+		enter_emoji = await emojig.fetch_emoji(830525854013849680)
+		total_entries = await emojig.fetch_emoji(840639358834180107)
+		exit_emoji = await emojig.fetch_emoji(840638147838738432)
+		if not giveaway_data: return
+
+		giveaway_guild = self.bot.get_guild(giveaway_data['guild'])
+		giveaway_channel = self.bot.get_channel(giveaway_data['channel'])
+		try:
+			giveaway_message = await giveaway_channel.fetch_message(giveaway_data['_id'])
+		except:
+			return await self.bot.give.delete(giveaway_data['_id'])
+		embed = giveaway_message.embeds[0]
+		embed_dict = embed.to_dict()
+
+		giveaway_host = giveaway_guild.get_member(int(giveaway_data['host']))
+		backup = {'_id': giveaway_message.id, 'entries': [], 'channel': giveaway_message.channel.id, 'time': datetime.datetime.now()}
+		for user in giveaway_data['entries']:
+			backup['entries'].append(user)
+		
+		winner_list = []
+
+		if len(giveaway_data['entries']) < giveaway_data['winners']:
+
+			embed_dict['title'] = f"{embed_dict['title']} • Giveaway Has Ended"
+			embed_dict['color'] = 15158332
+			embed_dict['description'] = re.sub(r'(Ends)',r'Ended', embed_dict['description'])
+			embed_dict['description'] = re.sub(r'(Use)( )(enter)( )(button)( )(to)( )(join!!)',r'', embed_dict['description'])
+
+			buttons = [create_button(style=ButtonStyle.green, label="Enter", emoji=enter_emoji, disabled=True, custom_id="Giveaway:Enter"), create_button(style=ButtonStyle.red, label="Exit", disabled=True, custom_id="Giveaway:Exit", emoji=exit_emoji), create_button(style=ButtonStyle.blurple, label=f"Total Entries: {len(giveaway_data['entries'])}", custom_id="Giveaway:Count", disabled=True, emoji=total_entries)]
+			await giveaway_message.edit(embed=embed.from_dict(embed_dict), components=[create_actionrow(*buttons)])
+			small_embed = discord.Embed(description=f"No valid [entrants]({giveaway_message.jump_url}) so the winner could not be determined", color=0x2f3136)
+			await giveaway_message.reply(embed=small_embed)
+
+			return await self.bot.give.delete(giveaway_message.id)
+		
+		for winner in range(1, giveaway_data['winners']+1):
+			winner_id = random.choice(giveaway_data['entries'])
+			winner = giveaway_guild.get_member(winner_id)
+			if not winner: 
+				giveaway_data['entries'].remove(winner_id)
+			else:
+				winner_list.append(winner)
+			if len(winner_list) == giveaway_data['winners']: break
+		
+		embed_dict['title'] = f"{embed_dict['title']} • Giveaway Has Ended"
+		embed_dict['description'] = re.sub(r'(Ends)',r'Ended', embed_dict['description'])
+		embed_dict['description'] = re.sub(r'(Use)( )(enter)( )(button)( )(to)( )(join!!)',r'', embed_dict['description'])
+		embed_dict['color'] = 15158332
+		field = {'name': "Winner!", 'value': ", ".join(user.mention for user in winner_list), 'inline': False}
+		try:
+			embed_dict['fields'].append(field)
+		except KeyError:
+			embed_dict['fields'] = []
+			embed_dict['fields'].append(field)
+
+		buttons = [create_button(style=ButtonStyle.green, label="Enter", emoji=enter_emoji, disabled=True, custom_id="Giveaway:Enter"), create_button(style=ButtonStyle.red, label="Exit", disabled=True, custom_id="Giveaway:Exit", emoji=exit_emoji), create_button(style=ButtonStyle.blurple, label=f"Total Entries: {len(giveaway_data['entries'])}", custom_id="Giveaway:Count", disabled=True, emoji=total_entries)]
+		await giveaway_message.edit(embed=embed.from_dict(embed_dict), components=[create_actionrow(*buttons)])
+		small_embed = discord.Embed(description=f"Total Entries: [{len(giveaway_data['entries'])}]({giveaway_message.jump_url})")
+		await giveaway_message.reply(
+		f"Congratulations "+f", ".join(user.mention for user in winner_list)+f"! You won the {(giveaway_data['entries'])}",embed=small_embed)
+		await self.bot.give.delete(giveaway_message.id)
+		print(backup)
+		await self.bot.endgive.upsert(backup)
+		await self.bot.give.delete(giveaway_data['_id'])
+
 	@commands.Cog.listener()
 	async def on_ready(self):
 		print(f"{self.__class__.__name__} Cog has been loaded\n-----")
@@ -436,89 +420,9 @@ class giveaway(commands.Cog):
 		if data is None: return await ctx.send("I can't Find anything in the Database check your message ID or its to old", hidden=True)
 		
 		data = await self.bot.give.find(message.id)
-		host = guild.get_member(data['host'])
-		backup = {'_id': message.id, 'entries': [], 'channel': message.channel.id, 'time': datetime.datetime.now()}
-		for user in data['entries']:
-			backup['entries'].append(user)
-
-		winner_list = []
-
-		if len(data['entries']) < data['winners']:
-			embeds = message.embeds
-			for embed in embeds:
-				edict = embed.to_dict()
-
-			edict['title'] = f"{edict['title']} • Giveaway Has Ended"
-			edict['color'] = 15158332
-			edict['description'] = re.sub(r'(Ends)',r'Ended', edict['description'])
-			edict['description'] = re.sub(r'(Use)( )(enter)( )(button)( )(to)( )(join!!)',r'', edict['description'])
-			
-			emojig = self.bot.get_guild(815849745327194153)
-			emoji = await emojig.fetch_emoji(830525854013849680)
-			emoji2 = await emojig.fetch_emoji(830525854013849680)
-			exit = await emojig.fetch_emoji(840638147838738432)
-
-			buttons = [create_button(style=ButtonStyle.green, label="Enter", emoji=emoji2, disabled=True, custom_id="Giveaway:Enter"), create_button(style=ButtonStyle.red, label="Exit", disabled=True, custom_id="Giveaway:Exit", emoji=exit), create_button(style=ButtonStyle.blurple, label=f"Total Entries: {len(backup['entries'])}", custom_id="Giveaway:Count", disabled=True, emoji=emoji)]
-			await message.edit(embed=embed.from_dict(edict), components=[create_actionrow(*buttons)])
-
-			small_embed = discord.Embed(description=f"No valid [entrants]({message.jump_url}) so the winner could not be determined", color=0x2f3136)
-			await message.reply(embed=small_embed)
-			await ctx.send("Giveaway has been ended", hidden=True)
-			await self.bot.give.delete(message.id)
-			try:
-				self.bot.giveaway.pop((data['_id']))
-			except KeyError:
-				pass
-			return 
-
-		entries = len(data['entries'])
-		while True:
-			member = random.choice(data['entries'])
-			data['entries'].remove(member)
-			member = guild.get_member(member)
-			winner_list.append(member.mention)
-			if len(winner_list) == data['winners']: break
-
-		if len(winner_list) >= data['winners']:
-			embeds = message.embeds
-			for embed in embeds:
-				gdata = embed.to_dict()
-			winners = ",".join(winner_list)
-			small_embed = discord.Embed(description=f"Total Entries: [{entries}]({message.jump_url})")
-			await message.reply(
-			f"Congratulations {winners}! You won the {gdata['title']}",embed=small_embed)
-
-			gdata['title'] = f"{gdata['title']} • Giveaway Has Ended"
-			gdata['description'] = re.sub(r'(Ends)',r'Ended', gdata['description'])
-			gdata['description'] = re.sub(r'(Use)( )(enter)( )(button)( )(to)( )(join!!)',r'', gdata['description'])
-
-			gdata['color'] = 15158332
-			field = {'name': "Winner!", 'value': ", ".join(winner_list), 'inline': False}
-			try:
-				gdata['fields'].append(field)
-			except KeyError:
-				gdata['fields'] = []
-				gdata['fields'].append(field)
-
-			emojig = self.bot.get_guild(815849745327194153)
-			emoji = await emojig.fetch_emoji(830525854013849680)
-			emoji2 = await emojig.fetch_emoji(830525854013849680)
-			exit = await emojig.fetch_emoji(840638147838738432)
-
-			buttons = [create_button(style=ButtonStyle.green, label="Enter", emoji=emoji2, disabled=True, custom_id="Giveaway:Enter"), create_button(style=ButtonStyle.red, label="Exit", disabled=True, custom_id="Giveaway:Exit", emoji=exit), create_button(style=ButtonStyle.blurple, label=f"Total Entries: {len(backup['entries'])}", custom_id="Giveaway:Count", disabled=True, emoji=emoji)]
-			await message.edit(embed=embed.from_dict(gdata), components=[create_actionrow(*buttons)])
-
-			await ctx.send("Giveaway has been ended", hidden=True)
-			await self.bot.give.delete(message.id)
-
-			try:
-				self.bot.giveaway.pop(message.id)
-			except KeyError:
-				pass
-
-			print(backup)
-			await self.bot.endgive.upsert(backup)
-			await self.bot.give.delete(data)
+		self.bot.dispatch('giveaway_end', data['_id'])
+		
+		await ctx.send("Ending Giveaway")
 
 	@cog_ext.cog_subcommand(base="Giveaway" ,name="Reroll", description="Reroll the giveaway for new winners",guild_ids=guild_ids,base_default_permission=True,
 		options=[
@@ -633,6 +537,6 @@ class giveaway(commands.Cog):
 		await ctx.send(msg, allowed_mentions=am)
 		await ctx.channel.send(f"**<@&836925033506275399>**")
 		await ctx.channel.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif")
-  		
+
 def setup(bot):
 	bot.add_cog(giveaway(bot))
