@@ -110,8 +110,9 @@ class serverutils(commands.Cog, description="Server Utility"):
     @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def finish(self,ctx):
         await ctx.message.delete()
-        l = ["https://media.giphy.com/media/dAjMIUQRUDslMz8tUR/giphy.gif","https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif"]
-        await ctx.send(random.choice(l))
+        l = ["https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif"]
+        # await ctx.send(random.choice(l))
+        await ctx.send(l[0])
       
 def setup(bot):
     bot.add_cog(serverutils(bot))
