@@ -121,7 +121,10 @@ class giveaway(commands.Cog):
 			else:
 				winner_list.append(winner)
 			if len(winner_list) == giveaway_data['winners']: break
-		
+
+		small_embed = discord.Embed(description=f"Total Entries: [{len(giveaway_data['entries'])}]({giveaway_message.jump_url})")
+		await giveaway_message.reply(f"Congratulations "+f", ".join(user.mention for user in winner_list)+f"! You won the {embed_dict['title']}",embed=small_embed)
+
 		embed_dict['title'] = f"{embed_dict['title']} • Giveaway Has Ended"
 		embed_dict['description'] = re.sub(r'(Ends)',r'Ended', embed_dict['description'])
 		embed_dict['description'] = re.sub(r'(Use)( )(enter)( )(button)( )(to)( )(join!!)',r'', embed_dict['description'])
@@ -135,9 +138,7 @@ class giveaway(commands.Cog):
 
 		buttons = [create_button(style=ButtonStyle.green, label="Enter", emoji=enter_emoji, disabled=True, custom_id="Giveaway:Enter"), create_button(style=ButtonStyle.red, label="Exit", disabled=True, custom_id="Giveaway:Exit", emoji=exit_emoji), create_button(style=ButtonStyle.blurple, label=f"Total Entries: {len(giveaway_data['entries'])}", custom_id="Giveaway:Count", disabled=True, emoji=total_entries)]
 		await giveaway_message.edit(embed=embed.from_dict(embed_dict), components=[create_actionrow(*buttons)])
-		small_embed = discord.Embed(description=f"Total Entries: [{len(giveaway_data['entries'])}]({giveaway_message.jump_url})")
-		await giveaway_message.reply(
-		f"Congratulations "+f", ".join(user.mention for user in winner_list)+f"! You won the {(giveaway_data['entries'])}",embed=small_embed)
+
 		await self.bot.give.delete(giveaway_message.id)
 		print(backup)
 		await self.bot.endgive.upsert(backup)
