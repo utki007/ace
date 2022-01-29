@@ -68,6 +68,7 @@ class reminder(commands.Cog, name="Reminder Manager", description="Manages all r
             output = int(output)
         except:
             await ctx.send("Invalid time format given! Use `gk.rm <time> <msg>`")
+            return
         
         await ctx.message.add_reaction(self.bot.emojis_list["Timer"])
         cd = int(output)
