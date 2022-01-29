@@ -52,10 +52,11 @@ class reminder(commands.Cog, name="Reminder Manager", description="Manages all r
         self.mycol.insert_one(dict)
 
     @commands.command(name="reminder",aliases=["rm"])
-    @commands.cooldown(1, 5, commands.BucketType.user)
+    @commands.cooldown(3,10 , commands.BucketType.user)
     async def reminder(self, ctx,reminder, *, text):
         """Math"""
         start = time.time()
+        output = 0
         try:
             if int(reminder):
                 reminder = reminder + "s"
