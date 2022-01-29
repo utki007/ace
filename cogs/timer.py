@@ -35,7 +35,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
             title = f"CommandError!!!",
             description=f"{self.bot.emojis_list['Warrning']} | You cannot have a timer more than 30 minutes")
         
-        if cd>1800:
+        if cd>18000:
             if ctx.guild.id == 838646783785697290:
                 pass
             else:
