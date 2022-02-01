@@ -68,7 +68,6 @@ class giveaway(commands.Cog):
 					pass
 
 				self.bot.dispatch('giveaway_end', value['_id'])
-				print("custom Event Triggerd")
 
 	@check_givaway.before_loop
 	async def before_check_givaway(self):
@@ -140,7 +139,6 @@ class giveaway(commands.Cog):
 		await giveaway_message.edit(embed=embed.from_dict(embed_dict), components=[create_actionrow(*buttons)])
 
 		await self.bot.give.delete(giveaway_message.id)
-		print(backup)
 		await self.bot.endgive.upsert(backup)
 		await self.bot.give.delete(giveaway_data['_id'])
 
