@@ -100,7 +100,10 @@ class reminder(commands.Cog, name="Reminder Manager", description="Manages all r
         embed = discord.Embed(
                     color=0x9e3bff,
                     description=f'{self.bot.emojis_list["Timer"]} | {desc} ago you asked to be reminded of "{text}" [here]({ctx.message.jump_url})')
-        await ctx.author.send(embed=embed)
+        try:
+            await ctx.author.send(embed=embed)
+        except:
+            await ctx.send(content=f"{ctx.author.mention}",embed=embed)
         
 def setup(bot):
     bot.add_cog(reminder(bot))
