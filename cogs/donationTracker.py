@@ -683,7 +683,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         # for logging
         logg = discord.Embed(
             title="__Donation Added__",
-            description=f"{ctx.author.mention} added <:TGK_DMC:830520214021603350> **{amount:,}** to {member.mention} bal [here]({ctx.message.jump_url}) \n{spldono}]",
+            description=f"{ctx.author.mention} added <:TGK_DMC:830520214021603350> **{amount:,}** to {member.mention} bal [here]({ctx.message.jump_url}) \n{spldono}",
             colour=ctx.author.colour
         )
 
