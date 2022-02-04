@@ -397,8 +397,8 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         
         
             for idx in temp.index:
-                doublePings = doublePings + f'{temp["role1"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(temp["role1"][idx].members)}\n'
-                doublePings = doublePings + f'{temp["role2"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(temp["role2"][idx].members)}\n'
+                doublePings = doublePings + f'{temp["role1"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(set(channel_members).intersection(set(temp["role1"][idx].members)))}\n'
+                doublePings = doublePings + f'{temp["role2"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(set(channel_members).intersection(set(temp["role2"][idx].members)))}\n'
                 doublePings = doublePings + f'**_Unique Members:_** {self.bot.emojis_list["rightArrow"]}  **{temp["pingCount"][idx]}**\n **\n**'
         
         
