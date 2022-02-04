@@ -436,7 +436,11 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         
         l = [heist,partnerHeist,outsideHeist,partnership,danker,giveaway]
         
-        spings = {"name" : [],"pingCount":[]}
+        spings = {"name" : [],"pingCount":[]} 
+
+        everyone_role = discord.utils.get(ctx.guild.roles, name="@everyone")
+        spings["name"].append(everyone_role)
+        spings["pingCount"].append(len(set(channel_members)))
         for i in l:
             spings["name"].append(i.mention)
             spings["pingCount"].append(len(set(channel_members).intersection(set(i.members))))
@@ -491,8 +495,8 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         
         
             for idx in temp.index:
-                doublePings = doublePings + f'{temp["role1"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(temp["role1"][idx].members)}\n'
-                doublePings = doublePings + f'{temp["role2"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(temp["role2"][idx].members)}\n'
+                doublePings = doublePings + f'{temp["role1"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(set(channel_members).intersection(set(temp["role1"][idx].members)))}\n'
+                doublePings = doublePings + f'{temp["role2"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(set(channel_members).intersection(set(temp["role2"][idx].members)))}\n'
                 doublePings = doublePings + f'**_Unique Members:_** {self.bot.emojis_list["rightArrow"]}  **{temp["pingCount"][idx]}**\n **\n**'
         
         
