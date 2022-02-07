@@ -400,22 +400,21 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         reaction = None
 
         while True:
-            if user.id != self.bot.user.id:
-                if  str(reaction) == "<a:heisttime:932911351154741308>":
-                    # if heist not in user.roles:
-                    await user.add_roles(heist, reason = "Reaction Role")
-                elif str(reaction) == "<a:heist:925617827447177247>":
-                    # if event not in user.roles:
-                    await user.add_roles(partnerHeist, reason = "Reaction Role")
-                elif str(reaction) == "<a:peperobber:925618641112813598>":
-                    # if partnerHeist not in user.roles:
-                    await user.add_roles(outside, reason = "Reaction Role")
-                elif  str(reaction) == "<a:Partner:925618902673817700>":
-                    # if giveaway not in user.roles:
-                    await user.add_roles(partnership, reason = "Reaction Role")
-                elif str(reaction) == "<a:nopartnership:929440715539374171>":
-                    # if partnership not in user.roles:
-                    await user.add_roles(nopartnership, reason = "Reaction Role")
+            if  str(reaction) == "<a:heisttime:932911351154741308>":
+                # if heist not in user.roles:
+                await user.add_roles(heist, reason = "Reaction Role")
+            elif str(reaction) == "<a:heist:925617827447177247>":
+                # if event not in user.roles:
+                await user.add_roles(partnerHeist, reason = "Reaction Role")
+            elif str(reaction) == "<a:peperobber:925618641112813598>":
+                # if partnerHeist not in user.roles:
+                await user.add_roles(outside, reason = "Reaction Role")
+            elif  str(reaction) == "<a:Partner:925618902673817700>":
+                # if giveaway not in user.roles:
+                await user.add_roles(partnership, reason = "Reaction Role")
+            elif str(reaction) == "<a:nopartnership:929440715539374171>":
+                # if partnership not in user.roles:
+                await user.add_roles(nopartnership, reason = "Reaction Role")
             try:
                 reaction, user = await self.bot.wait_for('reaction_add', timeout = 6000)
                 # await message.remove_reaction(reaction, user)
@@ -463,22 +462,21 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         reaction = None
 
         while True:
-            if user.id != self.bot.user.id:
-                if  str(reaction) == "<a:tadaa:806631994770849843>":
-                    # if heist not in user.roles:
-                    await user.add_roles(giveaways, reason = "Reaction Role")
-                elif str(reaction) == "<a:celebrate:817302382630273054> ":
-                    # if event not in user.roles:
-                    await user.add_roles(flash, reason = "Reaction Role")
-                elif str(reaction) == "<a:tgk_gift:820323551520358440>":
-                    # if partnerHeist not in user.roles:
-                    await user.add_roles(other, reason = "Reaction Role")
-                elif  str(reaction) == "<a:Partner:925618902673817700>":
-                    # if giveaway not in user.roles:
-                    await user.add_roles(event, reason = "Reaction Role")
-                elif str(reaction) == "<a:tgk_movienight:842675039833030666>":
-                    # if partnership not in user.roles:
-                    await user.add_roles(movie, reason = "Reaction Role")
+            if  str(reaction) == "<a:tadaa:806631994770849843>":
+                # if heist not in user.roles:
+                await user.add_roles(giveaways, reason = "Reaction Role")
+            elif str(reaction) == "<a:celebrate:817302382630273054> ":
+                # if event not in user.roles:
+                await user.add_roles(flash, reason = "Reaction Role")
+            elif str(reaction) == "<a:tgk_gift:820323551520358440>":
+                # if partnerHeist not in user.roles:
+                await user.add_roles(other, reason = "Reaction Role")
+            elif  str(reaction) == "<a:Partner:925618902673817700>":
+                # if giveaway not in user.roles:
+                await user.add_roles(event, reason = "Reaction Role")
+            elif str(reaction) == "<a:tgk_movienight:842675039833030666>":
+                # if partnership not in user.roles:
+                await user.add_roles(movie, reason = "Reaction Role")
             try:
                 reaction, user = await self.bot.wait_for('reaction_add', timeout = 6000)
                 # await message.remove_reaction(reaction, user)
