@@ -58,7 +58,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             await ctx.send(f"use `help donation` to know more!!!")
 
     @donation.command(name="add", description="Add Donation for a member", usage="<member> <amount>", aliases=['a'])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058 ), commands.is_owner())
     async def adono(self, ctx, member: discord.Member, amount: float):
 
         try:
@@ -565,13 +565,13 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             await ctx.send(f"⚠ {ctx.author.mention}, you are __**UNAUTHORIZED**__ to use this command ⚠")
 
     @commands.group()
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     async def celeb(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send(f"use `help celeb` to know more!!!")
 
     @celeb.command(name="add", description="Add donation to a special event", usage="<event-name> <member> <amount>",aliases=["a"])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058 ), commands.is_owner())
     async def add(self, ctx, name: str, member: discord.Member, amount: float):
 
         amount = int(amount)
