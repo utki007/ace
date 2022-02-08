@@ -37,7 +37,7 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
         self.mycol.insert_one(dict)
 
     @commands.group(name="Blacklist", aliases=['bl'])
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916), commands.is_owner())
+    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916, 831405039830564875), commands.is_owner())
     async def blacklist(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send(f"use `help blacklist` to know more!!!")
@@ -87,7 +87,7 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
             return
 
     @blacklist.command(name="information", description="Check if a server is blacklisted", aliases=['info'])
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916), commands.is_owner())
+    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916, 831405039830564875), commands.is_owner())
     async def info(self, ctx, serverId: int):
         
         await ctx.message.delete()
