@@ -13,7 +13,7 @@ import math
 import time
 import datetime
 import json
-
+from utils.Checks import checks
 # helper functions
 from utils.custom_pagination import *
 
@@ -51,13 +51,15 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         self.mycol.insert_one(dict)    
 
     @commands.group(name="Partnership", description="Moderator only Command to add/remove partnership pings", usage="add/remove member pings[optional]", aliases=["psh"])
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def partnership(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send(f"use `help partnership` or `help psh` to know more!!!")
 
     @partnership.command(name="add", description="Add a Partner with Pings", aliases=['a'])
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def addpartner(self, ctx, member: discord.Member, *, pings: str):
         try:
             await ctx.message.delete()
@@ -142,7 +144,8 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             pass
 
     @partnership.command(name="remove", description="Remove a Partner", aliases=['r'])
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def rpartner(self, ctx, member: discord.Member):
         try:
             await ctx.message.delete()
@@ -248,7 +251,8 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             await ctx.send(embed=warning, delete_after=15)
 
     @commands.command(name="Grinders", description="Ping Grinders Heist", aliases=['grind', 'hg'])
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889,835889385390997545,836228842397106176), commands.is_owner(),commands.bot_has_any_role(842485323329568769,933605749400166451))
+    #@commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889,835889385390997545,836228842397106176), commands.is_owner(),commands.bot_has_any_role(842485323329568769,933605749400166451))
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def grind(self, ctx, channel: int, link: str):
         await ctx.message.delete()
         if "://" not in link:
@@ -324,7 +328,8 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             
     
     @commands.command(name="pings", description="Check Partner Pings")
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 831405039830564875), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 831405039830564875), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def pings(self, ctx):
         
         
@@ -418,7 +423,8 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         await addPages(self.bot,ctx,message,pages)
 
     @commands.command(name="cpings", description="Check Channel Pings")
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 831405039830564875), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 831405039830564875), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def cpings(self, ctx):
         
         

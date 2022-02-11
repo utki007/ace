@@ -11,7 +11,7 @@ import asyncio
 import math
 import time
 import datetime
-
+from utils.Checks import checks
 # helper functions
 from utils.convertor import *
 
@@ -50,13 +50,15 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         self.mycol.insert_one(dict)
 
     @commands.group(name="donation", aliases=['dono'])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def donation(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send(f"use `help donation` to know more!!!")
 
     @donation.command(name="add", description="Add Donation for a member", usage="<member> <amount>", aliases=['a'])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058 ), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058 ), commands.is_owner())
     async def adono(self, ctx, member: discord.Member, amount: float):
 
         try:
@@ -175,7 +177,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             pass
             
     @donation.command(name="remove", description="Remove donation from a member", usage="<member> <amount>", aliases=['r'])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
     async def rdono(self, ctx, member: discord.Member, amount: float):
 
         amount = int(amount)
@@ -299,7 +302,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             pass
 
     @donation.command(name="leaderboard", description="Checout top donators", usage="", aliases=['lb'])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636), commands.is_owner())
     async def topdono(self, ctx,  number:int=5):
 
         if number<5:
@@ -563,13 +567,15 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             await ctx.send(f"⚠ {ctx.author.mention}, you are __**UNAUTHORIZED**__ to use this command ⚠")
 
     @commands.group()
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def celeb(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send(f"use `help celeb` to know more!!!")
 
     @celeb.command(name="add", description="Add donation to a special event", usage="<event-name> <member> <amount>",aliases=["a"])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058 ), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058 ), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def add(self, ctx, name: str, member: discord.Member, amount: float):
 
         amount = int(amount)
@@ -713,7 +719,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             pass
 
     @celeb.command(name="remove", description="Remove donation from a special", usage="<event-name> <member> <amount>",aliases=["r"])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def remove(self, ctx, name: str, member: discord.Member, amount: float):
 
         myquery = {"_id": member.id}
@@ -861,7 +868,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             pass
 
     @celeb.command(name="lb", description="Remove donation from a special", usage="<event-name>")
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def _leaderboard(self, ctx, name : str, number: int = 1):
         myquery = self.mycol.find(
             {}, {"_id": 1, "name": 1, "bal": 1, "event": 1})

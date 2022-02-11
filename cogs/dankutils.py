@@ -181,7 +181,8 @@ class dankutils(commands.Cog, description="Dank Utility"):
         await ctx.send(embed=e)
 
     @commands.command(name="FreeLoader",aliases=["fl"],description="Lists Freeloader Perks")
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def freeloader(self, ctx):
         fl = discord.Embed(
             title=f'{self.bot.emojis_list["banHammer"]} Freeloader Perks {self.bot.emojis_list["banHammer"]}',

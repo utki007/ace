@@ -16,6 +16,7 @@ from discord_slash.utils.manage_commands import create_option, create_choice, cr
 from discord_slash.model import SlashCommandPermissionType
 from utils.Checks import checks
 
+
 staff_perm = {
     785839283847954433:
     [

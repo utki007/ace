@@ -8,7 +8,7 @@ import numpy as np
 import time as tm
 import asyncio
 import datetime
-
+from utils.Checks import checks
 
 class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
 
@@ -32,7 +32,8 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
 
 
     @commands.command(name="heist", description="Setup an Heist")
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def start(self, ctx, req_role: str,amt: float,starter: discord.Member,channel: discord.TextChannel=None, *args: str):
         
         await ctx.message.delete()
@@ -320,7 +321,8 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         #     await ctx.send(embed=timesup)
 
     @commands.command(name="hlock", description="Reset any channel",aliases = ["hl","reset"], hidden=True)
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def hlock(self, ctx):
         await ctx.message.delete()
         category = [785841152553123861,797512848778723368]
@@ -350,7 +352,8 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         await ctx.send(embed=lock_embed)
 
     @commands.command(name="Thanks", description="ty to grinders",aliases = ["ty"], hidden=True)
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def thanks(self, ctx):
         am = discord.AllowedMentions(
             users=False,  # Whether to ping individual user @mentions
@@ -363,7 +366,8 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         await ty.add_reaction(f'<:thankyou:930419246792601640>')
         
     @commands.command(name="ReactionRole", description="Gives Reaction role",aliases = ["rr"], hidden=True)
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def rr(self, ctx, *,Title: str = "Some important self roles"):
         guild = self.bot.get_guild(785839283847954433)
         
@@ -425,7 +429,8 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         await message.delete()
 
     @commands.command(name="ReactionRole1", description="Gives Reaction role",aliases = ["rr1"], hidden=True)
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def rr1(self, ctx, *,Title: str = "Other self roles"):
         guild = self.bot.get_guild(785839283847954433)
         

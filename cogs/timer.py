@@ -10,7 +10,7 @@ import time as tm
 import discord_webhook
 from discord_webhook import DiscordWebhook,DiscordEmbed
 from utils.convertor import *
-
+from utils.Checks import checks
 
 class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or setup a timer"):
     def __init__(self, bot):
@@ -23,7 +23,8 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
     @commands.command(name = "timer",aliases=["t","tstart"],usage = "<time> [name]")
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def timer(self, ctx,time ,*,name : str= "Timer"):
         
         await ctx.message.delete()    
@@ -185,14 +186,16 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
             pass
         
     @commands.command(name = "tend")
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def tend(self, ctx):
         await ctx.message.add_reaction(f'{self.bot.emojis_list["SuccessTick"]}')
         global loop
         loop=False
     
     @commands.command(name = "tresume",aliases = ["trestart"])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def tresume(self, ctx,message_id:int):    
         message_id = int(message_id)
         channel = ctx.channel
@@ -328,7 +331,8 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
             pass
         
     @commands.command(name = "tping")
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def tping(self, ctx,message_id:int):
         await ctx.message.delete()
         message_id = int(message_id)
@@ -359,7 +363,8 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
             pass
         
     @commands.command(name = "get_time",aliases = ["gt"])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def gettime(self, ctx,time):
         
         await ctx.message.delete()
