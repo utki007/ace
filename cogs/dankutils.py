@@ -13,6 +13,7 @@ import math
 import datetime
 import TagScriptEngine
 from TagScriptEngine import Interpreter, adapter, block
+from utils.Checks import checks
 
 # import convertor
 from utils.convertor import *
@@ -151,7 +152,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
         await ctx.send(embed=e)
 
     @commands.command(name="payouts",aliases=["pay"])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def payouts(self, ctx, number: float, query):
         """Finding tax"""
         number = int(number)
@@ -180,7 +181,8 @@ class dankutils(commands.Cog, description="Dank Utility"):
         await ctx.send(embed=e)
 
     @commands.command(name="FreeLoader",aliases=["fl"],description="Lists Freeloader Perks")
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def freeloader(self, ctx):
         fl = discord.Embed(
             title=f'{self.bot.emojis_list["banHammer"]} Freeloader Perks {self.bot.emojis_list["banHammer"]}',
@@ -199,7 +201,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
     
     
     @commands.command(name="banFreeloader",aliases=["bfl"],description="Bans Freeloaders")
-    @commands.check_any(commands.has_any_role(785842380565774368,803635405638991902 ,799037944735727636), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def banFreeloader(self, ctx,*,messageIds):
         guild = self.bot.get_guild(ctx.guild.id)
         await ctx.send(f"{self.bot.emojis_list['banHammer']} | Time to ban freeloaders now ...")
@@ -312,7 +314,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 
     
     @commands.command(name="massBanFreeloader",aliases=["mbfl"],description="Mass bans freeloaders")
-    @commands.check_any(commands.has_any_role(785842380565774368,803635405638991902 ,799037944735727636), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def massBanFreeloader(self, ctx,*,memberIds):
         guild = self.bot.get_guild(ctx.guild.id)
         await ctx.send(f"{self.bot.emojis_list['banHammer']} | Time to ban freeloaders now ...")

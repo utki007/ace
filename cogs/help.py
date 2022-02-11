@@ -4,7 +4,7 @@ import discord
 import asyncio
 import math
 import datetime
-
+from utils.Checks import checks
 class Help(commands.Cog, name="Help command"):
      
     def __init__(self, bot):
@@ -17,7 +17,8 @@ class Help(commands.Cog, name="Help command"):
     @commands.group(
         name="help", aliases=["h", "commands"], description="The help command!",hidden = True,invoke_without_command = True
     )
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def help(self, ctx):
         await ctx.message.delete()
         help = discord.Embed(

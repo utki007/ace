@@ -11,7 +11,7 @@ import asyncio
 import math
 import time
 import datetime
-
+from utils.Checks import checks
 
 class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner or a server"):
 
@@ -37,13 +37,13 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
         self.mycol.insert_one(dict)
 
     @commands.group(name="Blacklist", aliases=['bl'])
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916, 831405039830564875), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def blacklist(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send(f"use `help blacklist` to know more!!!")
 
     @blacklist.command(name="update", description="Add/Update Blacklisted Servers", aliases=['u'])
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def update(self, ctx, serverId: int, serverName: str, *reason):
         reason = ' '.join([str(elem) for elem in reason])
         myquery = {"_id": serverId}
@@ -87,7 +87,7 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
             return
 
     @blacklist.command(name="information", description="Check if a server is blacklisted", aliases=['info'])
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916, 831405039830564875), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def info(self, ctx, serverId: int):
         
         await ctx.message.delete()
@@ -131,7 +131,7 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
 
 
     @blacklist.command(name="list", description="View Blacklisted Servers", aliases=['view'])
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def list(self, ctx):
         
         myquery = self.mycol.find({}, {"_id": 1, "serverName": 1, "bal": 1, "reason": 1})

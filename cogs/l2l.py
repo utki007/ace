@@ -6,6 +6,7 @@ import asyncio
 import math
 import datetime
 import time as tm
+from utils.Checks import checks
 
 class lasttoleave(commands.Cog, description="Last to Leave Manager"):
 
@@ -17,13 +18,15 @@ class lasttoleave(commands.Cog, description="Last to Leave Manager"):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
     @commands.group(name="lasttoleave", description="l2l event manager", aliases=["l2l"])
-    @commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
+    #@commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889), commands.is_owner())
     async def lasttoleave(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send(f"use `help lasttoleave` or `help l2l` to know more!!!")
 
     @lasttoleave.command(name="afk", description="Random AFK Checker", aliases=['check'])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
     async def afkcheck(self, ctx):
 
         bypass = [301657045248114690 , 651711446081601545 , 488614633670967307 , 413651113485533194 , 728630837465186334 , 457839031909351425]
@@ -249,7 +252,8 @@ class lasttoleave(commands.Cog, description="Last to Leave Manager"):
 
 
     @lasttoleave.command(name="start", description="Gives everyone in channel l2l role", aliases=['setup'])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def setup(self, ctx):
         channel = self.bot.get_channel(932331319655014471)
         # users = guild.members

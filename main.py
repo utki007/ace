@@ -50,7 +50,6 @@ async def on_ready():
         "250" : discord.utils.get(guild.roles, id=810129497931513868),
         "500" : discord.utils.get(guild.roles, id=810129641473703956)
     }
-    print('------')
     
 
 #setting up tokens.py
@@ -165,9 +164,10 @@ if __name__ == "__main__":
     bot.db = bot.mongo["TGK"]
     bot.give = Document(bot.db, "giveaway")
     bot.endgive = Document(bot.db, "back_up_giveaway")
+    bot.active_cmd = Document(bot.db, "Active_commands")
 
     for file in os.listdir('./cogs'):
-        if file.endswith(".py") and not file.startswith("_")and not file.startswith('temp'):
+        if file.endswith(".py") and not file.startswith("_")and not file.startswith('test'):
             bot.load_extension(f"cogs.{file[:-3]}")
 
     bot.run(bot.botToken)
