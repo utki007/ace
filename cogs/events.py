@@ -7,6 +7,7 @@ import asyncio
 import math
 import datetime
 import time as tm
+from utils.Checks import CommandDisableByDev
 
 class Events(commands.Cog):
     def __init__(self, bot):
@@ -27,7 +28,7 @@ class Events(commands.Cog):
         self.heist_ad = 840231915100569650
         
 
-
+    
     @commands.Cog.listener()
     async def on_command_error(self, ctx, error):
         # Ignore these errors
@@ -50,6 +51,8 @@ class Events(commands.Cog):
             await ctx.send("Hey! You lack permission to use this command.")
         elif isinstance(error, commands.DisabledCommand):
             await ctx.send('The command is disabed by Owner')
+        elif isinstance(error, CommandDisableByDev):
+            await ctx.send('The command is disabed by Jay/Utki')
         elif isinstance(error, commands.MaxConcurrencyReached):
             await ctx.send('Please Wait for last Game to End')
         elif isinstance(error, commands.CommandInvokeError):
@@ -61,7 +64,6 @@ class Events(commands.Cog):
             embed = discord.Embed(color=0xE74C3C, 
                 description=f"<:tgk_warning:840638147838738432> | Error: `{error}`")
             await ctx.send(embed=embed)
-
     
     @tasks.loop(seconds=240)
     async def change_status(self):      
