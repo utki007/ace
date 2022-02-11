@@ -11,6 +11,7 @@ from discord_slash.utils.manage_commands import create_option, create_choice
 from discord_slash import cog_ext, SlashContext, cog_ext, SlashContext
 from discord_slash.utils.manage_commands import create_option, create_choice, create_permission
 from discord_slash.model import SlashCommandPermissionType
+from utils.Checks import checks
 
 staff_perm = {
     785839283847954433:
@@ -35,7 +36,6 @@ class channel(commands.Cog, description="Channel utils"):
 
     @cog_ext.cog_slash(name="slowmode", description="Set Slowmode In Current Channel", guild_ids=[785839283847954433], default_permission=False, permissions=staff_perm,
         options=[create_option(name="timer", description="Enter slowmod time", required=False, option_type=3)])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def slowmode(self, ctx, timer: str = '0'):
 
         timer = await convert_to_time(timer)
@@ -202,7 +202,7 @@ class channel(commands.Cog, description="Channel utils"):
         name="dankdown",
         description="Use this commands when dank is offline",
         usage="",aliases = ["dd"],hidden = True)
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def dankdown(self, ctx):
         await ctx.message.delete()
         lock_status = await ctx.send("Locking up Dank Channels")
@@ -302,7 +302,7 @@ class channel(commands.Cog, description="Channel utils"):
     
     @commands.command(name="dankup", description="Use this commands when dank comes back offline",
         usage="",aliases = ["du"],hidden = True)
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def dankup(self, ctx):
         
         # delete the message sent by bot while locking

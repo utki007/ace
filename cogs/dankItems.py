@@ -11,6 +11,7 @@ import asyncio
 import math
 import time
 import datetime
+from utils.Checks import checks
 
 class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All items given for giveaways are tracked here"):
     
@@ -43,15 +44,14 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
         dict["url"] = url
         self.mycol.insert_one(dict)
 
-    
     @commands.group()
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def item(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send(f"use `help item` to know more!!!")
     
     @item.command(name="update", description="Add/Update Item in inventory", aliases=['u'])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def update(self, ctx,emoji : discord.Emoji,giveawayCost:float,donationCost: float,url:str, *name):
         giveawayCost = int(giveawayCost)
         donationCost = int(donationCost)
@@ -100,7 +100,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
     
     
     @item.command(name="add", description="Update Item Quantity in Inventory", aliases=['a'])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def add(self, ctx,name,quantity: float):
         async with ctx.typing():
             
@@ -172,7 +172,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
                 return
     
     @item.command(name="remove", description="Update Item Quantity in Inventory", aliases=['r'])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def remove(self, ctx,name,quantity: float):
         async with ctx.typing():
             
@@ -249,7 +249,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
     
     
     @item.command(name="list", description="List of Items in Inventory", aliases=['l'])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def list(self, ctx,number: int = 5):
         if number<5:
             number = 5
@@ -301,7 +301,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
         
     
     @item.command(name="info", description="Check Item Info from Inventory", aliases=['information'])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def info(self, ctx,name,amount:int=1):
         async with ctx.typing():
                 
@@ -404,7 +404,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
         
         
     @item.command(name="worth", description="Worth of Items in Inventory", aliases=['wl','worthlist'])
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
     async def worth(self, ctx,number: int = 5):
         if number<5:
             number = 5

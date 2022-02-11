@@ -35,8 +35,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         self.name = "name"
         self.id = "_id"
         
-        
-
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
