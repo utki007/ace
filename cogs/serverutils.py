@@ -114,11 +114,21 @@ class serverutils(commands.Cog, description="Server Utility"):
     @commands.command(name="bar",description="To be used in public channels after completing a task")
     #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def finish(self,ctx):
+    async def bar(self,ctx):
         await ctx.message.delete()
         l = ["https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif"]
         # await ctx.send(random.choice(l))
         await ctx.send(l[0])
+
+    @commands.command(name="dm",description="Dm a user!")
+    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def dm(self,ctx,member: discord.Member,*,message: str):
+        await ctx.message.delete()
+        l = ["https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif"]
+        # await ctx.send(random.choice(l))
+        await member.send(message)
+        await ctx.channel.send(f"Dm'ed {member} with message: {message}")
       
 def setup(bot):
     bot.add_cog(serverutils(bot))
