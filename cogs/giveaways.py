@@ -1,6 +1,7 @@
 import datetime
 import re
 import random
+from tkinter import HIDDEN
 import discord
 from discord.ext import commands, tasks
 from copy import deepcopy
@@ -12,6 +13,7 @@ from discord_slash.model import SlashCommandPermissionType
 from discord_slash.utils.manage_components import create_button, create_actionrow
 from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
+from django.forms import HiddenInput
 from amari import AmariClient
 
 time_regex = re.compile("(?:(\d{1,5})(h|s|m|d))+?")
@@ -508,36 +510,38 @@ class giveaway(commands.Cog):
     	]
 	)
 	async def event(self, ctx, name, sponsor: discord.Member, message, prize, channel, winners: int = 1):
-		
-		# time = await TimeConverter().convert(ctx, time)
+		await ctx.defer(hidden=True)
 		host = ctx.author
-
-		am = discord.AllowedMentions(
-            users=False,  # Whether to ping individual user @mentions
-            everyone=False,  # Whether to ping @everyone or @here mentions
-            roles= True,  # Whether to ping role @mentions
-            replied_user=False,  # Whether to ping on replies to messages
+		event = discord.utils.get(ctx.guild.roles, id=836925033506275399)
+		
+		desc = f"{host.mention} is hosting an event!\n"
+		if (winners > 1):
+			desc = desc + f"> <a:winner:805380293757370369>  <a:yellowrightarrow:801446308778344468> {winners} winners\n"
+		desc = desc + f"> <a:tgk_gift:820323551520358440>  <a:yellowrightarrow:801446308778344468> {prize.title()}\n"
+		desc = desc + f"> <a:pandaswag:801013818896941066>  <a:yellowrightarrow:801446308778344468> {sponsor.mention}\n"
+		desc = desc + f"> <a:donormessage:941782118491635802>  <a:yellowrightarrow:801446308778344468> {message.title()}\n"
+		desc = desc + f"Thank our event sponsor in <#785847439579676672> \n**\n**\n"
+		event_embed = discord.Embed(
+                title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
+                description = desc,
+                color=0x9e3bff,
+            	timestamp=datetime.datetime.utcnow()
         )
-		role = discord.utils.get(ctx.guild.roles, id=836925033506275399 )
+		event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+		event_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/940143383609999392.gif?size=128&quality=lossless")
 
-
-		msg = f"__**{name}**__ \n\n" + f" {self.bot.emojis_list['pinkdot']} **Prize** : {prize} \n"
-		if (winners != 1):
-			msg += f" {self.bot.emojis_list['pinkdot']} **Winners** : {winners} \n" 
-		msg +=	f" {self.bot.emojis_list['pinkdot']} **Channel** : {channel.mention} \n"
-		msg = msg + f" {self.bot.emojis_list['pinkdot']} **Sponsor** : {sponsor.mention} \n" 
-		msg = msg +	f" {self.bot.emojis_list['pinkdot']} **Message** : {message} \n" 
-		# msg = msg +	f" {self.bot.emojis_list['pinkdot']} **Prize** : {prize} \n" 
-
-
-   
-		msg += f" {self.bot.emojis_list['pinkdot']} **Host** : {host.mention} \n\n"
-		# channel = self.bot.get_channel(837999751068778517)
-		# msg = await channel.fetch_message(929332591138578462)
-		# transcript_file = await discord.Attachment.to_file(msg.attachments[0])
-		await ctx.send(msg, allowed_mentions=am)
-		await ctx.channel.send(f"**<@&836925033506275399>**")
-		await ctx.channel.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif")
+		# channel = self.bot.get_channel(channel.id)
+		# url = channel.last_message.jump_url
+		# message = await channel.send("**𝓛𝓮𝓽 𝓽𝓱𝓮 𝓰𝓪𝓶𝓮𝓼 𝓫𝓮𝓰𝓲𝓷!**".title())
+		message = await channel.send("**\n**",delete_after=0)
+		# await message.add_reaction("<a:Girl7_Celebrate:941800075271733350>")
+		url = message.jump_url
+		emojig = self.bot.get_guild(815849745327194153)
+		emoji = await emojig.fetch_emoji(941790535151144990)
+		buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url=url)]
+		msg = await ctx.channel.send(content=f"{event.mention}",embed=event_embed, components=[create_actionrow(*buttons)])
+		await ctx.send(content=f"Success!", components=[create_actionrow(*buttons)])
+		# await ctx.send(content=f"`{event.mention}`",embed = event_embed)
 
 def setup(bot):
 	bot.add_cog(giveaway(bot))

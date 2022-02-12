@@ -65,20 +65,6 @@ class config(commands.Cog, description="config"):
         else:
             await ctx.send(f':warning: {ctx.author.mention} Please provide valid status you dimwit!! :warning:')
 
-    @commands.command(name="say")
-    @commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
-    async def say(self, ctx,*, text: str):
-        banned = ["@here", "@everyone", "<@&"]
-
-        for i in banned:
-            if ctx.author.guild_permissions.mention_everyone :
-                pass
-            elif i in text:
-                await ctx.send(f"Not Supposed To Have role mention in your message  || <@&799037944735727636>, Please Investigate ||")
-                return
-        await ctx.message.delete()
-        await ctx.send(text)
-    
     @cog_ext.cog_slash(name="say", description="simple say command",guild_ids=[785839283847954433], default_permission=False, permissions=staff_perm,
 		options=[create_option(name="str", description="Type Thing that bot need to send", option_type=3, required=True),
 		create_option(name="reply", description="Enter Message id you want to reply", option_type=3, required=False),
