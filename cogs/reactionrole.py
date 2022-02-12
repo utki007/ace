@@ -13,7 +13,6 @@ from discord_slash.utils.manage_components import create_button, create_actionro
 from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
 from django.forms import HiddenInput
-from amari import AmariClient
 
 guild_ids=[785839283847954433]
 
@@ -40,10 +39,14 @@ class reactionrole(commands.Cog):
 	async def on_component(self, ctx: ComponentContext):
 		if ctx.custom_id == "reaction:heist":
 			await ctx.defer(hidden=True)
-			#await ctx.defer(hidden=True)
-            # heist = discord.utils.get(ctx.guild.roles, id=804068344612913163)
-			return await ctx.send(f"{ctx.author.mention}", hidden=True)
-
+			heist = discord.utils.get(ctx.guild.roles, id=804068344612913163)
+			if heist in ctx.author.roles:
+				await ctx.author.remove_roles(heist)
+				await ctx.send(f"Removed {heist.mention}", hidden=True)
+			else:
+				await ctx.author.add_roles(heist)
+				await ctx.send(f"Added {heist.mention}", hidden=True)
+			
 
 	@cog_ext.cog_slash(name="hmm",description="Host an Event", guild_ids=guild_ids,
 		default_permission=False,permissions=staff_perm,
