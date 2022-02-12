@@ -1,7 +1,6 @@
 import datetime
 import re
 import random
-from tkinter import HIDDEN
 import discord
 from discord.ext import commands, tasks
 from copy import deepcopy
