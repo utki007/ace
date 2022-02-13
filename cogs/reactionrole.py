@@ -137,6 +137,63 @@ class reactionrole(commands.Cog):
 			else:
 				await ctx.author.add_roles(movie)
 				await ctx.send(f"Added {movie.mention}", hidden=True)
+
+		if ctx.custom_id == "nopartner:yes":
+			await ctx.defer(hidden=True)
+			nopartnership = discord.utils.get(ctx.guild.roles, id=810593886720098304)
+			outside = discord.utils.get(ctx.guild.roles, id=806795854475165736)
+			if nopartnership in ctx.author.roles:
+				await ctx.author.remove_roles(nopartnership)
+				channel = self.bot.get_channel(806988762299105330)
+				await ctx.send(f"**{channel.mention}** is no longer hidden from you!")
+			else:
+				await ctx.send(f"**{channel.mention}** iwas you!")
+
+			guild = self.bot.get_guild(785839283847954433)
+
+			heist = discord.utils.get(guild.roles, id=804068344612913163)
+			partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
+			outside = discord.utils.get(guild.roles, id=806795854475165736)
+			partnership = discord.utils.get(guild.roles, id=797448080223109120)
+			name = "Grab roles to be pinged!"
+			event_embed = discord.Embed(
+					title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
+					description= f"<a:heist:925617827447177247> {self.bot.emojis_list['right']} {heist.mention}\n"
+								f"<a:heisttime:932911351154741308> {self.bot.emojis_list['right']} {partnerHeist.mention}\n"
+								f"<a:peperobber:925618641112813598> {self.bot.emojis_list['right']} {outside.mention}\n"
+								f"<a:Partner:925618902673817700> {self.bot.emojis_list['right']} {partnership.mention}\n"   ,                         
+								# f"<a:nopartnership:929440715539374171> {self.bot.emojis_list['right']} {nopartnership.mention}\n",
+					color=0x9e3bff,
+					timestamp=datetime.datetime.utcnow()
+			)
+			event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+			gk = self.bot.get_guild(785839283847954433)
+			dmop = self.bot.get_guild(838646783785697290)
+
+			partnerheistemoji = await gk.fetch_emoji(932911351154741308)
+			heistemoji = await dmop.fetch_emoji(925617827447177247)
+			outsideheistemoji = await dmop.fetch_emoji(925618641112813598)
+			partnershipemoji = await dmop.fetch_emoji(925618902673817700)
+			buttons = [
+				create_button(style=ButtonStyle.blurple,emoji=heistemoji, disabled=False, custom_id="reaction:heist"),
+				create_button(style=ButtonStyle.blurple,emoji=partnerheistemoji, disabled=False, custom_id="reaction:partnerHeist"),
+				create_button(style=ButtonStyle.blurple,emoji=outsideheistemoji, disabled=False, custom_id="reaction:outside"),
+				create_button(style=ButtonStyle.blurple,emoji=partnershipemoji, disabled=False, custom_id="reaction:partnership")#,
+				# create_button(style=ButtonStyle.primary,emoji=nopartneremoji, disabled=False, custom_id="reaction:nopartnership")
+			]
+			msg = await ctx.send(embed=event_embed, components=[create_actionrow(*buttons)],hidden=True)
+		
+		if ctx.custom_id == "nopartner:no":
+			await ctx.defer(hidden=True)
+			nopartnership = discord.utils.get(ctx.guild.roles, id=810593886720098304)
+			outside = discord.utils.get(ctx.guild.roles, id=806795854475165736)
+			if nopartnership not in ctx.author.roles:
+				await ctx.author.add_roles(nopartnership)
+				# await ctx.send(f"Added {movie.mention}", hidden=True)
+			if outside in ctx.author.roles:
+				await ctx.author.remove_roles(outside)
+			channel = self.bot.get_channel(806988762299105330)
+			await ctx.send(f"**`{channel}`** is now successfully hidden for you!")
 		
 
 
@@ -240,41 +297,38 @@ class reactionrole(commands.Cog):
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!")
 
-	# @cog_ext.cog_subcommand(base="heist", name="Nopartner",description="Do you want to be pinged for partner-heists?", guild_ids=guild_ids,
-	# 	base_default_permission=True,
-	# 	options=[
-	#   			# create_option(name="name", description="Heading for embed", option_type=3, required=False)
-	# 	]
-	# )
-	# async def otherrr(self, ctx): #, message, prize, channel, winners: int = 1):
-	# 	await ctx.defer(hidden=True)
 
-	# 	guild = self.bot.get_guild(785839283847954433)
+	@cog_ext.cog_subcommand(base="Reactionrole", name="Nopartner",description="No partnership related reaction roles", guild_ids=guild_ids,
+		base_default_permission=True,
+		options=[
+	  			create_option(name="name", description="Heading for embed", option_type=3, required=False)
+		]
+	)
+	async def nprr(self, ctx, name: str = "Other Self Roles"): #, message, prize, channel, winners: int = 1):
+		await ctx.defer(hidden=True)
 
-	# 	giveaways = discord.utils.get(guild.roles, id=800685251276963861)
-	# 	flash = discord.utils.get(guild.roles, id=822021066548969482)
-	# 	other = discord.utils.get(guild.roles, id=848809346972516363)
-	# 	event = discord.utils.get(guild.roles, id=836925033506275399)
-	# 	movie = discord.utils.get(guild.roles, id=791347199119327252)
+
+		guild = self.bot.get_guild(785839283847954433)
+
+		giveaways = discord.utils.get(guild.roles, id=800685251276963861)
+		flash = discord.utils.get(guild.roles, id=822021066548969482)
+		other = discord.utils.get(guild.roles, id=848809346972516363)
+		event = discord.utils.get(guild.roles, id=836925033506275399)
+		movie = discord.utils.get(guild.roles, id=791347199119327252)
 		
-	# 	gk = self.bot.get_guild(785839283847954433)
-	# 	dmop = self.bot.get_guild(838646783785697290)
+		gk = self.bot.get_guild(785839283847954433)
+		dmop = self.bot.get_guild(838646783785697290)
+		playzone = self.bot.get_guild(815849745327194153)
 
-	# 	gawemoji = await gk.fetch_emoji(806631994770849843)
-	# 	flashemoji = await gk.fetch_emoji(817302382630273054)
-	# 	otheremoji = await gk.fetch_emoji(820323551520358440)
-	# 	eventemoji = await gk.fetch_emoji(854663256420909066)
-	# 	movieemoji = await gk.fetch_emoji(842675039833030666)
+		yes = await playzone.fetch_emoji(942341153573978113)
+		no = await playzone.fetch_emoji(942341223576920064)
 
-	# 	buttons = [
-	# 		create_button(style=ButtonStyle.blurple,emoji=gawemoji, disabled=False, custom_id="reaction:giveaways"),
-	# 		create_button(style=ButtonStyle.blurple,emoji=flashemoji, disabled=False, custom_id="reaction:flash"),
-	# 		create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=False, custom_id="reaction:other"),
-	# 		create_button(style=ButtonStyle.blurple,emoji=eventemoji, disabled=False, custom_id="reaction:event"),
-	# 		create_button(style=ButtonStyle.primary,emoji=movieemoji, disabled=False, custom_id="reaction:movie")
-	# 	]
-	# 	msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
-	# 	await ctx.send(content=f"Reaction roles created!")
+		buttons = [
+			create_button(style=ButtonStyle.green,emoji=yes, label="I love partnerships", disabled=False, custom_id="nopartner:yes"),
+			create_button(style=ButtonStyle.red,emoji=no, label="I hate partnerships", disabled=False, custom_id="nopartner:no")
+		]
+		msg = await ctx.channel.send(content=f"Do you want to be pinged for **heist/event partnerships**?", components=[create_actionrow(*buttons)])
+		await ctx.send(content=f"Reaction roles created!")
 
 def setup(bot):
 	bot.add_cog(reactionrole(bot))
