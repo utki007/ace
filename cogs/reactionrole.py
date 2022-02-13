@@ -46,23 +46,49 @@ class reactionrole(commands.Cog):
 			if len(messageContent) > 0:
 				for word in word_list:
 					if word in messageContent:
-						await asyncio.sleep(3)
 
+						gk = self.bot.get_guild(785839283847954433)
+						deff = discord.utils.get(gk.roles, id=838012966720634881)
+						shero = discord.utils.get(gk.roles, id=925034176091152414)
 						partnerHeists = self.bot.get_channel(806988762299105330)
-						
+
 						def check(msg):
 							return msg.author.id == 810041263452848179
 						playzone = self.bot.get_guild(815849745327194153)
 
 						yes = await playzone.fetch_emoji(942341153573978113)
-						no = await playzone.fetch_emoji(942341223576920064)
-
+						am = discord.AllowedMentions(
+							users=False,  # Whether to ping individual user @mentions
+							everyone=False,  # Whether to ping @everyone or @here mentions
+							roles=False,  # Whether to ping role @mentions
+							replied_user=False,  # Whether to ping on replies to messages
+						)
 						try:
 							await partnerHeists.purge(limit=10, check=check, before=None)
 							buttons = [
 								create_button(style=ButtonStyle.green,emoji=yes, label="Hide this channel for me!", disabled=False, custom_id="nopartner:no")
 							]
-							return await message.channel.send(content=f"Do you want to stop receiving pings from this channel?", components=[create_actionrow(*buttons)])
+							await message.channel.send(
+										content=f"Everytime an advertisement is posted, this channel will be locked for 5 seconds. This is to avoid the double pings issue.\n\n"
+												f"If you post during that lock period, your ad won't get posted. In such case, you can always dm <@301657045248114690> to get it posted manually.", 
+										components=[create_actionrow(*buttons)], allowed_mentions=am
+							)
+							overwrite = partnerHeists.overwrites_for(deff)
+							overwrite.send_messages = False
+							await partnerHeists.set_permissions(deff, overwrite=overwrite)
+							overwrite = partnerHeists.overwrites_for(shero)
+							overwrite.send_messages = False
+							await partnerHeists.set_permissions(shero, overwrite=overwrite)
+							
+							await asyncio.sleep(5)
+
+							
+							overwrite = partnerHeists.overwrites_for(deff)
+							overwrite.send_messages = True
+							await partnerHeists.set_permissions(deff, overwrite=overwrite)
+							overwrite = partnerHeists.overwrites_for(shero)
+							overwrite.send_messages = True
+							await partnerHeists.set_permissions(shero, overwrite=overwrite)
 						except:
 							print("Error in partner heist channel")
 
