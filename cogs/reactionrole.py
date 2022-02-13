@@ -142,12 +142,12 @@ class reactionrole(commands.Cog):
 			await ctx.defer(hidden=True)
 			nopartnership = discord.utils.get(ctx.guild.roles, id=810593886720098304)
 			outside = discord.utils.get(ctx.guild.roles, id=806795854475165736)
+			channel = self.bot.get_channel(806988762299105330)
 			if nopartnership in ctx.author.roles:
 				await ctx.author.remove_roles(nopartnership)
-				channel = self.bot.get_channel(806988762299105330)
-				await ctx.send(f"**{channel.mention}** is no longer hidden from you!")
+				await ctx.send(f"**{channel.mention}** is no longer hidden from you!",hidden=True)
 			else:
-				await ctx.send(f"**{channel.mention}** iwas you!")
+				await ctx.send(f"**{channel.mention}** was already visible for you!",hidden=True)
 
 			guild = self.bot.get_guild(785839283847954433)
 
@@ -193,7 +193,7 @@ class reactionrole(commands.Cog):
 			if outside in ctx.author.roles:
 				await ctx.author.remove_roles(outside)
 			channel = self.bot.get_channel(806988762299105330)
-			await ctx.send(f"**`{channel}`** is now successfully hidden for you!")
+			await ctx.send(f"**`{channel}`** is now successfully hidden for you!",hidden=True)
 		
 
 
@@ -245,7 +245,7 @@ class reactionrole(commands.Cog):
 			# create_button(style=ButtonStyle.primary,emoji=nopartneremoji, disabled=False, custom_id="reaction:nopartnership")
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
-		await ctx.send(content=f"Reaction roles created!")
+		await ctx.send(content=f"Reaction roles created!",hidden=True)
 		# await ctx.send(content=f"`{event.mention}`",embed = event_embed)
 
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Other",description="Non-heist related reaction roles", guild_ids=guild_ids,
@@ -295,16 +295,14 @@ class reactionrole(commands.Cog):
 			create_button(style=ButtonStyle.primary,emoji=movieemoji, disabled=False, custom_id="reaction:movie")
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
-		await ctx.send(content=f"Reaction roles created!")
+		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
 
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Nopartner",description="No partnership related reaction roles", guild_ids=guild_ids,
 		base_default_permission=True,
-		options=[
-	  			create_option(name="name", description="Heading for embed", option_type=3, required=False)
-		]
+		options=[]
 	)
-	async def nprr(self, ctx, name: str = "Other Self Roles"): #, message, prize, channel, winners: int = 1):
+	async def nprr(self, ctx): #, message, prize, channel, winners: int = 1):
 		await ctx.defer(hidden=True)
 
 
@@ -328,7 +326,7 @@ class reactionrole(commands.Cog):
 			create_button(style=ButtonStyle.red,emoji=no, label="I hate partnerships", disabled=False, custom_id="nopartner:no")
 		]
 		msg = await ctx.channel.send(content=f"Do you want to be pinged for **heist/event partnerships**?", components=[create_actionrow(*buttons)])
-		await ctx.send(content=f"Reaction roles created!")
+		await ctx.send(content=f"<a:okie:932576089618931772>",hidden=True)
 
 def setup(bot):
 	bot.add_cog(reactionrole(bot))
