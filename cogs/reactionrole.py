@@ -1,3 +1,4 @@
+import asyncio
 import datetime
 import re
 import random
@@ -34,6 +35,36 @@ class reactionrole(commands.Cog):
 	@commands.Cog.listener()
 	async def on_ready(self):
 		print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+
+	@commands.Cog.listener()
+	async def on_message(self, message):
+        # sticky bot functionality
+		if message.channel.id == 932647491818639460:
+			word_list = ['discord.gg']
+
+			messageContent = message.content.lower()
+			if len(messageContent) > 0:
+				for word in word_list:
+					if word in messageContent:
+						await asyncio.sleep(3)
+
+						partnerHeists = self.bot.get_channel(806988762299105330)
+						
+						def check(msg):
+							return msg.author.id == 810041263452848179
+						playzone = self.bot.get_guild(815849745327194153)
+
+						yes = await playzone.fetch_emoji(942341153573978113)
+						no = await playzone.fetch_emoji(942341223576920064)
+
+						try:
+							await partnerHeists.purge(limit=10, check=check, before=None)
+							buttons = [
+								create_button(style=ButtonStyle.green,emoji=yes, label="Hide this channel for me!", disabled=False, custom_id="nopartner:no")
+							]
+							return await message.channel.send(content=f"Do you want to stop receiving pings from this channel?", components=[create_actionrow(*buttons)])
+						except:
+							print("Error in partner heist channel")
 
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
@@ -158,11 +189,10 @@ class reactionrole(commands.Cog):
 			name = "Grab roles to be pinged!"
 			event_embed = discord.Embed(
 					title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
-					description= f"<a:heist:925617827447177247> {self.bot.emojis_list['right']} {heist.mention}\n"
-								f"<a:heisttime:932911351154741308> {self.bot.emojis_list['right']} {partnerHeist.mention}\n"
-								f"<a:peperobber:925618641112813598> {self.bot.emojis_list['right']} {outside.mention}\n"
-								f"<a:Partner:925618902673817700> {self.bot.emojis_list['right']} {partnership.mention}\n"   ,                         
-								# f"<a:nopartnership:929440715539374171> {self.bot.emojis_list['right']} {nopartnership.mention}\n",
+					description= f"<a:heisttime:932911351154741308> {self.bot.emojis_list['right']} {partnerHeist.mention}\n"
+								 f"<a:peperobber:925618641112813598> {self.bot.emojis_list['right']} {outside.mention}\n"
+								 f"<a:Partner:925618902673817700> {self.bot.emojis_list['right']} {partnership.mention}\n"   ,                         
+								 # f"<a:nopartnership:929440715539374171> {self.bot.emojis_list['right']} {nopartnership.mention}\n",
 					color=0x9e3bff,
 					timestamp=datetime.datetime.utcnow()
 			)
@@ -175,7 +205,7 @@ class reactionrole(commands.Cog):
 			outsideheistemoji = await dmop.fetch_emoji(925618641112813598)
 			partnershipemoji = await dmop.fetch_emoji(925618902673817700)
 			buttons = [
-				create_button(style=ButtonStyle.blurple,emoji=heistemoji, disabled=False, custom_id="reaction:heist"),
+				# create_button(style=ButtonStyle.blurple,emoji=heistemoji, disabled=False, custom_id="reaction:heist"),
 				create_button(style=ButtonStyle.blurple,emoji=partnerheistemoji, disabled=False, custom_id="reaction:partnerHeist"),
 				create_button(style=ButtonStyle.blurple,emoji=outsideheistemoji, disabled=False, custom_id="reaction:outside"),
 				create_button(style=ButtonStyle.blurple,emoji=partnershipemoji, disabled=False, custom_id="reaction:partnership")#,
@@ -187,15 +217,19 @@ class reactionrole(commands.Cog):
 			await ctx.defer(hidden=True)
 			nopartnership = discord.utils.get(ctx.guild.roles, id=810593886720098304)
 			outside = discord.utils.get(ctx.guild.roles, id=806795854475165736)
+			flag = 0
 			if nopartnership not in ctx.author.roles:
 				await ctx.author.add_roles(nopartnership)
 				# await ctx.send(f"Added {movie.mention}", hidden=True)
+				flag = 1
 			if outside in ctx.author.roles:
 				await ctx.author.remove_roles(outside)
+				flag = 1
 			channel = self.bot.get_channel(806988762299105330)
-			await ctx.send(f"**`{channel}`** is now successfully hidden for you!",hidden=True)
-		
-
+			if flag == 1:
+				await ctx.send(f"**`{channel}`** is now successfully hidden for you!",hidden=True)
+			else:
+				await ctx.send(f"**`{channel}`** was already hidden for you!",hidden=True)
 
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Heist",description="Heist related reaction roles", guild_ids=guild_ids,
 		base_default_permission=True,
@@ -305,17 +339,6 @@ class reactionrole(commands.Cog):
 	async def nprr(self, ctx): #, message, prize, channel, winners: int = 1):
 		await ctx.defer(hidden=True)
 
-
-		guild = self.bot.get_guild(785839283847954433)
-
-		giveaways = discord.utils.get(guild.roles, id=800685251276963861)
-		flash = discord.utils.get(guild.roles, id=822021066548969482)
-		other = discord.utils.get(guild.roles, id=848809346972516363)
-		event = discord.utils.get(guild.roles, id=836925033506275399)
-		movie = discord.utils.get(guild.roles, id=791347199119327252)
-		
-		gk = self.bot.get_guild(785839283847954433)
-		dmop = self.bot.get_guild(838646783785697290)
 		playzone = self.bot.get_guild(815849745327194153)
 
 		yes = await playzone.fetch_emoji(942341153573978113)

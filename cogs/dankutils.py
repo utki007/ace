@@ -37,98 +37,98 @@ class dankutils(commands.Cog, description="Dank Utility"):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        # sticky bot functionality
-        if message.author.id == 235148962103951360 and message.channel.id == 806988762299105330:
-            return
-        if message.channel.id == 806988762299105330:
-            word_list = ['discord.gg']
+    # @commands.Cog.listener()
+    # async def on_message(self, message):
+    #     # sticky bot functionality
+    #     if message.author.id == 235148962103951360 and message.channel.id == 806988762299105330:
+    #         return
+    #     if message.channel.id == 806988762299105330:
+    #         word_list = ['discord.gg']
 
-            messageContent = message.content.lower()
-            if len(messageContent) > 0:
-                for word in word_list:
-                    if word in messageContent:
-                        await asyncio.sleep(3)
-                        am = discord.AllowedMentions(
-                            users=False,  # Whether to ping individual user @mentions
-                            everyone=False,  # Whether to ping @everyone or @here mentions
-                            roles=False,  # Whether to ping role @mentions
-                            replied_user=False,  # Whether to ping on replies to messages
-                        )
-                        partnerHeists = self.bot.get_channel(806988762299105330)
+    #         messageContent = message.content.lower()
+    #         if len(messageContent) > 0:
+    #             for word in word_list:
+    #                 if word in messageContent:
+    #                     await asyncio.sleep(3)
+    #                     am = discord.AllowedMentions(
+    #                         users=False,  # Whether to ping individual user @mentions
+    #                         everyone=False,  # Whether to ping @everyone or @here mentions
+    #                         roles=False,  # Whether to ping role @mentions
+    #                         replied_user=False,  # Whether to ping on replies to messages
+    #                     )
+    #                     partnerHeists = self.bot.get_channel(806988762299105330)
 
-                        def check(msg):
-                            return msg.author.id == 810041263452848179
-                        await partnerHeists.purge(limit=10, check=check, before=None)
-                        return await message.channel.send("If you'd like to stop receiving pings, check out <#848631258137362452> for <@&810593886720098304> role!!! \n"
-                        f"||However, having <@&806795854475165736> makes <@&810593886720098304> useless, so remove <@&806795854475165736> role.||", allowed_mentions=am)
+    #                     def check(msg):
+    #                         return msg.author.id == 810041263452848179
+    #                     await partnerHeists.purge(limit=10, check=check, before=None)
+    #                     return await message.channel.send("If you'd like to stop receiving pings, check out <#848631258137362452> for <@&810593886720098304> role!!! \n"
+    #                     f"||However, having <@&806795854475165736> makes <@&810593886720098304> useless, so remove <@&806795854475165736> role.||", allowed_mentions=am)
 
-        # if message.channel.id == 837999751068778517  and message.author.id != self.bot.user.id:
+    #     # if message.channel.id == 837999751068778517  and message.author.id != self.bot.user.id:
             
             
-        #     await asyncio.sleep(1)
-        #     content = f"Donations must be sent in form of dank items or DMC."
+    #     #     await asyncio.sleep(1)
+    #     #     content = f"Donations must be sent in form of dank items or DMC."
 
-        #     am = discord.AllowedMentions(
-        #         users=False,  # Whether to ping individual user @mentions
-        #         everyone=False,  # Whether to ping @everyone or @here mentions
-        #         roles=False,  # Whether to ping role @mentions
-        #         replied_user=False,  # Whether to ping on replies to messages
-        #     )
-        #     dono = self.bot.get_channel(837999751068778517)
+    #     #     am = discord.AllowedMentions(
+    #     #         users=False,  # Whether to ping individual user @mentions
+    #     #         everyone=False,  # Whether to ping @everyone or @here mentions
+    #     #         roles=False,  # Whether to ping role @mentions
+    #     #         replied_user=False,  # Whether to ping on replies to messages
+    #     #     )
+    #     #     dono = self.bot.get_channel(837999751068778517)
             
-        #     def check(msg):
-        #         # message.channel.send(msg.content)
-        #         return msg.author.id == self.bot.user.id and msg.content==content
-        #     async for message in dono.history(limit=1):
-        #         if message.content != content:
-        #             await dono.purge(limit=10, check=check, before=None)
-        #             return await message.channel.send(content, allowed_mentions=am)
+    #     #     def check(msg):
+    #     #         # message.channel.send(msg.content)
+    #     #         return msg.author.id == self.bot.user.id and msg.content==content
+    #     #     async for message in dono.history(limit=1):
+    #     #         if message.content != content:
+    #     #             await dono.purge(limit=10, check=check, before=None)
+    #     #             return await message.channel.send(content, allowed_mentions=am)
 
 
-        # if message.channel.id == 840215557097390131 and message.author.id != self.bot.user.id:838646783785697290
-        # 838646783785697290:
-        if message.channel.id == 840215557097390131 and message.author.id != self.bot.user.id:
-            embeds = message.embeds
-            dict = {}
-            for embed in embeds:
-                dict = embed.to_dict()
+    #     # if message.channel.id == 840215557097390131 and message.author.id != self.bot.user.id:838646783785697290
+    #     # 838646783785697290:
+    #     if message.channel.id == 840215557097390131 and message.author.id != self.bot.user.id:
+    #         embeds = message.embeds
+    #         dict = {}
+    #         for embed in embeds:
+    #             dict = embed.to_dict()
 
-            description = dict["description"].split("\n\n")
-            price = int(description[1].split(" ")[1])
+    #         description = dict["description"].split("\n\n")
+    #         price = int(description[1].split(" ")[1])
 
-            percentage = description[1].split(" ")[2]
-            chars = ["[", "]", "*", "%"]
+    #         percentage = description[1].split(" ")[2]
+    #         chars = ["[", "]", "*", "%"]
 
-            for ch in chars:
-                if ch in percentage:
-                    percentage = percentage.replace(ch, "", 100)
-            percentage = int(percentage.replace("%", "",100))
-            newdescription = "".join(dict["description"].split("\n\n")[
-                                                           0].split(":")[1:])
-            title = dict["title"].split(":")
-            newtitle = title[0]
-            name = title[1]
-            content = f"**{name}** is on sale at **{percentage}%** off!!"
-            fieldHeaderContent = f'**{name}** {self.bot.emojis_list["rightArrow"]} {self.bot.emojis_list["DMC"]} **{price:,}** (_{percentage}%_ off!!)\n\n'
-            if percentage > self.percentageThreshhold:
-                content = f"<@&799517544674230272>" + content
-            else:
-                content = content
-            ad = discord.Embed(
-                    title=f'{newtitle}',
-                    color=0x9e3bff
-                )
-            ad.add_field(name=fieldHeaderContent, value=f'_{newdescription}_',inline=False)
-            ad.set_footer(
-                    text=f"Developed by utki007 & Jay", icon_url=f'https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024')
-            ad.set_thumbnail(url=f'{str(dict["thumbnail"]["url"])}')
-            channelnew = self.bot.get_channel(self.shop)
-            await channelnew.send(embed=ad, content=content)
-            # await message.channel.send(embed=ad)
+    #         for ch in chars:
+    #             if ch in percentage:
+    #                 percentage = percentage.replace(ch, "", 100)
+    #         percentage = int(percentage.replace("%", "",100))
+    #         newdescription = "".join(dict["description"].split("\n\n")[
+    #                                                        0].split(":")[1:])
+    #         title = dict["title"].split(":")
+    #         newtitle = title[0]
+    #         name = title[1]
+    #         content = f"**{name}** is on sale at **{percentage}%** off!!"
+    #         fieldHeaderContent = f'**{name}** {self.bot.emojis_list["rightArrow"]} {self.bot.emojis_list["DMC"]} **{price:,}** (_{percentage}%_ off!!)\n\n'
+    #         if percentage > self.percentageThreshhold:
+    #             content = f"<@&799517544674230272>" + content
+    #         else:
+    #             content = content
+    #         ad = discord.Embed(
+    #                 title=f'{newtitle}',
+    #                 color=0x9e3bff
+    #             )
+    #         ad.add_field(name=fieldHeaderContent, value=f'_{newdescription}_',inline=False)
+    #         ad.set_footer(
+    #                 text=f"Developed by utki007 & Jay", icon_url=f'https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024')
+    #         ad.set_thumbnail(url=f'{str(dict["thumbnail"]["url"])}')
+    #         channelnew = self.bot.get_channel(self.shop)
+    #         await channelnew.send(embed=ad, content=content)
+    #         # await message.channel.send(embed=ad)
 
-        # await self.bot.process_commands(message)
+    #     # await self.bot.process_commands(message)
         
     @commands.command(name="calculate",aliases=["calc", "c","cal"])
     async def calculate(self, ctx, *, query):
