@@ -39,7 +39,7 @@ class reactionrole(commands.Cog):
 	@commands.Cog.listener()
 	async def on_message(self, message):
         # sticky bot functionality
-		if message.channel.id == 932647491818639460:
+		if message.channel.id == 806988762299105330:
 			word_list = ['discord.gg']
 
 			messageContent = message.content.lower()
