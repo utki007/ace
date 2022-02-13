@@ -168,8 +168,8 @@ class dankutils(commands.Cog, description="Dank Utility"):
             title=f"Payouts Calculator",
             timestamp=datetime.datetime.utcnow()     ,
             description=    f"**{'Number of people joined:':^25}** `{number:,}`\n"
-                            f"**{'Amount Heisted:':^25}** <:TGK_DMC:830520214021603350> `{output:,}`\n"
-                            f"**{'Expected Payouts:':^25}** <:TGK_DMC:830520214021603350> `{result:,}`\n"
+                            f"**{'Amount Heisted:':^25}** ⏣ `{output:,}`\n"
+                            f"**{'Expected Payouts:':^25}** ⏣ `{result:,}`\n"
         )
         url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={result:,}&font=lobster&font_size=28"
         e.set_image(url=url)

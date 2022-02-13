@@ -133,13 +133,13 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
         embed.add_field(
             name=f"**_{'Heist Information: '}_**",
             value=f"<a:flymoney:803336135803404301> | **{ctx.author.name}** \n"
-            f"<a:TGK_paisa_hi_paisa_hoga:849509579565301780> |  **⏣ {int(amt):,}** !!!\n"
+            f"<a:TGK_paisa_hi_paisa_hoga:849509579565301780> |  ** ⏣ {int(amt):,}** !!!\n"
             f"<a:timesand:832701552845389866> | **{time}**\n─────────────────────────",
             inline=False
         )
         embed.add_field(
             name=f"**_{'Checklist: '}_**",
-            value=f"<a:tgk_arrow:832387973281480746> Keep **⏣ {2000:,}** in wallet. \n"
+            value=f"<a:tgk_arrow:832387973281480746> Keep ** ⏣ {2000:,}** in wallet. \n"
             f"<a:tgk_arrow:832387973281480746> Use **Lifesaver** or **Apple**. \n"
             f"<a:tgk_arrow:832387973281480746> Disable **Passive Mode**. \n"
             f"<a:tgk_arrow:832387973281480746> Click **Join Heist** button to participate. \n",
