@@ -894,6 +894,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
         df = df[["_id", "name", "bal", "event_"+name]].sort_values(by = "event_"+name, ascending = False)
         # await ctx.send(top3)
+        df = df.head(10)
 
         desc = ""
         spl = 'event_'+name
@@ -938,6 +939,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         embed.set_footer(text=f"Developed by utki007 and Jay", icon_url=ctx.guild.icon_url)
         # embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
         # embed.set_image(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
+        try:
+            await ctx.message.delete()
+        except:
+            pass
         await ctx.send(embed=embed)
 
 
