@@ -43,9 +43,8 @@ class reactionrole(commands.Cog):
 			word_list = ['discord.gg']
 
 			messageContent = message.content.lower()
-			if len(messageContent) > 0:
-				for word in word_list:
-					if word in messageContent:
+			if len(messageContent) > 0 and word_list[0] in messageContent:
+					# if :
 
 						gk = self.bot.get_guild(785839283847954433)
 						deff = discord.utils.get(gk.roles, id=838012966720634881)
@@ -63,24 +62,24 @@ class reactionrole(commands.Cog):
 							roles=False,  # Whether to ping role @mentions
 							replied_user=False,  # Whether to ping on replies to messages
 						)
-						try:
-							await partnerHeists.purge(limit=10, check=check, before=None)
-							buttons = [
-								create_button(style=ButtonStyle.green,emoji=yes, label="Hide this channel for me!", disabled=False, custom_id="nopartner:no")
-							]
-							await message.channel.send(
-										content=f"Everytime an advertisement is posted, this channel will be locked for 10 seconds. This is to avoid the double pings issue.\n\n"
-												f"If you post during that lock period, your ad won't get posted. In such case, you can always dm <@301657045248114690> to get it posted manually.", 
-										components=[create_actionrow(*buttons)], allowed_mentions=am
-							)
+						try:	
+							# lock channel first	
 							overwrite = partnerHeists.overwrites_for(deff)
 							overwrite.send_messages = False
 							await partnerHeists.set_permissions(deff, overwrite=overwrite)
 							overwrite = partnerHeists.overwrites_for(shero)
 							overwrite.send_messages = False
 							await partnerHeists.set_permissions(shero, overwrite=overwrite)
-							
-							await asyncio.sleep(10)
+							buttons = [
+								create_button(style=ButtonStyle.green,emoji=yes, label="Hide this channel for me!", disabled=False, custom_id="nopartner:no")
+							]
+							await message.channel.send(
+										content=f"Everytime an advertisement is posted, this channel will be locked for 5 seconds. This is to avoid the double pings issue.\n\n"
+												f"If you post during that lock period, your ad won't get posted. In such case, you can always dm <@301657045248114690> to get it posted manually.", 
+										components=[create_actionrow(*buttons)], allowed_mentions=am
+							)
+							await partnerHeists.purge(limit=10, check=check, before=None)
+							await asyncio.sleep(5)
 
 							
 							overwrite = partnerHeists.overwrites_for(deff)
@@ -95,6 +94,38 @@ class reactionrole(commands.Cog):
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
 
+		if ctx.custom_id == "setup:heist":
+			await ctx.defer(hidden=True)
+			data = self.bot.heist_setup_data
+			msg = ""
+			await ctx.send(content=f"{data}",hidden=True)
+			setup_roles = data.values()
+			roles = []
+			role_map = {
+				804068344612913163: "reaction:heist",
+				804069957528584212: "reaction:partnerHeist",
+				786884615192313866: "reaction:voted"
+			}
+			for i in setup_roles:
+				if i != None:
+					roles.append(discord.utils.get(ctx.guild.roles, id=int(i)))
+			# await ctx.send(f'{", ".join(i.mention for i in roles)}',hidden=True)
+			req_role = []
+			rolebuttons = []
+
+			for i in roles:
+				if i in ctx.author.roles:
+					return await ctx.send(f"You have {i.mention} which allows you to join this hiest!",hidden=True)
+
+			for i in roles:
+				if i in role_map.keys():
+					rolebuttons.append(create_button(style=ButtonStyle.blurple, label=i.name, emoji=emoji, disabled=False, custom_id=role_map[i.id]))
+				else:
+					req_role.append(i)
+			embed = discord.Embed(title=f"Roles Required:", color=ctx.author.color)
+        
+			msg = await ctx.send(embed=embed, components=rolebuttons,hidden=True)
+		
 		if ctx.custom_id == "reaction:heist":
 			await ctx.defer(hidden=True)
 			heist = discord.utils.get(ctx.guild.roles, id=804068344612913163)
@@ -194,6 +225,20 @@ class reactionrole(commands.Cog):
 			else:
 				await ctx.author.add_roles(movie)
 				await ctx.send(f"Added {movie.mention}", hidden=True)
+
+		if ctx.custom_id == "reaction:voted":
+			await ctx.defer(hidden=True)
+			voted = discord.utils.get(ctx.guild.roles, id=786884615192313866)
+			if voted not in ctx.author.roles:
+				
+				gk = self.bot.get_guild(785839283847954433)
+				emoji = await gk.fetch_emoji(942521024476487741)
+				buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
+				embed = discord.Embed(title=f"Vote for the {ctx.guild.name}", description="❥ Special <@&786884615192313866> Role.\n❥ 2,500 Casino Cash. Collect using ,collectincome in <#786117471840895016>\n❥ Access to <#929613393097293874> with 2x Amaari\n❥ Guild wide 1x Amaari.", color=ctx.author.color)
+        
+				msg = await ctx.send(embed=embed, components=[create_actionrow(*buttons)],hidden=True)
+			else:
+				await ctx.send(f"Already have voted role!",hidden=True)
 
 		if ctx.custom_id == "nopartner:yes":
 			await ctx.defer(hidden=True)
@@ -306,7 +351,6 @@ class reactionrole(commands.Cog):
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
-		# await ctx.send(content=f"`{event.mention}`",embed = event_embed)
 
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Other",description="Non-heist related reaction roles", guild_ids=guild_ids,
 		base_default_permission=True,
@@ -357,7 +401,6 @@ class reactionrole(commands.Cog):
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
-
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Nopartner",description="No partnership related reaction roles", guild_ids=guild_ids,
 		base_default_permission=True,
 		options=[]
@@ -376,6 +419,47 @@ class reactionrole(commands.Cog):
 		]
 		msg = await ctx.channel.send(content=f"Do you want to be pinged for **heist/event partnerships**?", components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"<a:okie:932576089618931772>",hidden=True)
+
+	@cog_ext.cog_subcommand(base="Heist", name="Setup",description="Setup Role Specific Heist", guild_ids=guild_ids,
+		base_default_permission=True,
+		options=[
+			create_option(name="voterbypass", description="Can voter bypass?", required=True, option_type=5),
+			create_option(name="required_role", description="Enter requirement role to Unhide channel for it", required=True, option_type=8),
+			create_option(name="bypassrole1", description="Enter role which can bypass", required=False, option_type=8),
+			create_option(name="bypassrole2", description="Enter role which can bypass", required=False, option_type=8)
+		]
+	)
+	async def heistsetup(self, ctx, voterbypass,required_role,bypassrole1 = None,bypassrole2 = None):
+		await ctx.defer(hidden=True)
+
+		data = {}
+
+		voted = discord.utils.get(ctx.guild.roles, id=786884615192313866 )
+		data['required_role'] = required_role.id
+		if voterbypass:
+			data['voterbypass'] = voted.id
+		else:
+			data['voterbypass'] = None
+		try:
+			data['bypassrole1'] = bypassrole1.id
+		except:
+			data['bypassrole1'] = None
+		try:
+			data['bypassrole2'] = bypassrole2.id
+		except:
+			data["bypassrole2"] = None
+
+		gk = self.bot.get_guild(785839283847954433)
+		dmop = self.bot.get_guild(838646783785697290)
+
+		heistemoji = await gk.fetch_emoji(932911351154741308)
+
+		buttons = [
+			create_button(style=ButtonStyle.green,emoji=heistemoji,label="Check if you can join heist later!", disabled=False, custom_id="setup:heist")
+		]
+		msg = await ctx.channel.send(content=f"check if you can join heists", components=[create_actionrow(*buttons)])
+		await ctx.send(content=f"Reaction roles created!",hidden=True)
+		self.bot.heist_setup_data = deepcopy(data)
 
 def setup(bot):
 	bot.add_cog(reactionrole(bot))
