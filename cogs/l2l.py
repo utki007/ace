@@ -81,7 +81,7 @@ class lasttoleave(commands.Cog, description="Last to Leave Manager"):
                 await ctx.send(f"{ctx.author.mention}, Error occured!!")
             return
 
-        cd = 300
+        cd = 30
         name = "Last to Leave "
 
         end = datetime.datetime.utcnow() + datetime.timedelta(seconds=cd)
