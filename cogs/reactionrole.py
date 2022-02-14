@@ -44,52 +44,42 @@ class reactionrole(commands.Cog):
 
 			messageContent = message.content.lower()
 			if len(messageContent) > 0 and word_list[0] in messageContent:
-					# if :
+				
+				gk = message.guild
+				robot = gk.get(gk.roles, id=810153515610537994)
+				partnerHeists = message.channel
 
-						gk = self.bot.get_guild(785839283847954433)
-						deff = discord.utils.get(gk.roles, id=838012966720634881)
-						shero = discord.utils.get(gk.roles, id=925034176091152414)
-						partnerHeists = self.bot.get_channel(806988762299105330)
+				def check(msg):
+					return msg.author.id == 810041263452848179
+				playzone = self.bot.get_guild(815849745327194153)
 
-						def check(msg):
-							return msg.author.id == 810041263452848179
-						playzone = self.bot.get_guild(815849745327194153)
+				yes = await playzone.fetch_emoji(942341153573978113)
+				am = discord.AllowedMentions(
+					users=False,  # Whether to ping individual user @mentions
+					everyone=False,  # Whether to ping @everyone or @here mentions
+					roles=False,  # Whether to ping role @mentions
+					replied_user=False,  # Whether to ping on replies to messages
+				)
+				try:	
+					overwrite = partnerHeists.overwrites_for(robot)
+					overwrite.send_messages = False
+					await partnerHeists.set_permissions(robot, overwrite=overwrite)
+					buttons = [
+						create_button(style=ButtonStyle.green,emoji=yes, label="Hide this channel for me!", disabled=False, custom_id="nopartner:no")
+					]
+					await partnerHeists.purge(limit=1, check=check, before=None)
+					await message.channel.send(
+								content=f"Everytime an advertisement is posted, this channel will be locked for 5 seconds. This is to avoid the double pings issue.\n\n"
+										f"If you post during that lock period, your ad won't get posted. In such case, you can always dm <@301657045248114690> to get it posted manually.", 
+								components=[create_actionrow(*buttons)], allowed_mentions=am
+					)
+					await asyncio.sleep(10)
 
-						yes = await playzone.fetch_emoji(942341153573978113)
-						am = discord.AllowedMentions(
-							users=False,  # Whether to ping individual user @mentions
-							everyone=False,  # Whether to ping @everyone or @here mentions
-							roles=False,  # Whether to ping role @mentions
-							replied_user=False,  # Whether to ping on replies to messages
-						)
-						try:	
-							# lock channel first	
-							overwrite = partnerHeists.overwrites_for(deff)
-							overwrite.send_messages = False
-							await partnerHeists.set_permissions(deff, overwrite=overwrite)
-							overwrite = partnerHeists.overwrites_for(shero)
-							overwrite.send_messages = False
-							await partnerHeists.set_permissions(shero, overwrite=overwrite)
-							buttons = [
-								create_button(style=ButtonStyle.green,emoji=yes, label="Hide this channel for me!", disabled=False, custom_id="nopartner:no")
-							]
-							await partnerHeists.purge(limit=10, check=check, before=None)
-							await message.channel.send(
-										content=f"Everytime an advertisement is posted, this channel will be locked for 5 seconds. This is to avoid the double pings issue.\n\n"
-												f"If you post during that lock period, your ad won't get posted. In such case, you can always dm <@301657045248114690> to get it posted manually.", 
-										components=[create_actionrow(*buttons)], allowed_mentions=am
-							)
-							await asyncio.sleep(30)
-
-							
-							overwrite = partnerHeists.overwrites_for(deff)
-							overwrite.send_messages = True
-							await partnerHeists.set_permissions(deff, overwrite=overwrite)
-							overwrite = partnerHeists.overwrites_for(shero)
-							overwrite.send_messages = True
-							await partnerHeists.set_permissions(shero, overwrite=overwrite)
-						except:
-							print("Error in partner heist channel")
+					overwrite = partnerHeists.overwrites_for(robot)
+					overwrite.send_messages = True
+					await partnerHeists.set_permissions(robot, overwrite=overwrite)
+				except:
+					print("Error in partner heist channel")
 
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
