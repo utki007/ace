@@ -62,15 +62,32 @@ class reactionrole(commands.Cog):
 							roles=False,  # Whether to ping role @mentions
 							replied_user=False,  # Whether to ping on replies to messages
 						)
-						try:
+						try:	
+							# lock channel first	
+							overwrite = partnerHeists.overwrites_for(deff)
+							overwrite.send_messages = False
+							await partnerHeists.set_permissions(deff, overwrite=overwrite)
+							overwrite = partnerHeists.overwrites_for(shero)
+							overwrite.send_messages = False
+							await partnerHeists.set_permissions(shero, overwrite=overwrite)
 							buttons = [
 								create_button(style=ButtonStyle.green,emoji=yes, label="Hide this channel for me!", disabled=False, custom_id="nopartner:no")
 							]
 							await partnerHeists.purge(limit=10, check=check, before=None)
 							await message.channel.send(
-										content=f"Would you like to stop receiving pings from this channel?", 
+										content=f"Everytime an advertisement is posted, this channel will be locked for 5 seconds. This is to avoid the double pings issue.\n\n"
+												f"If you post during that lock period, your ad won't get posted. In such case, you can always dm <@301657045248114690> to get it posted manually.", 
 										components=[create_actionrow(*buttons)], allowed_mentions=am
 							)
+							await asyncio.sleep(30)
+
+							
+							overwrite = partnerHeists.overwrites_for(deff)
+							overwrite.send_messages = True
+							await partnerHeists.set_permissions(deff, overwrite=overwrite)
+							overwrite = partnerHeists.overwrites_for(shero)
+							overwrite.send_messages = True
+							await partnerHeists.set_permissions(shero, overwrite=overwrite)
 						except:
 							print("Error in partner heist channel")
 
