@@ -69,7 +69,7 @@ class reactionrole(commands.Cog):
 								create_button(style=ButtonStyle.green,emoji=yes, label="Hide this channel for me!", disabled=False, custom_id="nopartner:no")
 							]
 							await message.channel.send(
-										content=f"Everytime an advertisement is posted, this channel will be locked for 5 seconds. This is to avoid the double pings issue.\n\n"
+										content=f"Everytime an advertisement is posted, this channel will be locked for 10 seconds. This is to avoid the double pings issue.\n\n"
 												f"If you post during that lock period, your ad won't get posted. In such case, you can always dm <@301657045248114690> to get it posted manually.", 
 										components=[create_actionrow(*buttons)], allowed_mentions=am
 							)
@@ -80,7 +80,7 @@ class reactionrole(commands.Cog):
 							overwrite.send_messages = False
 							await partnerHeists.set_permissions(shero, overwrite=overwrite)
 							
-							await asyncio.sleep(5)
+							await asyncio.sleep(10)
 
 							
 							overwrite = partnerHeists.overwrites_for(deff)
