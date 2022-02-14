@@ -45,9 +45,9 @@ class reactionrole(commands.Cog):
 			messageContent = message.content.lower()
 			if len(messageContent) > 0 and word_list[0] in messageContent:
 						
-				gk = self.bot.get_guild(785839283847954433)
-				robot = discord.utils.get(gk.roles, id=810153515610537994)
-				partnerHeists = self.bot.get_channel(806988762299105330)
+				gk = message.guild
+				robot = gk.get_role(810153515610537994)
+				partnerHeists = message.channel
 
 				def check(msg):
 					return msg.author.id == 810041263452848179
