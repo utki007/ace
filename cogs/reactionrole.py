@@ -79,7 +79,7 @@ class reactionrole(commands.Cog):
 												f"If you post during that lock period, your ad won't get posted. In such case, you can always dm <@301657045248114690> to get it posted manually.", 
 										components=[create_actionrow(*buttons)], allowed_mentions=am
 							)
-							await asyncio.sleep(5)
+							await asyncio.sleep(10)
 
 							
 							overwrite = partnerHeists.overwrites_for(deff)
