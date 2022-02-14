@@ -36,11 +36,11 @@ class lasttoleave(commands.Cog, description="Last to Leave Manager"):
                 f"Unauthorized to use this command <:pepeHmm:928623994050072577>"
             )
             
-        # if ctx.channel != 933363028475396106:
-        #     await ctx.send(
-        #         f"This command shouldn't be used here <:pepeHmm:928623994050072577>"
-        #     )
-        #     return
+        if ctx.channel != 933363028475396106:
+            await ctx.send(
+                f"This command shouldn't be used here <:pepeHmm:928623994050072577>"
+            )
+            return
         
         l2l = discord.utils.get(ctx.guild.roles, id=932878981303246939)
         channel = self.bot.get_channel(932331319655014471)
