@@ -73,12 +73,12 @@ class reactionrole(commands.Cog):
 							buttons = [
 								create_button(style=ButtonStyle.green,emoji=yes, label="Hide this channel for me!", disabled=False, custom_id="nopartner:no")
 							]
+							await partnerHeists.purge(limit=10, check=check, before=None)
 							await message.channel.send(
 										content=f"Everytime an advertisement is posted, this channel will be locked for 5 seconds. This is to avoid the double pings issue.\n\n"
 												f"If you post during that lock period, your ad won't get posted. In such case, you can always dm <@301657045248114690> to get it posted manually.", 
 										components=[create_actionrow(*buttons)], allowed_mentions=am
 							)
-							await partnerHeists.purge(limit=10, check=check, before=None)
 							await asyncio.sleep(5)
 
 							
