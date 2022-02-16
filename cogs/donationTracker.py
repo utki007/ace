@@ -603,10 +603,12 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         # getting the particular event and changing it.
         spldono = f"\n**EVENT DONATIONS** \n"
         res = []
+        event_bal = amount
         for req in dict[event]:
             if req["name"] == name:
                 req["bal"] = req["bal"]+amount
                 dict["bal"] = dict["bal"]+amount
+                event_bal = req["bal"]
                 flag = 1
             res.append(req)
             if req["bal"] != 0:
@@ -717,6 +719,19 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         except:
             await ctx.send(f"{ctx.author.mention}, Unable to add donor roles!")
             pass
+
+        # for celeb roles
+
+        celeb_roles_to_add = await event_roles(self.bot,event_bal,member,name)
+
+        if celeb_roles_to_add !=[]:
+            for i in celeb_roles_to_add:
+                try:
+                    await member.add_roles(i)
+                    await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
+                except:
+                    await ctx.send(f"{self.bot.emojis_list['Cross']} | Unable to add {i.mention} to {member.mention}", allowed_mentions=am)
+                    pass
 
     @celeb.command(name="remove", description="Remove donation from a special", usage="<event-name> <member> <amount>",aliases=["r"])
     #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())

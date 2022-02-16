@@ -41,14 +41,25 @@ async def on_ready():
 
     guild = bot.get_guild(785839283847954433)
     bot.role_dict = {
-        "1" : discord.utils.get(guild.roles, id=810128078789410846),
-        "5" : discord.utils.get(guild.roles, id=810128257491795979),
-        "10" : discord.utils.get(guild.roles, id=810128946791579679),
-        "25" : discord.utils.get(guild.roles, id=810128522365763615),
-        "50" : discord.utils.get(guild.roles, id=810128688267919381),
-        "100" : discord.utils.get(guild.roles, id=810129351692648479),
-        "250" : discord.utils.get(guild.roles, id=810129497931513868),
-        "500" : discord.utils.get(guild.roles, id=810129641473703956)
+        "0" : guild.get_role(810134737829888050),
+        "1" : guild.get_role(810128078789410846),
+        "5" : guild.get_role(810128257491795979),
+        "10" : guild.get_role(810128946791579679),
+        "25" : guild.get_role(810128522365763615),
+        "50" : guild.get_role(810128688267919381),
+        "100" : guild.get_role(810129351692648479),
+        "250" : guild.get_role(810129497931513868),
+        "500" : guild.get_role(810129641473703956)
+    }
+    bot.event_3k = {
+        "0" : guild.get_role(943535266143039500),
+        "2" : guild.get_role(940581716312084530),
+        "5" : guild.get_role(940580910913450044),
+        "11" : guild.get_role(940581045038899230),
+        "33" : guild.get_role(940581297145905212),
+        "69" : guild.get_role(940581256301772820),
+        "100" : guild.get_role(940581347267866625),
+        "250" : guild.get_role(942719030752583680)
     }
     
 

@@ -16,13 +16,29 @@ async def donor_roles(client,query,user):
     roles_added = []
     for roles in role_dict.keys():
         actual_value = int(roles) * 1000000
-        if float(actual_value)<float(query):
+        if float(actual_value)<=float(query):
             if role_dict[roles] not in user.roles:
                 await user.add_roles(role_dict[roles])
                 roles_added.append(role_dict[roles])
         else:
             break
     return roles_added
+
+async def event_roles(client,query,user,event_name):
+    role_dict = client.event_3k
+    if event_name == "3k":     
+        roles_added = []
+        for roles in role_dict.keys():
+            actual_value = int(roles) * 1000000
+            if float(actual_value)<=float(query):
+                if role_dict[roles] not in user.roles:
+                    # await user.add_roles(role_dict[roles])
+                    roles_added.append(role_dict[roles])
+            else:
+                break
+        return roles_added
+    else:
+        return []
         
 async def convert_to_time(query):
     query = query.lower()
