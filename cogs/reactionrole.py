@@ -13,7 +13,6 @@ from discord_slash.model import SlashCommandPermissionType
 from discord_slash.utils.manage_components import create_button, create_actionrow
 from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
-from django.forms import HiddenInput
 
 guild_ids=[785839283847954433]
 
@@ -71,7 +70,7 @@ class reactionrole(commands.Cog):
 					await partnerHeists.purge(limit=10, check=check, before=None)
 					await message.channel.send(
 								content=f"Everytime an advertisement is posted, this channel will be locked for 5 seconds. This is to avoid the double pings issue.\n\n"
-										f"If you post during that lock period, your ad won't get posted. In such case, you can always dm <@301657045248114690> to get it posted manually.", 
+										f"If you post during that lock period, your ad won't get posted. In such case, you can always dm any <@&831405039830564875> to get it posted manually.", 
 								components=[create_actionrow(*buttons)], allowed_mentions=am
 					)
 					await asyncio.sleep(30)
