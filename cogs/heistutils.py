@@ -80,7 +80,7 @@ class heistutils(commands.Cog):
 					await partnerHeists.set_permissions(robot, overwrite=overwrite)
 				except:
 					print("Error in partner heist channel")
-		elif message.channel.id == 939749391965757480:
+		elif message.channel.id == 944516765415792640:
 			
 			gk = message.guild
 			aceFeed = gk.get_channel(944490857111896064)
