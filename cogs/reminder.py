@@ -35,6 +35,7 @@ class reminder(commands.Cog, name="Reminder Manager", description="Manages all r
         self.mybot = pymongo.MongoClient(self.mongoconnection)
         self.mydb = self.mybot['TGK']
         self.mycol = self.mydb["reminder"]
+        self.mycounter = self.mydb["counters"]
         
         # channel ids
         self.partnerheist = 806988762299105330
@@ -45,11 +46,20 @@ class reminder(commands.Cog, name="Reminder Manager", description="Manages all r
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
     
-    async def create_reminder(self, ctx, id, pings):
+    async def create_reminder(self, ctx, id, user,text):
         dict = {}
         dict["_id"] = id
-        dict["pings"] = pings
+        dict["userId"] = user.id
+        dict["message"] = text
         self.mycol.insert_one(dict)
+
+    async def getNextReminderID(self, ctx, sequenceName):
+        myquery = {"_id": sequenceName}
+        newvalues = {"$inc": {"sequence_value": 1}}
+        self.mycounter.update_one(myquery, newvalues)
+        info = self.mycounter.find(myquery)
+        for i in info:
+            return i["sequence_value"]
 
     @commands.command(name="reminder",aliases=["rm"])
     @commands.cooldown(3,10 , commands.BucketType.user)
@@ -105,5 +115,10 @@ class reminder(commands.Cog, name="Reminder Manager", description="Manages all r
         except:
             await ctx.send(content=f"{ctx.author.mention}",embed=embed)
         
+    @commands.command(name="test")
+    async def test(self,ctx):
+
+        reminderID = await self.getNextReminderID(ctx,"reminderId")
+
 def setup(bot):
     bot.add_cog(reminder(bot))
