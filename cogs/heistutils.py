@@ -37,7 +37,6 @@ class heistutils(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
-        # heist utils
 		if message.author.bot:
 			return
 		if message.channel.id == 806988762299105330:
@@ -94,7 +93,7 @@ class heistutils(commands.Cog):
 				roles=False,  # Whether to ping role @mentions
 				replied_user=False,  # Whether to ping on replies to messages
 			)
-			await aceFeed.send(content=message.content, allowed_mentions=am)
+			await aceFeed.send(message, allowed_mentions=am)
 
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
