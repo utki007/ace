@@ -37,8 +37,6 @@ class heistutils(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
-		if message.author.bot:
-			return
 		if message.channel.id == 806988762299105330:
 			word_list = ['discord.gg']
 
