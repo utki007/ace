@@ -55,7 +55,7 @@ class giveaway(commands.Cog):
 	def cog_unload(self):
 		self.giveaway_task.cancel()
 	
-	@tasks.loop(seconds=3600)
+	@tasks.loop(seconds=10)
 	async def check_givaway(self):
 		currentTime = datetime.datetime.now()
 		giveaways = deepcopy(self.bot.giveaway)
