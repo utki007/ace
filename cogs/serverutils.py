@@ -37,17 +37,12 @@ class serverutils(commands.Cog, description="Server Utility"):
             await ctx.message.delete()
         except:
             pass
-        if ctx.guild.id == 207943928018632705:
-            # Essential :sexthumb:
-            yes_thumb = discord.utils.get(
-                ctx.guild.emojis, id=287711899943043072)
-            no_thumb = discord.utils.get(
-                ctx.guild.emojis, id=291798048009486336)
-        else:
-            yes_thumb = "👍"
-            no_thumb = "👎"
-        await msg.add_reaction(yes_thumb)
-        await msg.add_reaction(no_thumb)
+        playzone = self.bot.get_guild(815849745327194153)
+        
+        yes = await playzone.fetch_emoji(942341153573978113)
+        no = await playzone.fetch_emoji(942341223576920064)
+        await msg.add_reaction(yes)
+        await msg.add_reaction(no)
   
     @commands.command(name="colour",aliases=["co","col"])
     #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
