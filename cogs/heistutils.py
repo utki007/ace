@@ -91,7 +91,7 @@ class heistutils(commands.Cog):
 				roles=False,  # Whether to ping role @mentions
 				replied_user=False,  # Whether to ping on replies to messages
 			)
-			await aceFeed.send(message, allowed_mentions=am)
+			await aceFeed.send(content = message.content, allowed_mentions=am)
 
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
