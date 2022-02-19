@@ -82,7 +82,7 @@ class heistutils(commands.Cog):
 					print("Error in partner heist channel")
 		elif message.channel.id == 944516765415792640:
 			
-			gk = message.guild
+			gk = self.bot.get_guild(785839283847954433)
 			aceFeed = gk.get_channel(944490857111896064)
 
 			am = discord.AllowedMentions(
@@ -91,7 +91,10 @@ class heistutils(commands.Cog):
 				roles=False,  # Whether to ping role @mentions
 				replied_user=False,  # Whether to ping on replies to messages
 			)
-			await aceFeed.send(content = message.content, allowed_mentions=am)
+			if message.embeds:
+				await aceFeed.send(content = message.content, embed = message.embeds[0])
+			else:
+				await aceFeed.send(content = message.content)
 
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
