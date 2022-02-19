@@ -27,7 +27,7 @@ staff_perm = {
 	]
 }
 
-class reactionrole(commands.Cog):
+class heistutils(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		
@@ -37,7 +37,9 @@ class reactionrole(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
-        # sticky bot functionality
+        # heist utils
+		if message.author.bot:
+			return
 		if message.channel.id == 806988762299105330:
 			word_list = ['discord.gg']
 
@@ -81,6 +83,18 @@ class reactionrole(commands.Cog):
 					await partnerHeists.set_permissions(robot, overwrite=overwrite)
 				except:
 					print("Error in partner heist channel")
+		elif message.channel.id == 939749391965757480:
+			
+			gk = message.guild
+			aceFeed = gk.get_channel(944490857111896064)
+
+			am = discord.AllowedMentions(
+				users=False,  # Whether to ping individual user @mentions
+				everyone=False,  # Whether to ping @everyone or @here mentions
+				roles=False,  # Whether to ping role @mentions
+				replied_user=False,  # Whether to ping on replies to messages
+			)
+			await aceFeed.send(content=message.content, allowed_mentions=am)
 
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
@@ -451,4 +465,4 @@ class reactionrole(commands.Cog):
 		self.bot.heist_setup_data = deepcopy(data)
 
 def setup(bot):
-	bot.add_cog(reactionrole(bot))
+	bot.add_cog(heistutils(bot))
