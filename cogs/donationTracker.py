@@ -51,20 +51,53 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
     @commands.group(name="donation", aliases=['dono'])
     @commands.check_any(checks.can_use(), checks.is_me())
-    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
     async def donation(self, ctx):
         if ctx.invoked_subcommand is None:
-            await ctx.send(f"use `help donation` to know more!!!")
+            # await ctx.message.delete()
+            help = discord.Embed(
+                title = "Donation Tracker",
+                description = f"Track all Donations",
+                color = 0x9e3bff,
+                timestamp=datetime.datetime.utcnow()
+            )
+            help.add_field(
+                name="<a:TGK_sparkles:838838345316040744> __Donor Bank__",
+                value=  f"Usage = `?[bal|balance] <member>` \n"
+                        f"Ex: `?bal @user`",
+                inline = False)
+            help.add_field(
+                name="<a:TGK_sparkles:838838345316040744> __Nickname__",
+                value=f"usage = `?[nick|ign] <member> <nick>`\n"
+                    f"ex = `?nick @user haddi`",
+                inline = False)
+            help.add_field(
+                name="<a:TGK_sparkles:838838345316040744> __Regular Donation__",
+                value=  f"**1.** Add donation to donor's bank\n"
+                        f"ex = `?[donation|dono] [add|a] <member> <amount>`\n"
+                        f"**2.** Remove donation from donor's bank\n"
+                        f"ex = `?[donation|dono] [remove|r] <member> <amount>`\n"
+                        f"**3.** Displays top donors of the Server\n"
+                        f"ex = `?[donation|dono] [leaderboard|lb]`\n",
+                inline = False)
+            
+            help.set_author(name=ctx.guild.name,
+                                icon_url=ctx.guild.icon_url)
+            help.set_footer(
+                text=f"Developed by utki007 & Jay", icon_url=self.bot.user.avatar_url)
+            # help.set_thumbnail(
+            #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
+            await ctx.send(embed = help)
 
     @donation.command(name="add", description="Add Donation for a member", usage="<member> <amount>", aliases=['a'])
     @commands.check_any(checks.can_use(), checks.is_me())
-    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058 ), commands.is_owner())
-    async def adono(self, ctx, member: discord.Member, amount: float):
+    async def adono(self, ctx, member: discord.Member, amount):
 
         try:
-            amount = int(amount)
+            amount = await convert_to_numeral(amount)
+            amount = await calculate(amount)
         except:
             await ctx.send(":warning: Invalid amount provided!! Try Again!! :warning:")
+            return
 
         myquery = {"_id": member.id}
         info = self.mycol.find(myquery)
@@ -179,9 +212,15 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
     @donation.command(name="remove", description="Remove donation from a member", usage="<member> <amount>", aliases=['r'])
     @commands.check_any(checks.can_use(), checks.is_me())
     #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
-    async def rdono(self, ctx, member: discord.Member, amount: float):
+    async def rdono(self, ctx, member: discord.Member, amount):
 
-        amount = int(amount)
+        try:
+            amount = await convert_to_numeral(amount)
+            amount = await calculate(amount)
+        except:
+            await ctx.send(":warning: Invalid amount provided!! Try Again!! :warning:")
+            return
+
         myquery = {"_id": member.id}
         info = self.mycol.find(myquery)
         flag = 0
@@ -303,7 +342,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
     @donation.command(name="leaderboard", description="Checout top donators", usage="", aliases=['lb'])
     @commands.check_any(checks.can_use(), checks.is_me())
-    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636), commands.is_owner())
     async def topdono(self, ctx,  number:int=5):
 
         if number<5:
@@ -536,14 +574,14 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             info = self.mycol.update_many({}, myquery)
 
             if info:
-                await ctx.message.add_reaction("<a:tick:823850808264097832>")
+                await ctx.message.add_reaction(self.bot.emojis_list["Check"])
                 await ctx.send(f" Event {name} added. ")
             else:
-                await ctx.message.add_reaction("<a:invalid:823999689879191552>")
+                await ctx.message.add_reaction("<a:tgk_cross:840637370038353940>")
                 await ctx.send(f" Unable to add {name} event. ")
 
         else:
-            await ctx.message.add_reaction("<a:ban:823998531827400795>")
+            await ctx.message.add_reaction("<a:tgk_banhammer:849699763065585734>")
             await ctx.send(f"⚠ {ctx.author.mention}, you are __**UNAUTHORIZED**__ to use this command ⚠")
 
     @commands.command(name="remove-event", description="Add Special Events", usage="<name>", hidden=True)
@@ -556,30 +594,67 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
             try:
                 self.mycol.update_many({}, myquery)
-                await ctx.message.add_reaction("<a:tick:823850808264097832>")
+                await ctx.message.add_reaction(self.bot.emojis_list["Check"])
                 await ctx.send(f" Event {name} removed. ")
             except:
-                await ctx.message.add_reaction("<a:invalid:823999689879191552>")
+                await ctx.message.add_reaction("<a:tgk_cross:840637370038353940>")
                 await ctx.send(f" Unable to remove {name} event. ")
 
         else:
-            await ctx.message.add_reaction("<a:ban:823998531827400795>")
+            await ctx.message.add_reaction("<a:tgk_banhammer:849699763065585734>")
             await ctx.send(f"⚠ {ctx.author.mention}, you are __**UNAUTHORIZED**__ to use this command ⚠")
 
     @commands.group()
-    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058), commands.is_owner())
     @commands.check_any(checks.can_use(), checks.is_me())
     async def celeb(self, ctx):
         if ctx.invoked_subcommand is None:
-            await ctx.send(f"use `help celeb` to know more!!!")
+            # await ctx.message.delete()
+            help = discord.Embed(
+                title = "Donation Tracker",
+                description = f"Track all Donations",
+                color = 0x9e3bff,
+                timestamp=datetime.datetime.utcnow()
+            )
+            help.add_field(
+                name="<a:TGK_sparkles:838838345316040744> __Donor Bank__",
+                value=  f"Usage = `?[bal|balance] <member>` \n"
+                        f"Ex: `?bal @user`",
+                inline = False)
+            help.add_field(
+                name="<a:TGK_sparkles:838838345316040744> __Nickname__",
+                value=f"usage = `?[nick|ign] <member> <nick>`\n"
+                    f"ex = `?nick @user haddi`",
+                inline = False)
+            help.add_field(
+                name="<a:TGK_sparkles:838838345316040744> __Special Donation__",
+                value=  f"**1.** Add donation to a special event\n"
+                        f"ex = `?celeb add <event-name> <member> <amount>`\n"
+                        f"**2.** Remove donation from a special event\n"
+                        f"ex = `?celeb remove <event-name> <member> <amount>`\n"
+                        f"**3.** Displays top donors for the Event\n"
+                        f"ex = `?celeb lb <event-name>`\n",
+                inline = False)
+            
+            help.set_author(name=ctx.guild.name,
+                                icon_url=ctx.guild.icon_url)
+            help.set_footer(
+                text=f"Developed by utki007 & Jay", icon_url=self.bot.user.avatar_url)
+            # help.set_thumbnail(
+            #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
+            await ctx.send(embed = help)
 
     @celeb.command(name="add", description="Add donation to a special event", usage="<event-name> <member> <amount>",aliases=["a"])
-    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916,818129661325869058 ), commands.is_owner())
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def add(self, ctx, name: str, member: discord.Member, amount: float):
+    async def add(self, ctx, name: str, member: discord.Member, amount):
 
-        amount = int(amount)
-            
+        
+        try:
+            amount = await convert_to_numeral(amount)
+            amount = await calculate(amount)
+        except:
+            await ctx.send(":warning: Invalid amount provided!! Try Again!! :warning:")
+            return
+
         myquery = {"_id": member.id}
         info = self.mycol.find(myquery)
         flag = 0
@@ -734,9 +809,16 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                     pass
 
     @celeb.command(name="remove", description="Remove donation from a special", usage="<event-name> <member> <amount>",aliases=["r"])
-    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def remove(self, ctx, name: str, member: discord.Member, amount: float):
+    async def remove(self, ctx, name: str, member: discord.Member, amount):
+
+        
+        try:
+            amount = await convert_to_numeral(amount)
+            amount = await calculate(amount)
+        except:
+            await ctx.send(":warning: Invalid amount provided!! Try Again!! :warning:")
+            return
 
         myquery = {"_id": member.id}
         info = self.mycol.find(myquery)
@@ -883,7 +965,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             pass
 
     @celeb.command(name="lb", description="Remove donation from a special", usage="<event-name>")
-    #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636), commands.is_owner())
     @commands.check_any(checks.can_use(), checks.is_me())
     async def _leaderboard(self, ctx, name : str, number: int = 1):
         myquery = self.mycol.find(
@@ -945,7 +1026,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         id = "name"
         bal = "bal"
         embed = discord.Embed(
-            title=f"<a:TGK_Pandaswag:830525027341565982> **`TGK's {name.upper()} Spl. Donators`** <a:TGK_Pandaswag:830525027341565982>",
+            title=f"<a:TGK_Pandaswag:830525027341565982> **`TGK's {name.upper()} Spl. Top 10 Donators`** <a:TGK_Pandaswag:830525027341565982>",
             description=f"```|{'🏆': ^3}|{'Name': ^15}|{'Donated':>8} |\n"
             f"{desc}```\n\n",
             colour=member.colour,
