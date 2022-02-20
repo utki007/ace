@@ -61,7 +61,62 @@ async def on_ready():
         "100" : guild.get_role(940581347267866625),
         "250" : guild.get_role(942719030752583680)
     }
-    
+
+    bot.premium_colour_users = [
+        guild.get_role(810128946791579679),
+        guild.get_role(810128522365763615),
+        guild.get_role(836228842397106176),
+        guild.get_role(786477872029892639),
+        guild.get_role(811308414889361458),
+        guild.get_role(836551065733431348),
+        guild.get_role(821052747268358184),
+        guild.get_role(818129661325869058)
+	]
+		
+    bot.elite_colour_users = [
+        guild.get_role(810128688267919381),
+        guild.get_role(810129351692648479),
+        guild.get_role(835866393458901033),
+        guild.get_role(806804472700600400),
+        guild.get_role(836551065733431348),
+        guild.get_role(830013421239140403),
+        guild.get_role(821052747268358184),
+        guild.get_role(818129661325869058),
+        guild.get_role(786477872029892639)
+
+    ]	
+
+    bot.legendary_colour_users = [
+        guild.get_role(810129497931513868),
+        guild.get_role(810129641473703956),
+        guild.get_role(806804472700600400),
+        guild.get_role(830013421239140403),
+        guild.get_role(821052747268358184),
+        guild.get_role(818129661325869058),
+        guild.get_role(803614652989702194) 
+    ]
+
+    bot.all_colour_pack = [
+        guild.get_role(942690127027765268),
+        guild.get_role(943531588023648346),
+        guild.get_role(943531618239389697),
+        guild.get_role(943531655694536824),
+        guild.get_role(943532255538720788),
+        guild.get_role(943532262929076267),
+        guild.get_role(944643487540850758),
+        guild.get_role(943532281392418818),
+        guild.get_role(943533526874202163),
+        guild.get_role(943533503277051964),
+        guild.get_role(943531635675115593),
+        guild.get_role(943532271326076959),
+        guild.get_role(944643492896972840),
+        guild.get_role(943533511132995594),
+        guild.get_role(943532546514370650),
+        guild.get_role(944643499272310804),
+        guild.get_role(943533516895965224),
+        guild.get_role(943533522184986636),
+        guild.get_role(944643511570030663)
+    ]
 
 #setting up tokens.py
 if os.path.exists(os.getcwd()+"./properties/tokens.json"):
@@ -79,8 +134,6 @@ else:
     bot.amari = os.environ["amari"]
 
 # logging.basicConfig(level=logging.INFO)
-
-
 @bot.command(hidden=True)
 @commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
 async def load(ctx, extension):

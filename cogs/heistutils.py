@@ -27,6 +27,13 @@ staff_perm = {
 	]
 }
 
+founder_perm = {
+	785839283847954433:
+	[
+		create_permission(785842380565774368, SlashCommandPermissionType.ROLE, True)
+	]
+}
+
 class heistutils(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
@@ -617,7 +624,7 @@ class heistutils(commands.Cog):
 		await ctx.send(content=f"Created",hidden=True)
 
 	@cog_ext.cog_subcommand(base="Heist", name="Setup",description="Setup Role Specific Heist", guild_ids=guild_ids,
-		base_default_permission=True,
+		base_default_permission=False, base_permissions=founder_perm,
 		options=[
 			create_option(name="voterbypass", description="Can voter bypass?", required=True, option_type=5),
 			create_option(name="required_role", description="Enter requirement role to Unhide channel for it", required=True, option_type=8),

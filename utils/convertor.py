@@ -65,3 +65,14 @@ async def calculate(query):
 
     output_string = output.body.replace("{m:", "").replace("}", "")
     return int(float(output_string))
+
+async def clean_colour_roles(client,user):
+    colour_pack = client.all_colour_pack
+    user_roles = user.roles
+    for i in colour_pack:
+        if i in user_roles:
+            await user.remove_roles(i)
+
+
+
+

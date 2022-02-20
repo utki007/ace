@@ -1,7 +1,3 @@
-import asyncio
-import datetime
-import re
-import random
 import discord
 from discord.ext import commands, tasks
 from copy import deepcopy
@@ -56,7 +52,7 @@ class selfroles(commands.Cog):
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
 	@cog_ext.cog_subcommand(base="Selfrole", name="Gender",description="Gender related self-roles", guild_ids=guild_ids,
-		base_default_permission=False, base_permissions=founder_perm
+		base_default_permission=True
 	)
 	async def selfgenderrr(self, ctx):
 		await ctx.defer(hidden=True)
@@ -83,7 +79,7 @@ class selfroles(commands.Cog):
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
 	@cog_ext.cog_subcommand(base="Selfrole", name="Server",description="Server related self-roles", guild_ids=guild_ids,
-		base_default_permission=False, base_permissions=founder_perm
+		base_default_permission=True
 	)
 	async def selfserverrr(self, ctx):
 		await ctx.defer(hidden=True)
@@ -111,7 +107,7 @@ class selfroles(commands.Cog):
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
 	@cog_ext.cog_subcommand(base="Selfrole", name="Bot",description="Bot related self-roles", guild_ids=guild_ids,
-		base_default_permission=False, base_permissions=founder_perm
+		base_default_permission=True
 	)
 	async def selfbotrr(self, ctx):
 		await ctx.defer(hidden=True)
@@ -134,7 +130,7 @@ class selfroles(commands.Cog):
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
 	@cog_ext.cog_subcommand(base="Selfrole", name="Dank",description="Dank related self-roles", guild_ids=guild_ids,
-		base_default_permission=False, base_permissions=founder_perm
+		base_default_permission=True
 	)
 	async def selfdankrr(self, ctx):
 		await ctx.defer(hidden=True)
@@ -161,7 +157,7 @@ class selfroles(commands.Cog):
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
 	@cog_ext.cog_subcommand(base="Selfrole", name="Heist",description="Heist related self-roles", guild_ids=guild_ids,
-		base_default_permission=False, base_permissions=founder_perm
+		base_default_permission=True
 	)
 	async def selfheistrr(self, ctx):
 		await ctx.defer(hidden=True)
@@ -186,7 +182,7 @@ class selfroles(commands.Cog):
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
 	@cog_ext.cog_subcommand(base="Selfrole", name="Partner",description="Partnership related self-roles", guild_ids=guild_ids,
-		base_default_permission=False, base_permissions=founder_perm
+		base_default_permission=True
 	)
 	async def selfpartnerrr(self, ctx):
 		await ctx.defer(hidden=True)
@@ -209,7 +205,7 @@ class selfroles(commands.Cog):
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
 	@cog_ext.cog_subcommand(base="Selfrole", name="Gamer",description="Gamer related self-roles", guild_ids=guild_ids,
-		base_default_permission=False, base_permissions=founder_perm
+		base_default_permission=True
 	)
 	async def selfgamerrr(self, ctx):
 		await ctx.defer(hidden=True)
