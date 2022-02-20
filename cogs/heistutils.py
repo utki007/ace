@@ -98,411 +98,406 @@ class heistutils(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
+		
+		if ctx.custom_id.startswith("reaction"):
 
-		if ctx.custom_id == "setup:heist":
-			await ctx.defer(hidden=True)
-			data = self.bot.heist_setup_data
-			setup_roles = data.values()
-			roles = []
-			role_map = {
-				804068344612913163: "reaction:heist",
-				804069957528584212: "reaction:partnerHeist",
-				786884615192313866: "reaction:voted"
-			}
-			for i in setup_roles:
-				if i != None:
-					roles.append(discord.utils.get(ctx.guild.roles, id=int(i)))
-			# await ctx.send(f'{", ".join(i.mention for i in roles)}',hidden=True)
-			req_role = []
-			rolebuttons = []
-
-			for i in roles:
-				if i in ctx.author.roles:
-					return await ctx.send(f"You have {i.mention} which allows you to join this hiest!",hidden=True)
-
-			for i in roles:
-				if i.id in role_map.keys():
-					rolebuttons.append(create_button(style=ButtonStyle.blurple, label=i.name, disabled=False, custom_id=role_map[i.id]))
+			if ctx.custom_id == "reaction:18+":
+				await ctx.defer(hidden=True)
+				adult = discord.utils.get(ctx.guild.roles, id=942704531031068723)
+				child = discord.utils.get(ctx.guild.roles, id=942704574127550495)
+				if adult not in ctx.author.roles:
+					await ctx.author.add_roles(adult)
+					if child in ctx.author.roles:
+						await ctx.author.remove_roles(child)
+					await ctx.send(f"The role {adult.mention} has been added to you.", hidden=True)
 				else:
-					req_role.append(i)
-			embed = discord.Embed(title=f"Roles Required:",description=f" {req_role}", color=ctx.author.color)
-        
-			msg = await ctx.send(embed=embed, components=[create_actionrow(*rolebuttons)],hidden=True)
-		
-		elif ctx.custom_id == "reaction:18+":
-			await ctx.defer(hidden=True)
-			adult = discord.utils.get(ctx.guild.roles, id=942704531031068723)
-			child = discord.utils.get(ctx.guild.roles, id=942704574127550495)
-			if adult not in ctx.author.roles and child not in ctx.author.roles:
-				await ctx.author.add_roles(adult)
-				await ctx.send(f"The role {adult.mention} has been added to you.", hidden=True)
-			elif adult not in ctx.author.roles and child in ctx.author.roles:
-				await ctx.author.remove_roles(child)
-				await ctx.author.add_roles(adult)
-				await ctx.send(f"The role {adult.mention} has been added to you and {child.mention} has been removed from you.", hidden=True)
-			elif adult in ctx.author.roles and child in ctx.author.roles:
-				await ctx.author.remove_roles(adult)
-				await ctx.send(f"The role {adult.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.remove_roles(adult)
-				await ctx.author.add_roles(child)
-				await ctx.send(f"The role {adult.mention} has been removed from you and {child.mention} has been added to you.", hidden=True)
-		
-		elif ctx.custom_id == "reaction:18-":
-			await ctx.defer(hidden=True)
-			adult = discord.utils.get(ctx.guild.roles, id=942704531031068723)
-			child = discord.utils.get(ctx.guild.roles, id=942704574127550495)
-			if adult not in ctx.author.roles and child not in ctx.author.roles:
-				await ctx.author.add_roles(child)
-				await ctx.send(f"The role {child.mention} has been added to you.", hidden=True)
-			elif adult not in ctx.author.roles and child in ctx.author.roles:
-				await ctx.author.remove_roles(child)
-				await ctx.author.add_roles(adult)
-				await ctx.send(f"The role {child.mention} has been removed from you and {adult.mention} has been added to you.", hidden=True)
-			elif adult in ctx.author.roles and child in ctx.author.roles:
-				await ctx.author.remove_roles(child)
-				await ctx.send(f"The role {child.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.remove_roles(adult)
-				await ctx.author.add_roles(child)
-				await ctx.send(f"The role {child.mention} has been added to you and {adult.mention} has been removed from you.", hidden=True)
-	
-		elif ctx.custom_id == "reaction:male":
-			await ctx.defer(hidden=True)
-			male = discord.utils.get(ctx.guild.roles, id=942704347643531314)
-			female = discord.utils.get(ctx.guild.roles, id=942704388517027860)
-			nonbinary = discord.utils.get(ctx.guild.roles, id=943538055602642967)
-			if male in ctx.author.roles:
-				await ctx.author.remove_roles(male)
-				if female in ctx.author.roles:
-					await ctx.author.remove_roles(female)
-				if nonbinary in ctx.author.roles:
-					await ctx.author.remove_roles(nonbinary)
-				await ctx.send(f"The role {male.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(male)
-				if female in ctx.author.roles:
-					await ctx.author.remove_roles(female)
-				if nonbinary in ctx.author.roles:
-					await ctx.author.remove_roles(nonbinary)
-				await ctx.send(f"The role {male.mention} has been added to you.", hidden=True)
-		
-		elif ctx.custom_id == "reaction:female":
-			await ctx.defer(hidden=True)
-			male = discord.utils.get(ctx.guild.roles, id=942704347643531314)
-			female = discord.utils.get(ctx.guild.roles, id=942704388517027860)
-			nonbinary = discord.utils.get(ctx.guild.roles, id=943538055602642967)
-			if female in ctx.author.roles:
-				await ctx.author.remove_roles(female)
-				if male in ctx.author.roles:
-					await ctx.author.remove_roles(male)
-				if nonbinary in ctx.author.roles:
-					await ctx.author.remove_roles(nonbinary)
-				await ctx.send(f"The role {female.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(female)
-				if male in ctx.author.roles:
-					await ctx.author.remove_roles(male)
-				if nonbinary in ctx.author.roles:
-					await ctx.author.remove_roles(nonbinary)
-				await ctx.send(f"The role {female.mention} has been added to you.", hidden=True)
-		
-		elif ctx.custom_id == "reaction:nonbinary":
-			await ctx.defer(hidden=True)
-			male = discord.utils.get(ctx.guild.roles, id=942704347643531314)
-			female = discord.utils.get(ctx.guild.roles, id=942704388517027860)
-			nonbinary = discord.utils.get(ctx.guild.roles, id=943538055602642967)
-			if nonbinary in ctx.author.roles:
-				await ctx.author.remove_roles(nonbinary)
-				if male in ctx.author.roles:
-					await ctx.author.remove_roles(male)
-				if female in ctx.author.roles:
-					await ctx.author.remove_roles(female)
-				await ctx.send(f"The role {nonbinary.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(nonbinary)
-				if male in ctx.author.roles:
-					await ctx.author.remove_roles(male)
-				if female in ctx.author.roles:
-					await ctx.author.remove_roles(female)
-				await ctx.send(f"The role {nonbinary.mention} has been added to you.", hidden=True)
-
-		elif ctx.custom_id == "reaction:announce":
-			await ctx.defer(hidden=True)
-			announce = discord.utils.get(ctx.guild.roles, id=835442987382210570)
-			if announce in ctx.author.roles:
-				await ctx.author.remove_roles(announce)
-				await ctx.send(f"The role {announce.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(announce)
-				await ctx.send(f"The role {announce.mention} has been added to you.", hidden=True)
-
-		elif ctx.custom_id == "reaction:update":
-			await ctx.defer(hidden=True)
-			update = discord.utils.get(ctx.guild.roles, id=804055217108680725)
-			if update in ctx.author.roles:
-				await ctx.author.remove_roles(update)
-				await ctx.send(f"The role {update.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(update)
-				await ctx.send(f"The role {update.mention} has been added to you.", hidden=True)
-				
-		elif ctx.custom_id == "reaction:chat":
-			await ctx.defer(hidden=True)
-			chat = discord.utils.get(ctx.guild.roles, id=942704600883023872)
-			if chat in ctx.author.roles:
-				await ctx.author.remove_roles(chat)
-				await ctx.send(f"The role {chat.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(chat)
-				await ctx.send(f"The role {chat.mention} has been added to you.", hidden=True)
-				
-		elif ctx.custom_id == "reaction:danker":
-			await ctx.defer(hidden=True)
-			danker = discord.utils.get(ctx.guild.roles, id=801392998465404958)
-			if danker in ctx.author.roles:
-				await ctx.author.remove_roles(danker)
-				await ctx.send(f"The role {danker.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(danker)
-				await ctx.send(f"The role {danker.mention} has been added to you.", hidden=True)
-				
-		elif ctx.custom_id == "reaction:gambler":
-			await ctx.defer(hidden=True)
-			gambler = discord.utils.get(ctx.guild.roles, id=791713762041266226)
-			if gambler in ctx.author.roles:
-				await ctx.author.remove_roles(gambler)
-				await ctx.send(f"The role {gambler.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(gambler)
-				await ctx.send(f"The role {gambler.mention} has been added to you.", hidden=True)
-				
-		elif ctx.custom_id == "reaction:mudae":
-			await ctx.defer(hidden=True)
-			mudae = discord.utils.get(ctx.guild.roles, id=842809745802526730)
-			if mudae in ctx.author.roles:
-				await ctx.author.remove_roles(mudae)
-				await ctx.send(f"The role {mudae.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(mudae)
-				await ctx.send(f"The role {mudae.mention} has been added to you.", hidden=True)
-				
-		elif ctx.custom_id == "reaction:valo":
-			await ctx.defer(hidden=True)
-			valo = discord.utils.get(ctx.guild.roles, id=795711130378829835)
-			if valo in ctx.author.roles:
-				await ctx.author.remove_roles(valo)
-				await ctx.send(f"The role {valo.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(valo)
-				await ctx.send(f"The role {valo.mention} has been added to you.", hidden=True)
-				
-		elif ctx.custom_id == "reaction:bgmi":
-			await ctx.defer(hidden=True)
-			bgmi = discord.utils.get(ctx.guild.roles, id=795711140108697630)
-			if bgmi in ctx.author.roles:
-				await ctx.author.remove_roles(bgmi)
-				await ctx.send(f"The role {bgmi.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(bgmi)
-				await ctx.send(f"The role {bgmi.mention} has been added to you.", hidden=True)
-				
-		elif ctx.custom_id == "reaction:pro":
-			await ctx.defer(hidden=True)
-			pro = discord.utils.get(ctx.guild.roles, id=790667905330970674)
-			bl = discord.utils.get(ctx.guild.roles, id=936900151325360138)
-			lv5 = discord.utils.get(ctx.guild.roles, id=811307705955909692)
-
-			if pro in ctx.author.roles:
-				await ctx.author.remove_roles(pro)
-				await ctx.send(f"The role {pro.mention} has been removed from you.", hidden=True)
-			else:
-				if bl in ctx.author.roles:
-					await ctx.send(f"You have been blacklisted from this role. Head towards <#785901543349551104> for any further queries", hidden=True)
-					return
-				if lv5 in ctx.author.roles:
-					await ctx.author.add_roles(pro)
-					await ctx.send(f"The role {pro.mention} has been added to you.", hidden=True)
+					await ctx.author.remove_roles(adult)
+					if child not in ctx.author.roles:
+						await ctx.author.add_roles(child)
+					await ctx.send(f"The role {adult.mention} has been removed from you.", hidden=True)
+			
+			elif ctx.custom_id == "reaction:18-":
+				await ctx.defer(hidden=True)
+				adult = discord.utils.get(ctx.guild.roles, id=942704531031068723)
+				child = discord.utils.get(ctx.guild.roles, id=942704574127550495)
+				if child not in ctx.author.roles:
+					await ctx.author.add_roles(child)
+					if adult in ctx.author.roles:
+						await ctx.author.remove_roles(adult)
+					await ctx.send(f"The role {child.mention} has been added to you.", hidden=True)
 				else:
-					await ctx.send(f"Need to have {lv5.mention} role to get {pro.mention} role.", hidden=True)
+					await ctx.author.remove_roles(child)
+					if adult not in ctx.author.roles:
+						await ctx.author.add_roles(child)
+					await ctx.send(f"The role {child.mention} has been removed from you.", hidden=True)
+		
+			elif ctx.custom_id == "reaction:male":
+				await ctx.defer(hidden=True)
+				male = discord.utils.get(ctx.guild.roles, id=942704347643531314)
+				female = discord.utils.get(ctx.guild.roles, id=942704388517027860)
+				nonbinary = discord.utils.get(ctx.guild.roles, id=943538055602642967)
+				if male in ctx.author.roles:
+					await ctx.author.remove_roles(male)
+					if female in ctx.author.roles:
+						await ctx.author.remove_roles(female)
+					if nonbinary in ctx.author.roles:
+						await ctx.author.remove_roles(nonbinary)
+					await ctx.send(f"The role {male.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(male)
+					if female in ctx.author.roles:
+						await ctx.author.remove_roles(female)
+					if nonbinary in ctx.author.roles:
+						await ctx.author.remove_roles(nonbinary)
+					await ctx.send(f"The role {male.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "reaction:female":
+				await ctx.defer(hidden=True)
+				male = discord.utils.get(ctx.guild.roles, id=942704347643531314)
+				female = discord.utils.get(ctx.guild.roles, id=942704388517027860)
+				nonbinary = discord.utils.get(ctx.guild.roles, id=943538055602642967)
+				if female in ctx.author.roles:
+					await ctx.author.remove_roles(female)
+					if male in ctx.author.roles:
+						await ctx.author.remove_roles(male)
+					if nonbinary in ctx.author.roles:
+						await ctx.author.remove_roles(nonbinary)
+					await ctx.send(f"The role {female.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(female)
+					if male in ctx.author.roles:
+						await ctx.author.remove_roles(male)
+					if nonbinary in ctx.author.roles:
+						await ctx.author.remove_roles(nonbinary)
+					await ctx.send(f"The role {female.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "reaction:nonbinary":
+				await ctx.defer(hidden=True)
+				male = discord.utils.get(ctx.guild.roles, id=942704347643531314)
+				female = discord.utils.get(ctx.guild.roles, id=942704388517027860)
+				nonbinary = discord.utils.get(ctx.guild.roles, id=943538055602642967)
+				if nonbinary in ctx.author.roles:
+					await ctx.author.remove_roles(nonbinary)
+					if male in ctx.author.roles:
+						await ctx.author.remove_roles(male)
+					if female in ctx.author.roles:
+						await ctx.author.remove_roles(female)
+					await ctx.send(f"The role {nonbinary.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(nonbinary)
+					if male in ctx.author.roles:
+						await ctx.author.remove_roles(male)
+					if female in ctx.author.roles:
+						await ctx.author.remove_roles(female)
+					await ctx.send(f"The role {nonbinary.mention} has been added to you.", hidden=True)
 
+			elif ctx.custom_id == "reaction:announce":
+				await ctx.defer(hidden=True)
+				announce = discord.utils.get(ctx.guild.roles, id=835442987382210570)
+				if announce in ctx.author.roles:
+					await ctx.author.remove_roles(announce)
+					await ctx.send(f"The role {announce.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(announce)
+					await ctx.send(f"The role {announce.mention} has been added to you.", hidden=True)
 
-		elif ctx.custom_id == "reaction:heist":
-			await ctx.defer(hidden=True)
-			heist = discord.utils.get(ctx.guild.roles, id=804068344612913163)
-			if heist in ctx.author.roles:
-				await ctx.author.remove_roles(heist)
-				await ctx.send(f"The role {heist.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(heist)
-				await ctx.send(f"The role {heist.mention} has been added to you.", hidden=True)
-		
-		elif ctx.custom_id == "reaction:partnerHeist":
-			await ctx.defer(hidden=True)
-			partnerHeist = discord.utils.get(ctx.guild.roles, id=804069957528584212)
-			if partnerHeist in ctx.author.roles:
-				await ctx.author.remove_roles(partnerHeist)
-				await ctx.send(f"The role {partnerHeist.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(partnerHeist)
-				await ctx.send(f"The role {partnerHeist.mention} has been added to you.", hidden=True)
-		
-		elif ctx.custom_id == "reaction:outside":
-			await ctx.defer(hidden=True)
-			outside = discord.utils.get(ctx.guild.roles, id=806795854475165736)
-			if outside in ctx.author.roles:
-				await ctx.author.remove_roles(outside)
-				await ctx.send(f"The role {outside.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(outside)
-				await ctx.send(f"The role {outside.mention} has been added to you.", hidden=True)
-		
-		elif ctx.custom_id == "reaction:partnership":
-			await ctx.defer(hidden=True)
-			partnership = discord.utils.get(ctx.guild.roles, id=797448080223109120)
-			if partnership in ctx.author.roles:
-				await ctx.author.remove_roles(partnership)
-				await ctx.send(f"The role {partnership.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(partnership)
-				await ctx.send(f"The role {partnership.mention} has been added to you.", hidden=True)
-		
-		elif ctx.custom_id == "reaction:nopartnership":
-			await ctx.defer(hidden=True)
-			nopartnership = discord.utils.get(ctx.guild.roles, id=810593886720098304)
-			if nopartnership in ctx.author.roles:
-				await ctx.author.remove_roles(nopartnership)
-				await ctx.send(f"The role {nopartnership.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(nopartnership)
-				await ctx.send(f"The role {nopartnership.mention} has been added to you.", hidden=True)
-		
-		elif ctx.custom_id == "reaction:giveaways":
-			await ctx.defer(hidden=True)
-			giveaways = discord.utils.get(ctx.guild.roles, id=800685251276963861)
-			if giveaways in ctx.author.roles:
-				await ctx.author.remove_roles(giveaways)
-				await ctx.send(f"The role {giveaways.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(giveaways)
-				await ctx.send(f"The role {giveaways.mention} has been added to you.", hidden=True)
-		
-		elif ctx.custom_id == "reaction:flash":
-			await ctx.defer(hidden=True)
-			flash = discord.utils.get(ctx.guild.roles, id=822021066548969482)
-			if flash in ctx.author.roles:
-				await ctx.author.remove_roles(flash)
-				await ctx.send(f"The role {flash.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(flash)
-				await ctx.send(f"The role {flash.mention} has been added to you.", hidden=True)
-		
-		elif ctx.custom_id == "reaction:other":
-			await ctx.defer(hidden=True)
-			other = discord.utils.get(ctx.guild.roles, id=848809346972516363)
-			if other in ctx.author.roles:
-				await ctx.author.remove_roles(other)
-				await ctx.send(f"The role {other.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(other)
-				await ctx.send(f"The role {other.mention} has been added to you.", hidden=True)
-		
-		elif ctx.custom_id == "reaction:event":
-			await ctx.defer(hidden=True)
-			event = discord.utils.get(ctx.guild.roles, id=836925033506275399)
-			if event in ctx.author.roles:
-				await ctx.author.remove_roles(event)
-				await ctx.send(f"The role {event.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(event)
-				await ctx.send(f"The role {event.mention} has been added to you.", hidden=True)
-		
-		elif ctx.custom_id == "reaction:movie":
-			await ctx.defer(hidden=True)
-			movie = discord.utils.get(ctx.guild.roles, id=791347199119327252)
-			if movie in ctx.author.roles:
-				await ctx.author.remove_roles(movie)
-				await ctx.send(f"The role {movie.mention} has been removed from you.", hidden=True)
-			else:
-				await ctx.author.add_roles(movie)
-				await ctx.send(f"The role {movie.mention} has been added to you.", hidden=True)
+			elif ctx.custom_id == "reaction:update":
+				await ctx.defer(hidden=True)
+				update = discord.utils.get(ctx.guild.roles, id=804055217108680725)
+				if update in ctx.author.roles:
+					await ctx.author.remove_roles(update)
+					await ctx.send(f"The role {update.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(update)
+					await ctx.send(f"The role {update.mention} has been added to you.", hidden=True)
+					
+			elif ctx.custom_id == "reaction:chat":
+				await ctx.defer(hidden=True)
+				chat = discord.utils.get(ctx.guild.roles, id=942704600883023872)
+				if chat in ctx.author.roles:
+					await ctx.author.remove_roles(chat)
+					await ctx.send(f"The role {chat.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(chat)
+					await ctx.send(f"The role {chat.mention} has been added to you.", hidden=True)
+					
+			elif ctx.custom_id == "reaction:danker":
+				await ctx.defer(hidden=True)
+				danker = discord.utils.get(ctx.guild.roles, id=801392998465404958)
+				if danker in ctx.author.roles:
+					await ctx.author.remove_roles(danker)
+					await ctx.send(f"The role {danker.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(danker)
+					await ctx.send(f"The role {danker.mention} has been added to you.", hidden=True)
+					
+			elif ctx.custom_id == "reaction:gambler":
+				await ctx.defer(hidden=True)
+				gambler = discord.utils.get(ctx.guild.roles, id=791713762041266226)
+				if gambler in ctx.author.roles:
+					await ctx.author.remove_roles(gambler)
+					await ctx.send(f"The role {gambler.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(gambler)
+					await ctx.send(f"The role {gambler.mention} has been added to you.", hidden=True)
+					
+			elif ctx.custom_id == "reaction:mudae":
+				await ctx.defer(hidden=True)
+				mudae = discord.utils.get(ctx.guild.roles, id=842809745802526730)
+				if mudae in ctx.author.roles:
+					await ctx.author.remove_roles(mudae)
+					await ctx.send(f"The role {mudae.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(mudae)
+					await ctx.send(f"The role {mudae.mention} has been added to you.", hidden=True)
+					
+			elif ctx.custom_id == "reaction:valo":
+				await ctx.defer(hidden=True)
+				valo = discord.utils.get(ctx.guild.roles, id=795711130378829835)
+				if valo in ctx.author.roles:
+					await ctx.author.remove_roles(valo)
+					await ctx.send(f"The role {valo.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(valo)
+					await ctx.send(f"The role {valo.mention} has been added to you.", hidden=True)
+					
+			elif ctx.custom_id == "reaction:bgmi":
+				await ctx.defer(hidden=True)
+				bgmi = discord.utils.get(ctx.guild.roles, id=795711140108697630)
+				if bgmi in ctx.author.roles:
+					await ctx.author.remove_roles(bgmi)
+					await ctx.send(f"The role {bgmi.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(bgmi)
+					await ctx.send(f"The role {bgmi.mention} has been added to you.", hidden=True)
+					
+			elif ctx.custom_id == "reaction:pro":
+				await ctx.defer(hidden=True)
+				pro = discord.utils.get(ctx.guild.roles, id=790667905330970674)
+				bl = discord.utils.get(ctx.guild.roles, id=936900151325360138)
+				lv5 = discord.utils.get(ctx.guild.roles, id=811307705955909692)
 
-		elif ctx.custom_id == "reaction:voted":
-			await ctx.defer(hidden=True)
-			voted = discord.utils.get(ctx.guild.roles, id=786884615192313866)
-			if voted not in ctx.author.roles:
-				
+				if pro in ctx.author.roles:
+					await ctx.author.remove_roles(pro)
+					await ctx.send(f"The role {pro.mention} has been removed from you.", hidden=True)
+				else:
+					if bl in ctx.author.roles:
+						await ctx.send(f"You have been blacklisted from this role. Head towards <#785901543349551104> for any further queries", hidden=True)
+						return
+					if lv5 in ctx.author.roles:
+						await ctx.author.add_roles(pro)
+						await ctx.send(f"The role {pro.mention} has been added to you.", hidden=True)
+					else:
+						await ctx.send(f"Need to have {lv5.mention} role to get {pro.mention} role.", hidden=True)
+
+			elif ctx.custom_id == "reaction:heist":
+				await ctx.defer(hidden=True)
+				heist = discord.utils.get(ctx.guild.roles, id=804068344612913163)
+				if heist in ctx.author.roles:
+					await ctx.author.remove_roles(heist)
+					await ctx.send(f"The role {heist.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(heist)
+					await ctx.send(f"The role {heist.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "reaction:partnerHeist":
+				await ctx.defer(hidden=True)
+				partnerHeist = discord.utils.get(ctx.guild.roles, id=804069957528584212)
+				if partnerHeist in ctx.author.roles:
+					await ctx.author.remove_roles(partnerHeist)
+					await ctx.send(f"The role {partnerHeist.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(partnerHeist)
+					await ctx.send(f"The role {partnerHeist.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "reaction:outside":
+				await ctx.defer(hidden=True)
+				outside = discord.utils.get(ctx.guild.roles, id=806795854475165736)
+				if outside in ctx.author.roles:
+					await ctx.author.remove_roles(outside)
+					await ctx.send(f"The role {outside.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(outside)
+					await ctx.send(f"The role {outside.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "reaction:partnership":
+				await ctx.defer(hidden=True)
+				partnership = discord.utils.get(ctx.guild.roles, id=797448080223109120)
+				if partnership in ctx.author.roles:
+					await ctx.author.remove_roles(partnership)
+					await ctx.send(f"The role {partnership.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(partnership)
+					await ctx.send(f"The role {partnership.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "reaction:nopartnership":
+				await ctx.defer(hidden=True)
+				nopartnership = discord.utils.get(ctx.guild.roles, id=810593886720098304)
+				if nopartnership in ctx.author.roles:
+					await ctx.author.remove_roles(nopartnership)
+					await ctx.send(f"The role {nopartnership.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(nopartnership)
+					await ctx.send(f"The role {nopartnership.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "reaction:giveaways":
+				await ctx.defer(hidden=True)
+				giveaways = discord.utils.get(ctx.guild.roles, id=800685251276963861)
+				if giveaways in ctx.author.roles:
+					await ctx.author.remove_roles(giveaways)
+					await ctx.send(f"The role {giveaways.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(giveaways)
+					await ctx.send(f"The role {giveaways.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "reaction:flash":
+				await ctx.defer(hidden=True)
+				flash = discord.utils.get(ctx.guild.roles, id=822021066548969482)
+				if flash in ctx.author.roles:
+					await ctx.author.remove_roles(flash)
+					await ctx.send(f"The role {flash.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(flash)
+					await ctx.send(f"The role {flash.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "reaction:other":
+				await ctx.defer(hidden=True)
+				other = discord.utils.get(ctx.guild.roles, id=848809346972516363)
+				if other in ctx.author.roles:
+					await ctx.author.remove_roles(other)
+					await ctx.send(f"The role {other.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(other)
+					await ctx.send(f"The role {other.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "reaction:event":
+				await ctx.defer(hidden=True)
+				event = discord.utils.get(ctx.guild.roles, id=836925033506275399)
+				if event in ctx.author.roles:
+					await ctx.author.remove_roles(event)
+					await ctx.send(f"The role {event.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(event)
+					await ctx.send(f"The role {event.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "reaction:movie":
+				await ctx.defer(hidden=True)
+				movie = discord.utils.get(ctx.guild.roles, id=791347199119327252)
+				if movie in ctx.author.roles:
+					await ctx.author.remove_roles(movie)
+					await ctx.send(f"The role {movie.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(movie)
+					await ctx.send(f"The role {movie.mention} has been added to you.", hidden=True)
+
+			elif ctx.custom_id == "reaction:voted":
+				await ctx.defer(hidden=True)
+				voted = discord.utils.get(ctx.guild.roles, id=786884615192313866)
+				if voted not in ctx.author.roles:
+					
+					gk = self.bot.get_guild(785839283847954433)
+					emoji = await gk.fetch_emoji(942521024476487741)
+					buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
+					embed = discord.Embed(title=f"Vote for the {ctx.guild.name}", description="❥ Special <@&786884615192313866> Role with 2x Guild-wide multi.\n❥ 2,500 Casino Cash. Collect using ,collectincome in <#786117471840895016>\n❥ Access to <#929613393097293874> with 2x Amaari\n❥ Guild wide 1x Amaari.", color=ctx.author.color)
+			
+					msg = await ctx.send(embed=embed, components=[create_actionrow(*buttons)],hidden=True)
+				else:
+					await ctx.send(f"Already have voted role!",hidden=True)
+
+		elif ctx.custom_id.startswith("nopartner"):
+			if ctx.custom_id == "nopartner:yes":
+				await ctx.defer(hidden=True)
+				nopartnership = discord.utils.get(ctx.guild.roles, id=810593886720098304)
+				outside = discord.utils.get(ctx.guild.roles, id=806795854475165736)
+				channel = self.bot.get_channel(806988762299105330)
+				if nopartnership in ctx.author.roles:
+					await ctx.author.remove_roles(nopartnership)
+					await ctx.send(f"**{channel.mention}** is no longer hidden from you!",hidden=True)
+				else:
+					await ctx.send(f"**{channel.mention}** was already visible for you!",hidden=True)
+
+				guild = self.bot.get_guild(785839283847954433)
+
+				heist = discord.utils.get(guild.roles, id=804068344612913163)
+				partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
+				outside = discord.utils.get(guild.roles, id=806795854475165736)
+				partnership = discord.utils.get(guild.roles, id=797448080223109120)
+				name = "Grab roles to be pinged!"
+				event_embed = discord.Embed(
+						title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
+						description= f"<a:heisttime:932911351154741308> {self.bot.emojis_list['right']} {partnerHeist.mention}\n"
+									f"<a:peperobber:925618641112813598> {self.bot.emojis_list['right']} {outside.mention}\n"
+									f"<a:Partner:925618902673817700> {self.bot.emojis_list['right']} {partnership.mention}\n"   ,                         
+									# f"<a:nopartnership:929440715539374171> {self.bot.emojis_list['right']} {nopartnership.mention}\n",
+						color=0x9e3bff,
+						timestamp=datetime.datetime.utcnow()
+				)
+				event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
 				gk = self.bot.get_guild(785839283847954433)
-				emoji = await gk.fetch_emoji(942521024476487741)
-				buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
-				embed = discord.Embed(title=f"Vote for the {ctx.guild.name}", description="❥ Special <@&786884615192313866> Role with 2x Guild-wide multi.\n❥ 2,500 Casino Cash. Collect using ,collectincome in <#786117471840895016>\n❥ Access to <#929613393097293874> with 2x Amaari\n❥ Guild wide 1x Amaari.", color=ctx.author.color)
-        
-				msg = await ctx.send(embed=embed, components=[create_actionrow(*buttons)],hidden=True)
-			else:
-				await ctx.send(f"Already have voted role!",hidden=True)
+				dmop = self.bot.get_guild(838646783785697290)
 
-		elif ctx.custom_id == "nopartner:yes":
-			await ctx.defer(hidden=True)
-			nopartnership = discord.utils.get(ctx.guild.roles, id=810593886720098304)
-			outside = discord.utils.get(ctx.guild.roles, id=806795854475165736)
-			channel = self.bot.get_channel(806988762299105330)
-			if nopartnership in ctx.author.roles:
-				await ctx.author.remove_roles(nopartnership)
-				await ctx.send(f"**{channel.mention}** is no longer hidden from you!",hidden=True)
-			else:
-				await ctx.send(f"**{channel.mention}** was already visible for you!",hidden=True)
+				partnerheistemoji = await gk.fetch_emoji(932911351154741308)
+				heistemoji = await dmop.fetch_emoji(925617827447177247)
+				outsideheistemoji = await dmop.fetch_emoji(925618641112813598)
+				partnershipemoji = await dmop.fetch_emoji(925618902673817700)
+				buttons = [
+					# create_button(style=ButtonStyle.blurple,emoji=heistemoji, disabled=False, custom_id="reaction:heist"),
+					create_button(style=ButtonStyle.blurple,emoji=partnerheistemoji, disabled=False, custom_id="reaction:partnerHeist"),
+					create_button(style=ButtonStyle.blurple,emoji=outsideheistemoji, disabled=False, custom_id="reaction:outside"),
+					create_button(style=ButtonStyle.blurple,emoji=partnershipemoji, disabled=False, custom_id="reaction:partnership")#,
+					# create_button(style=ButtonStyle.primary,emoji=nopartneremoji, disabled=False, custom_id="reaction:nopartnership")
+				]
+				msg = await ctx.send(embed=event_embed, components=[create_actionrow(*buttons)],hidden=True)
+			
+			elif ctx.custom_id == "nopartner:no":
+				await ctx.defer(hidden=True)
+				nopartnership = discord.utils.get(ctx.guild.roles, id=810593886720098304)
+				outside = discord.utils.get(ctx.guild.roles, id=806795854475165736)
+				flag = 0
+				if nopartnership not in ctx.author.roles:
+					await ctx.author.add_roles(nopartnership)
+					# await ctx.send(f"The role {movie.mention}", hidden=True)
+					flag = 1
+				if outside in ctx.author.roles:
+					await ctx.author.remove_roles(outside)
+					flag = 1
+				channel = self.bot.get_channel(806988762299105330)
+				if flag == 1:
+					await ctx.send(f"**`{channel}`** is now successfully hidden for you!",hidden=True)
+				else:
+					await ctx.send(f"**`{channel}`** was already hidden for you!",hidden=True)
 
-			guild = self.bot.get_guild(785839283847954433)
+		elif ctx.custom_id.startswith("setup"):	
+			if ctx.custom_id == "setup:heist":
+				await ctx.defer(hidden=True)
+				data = self.bot.heist_setup_data
+				setup_roles = data.values()
+				roles = []
+				role_map = {
+					804068344612913163: "reaction:heist",
+					804069957528584212: "reaction:partnerHeist",
+					786884615192313866: "reaction:voted"
+				}
+				for i in setup_roles:
+					if i != None:
+						roles.append(discord.utils.get(ctx.guild.roles, id=int(i)))
+				# await ctx.send(f'{", ".join(i.mention for i in roles)}',hidden=True)
+				req_role = []
+				rolebuttons = []
 
-			heist = discord.utils.get(guild.roles, id=804068344612913163)
-			partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
-			outside = discord.utils.get(guild.roles, id=806795854475165736)
-			partnership = discord.utils.get(guild.roles, id=797448080223109120)
-			name = "Grab roles to be pinged!"
-			event_embed = discord.Embed(
-					title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
-					description= f"<a:heisttime:932911351154741308> {self.bot.emojis_list['right']} {partnerHeist.mention}\n"
-								 f"<a:peperobber:925618641112813598> {self.bot.emojis_list['right']} {outside.mention}\n"
-								 f"<a:Partner:925618902673817700> {self.bot.emojis_list['right']} {partnership.mention}\n"   ,                         
-								 # f"<a:nopartnership:929440715539374171> {self.bot.emojis_list['right']} {nopartnership.mention}\n",
-					color=0x9e3bff,
-					timestamp=datetime.datetime.utcnow()
-			)
-			event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-			gk = self.bot.get_guild(785839283847954433)
-			dmop = self.bot.get_guild(838646783785697290)
+				for i in roles:
+					if i in ctx.author.roles:
+						return await ctx.send(f"You have {i.mention} which allows you to join this hiest!",hidden=True)
 
-			partnerheistemoji = await gk.fetch_emoji(932911351154741308)
-			heistemoji = await dmop.fetch_emoji(925617827447177247)
-			outsideheistemoji = await dmop.fetch_emoji(925618641112813598)
-			partnershipemoji = await dmop.fetch_emoji(925618902673817700)
-			buttons = [
-				# create_button(style=ButtonStyle.blurple,emoji=heistemoji, disabled=False, custom_id="reaction:heist"),
-				create_button(style=ButtonStyle.blurple,emoji=partnerheistemoji, disabled=False, custom_id="reaction:partnerHeist"),
-				create_button(style=ButtonStyle.blurple,emoji=outsideheistemoji, disabled=False, custom_id="reaction:outside"),
-				create_button(style=ButtonStyle.blurple,emoji=partnershipemoji, disabled=False, custom_id="reaction:partnership")#,
-				# create_button(style=ButtonStyle.primary,emoji=nopartneremoji, disabled=False, custom_id="reaction:nopartnership")
-			]
-			msg = await ctx.send(embed=event_embed, components=[create_actionrow(*buttons)],hidden=True)
-		
-		elif ctx.custom_id == "nopartner:no":
-			await ctx.defer(hidden=True)
-			nopartnership = discord.utils.get(ctx.guild.roles, id=810593886720098304)
-			outside = discord.utils.get(ctx.guild.roles, id=806795854475165736)
-			flag = 0
-			if nopartnership not in ctx.author.roles:
-				await ctx.author.add_roles(nopartnership)
-				# await ctx.send(f"The role {movie.mention}", hidden=True)
-				flag = 1
-			if outside in ctx.author.roles:
-				await ctx.author.remove_roles(outside)
-				flag = 1
-			channel = self.bot.get_channel(806988762299105330)
-			if flag == 1:
-				await ctx.send(f"**`{channel}`** is now successfully hidden for you!",hidden=True)
-			else:
-				await ctx.send(f"**`{channel}`** was already hidden for you!",hidden=True)
-
+				for i in roles:
+					if i.id in role_map.keys():
+						rolebuttons.append(create_button(style=ButtonStyle.blurple, label=i.name, disabled=False, custom_id=role_map[i.id]))
+					else:
+						req_role.append(i)
+				embed = discord.Embed(title=f"Roles Required:",description=f" {req_role}", color=ctx.author.color)
+			
+				msg = await ctx.send(embed=embed, components=[create_actionrow(*rolebuttons)],hidden=True)
+			
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Heist",description="Heist related reaction roles", guild_ids=guild_ids,
 		base_default_permission=True,
 		options=[
