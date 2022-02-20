@@ -50,7 +50,7 @@ staff_perm = {
 class giveaway(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		self.giveaway_task = self.check_givaway.start()
+		# self.giveaway_task = self.check_givaway.start()
 		
 	# def cog_unload(self):
 	# 	self.giveaway_task.cancel()
