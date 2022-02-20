@@ -1033,12 +1033,12 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             timestamp=datetime.datetime.utcnow()
         )
 
-        embed.add_field(
-            name="Total Donors: ", value=totalmembers, inline=True)
-        embed.add_field(
-            name="Total Donations: ", value=f"⏣ {totaldono}", inline=True)
-        embed.add_field(
-            name="Donation Status: ", value=f"Accepting", inline=True)
+        # embed.add_field(
+        #     name="Total Donors: ", value=totalmembers, inline=True)
+        # embed.add_field(
+        #     name="Total Donations: ", value=f"⏣ {totaldono}", inline=True)
+        # embed.add_field(
+        #     name="Donation Status: ", value=f"Accepting", inline=True)
 
         embed.set_footer(text=f"Developed by utki007 and Jay", icon_url=ctx.guild.icon_url)
         # embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
