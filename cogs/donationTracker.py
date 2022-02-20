@@ -909,6 +909,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
         df = df[["_id", "name", "bal", "event_"+name]].sort_values(by = "event_"+name, ascending = False)
         # await ctx.send(top3)
+        nameofevent ="event_"+name
+        # total = df["3k"].sum()
+        totalmembers = f"{df['event_'+name][df['event_3k']>0].size}"
+        totaldono = f'{int(df["event_"+name].sum()):,}'
         df = df.head(10)
 
         desc = ""
@@ -948,8 +952,12 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             timestamp=datetime.datetime.utcnow()
         )
 
-        # embed.add_field(
-        #     name="Note: ", value=f"to check your donation do `?bal`", inline=True)
+        embed.add_field(
+            name="Total Donors: ", value=totalmembers, inline=True)
+        embed.add_field(
+            name="Total Donations: ", value=f"⏣ {totaldono}", inline=True)
+        embed.add_field(
+            name="Donation Status: ", value=f"Accepting", inline=True)
 
         embed.set_footer(text=f"Developed by utki007 and Jay", icon_url=ctx.guild.icon_url)
         # embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")

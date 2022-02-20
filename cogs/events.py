@@ -17,9 +17,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
-        # self.bot_check.start()
         self.change_status.start()
-        # self.clean.start()
         
         # work channel
         self.work = 848470871307190273
