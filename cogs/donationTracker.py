@@ -1033,10 +1033,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             timestamp=datetime.datetime.utcnow()
         )
 
-        # embed.add_field(
-        #     name="Total Donors: ", value=totalmembers, inline=True)
-        # embed.add_field(
-        #     name="Total Donations: ", value=f"⏣ {totaldono}", inline=True)
+        embed.add_field(
+            name="Total Donors: ", value=totalmembers, inline=False)
+        embed.add_field(
+            name="Total Donations: ", value=f"⏣ {totaldono}", inline=False)
         # embed.add_field(
         #     name="Donation Status: ", value=f"Accepting", inline=True)
 
