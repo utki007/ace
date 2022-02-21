@@ -1026,7 +1026,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         id = "name"
         bal = "bal"
         embed = discord.Embed(
-            title=f"<a:TGK_Pandaswag:830525027341565982> **`TGK's {name.upper()} Spl. Top 10 Donators`** <a:TGK_Pandaswag:830525027341565982>",
+            title=f"<a:TGK_Pandaswag:830525027341565982> **`{name.upper()} Specials Top 10`** <a:TGK_Pandaswag:830525027341565982>",
             description=f"```|{'🏆': ^3}|{'Name': ^15}|{'Donated':>8} |\n"
             f"{desc}```\n\n",
             colour=member.colour,
