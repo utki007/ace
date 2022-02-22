@@ -992,7 +992,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         # await ctx.send(top3)
         nameofevent ="event_"+name
         # total = df["3k"].sum()
-        totalmembers = f"{df['event_'+name][df['event_3k']>0].size}"
+        totalmembers = f"{df['event_'+name][df['event_'+name]>0].size}"
         totaldono = f'{int(df["event_"+name].sum()):,}'
         df = df.head(10)
 
