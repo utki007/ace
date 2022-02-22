@@ -506,7 +506,7 @@ class heistutils(commands.Cog):
 				msg = await ctx.send(embed=embed, components=[create_actionrow(*rolebuttons)],hidden=True)
 			
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Heist",description="Heist related reaction roles", guild_ids=guild_ids,
-		base_default_permission=True,
+		base_default_permission=False, base_permissions=staff_perm,
 		options=[
 	  			create_option(name="name", description="Heading for embed", option_type=3, required=False)
 		]
