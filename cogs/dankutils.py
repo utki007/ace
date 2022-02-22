@@ -146,7 +146,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
         channel = self.bot.get_channel(829008100555489301)
         to_ban = ban
         banlist = []
-        async for message in channel.history(limit=1500):
+        async for message in channel.history(limit=1000):
             #await ctx.send(message)
             embeds = message.embeds
             dict = {}
