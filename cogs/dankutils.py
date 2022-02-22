@@ -173,6 +173,9 @@ class dankutils(commands.Cog, description="Dank Utility"):
             banList.append(user)
         # await ctx.author.send(f"Names: **{' '.join(str(i.id) for i in banList)}**")
         for user in banList:
+            if ctx.guild.get_member(user.id) is not None:
+                await ctx.author.send(f"{user.id} might be a false freeloader, do check them out!")
+                continue
             data = {
                     '_id': user.id,
                     'BannedAt': datetime.datetime.now(),
