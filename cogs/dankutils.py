@@ -171,10 +171,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
         for i in banlist:
             user = await self.bot.fetch_user(int(i))
             banList.append(user)
-        # await ctx.author.send(f"Names: **{', '.join(i.mention for i in banList)}**")
-        # await ctx.author.send(f"Unable to search for: **{', '.join(i for i in to_ban)}**")
-        # banList = list(set(banlist))     
-        # # await ctx.send(banList[0].id)
+        # await ctx.author.send(f"Names: **{' '.join(str(i.id) for i in banList)}**")
         for user in banList:
             data = {
                     '_id': user.id,
@@ -205,7 +202,8 @@ class dankutils(commands.Cog, description="Dank Utility"):
             try:
                 try:
                     entry = await ctx.guild.fetch_ban(user)
-                    return await ctx.send(f"{self.bot.emojis_list['Warrning']} |  **_{user.name.title()}_** is already banned. ({user.id})",delete_after = 5)
+                    await ctx.send(f"{self.bot.emojis_list['Warrning']} |  **_{user.name.title()}_** is already banned. ({user.id})")
+                    continue
                 except:
                     pass
                 await ctx.guild.ban(user,reason = "Freeloaded after joining heist!")
@@ -265,7 +263,8 @@ class dankutils(commands.Cog, description="Dank Utility"):
             try:
                 try:
                     entry = await ctx.guild.fetch_ban(user)
-                    return await ctx.send(f"{self.bot.emojis_list['Warrning']} |  **_{user.name.title()}_** is already banned. ({user.id})",delete_after = 5)
+                    await ctx.send(f"{self.bot.emojis_list['Warrning']} |  **_{user.name.title()}_** is already banned. ({user.id})")
+                    continue
                 except:
                     pass
                 await ctx.guild.ban(user,reason = "Freeloaded after joining heist!")
