@@ -202,7 +202,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
             try:
                 try:
                     entry = await ctx.guild.fetch_ban(user)
-                    await ctx.send(f"{self.bot.emojis_list['Warrning']} |  **_{user.name.title()}_** is already banned. ({user.id})")
+                    await ctx.send(f"{self.bot.emojis_list['Warrning']} |  **_{user.name.title()}_** is already banned. ({user.id})", delete_after=45)
                     continue
                 except:
                     pass
@@ -263,7 +263,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
             try:
                 try:
                     entry = await ctx.guild.fetch_ban(user)
-                    await ctx.send(f"{self.bot.emojis_list['Warrning']} |  **_{user.name.title()}_** is already banned. ({user.id})")
+                    await ctx.send(f"{self.bot.emojis_list['Warrning']} |  **_{user.name.title()}_** is already banned. ({user.id})", delete_after=45)
                     continue
                 except:
                     pass
