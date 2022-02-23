@@ -664,5 +664,23 @@ class heistutils(commands.Cog):
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 		self.bot.heist_setup_data = deepcopy(data)
 
+
+	
+	@cog_ext.cog_slash(name="Link",description="Redirect to a particular channel", guild_ids=guild_ids,
+		default_permission=False,permissions=staff_perm,
+		options=[
+    			create_option(name="link", description="message link", option_type=3, required=True),
+    			create_option(name="message", description="Test you need to send", option_type=3, required=True)
+    	]
+	)
+	async def linktp(self,ctx,link,message):
+		await ctx.defer(hidden = True)
+		gk = self.bot.get_guild(785839283847954433)
+		emoji = await gk.fetch_emoji(802121702384730112)
+		buttons = [create_button(style=ButtonStyle.URL, emoji=emoji, label="Click here", disabled=False, url=f"{link}")]
+		end_message = await ctx.message.send(f"{message}", components=[create_actionrow(*buttons)])
+		await ctx.send(f"{emoji}")
+		# await end_message.add_reaction(self.bot.emojis_list["Hi"])
+
 def setup(bot):
 	bot.add_cog(heistutils(bot))
