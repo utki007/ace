@@ -678,9 +678,8 @@ class heistutils(commands.Cog):
 		gk = self.bot.get_guild(785839283847954433)
 		emoji = await gk.fetch_emoji(802121702384730112)
 		buttons = [create_button(style=ButtonStyle.URL, emoji=emoji, label="Click here", disabled=False, url=f"{link}")]
-		end_message = await ctx.message.send(f"{message}", components=[create_actionrow(*buttons)])
-		await ctx.send(f"{emoji}")
-		# await end_message.add_reaction(self.bot.emojis_list["Hi"])
+		end_message = await ctx.channel.send(f"{message}", components=[create_actionrow(*buttons)])
+		await ctx.send("<a:TGK_bunnyjump:802121702384730112>")
 
 def setup(bot):
 	bot.add_cog(heistutils(bot))
