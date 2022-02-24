@@ -135,7 +135,7 @@ class heistutils(commands.Cog):
 				else:
 					await ctx.author.remove_roles(child)
 					if adult not in ctx.author.roles:
-						await ctx.author.add_roles(child)
+						await ctx.author.add_roles(adult)
 					await ctx.send(f"The role {child.mention} has been removed from you.", hidden=True)
 		
 			elif ctx.custom_id == "reaction:male":
