@@ -100,6 +100,7 @@ class heistutils(commands.Cog):
 				replied_user=False,  # Whether to ping on replies to messages
 			)
 			if message.embeds:
+				embeds = message.embeds
 				dict = {}
 				for embed in embeds:
 					dict = embed.to_dict()
