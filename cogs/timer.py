@@ -76,6 +76,8 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		while loop:
 			
 			if cd>3600:
+				await asyncio.sleep(60)
+			elif cd>1800:
 				await asyncio.sleep(30)
 			elif cd>300:
 				await asyncio.sleep(10)

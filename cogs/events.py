@@ -63,7 +63,7 @@ class Events(commands.Cog):
                 description=f"<:tgk_warning:840638147838738432> | Error: `{error}`")
             await ctx.send(embed=embed)
     
-    @tasks.loop(seconds=240)
+    @tasks.loop(seconds=600)
     async def change_status(self):      
         guild = self.bot.get_guild(785839283847954433)
         members = guild.members
