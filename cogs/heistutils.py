@@ -111,7 +111,7 @@ class heistutils(commands.Cog):
 		elif message.channel.id == 946688603264806952:
 			
 			gk = self.bot.get_guild(785839283847954433)
-			aceFeed = gk.get_channel(946688603264806952)
+			aceFeed = gk.get_channel(946689040344813588)
 
 			am = discord.AllowedMentions(
 				users=False,  # Whether to ping individual user @mentions
