@@ -87,6 +87,7 @@ class heistutils(commands.Cog):
 					await partnerHeists.set_permissions(robot, overwrite=overwrite)
 				except:
 					print("Error in partner heist channel")
+		
 		elif message.channel.id == 944516765415792640:
 			
 			gk = self.bot.get_guild(785839283847954433)
@@ -99,9 +100,29 @@ class heistutils(commands.Cog):
 				replied_user=False,  # Whether to ping on replies to messages
 			)
 			if message.embeds:
-				await aceFeed.send(content = message.content, embed = message.embeds[0])
+				dict = {}
+				for embed in embeds:
+					dict = embed.to_dict()
+				await aceFeed.send(content=message.content,embed = embed.from_dict(dict))
 			else:
 				await aceFeed.send(content = message.content)
+		
+		elif message.channel.id == 946688603264806952:
+			
+			gk = self.bot.get_guild(785839283847954433)
+			aceFeed = gk.get_channel(946688603264806952)
+
+			am = discord.AllowedMentions(
+				users=False,  # Whether to ping individual user @mentions
+				everyone=False,  # Whether to ping @everyone or @here mentions
+				roles=False,  # Whether to ping role @mentions
+				replied_user=False,  # Whether to ping on replies to messages
+			)
+			embeds = message.embeds
+			dict = {}
+			for embed in embeds:
+				dict = embed.to_dict()
+			await aceFeed.send(content=message.content,embed = embed.from_dict(dict))
 
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
@@ -575,10 +596,10 @@ class heistutils(commands.Cog):
 		event_embed = discord.Embed(
 				title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
 				description=f"<a:tadaa:806631994770849843> {self.bot.emojis_list['right']} {giveaways.mention}\n"
-                            f"<a:celebrate:817302382630273054>  {self.bot.emojis_list['right']} {flash.mention}\n"
-                            f"<a:tgk_gift:820323551520358440> {self.bot.emojis_list['right']} {other.mention}\n"
-                            f"<a:calendar:854663256420909066>  {self.bot.emojis_list['right']} {event.mention}\n"                            
-                            f"<a:tgk_movienight:842675039833030666> {self.bot.emojis_list['right']} {movie.mention}\n",
+							f"<a:celebrate:817302382630273054>  {self.bot.emojis_list['right']} {flash.mention}\n"
+							f"<a:tgk_gift:820323551520358440> {self.bot.emojis_list['right']} {other.mention}\n"
+							f"<a:calendar:854663256420909066>  {self.bot.emojis_list['right']} {event.mention}\n"                            
+							f"<a:tgk_movienight:842675039833030666> {self.bot.emojis_list['right']} {movie.mention}\n",
 				color=0x9e3bff,
 				timestamp=datetime.datetime.utcnow()
 		)
@@ -669,9 +690,9 @@ class heistutils(commands.Cog):
 	@cog_ext.cog_slash(name="Link",description="Redirect to a particular channel", guild_ids=guild_ids,
 		default_permission=False,permissions=staff_perm,
 		options=[
-    			create_option(name="link", description="message link", option_type=3, required=True),
-    			create_option(name="message", description="Test you need to send", option_type=3, required=True)
-    	]
+				create_option(name="link", description="message link", option_type=3, required=True),
+				create_option(name="message", description="Test you need to send", option_type=3, required=True)
+		]
 	)
 	async def linktp(self,ctx,link,message):
 		await ctx.defer(hidden = True)
