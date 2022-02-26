@@ -123,6 +123,9 @@ class heistutils(commands.Cog):
 			dict = {}
 			for embed in embeds:
 				dict = embed.to_dict()
+			if "Black Hole Findings" in dict['title']:
+				await aceFeed.send(f"_**Black Hole Findings**_ under rework!")
+				return
 			await aceFeed.send(content=message.content,embed = embed.from_dict(dict))
 
 	@commands.Cog.listener()
