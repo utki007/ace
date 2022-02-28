@@ -44,6 +44,7 @@ class heistutils(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
+		# for partner heists
 		if message.channel.id == 806988762299105330:
 			word_list = ['discord.gg']
 
@@ -88,17 +89,16 @@ class heistutils(commands.Cog):
 				except:
 					print("Error in partner heist channel")
 		
-		elif message.channel.id == 944516765415792640:
+		elif message.channel.id == 947525172049621023:
 			
 			gk = self.bot.get_guild(785839283847954433)
 			aceFeed = gk.get_channel(944490857111896064)
+			await aceFeed.send(content = message.content)
 
-			am = discord.AllowedMentions(
-				users=False,  # Whether to ping individual user @mentions
-				everyone=False,  # Whether to ping @everyone or @here mentions
-				roles=False,  # Whether to ping role @mentions
-				replied_user=False,  # Whether to ping on replies to messages
-			)
+		elif message.channel.id == 947525898100412417:
+			gk = self.bot.get_guild(785839283847954433)
+			aceFeed = gk.get_channel(944490857111896064)
+			
 			if message.embeds:
 				embeds = message.embeds
 				dict = {}
@@ -108,6 +108,8 @@ class heistutils(commands.Cog):
 			else:
 				await aceFeed.send(content = message.content)
 		
+
+		# for lottery
 		elif message.channel.id == 946688603264806952:
 			
 			gk = self.bot.get_guild(785839283847954433)
