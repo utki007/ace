@@ -210,6 +210,21 @@ bot.emojis_list = {
     "waiting" : "<a:gk_waiting:945772518776664104>"
 }
 
+bot.clock_emojis_dict = {
+	1 : ["🕐","🕜"],
+	2 : ["🕑","🕝"],
+	3 : ["🕒","🕞"],
+	4 : ["🕓","🕟"],
+	5 : ["🕔","🕠"],
+	6 : ["🕕","🕡"],
+	7 : ["🕖","🕢"],
+	8 : ["🕗","🕣"],
+	9 : ["🕘","🕤"],
+	10 : ["🕙","🕥"],
+	11 : ["🕚","🕦"],
+	12 : ["🕛","🕧"]
+}
+
 if __name__ == "__main__":
 	bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
 	bot.db = bot.mongo["TGK"]
