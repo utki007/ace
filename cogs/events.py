@@ -8,6 +8,8 @@ import math
 import datetime
 import time as tm
 from utils.Checks import CommandDisableByDev
+from pytz import timezone 
+import datetime
 
 class Events(commands.Cog):
     def __init__(self, bot):
@@ -18,6 +20,7 @@ class Events(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
         self.change_status.start()
+        self.clock.start()
         
         # work channel
         self.work = 848470871307190273
@@ -63,7 +66,7 @@ class Events(commands.Cog):
                 description=f"<:tgk_warning:840638147838738432> | Error: `{error}`")
             await ctx.send(embed=embed)
     
-    @tasks.loop(seconds=600)
+    @tasks.loop(seconds=300)
     async def change_status(self):      
         guild = self.bot.get_guild(785839283847954433)
         members = guild.members
@@ -75,6 +78,35 @@ class Events(commands.Cog):
         member = guild.member_count - count
         activity = f'over {member} members '
         await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{activity}"),status= discord.Status.dnd)
+    
+    @tasks.loop(seconds=300)
+    async def clock(self):      
+        gk = self.bot.get_guild(785839283847954433)
+        ind_time = datetime.datetime.now(timezone("Asia/Kolkata")).strftime('%Y-%m-%d %H:%M:%S.%f')
+        ind_time = ind_time.split(" ")[1].split(":")
+        hours = ind_time[0]
+        minutes = ind_time[1]
+        post = ""
+        if hours > 12:
+            hours -= 12
+            post = "p.m."
+        else:
+            post = "a.m."
+
+        if hours < 9:
+            ind_time = f"0{hours}:{minutes} {post}"
+        else:
+            ind_time = f"{hours}:{minutes} {post}"
+        
+        clock_list = self.clock_emojis_dict[hours]
+        emoji = ""
+        if int(minutes) > 30:
+            emoji = clock_list[1]
+        else:
+            emoji = clock_list[0]  
+
+        vc = gk.get_channel(948098420160233482)
+        await vc.edit(name=f"{emoji}。IST。{ind_time}")
         
 def setup(bot):
     bot.add_cog(Events(bot)) 
