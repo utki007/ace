@@ -1,6 +1,6 @@
 # importing the required libraries
 import discord
-from discord.ext import commands,tasks
+from discord.ext import commands
 import random
 import time
 import os
@@ -13,21 +13,20 @@ import logging
 import asyncio
 import motor.motor_asyncio
 from asyncio import sleep
-from discord_slash import SlashCommand
-from discord_slash.model import SlashCommandPermissionType
-from discord_slash.utils.manage_commands import create_permission
 from utils.mongo import Document
+import logging
 
 description = '''This is what I have been programmed to do'''
 bot = commands.Bot(
     command_prefix=["? ","?","gk.","Gk."],
     description=description,
     case_insensitive=True,
+    owner_ids=[488614633670967307, 301657045248114690],
     intents= discord.Intents.all(),
     help_command = None
 )
 bot.giveaway = {}
-slash = SlashCommand(bot, sync_commands=True, sync_on_cog_reload=True)
+logging.basicConfig(level=logging.INFO)
 
 @bot.event
 async def on_ready():
@@ -155,27 +154,14 @@ async def reload(ctx, extension):
 	await ctx.send(f'The {extension} is successfully reloaded.')
 
 
-
-@slash.slash(name="Logout", description="Shutdown bot", default_permission=False, guild_ids=[785839283847954433],permissions={
-	785839283847954433:[create_permission(488614633670967307, SlashCommandPermissionType.USER, True),
-					create_permission(301657045248114690, SlashCommandPermissionType.USER, True)]
-})
-@commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
-async def logout(ctx):
-	await ctx.send(f'I am now logging out :wave: \n ')
-	await bot.logout()
+@bot.slash_command(name="logout", description="Shutdown bot", guild_ids=[785839283847954433])
+async def logout(interaction: discord.Interaction):
+    if interaction.user.id not in bot.owner_ids:
+        return await interaction.send("You are not allowed to use this command.", ephemeral=True)
+    await interaction.response.send_message(f'I am now logging out :wave: \n ')
+    await bot.close()
 
 
-@logout.error
-async def logout_error(ctx, error):
-	""" Will be triggered in case of an error in logout command """
-	if isinstance(error, commands.CheckFailure):
-		await ctx.send(f"Hey {ctx.author.mention},You don't have permissions.")
-	else:
-		raise error
-
-
-	
 bot.colors = {
 	"WHITE": 0xFFFFFF,
 	"AQUA": 0x1ABC9C,
@@ -246,7 +232,7 @@ if __name__ == "__main__":
 	bot.give = Document(bot.db, "giveaway")
 	bot.endgive = Document(bot.db, "back_up_giveaway")
 	bot.active_cmd = Document(bot.db, "Active_commands")
-
+    
 	for file in os.listdir('./cogs'):
 		if file.endswith(".py") and not file.startswith("_")and not file.startswith('test'):
 			bot.load_extension(f"cogs.{file[:-3]}")
