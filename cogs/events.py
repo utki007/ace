@@ -98,7 +98,7 @@ class Events(commands.Cog):
         else:
             ind_time = f"{hours}:{minutes} {post}"
         
-        clock_list = self.clock_emojis_dict[hours]
+        clock_list = self.bot.clock_emojis_dict[hours]
         emoji = ""
         if int(minutes) > 30:
             emoji = clock_list[1]
