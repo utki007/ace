@@ -84,7 +84,7 @@ class Events(commands.Cog):
         gk = self.bot.get_guild(785839283847954433)
         ind_time = datetime.datetime.now(timezone("Asia/Kolkata")).strftime('%Y-%m-%d %H:%M:%S.%f')
         ind_time = ind_time.split(" ")[1].split(":")
-        hours = ind_time[0]
+        hours = int(ind_time[0])
         minutes = ind_time[1]
         post = ""
         if hours > 12:
