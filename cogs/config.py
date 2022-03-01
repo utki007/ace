@@ -39,6 +39,8 @@ class config(commands.Cog, description="config"):
     @discord.slash_command(name="status", description="Change Bot Status to online & Dnd & idle", guild_ids=[785839283847954433])
     #@commands.check_any(checks.can_use(), checks.is_me())
     async def status(self, interaction: discord.Interaction, status: str = SlashOption(description="Enter status for bot", choices=['online','dnd','idle'], default=None)):
+        if not interaction.user.guild_permissions.administrator:
+            return await interaction.response.send_message(f':warning: {interaction.user.mention} You are not allowed to use this command :warning:', ephemeral=True)
         if status.lower() == 'dnd':
             await self.bot.change_presence(status=discord.Status.dnd)
             await interaction.response.send_message('Bot status is Updated')
@@ -54,6 +56,8 @@ class config(commands.Cog, description="config"):
     @discord.slash_command(name="say", description="simple say command",guild_ids=[785839283847954433])
     #@commands.cooldown(3,60 , commands.BucketType.user)
     async def say(self, interaction: discord.Interaction, str:str = SlashOption(description="Enter your lines"), reply = SlashOption(description="Enter Reply message id", default=None, required=False), ping: bool=SlashOption(description="select that reply message with ping or not", default=True, required=False)):
+        if not interaction.user.guild_permissions.manage_messages:
+            return await interaction.response.send_message(f':warning: {interaction.user.mention} You are not allowed to use this command :warning:', ephemeral=True)
         if reply:
             try:
                 message = await interaction.channel.fetch_message(int(reply))
