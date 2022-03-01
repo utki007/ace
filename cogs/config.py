@@ -10,24 +10,8 @@ import time as tm
 import asyncio
 import math
 import datetime
-from discord_slash.utils.manage_commands import create_option, create_choice
-from discord_slash import cog_ext, SlashContext, cog_ext, SlashContext
-from discord_slash.utils.manage_commands import create_option, create_choice, create_permission
-from discord_slash.model import SlashCommandPermissionType
 from utils.Checks import checks
-
-
-staff_perm = {
-    785839283847954433:
-    [
-        create_permission(785842380565774368, SlashCommandPermissionType.ROLE, True),
-        create_permission(799037944735727636, SlashCommandPermissionType.ROLE, True),
-        create_permission(785845265118265376, SlashCommandPermissionType.ROLE, True),
-        create_permission(787259553225637889, SlashCommandPermissionType.ROLE, True),
-        create_permission(843775369470672916, SlashCommandPermissionType.ROLE, True),
-    ]
-}
-
+from discord import SlashOption
 class config(commands.Cog, description="config"):
 
     def __init__(self,bot):
@@ -37,52 +21,54 @@ class config(commands.Cog, description="config"):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-    @commands.command(name="activity", description="Change Bot activity", usage="[activity]", hidden=True)
-    @commands.check_any(checks.can_use(), checks.is_me())
-    async def activity(self, ctx, *, activity: str = None):
+    @discord.slash_command(name="activity", description="Change Bot activity", guild_ids=[785839283847954433])
+    #@commands.check_any(checks.can_use(), checks.is_me())
+    async def activity(self, interaction: discord.Interaction, activity: str = SlashOption(description="Enter activiy for bot",default=None)):
+        if interaction.user.id not in self.bot.owner_ids:
+            return await interaction.response.send_message("You are not my owner", ephemeral=True)
         if activity == None:
-            activity = f'over {ctx.guild.member_count} members '
+            activity = f'over {interaction.guild.member_count} members '
         await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{activity}"), status=discord.Status.dnd)
-        await ctx.send(f'Bot activity is Updated')
+        await interaction.response.send_message(f'Bot activity is Updated')
 
-    @commands.command()
-    async def ping(self, ctx):
-        message = await ctx.send(f'Pong! ')
+    @discord.slash_command(description="check bot letency")
+    async def ping(self, interaction: discord.Interaction):
+        message = await interaction.response.send(f'Pong!')
         await message.edit(content=f"Pong! `{round(self.bot.latency * 1000)}ms`")
 
-    @commands.command(name="Status", description="Change Bot Status to online & Dnd & idle", usage="[dnd & idle & online]", hidden=True)
-    @commands.check_any(checks.can_use(), checks.is_me())
-    async def status(self, ctx, arg):
-        if arg.lower() == 'dnd':
+    @discord.slash_command(name="status", description="Change Bot Status to online & Dnd & idle", guild_ids=[785839283847954433])
+    #@commands.check_any(checks.can_use(), checks.is_me())
+    async def status(self, interaction: discord.Interaction, status: str = SlashOption(description="Enter status for bot", choices=['online','dnd','idle'], default=None)):
+        if not interaction.user.guild_permissions.administrator:
+            return await interaction.response.send_message(f':warning: {interaction.user.mention} You are not allowed to use this command :warning:', ephemeral=True)
+        if status.lower() == 'dnd':
             await self.bot.change_presence(status=discord.Status.dnd)
-            await ctx.send('Bot status is Updated')
-        elif arg.lower() == 'online':
+            await interaction.response.send_message('Bot status is Updated')
+        elif status.lower() == 'online':
             await self.bot.change_presence(status=discord.Status.online)
-            await ctx.send('Bot status is Updated')
-        elif arg.lower() == 'idle':
+            await interaction.response.send_message('Bot status is Updated')
+        elif status.lower() == 'idle':
             await self.bot.change_presence(status=discord.Status.idle)
-            await ctx.send('Bot status is Updated')
+            await interaction.response.send_message('Bot status is Updated')
         else:
-            await ctx.send(f':warning: {ctx.author.mention} Please provide valid status you dimwit!! :warning:')
+            await interaction.response.send_message(f':warning: {interaction.user.mention} Please provide valid status you dimwit!! :warning:')
 
-    @cog_ext.cog_slash(name="say", description="simple say command",guild_ids=[785839283847954433], default_permission=False, permissions=staff_perm,
-		options=[create_option(name="str", description="Type Thing that bot need to send", option_type=3, required=True),
-		create_option(name="reply", description="Enter Message id you want to reply", option_type=3, required=False),
-		create_option(name="ping", description="you want to ping the user ?", option_type=5, required=False)]
-		)
-    @commands.cooldown(3,60 , commands.BucketType.user)
-    async def say(self, ctx, str:str, reply: int=None, ping: bool=True):
+    @discord.slash_command(name="say", description="simple say command",guild_ids=[785839283847954433])
+    #@commands.cooldown(3,60 , commands.BucketType.user)
+    async def say(self, interaction: discord.Interaction, str:str = SlashOption(description="Enter your lines"), reply = SlashOption(description="Enter Reply message id", default=None, required=False), ping: bool=SlashOption(description="select that reply message with ping or not", default=True, required=False)):
+        if not interaction.user.guild_permissions.manage_messages:
+            return await interaction.response.send_message(f':warning: {interaction.user.mention} You are not allowed to use this command :warning:', ephemeral=True)
         if reply:
             try:
-                message = await ctx.channel.fetch_message(reply)
+                message = await interaction.channel.fetch_message(int(reply))
             except:
-                return await ctx.send("make Sure your in the same chanenl as message or check your message id",hidden=True)
+                return await interaction.response.send_message("make Sure your in the same chanenl as message or check your message id",ephemeral=True)
 
             await message.reply(f"{str}", mention_author=ping, allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
-            await ctx.send(f"You Said: {str}\nTo {message.author.name}", hidden=True)
+            await interaction.response.send_message(f"You Said: {str}\nTo {message.author.name}", ephemeral=True)
         if not reply:
-            await ctx.channel.send(f"{str}",allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
-            await ctx.send(f"You Said: {str} in {ctx.channel.mention}", hidden=True)
+            await interaction.channel.send(f"{str}",allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
+            await interaction.response.send_message(f"You Said: {str} in {interaction.channel.mention}", ephemeral=True)
 
 def setup(bot):
    bot.add_cog(config(bot))
