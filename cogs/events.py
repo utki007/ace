@@ -87,7 +87,7 @@ class Events(commands.Cog):
         hours = int(ind_time[0])
         minutes = ind_time[1]
         post = ""
-        if hours > 12:
+        if hours >= 12:
             hours -= 12
             post = "p.m."
         else:
