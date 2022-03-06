@@ -68,24 +68,14 @@ class heistutils(commands.Cog):
 				)
 				try:	
 					# lock channel first	
-					overwrite = partnerHeists.overwrites_for(robot)
-					overwrite.send_messages = False
-					await partnerHeists.set_permissions(robot, overwrite=overwrite)
 					buttons = [
 						create_button(style=ButtonStyle.green,emoji=yes, label="Hide this channel for me!", disabled=False, custom_id="nopartner:no")
 					]
 					await partnerHeists.purge(limit=10, check=check, before=None)
 					await message.channel.send(
-								content=f"Everytime an advertisement is posted, this channel will be locked for 5 seconds. This is to avoid the double pings issue.\n\n"
-										f"If you post during that lock period, your ad won't get posted. In such case, you can always dm any <@&831405039830564875> to get it posted manually.", 
+								content=f"Do you want to stop receiving pings?",
 								components=[create_actionrow(*buttons)], allowed_mentions=am
 					)
-					await asyncio.sleep(30)
-
-					
-					overwrite = partnerHeists.overwrites_for(robot)
-					overwrite.send_messages = True
-					await partnerHeists.set_permissions(robot, overwrite=overwrite)
 				except:
 					print("Error in partner heist channel")
 		
