@@ -14,6 +14,7 @@ from discord_slash.utils.manage_commands import create_option, create_choice
 from discord_slash import cog_ext, SlashContext, cog_ext, SlashContext
 from discord_slash.utils.manage_commands import create_option, create_choice, create_permission
 from discord_slash.model import SlashCommandPermissionType
+from cogs.channel import channel
 from utils.Checks import checks
 
 
@@ -83,6 +84,15 @@ class config(commands.Cog, description="config"):
         if not reply:
             await ctx.channel.send(f"{str}",allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
             await ctx.send(f"You Said: {str} in {ctx.channel.mention}", hidden=True)
+    
+    @cog_ext.cog_slash(name="teleport", description="Teleports you to the desired channel",guild_ids=[785839283847954433], default_permission=False, permissions=staff_perm,
+		options=[
+            create_option(name="channel", description="Which channel do you want to teleport to?", required=True, option_type=7)
+        ]
+	)
+    @commands.cooldown(3,60 , commands.BucketType.user)
+    async def teleport(self, ctx, channel):
+        await ctx.send(f"{channel.mention}", hidden=True)
 
 def setup(bot):
    bot.add_cog(config(bot))
