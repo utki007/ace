@@ -498,9 +498,9 @@ class heistutils(commands.Cog):
 				setup_roles = data.values()
 				roles = []
 				role_map = {
-					804068344612913163: "reaction:heist",
-					804069957528584212: "reaction:partnerHeist",
-					786884615192313866: "reaction:voted"
+					804068344612913163: "heist:heist",
+					804069957528584212: "heist:partnerHeist",
+					786884615192313866: "heist:voted"
 				}
 				for i in setup_roles:
 					if i != None:
@@ -511,17 +511,136 @@ class heistutils(commands.Cog):
 
 				for i in roles:
 					if i in ctx.author.roles:
-						return await ctx.send(f"You have {i.mention} which allows you to join this hiest!",hidden=True)
-
+						return await ctx.send(f"You have {i.mention} which allows you to join this heist!",hidden=True)
+				
+				icons = 0
 				for i in roles:
 					if i.id in role_map.keys():
+						icons = 1
 						rolebuttons.append(create_button(style=ButtonStyle.blurple, label=i.name, disabled=False, custom_id=role_map[i.id]))
 					else:
 						req_role.append(i)
-				embed = discord.Embed(title=f"Roles Required:",description=f" {req_role}", color=ctx.author.color)
+				
+				desc = ""
+				if req_role != []:
+					desc = f"You need any one of the following roles to join heist. \nGrind, donate or apply in <#939809122281480282> to get them! \n"
+					for i in req_role:
+						desc = desc + f"\n{i.mention}"
+				if icons == 1:
+					desc = desc + f"\n\nClick on the below buttons to join heist!"
+				embed = discord.Embed(title=f"Heist Requirement: ",description=desc, color=0x9e3bff)
+				embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/837999751068778517/950451312619831336/heist_time.gif")
+				if icons == 1:
+					await ctx.send(embed=embed, components=[create_actionrow(*rolebuttons)],hidden=True)
+				else:
+					await ctx.send(embed=embed,hidden=True)
 			
-				msg = await ctx.send(embed=embed, components=[create_actionrow(*rolebuttons)],hidden=True)
+		elif ctx.custom_id.startswith("heist"):
+
+			if ctx.custom_id == "heist:heist":
+				await ctx.defer(hidden=True)
+				heist = discord.utils.get(ctx.guild.roles, id=804068344612913163)
+				if heist in ctx.author.roles:
+					await ctx.send(f"You already have the {heist.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
+				else:
+					await ctx.author.add_roles(heist)
+					await ctx.send(f"The role {heist.mention} has been added to you.", hidden=True)
 			
+			elif ctx.custom_id == "heist:partnerHeist":
+				await ctx.defer(hidden=True)
+				partnerHeist = discord.utils.get(ctx.guild.roles, id=804069957528584212)
+				if partnerHeist in ctx.author.roles:
+					await ctx.send(f"You already have the {partnerHeist.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
+				else:
+					await ctx.author.add_roles(partnerHeist)
+					await ctx.send(f"The role {partnerHeist.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "heist:outside":
+				await ctx.defer(hidden=True)
+				outside = discord.utils.get(ctx.guild.roles, id=806795854475165736)
+				if outside in ctx.author.roles:
+					await ctx.send(f"You already have the {outside.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
+				else:
+					await ctx.author.add_roles(outside)
+					await ctx.send(f"The role {outside.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "heist:partnership":
+				await ctx.defer(hidden=True)
+				partnership = discord.utils.get(ctx.guild.roles, id=797448080223109120)
+				if partnership in ctx.author.roles:
+					await ctx.send(f"You already have the {partnership.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
+				else:
+					await ctx.author.add_roles(partnership)
+					await ctx.send(f"The role {partnership.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "heist:nopartnership":
+				await ctx.defer(hidden=True)
+				nopartnership = discord.utils.get(ctx.guild.roles, id=810593886720098304)
+				if nopartnership in ctx.author.roles:
+					await ctx.send(f"You already have the {nopartnership.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
+				else:
+					await ctx.author.add_roles(nopartnership)
+					await ctx.send(f"The role {nopartnership.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "heist:giveaways":
+				await ctx.defer(hidden=True)
+				giveaways = discord.utils.get(ctx.guild.roles, id=800685251276963861)
+				if giveaways in ctx.author.roles:
+					await ctx.send(f"You already have the {giveaways.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
+				else:
+					await ctx.author.add_roles(giveaways)
+					await ctx.send(f"The role {giveaways.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "heist:flash":
+				await ctx.defer(hidden=True)
+				flash = discord.utils.get(ctx.guild.roles, id=822021066548969482)
+				if flash in ctx.author.roles:
+					await ctx.send(f"You already have the {flash.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
+				else:
+					await ctx.author.add_roles(flash)
+					await ctx.send(f"The role {flash.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "heist:other":
+				await ctx.defer(hidden=True)
+				other = discord.utils.get(ctx.guild.roles, id=848809346972516363)
+				if other in ctx.author.roles:
+					await ctx.send(f"You already have the {other.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
+				else:
+					await ctx.author.add_roles(other)
+					await ctx.send(f"The role {other.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "heist:event":
+				await ctx.defer(hidden=True)
+				event = discord.utils.get(ctx.guild.roles, id=836925033506275399)
+				if event in ctx.author.roles:
+					await ctx.send(f"You already have the {event.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
+				else:
+					await ctx.author.add_roles(event)
+					await ctx.send(f"The role {event.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "heist:movie":
+				await ctx.defer(hidden=True)
+				movie = discord.utils.get(ctx.guild.roles, id=791347199119327252)
+				if movie in ctx.author.roles:
+					await ctx.send(f"You already have the {movie.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
+				else:
+					await ctx.author.add_roles(movie)
+					await ctx.send(f"The role {movie.mention} has been added to you.", hidden=True)
+
+			elif ctx.custom_id == "heist:voted":
+				await ctx.defer(hidden=True)
+				voted = discord.utils.get(ctx.guild.roles, id=786884615192313866)
+				if voted not in ctx.author.roles:
+					
+					gk = self.bot.get_guild(785839283847954433)
+					emoji = await gk.fetch_emoji(942521024476487741)
+					buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
+					embed = discord.Embed(title=f"Vote for the {ctx.guild.name}", description="❥ Special <@&786884615192313866> Role with 2x Guild-wide multi.\n❥ 2,500 Casino Cash. Collect using ,collectincome in <#786117471840895016>\n❥ Access to <#929613393097293874> with 2x Amaari\n❥ Guild wide 1x Amaari.", color=ctx.author.color)
+			
+					msg = await ctx.send(embed=embed, components=[create_actionrow(*buttons)],hidden=True)
+				else:
+					await ctx.send(f"Already have voted role!",hidden=True)
+
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Heist",description="Heist related reaction roles", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=staff_perm,
 		options=[
@@ -550,9 +669,7 @@ class heistutils(commands.Cog):
 		)
 		event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
 		# event_embed.set_image(url="https://cdn.discordapp.com/attachments/831970404762648586/833255266127970334/rob.gif")
-		
-		channels = [812992825801179136,804708111301738576]    
-		if ctx.channel.id in channels: return await ctx.send(content=f"Reaction roles can't be created in heist channels!")
+
 		gk = self.bot.get_guild(785839283847954433)
 		dmop = self.bot.get_guild(838646783785697290)
 
@@ -563,11 +680,11 @@ class heistutils(commands.Cog):
 		nopartneremoji = await dmop.fetch_emoji(929440715539374171)
 
 		buttons = [
-			create_button(style=ButtonStyle.blurple,emoji=heistemoji, disabled=False, custom_id="reaction:heist"),
-			create_button(style=ButtonStyle.blurple,emoji=partnerheistemoji, disabled=False, custom_id="reaction:partnerHeist"),
-			create_button(style=ButtonStyle.blurple,emoji=outsideheistemoji, disabled=False, custom_id="reaction:outside"),
-			create_button(style=ButtonStyle.blurple,emoji=partnershipemoji, disabled=False, custom_id="reaction:partnership")#,
-			# create_button(style=ButtonStyle.primary,emoji=nopartneremoji, disabled=False, custom_id="reaction:nopartnership")
+			create_button(style=ButtonStyle.blurple,emoji=heistemoji, disabled=False, custom_id="heist:heist"),
+			create_button(style=ButtonStyle.blurple,emoji=partnerheistemoji, disabled=False, custom_id="heist:partnerHeist"),
+			create_button(style=ButtonStyle.blurple,emoji=outsideheistemoji, disabled=False, custom_id="heist:outside"),
+			create_button(style=ButtonStyle.blurple,emoji=partnershipemoji, disabled=False, custom_id="heist:partnership")#,
+			# create_button(style=ButtonStyle.primary,emoji=nopartneremoji, disabled=False, custom_id="heist:nopartnership")
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
@@ -612,11 +729,11 @@ class heistutils(commands.Cog):
 		movieemoji = await gk.fetch_emoji(842675039833030666)
 
 		buttons = [
-			create_button(style=ButtonStyle.blurple,emoji=gawemoji, disabled=False, custom_id="reaction:giveaways"),
-			create_button(style=ButtonStyle.blurple,emoji=flashemoji, disabled=False, custom_id="reaction:flash"),
-			create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=False, custom_id="reaction:other"),
-			create_button(style=ButtonStyle.blurple,emoji=eventemoji, disabled=False, custom_id="reaction:event"),
-			create_button(style=ButtonStyle.primary,emoji=movieemoji, disabled=False, custom_id="reaction:movie")
+			create_button(style=ButtonStyle.blurple,emoji=gawemoji, disabled=False, custom_id="heist:giveaways"),
+			create_button(style=ButtonStyle.blurple,emoji=flashemoji, disabled=False, custom_id="heist:flash"),
+			create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=False, custom_id="heist:other"),
+			create_button(style=ButtonStyle.blurple,emoji=eventemoji, disabled=False, custom_id="heist:event"),
+			create_button(style=ButtonStyle.primary,emoji=movieemoji, disabled=False, custom_id="heist:movie")
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
@@ -637,7 +754,7 @@ class heistutils(commands.Cog):
 			create_button(style=ButtonStyle.green,emoji=yes, label="Yes", disabled=False, custom_id="nopartner:yes"),
 			create_button(style=ButtonStyle.red,emoji=no, label="No", disabled=False, custom_id="nopartner:no")
 		]
-		msg = await ctx.channel.send(content=f"Would you like to know about more heists and events on our partner servers?", components=[create_actionrow(*buttons)])
+		msg = await ctx.channel.send(content=f"Would you like to know about more heists and events on our partner servers?", components=[create_actionrow(*buttons)], delete_after=3600)
 		await ctx.send(content=f"Created",hidden=True)
 
 	@cog_ext.cog_subcommand(base="Heist", name="Setup",description="Setup Role Specific Heist", guild_ids=guild_ids,
@@ -646,13 +763,17 @@ class heistutils(commands.Cog):
 			create_option(name="voterbypass", description="Can voter bypass?", required=True, option_type=5),
 			create_option(name="required_role", description="Enter requirement role to Unhide channel for it", required=True, option_type=8),
 			create_option(name="bypassrole1", description="Enter role which can bypass", required=False, option_type=8),
-			create_option(name="bypassrole2", description="Enter role which can bypass", required=False, option_type=8)
+			create_option(name="bypassrole2", description="Enter role which can bypass", required=False, option_type=8),
+			create_option(name="message", description="Content for the message", option_type=3, required=False)
 		]
 	)
-	async def heistsetup(self, ctx, voterbypass,required_role,bypassrole1 = None,bypassrole2 = None):
+	async def heistsetup(self, ctx, voterbypass,required_role,bypassrole1 = None,bypassrole2 = None, message = None):
 		await ctx.defer(hidden=True)
 
 		data = {}
+
+		if message == None:
+			message = f"Click below to see if you meet heist requirement!"
 
 		voted = discord.utils.get(ctx.guild.roles, id=786884615192313866 )
 		data['required_role'] = required_role.id
@@ -675,28 +796,11 @@ class heistutils(commands.Cog):
 		heistemoji = await gk.fetch_emoji(932911351154741308)
 
 		buttons = [
-			create_button(style=ButtonStyle.green,emoji=heistemoji,label="Check if you can join heist later!", disabled=False, custom_id="setup:heist")
+			create_button(style=ButtonStyle.green,emoji=heistemoji,label="Heist Time!", disabled=False, custom_id="setup:heist")
 		]
-		msg = await ctx.channel.send(content=f"check if you can join heists", components=[create_actionrow(*buttons)])
-		await ctx.send(content=f"Reaction roles created!",hidden=True)
+		msg = await ctx.channel.send(content=message, components=[create_actionrow(*buttons)], delete_after=3600)
+		await ctx.send(content=f"Heist setup done!",hidden=True)
 		self.bot.heist_setup_data = deepcopy(data)
-
-
-	
-	@cog_ext.cog_slash(name="Link",description="Redirect to a particular channel", guild_ids=guild_ids,
-		default_permission=False,permissions=staff_perm,
-		options=[
-				create_option(name="link", description="message link", option_type=3, required=True),
-				create_option(name="message", description="Test you need to send", option_type=3, required=True)
-		]
-	)
-	async def linktp(self,ctx,link,message):
-		await ctx.defer(hidden = True)
-		gk = self.bot.get_guild(785839283847954433)
-		emoji = await gk.fetch_emoji(802121702384730112)
-		buttons = [create_button(style=ButtonStyle.URL, emoji=emoji, label="Click here", disabled=False, url=f"{link}")]
-		end_message = await ctx.channel.send(f"{message}", components=[create_actionrow(*buttons)])
-		await ctx.send("<a:TGK_bunnyjump:802121702384730112>")
 
 def setup(bot):
 	bot.add_cog(heistutils(bot))
