@@ -97,13 +97,20 @@ class Events(commands.Cog):
             ind_time = f"0{hours}:{minutes} {post}"
         else:
             ind_time = f"{hours}:{minutes} {post}"
-        
-        clock_list = self.bot.clock_emojis_dict[hours]
+
         emoji = ""
-        if int(minutes) > 30:
-            emoji = clock_list[1]
+        if int(minutes) > 45:
+            if hours == 12:
+                clock_list_next = self.bot.clock_emojis_dict[1]
+            else:
+                clock_list_next = self.bot.clock_emojis_dict[hours+1]
+            emoji = clock_list_next[0]
+        elif int(minutes) > 15:
+            clock_list_current = self.bot.clock_emojis_dict[hours] 
+            emoji = clock_list_current[1]
         else:
-            emoji = clock_list[0]  
+            clock_list_current = self.bot.clock_emojis_dict[hours]
+            emoji = clock_list_current[0] 
 
         vc = gk.get_channel(948098420160233482)
         await vc.edit(name=f"{emoji}。IST。{ind_time}")
