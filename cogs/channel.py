@@ -457,7 +457,6 @@ class channel(commands.Cog, description="Channel utils"):
 
         embed = discord.Embed(
             color=0x78AB46, description=f'{msg}')
-        await channel.send(embed=embed,delete_after=15)
 
 def setup(bot):
    bot.add_cog(channel(bot))
