@@ -90,6 +90,8 @@ class Events(commands.Cog):
         if hours > 12:
             hours -= 12
             post = "p.m."
+        elif hours == 12:
+            post = "p.m."
         else:
             post = "a.m."
 
