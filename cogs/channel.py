@@ -426,13 +426,13 @@ class channel(commands.Cog, description="Channel utils"):
     @cog_ext.cog_subcommand(base="Channel", name="Add",description="Add a role woth view + type perms", guild_ids=[785839283847954433],
 		base_default_permission=False, base_permissions=founder_perm
     )
-    async def channeladd(self, ctx,  role: discord.Role):
+    async def channeladd(self, ctx):
 
         channel = ctx.channel    
         secret = discord.utils.get(ctx.guild.roles, id=941772431750750218)
         admin = discord.utils.get(ctx.guild.roles, id=785845265118265376)
 
-        overwrite = channel.overwrites_for(role)
+        overwrite = channel.overwrites_for(secret)
         
 
         overwrite.send_messages = True
