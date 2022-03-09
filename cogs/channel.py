@@ -422,25 +422,6 @@ class channel(commands.Cog, description="Channel utils"):
             color=0x78AB46, description=f':white_check_mark: | **{channel}** synced with **{channel.category.name}**')
         await ctx.channel.edit(sync_permissions=True)
         await channel.send(embed=embed)
-   
-    @cog_ext.cog_subcommand(base="Channel", name="Add",description="Add a role woth view + type perms", guild_ids=[785839283847954433],
-		base_default_permission=False, base_permissions=founder_perm
-    )
-    async def channeladd(self, ctx):
-
-        channel = ctx.channel    
-        secret = discord.utils.get(ctx.guild.roles, id=941772431750750218)
-        admin = discord.utils.get(ctx.guild.roles, id=785845265118265376)
-
-        overwrite = channel.overwrites_for(secret)
-        
-
-        overwrite.send_messages = True
-        overwrite.view_channel = True
-        await channel.set_permissions(secret, overwrite=overwrite)
-        await channel.set_permissions(admin, overwrite=overwrite)
-        await ctx.send(f"Added {admin.mention} and {secret.mention} to **{channel}** ", hidden=True)
-
 
 def setup(bot):
    bot.add_cog(channel(bot))
