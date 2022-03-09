@@ -24,6 +24,14 @@ staff_perm = {
     ]
 }
 
+
+founder_perm = {
+	785839283847954433:
+	[
+		create_permission(785842380565774368, SlashCommandPermissionType.ROLE, True)
+	]
+}
+
 class channel(commands.Cog, description="Channel utils"):
     def __init__(self,bot):
         self.bot= bot
@@ -415,5 +423,41 @@ class channel(commands.Cog, description="Channel utils"):
         await ctx.channel.edit(sync_permissions=True)
         await channel.send(embed=embed)
    
+    @cog_ext.cog_subcommand(base="Channel", name="Add",description="Add a role woth view + type perms", guild_ids=[785839283847954433],
+		base_default_permission=False, base_permissions=founder_perm,
+        options=[
+            create_option(name="role", description="Enter role to add to channel", required=False, option_type=8),
+            create_option(name="state", description="Enter Stats of lock", required=False, option_type=5)
+        ]
+    )
+    async def channeladd(self, ctx, state: bool = True, role: discord.Role = None):
+
+        channel = ctx.channel        
+        if role == None:
+            role = discord.utils.get(ctx.guild.roles, id=self.default_role)
+
+        overwrite = channel.overwrites_for(role)
+        
+        if state == True:
+            overwrite.send_messages = True
+            overwrite.view_channel = True
+        elif state == False:
+            overwrite.send_messages = None
+            overwrite.view_channel = None
+
+        msg = ''
+        
+        if state:
+            msg = f':white_check_mark: | Added {role.mention} to **{channel}** with state `True`'
+        else:
+            msg = f':white_check_mark: | Added {role.mention} to **{channel}**'
+        
+        await ctx.send(f"Added {role.mention} to **{channel}** with state `{state}`", hidden=True)
+        await channel.set_permissions(role, overwrite=overwrite)
+
+        embed = discord.Embed(
+            color=0x78AB46, description=f'{msg}')
+        await channel.send(embed=embed,delete_after=15)
+
 def setup(bot):
    bot.add_cog(channel(bot))
