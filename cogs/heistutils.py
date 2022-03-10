@@ -13,6 +13,7 @@ from discord_slash.model import SlashCommandPermissionType
 from discord_slash.utils.manage_components import create_button, create_actionrow
 from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
+import numpy as np
 
 guild_ids=[785839283847954433]
 
@@ -37,6 +38,7 @@ founder_perm = {
 class heistutils(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
+		self.bot.respect_list = []
 		
 	@commands.Cog.listener()
 	async def on_ready(self):
@@ -422,7 +424,14 @@ class heistutils(commands.Cog):
 					gk = self.bot.get_guild(785839283847954433)
 					emoji = await gk.fetch_emoji(942521024476487741)
 					buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
-					embed = discord.Embed(title=f"Vote for the {ctx.guild.name}", description="❥ Special <@&786884615192313866> Role with 2x Guild-wide multi.\n❥ 2,500 Casino Cash. Collect using ,collectincome in <#786117471840895016>\n❥ Access to <#929613393097293874> with 2x Amaari\n❥ Guild wide 1x Amaari.", color=ctx.author.color)
+					embed = discord.Embed(
+						title=f"Vote for the {ctx.guild.name}", 
+						description=f"❥ Special <@&786884615192313866> role with 1x guild-wide multi.\n"
+						f"❥ 1x extra entry into all frisky giveaways."
+						f"❥ Access to <#929613393097293874> with 2x Amaari"
+						f"❥ 2,500 Casino Cash. Collect using `,collectincome` in <#786117471840895016>\n", 
+						color=ctx.author.color
+					)
 			
 					msg = await ctx.send(embed=embed, components=[create_actionrow(*buttons)],hidden=True)
 				else:
@@ -535,6 +544,28 @@ class heistutils(commands.Cog):
 				else:
 					await ctx.send(embed=embed,hidden=True)
 			
+			elif ctx.custom_id == "setup:heiststats":			
+				await ctx.defer(hidden=True)
+				data = self.bot.heist_stats_data
+				flag = 0
+				for i in data:
+					if ctx.author.name in i:
+						await ctx.send(f"```diff\n{i}\n```")
+						flag = 1
+						break
+				if flag == 0:
+					await ctx.send(f"```diff\n- Couldn't find your data for this heist\n```")
+			
+			elif ctx.custom_id == "setup:pressf":
+				await ctx.defer(hidden=True)
+				if ctx.author.id in self.bot.respect_list:
+					await ctx.send(f"You have already paid respects <a:tgk_pray:833253325796409365>!",hidden=True)
+					pass
+				else:
+					self.bot.respect_list.append(ctx.author.id)
+					await ctx.send(f"<a:tgk_pray:833253325796409365>",hidden=True)
+					await ctx.channel.send(f"**{ctx.author.name}** has paid their respect to the dead and the fined!")
+
 		elif ctx.custom_id.startswith("heist"):
 
 			if ctx.custom_id == "heist:heist":
@@ -635,8 +666,14 @@ class heistutils(commands.Cog):
 					gk = self.bot.get_guild(785839283847954433)
 					emoji = await gk.fetch_emoji(942521024476487741)
 					buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
-					embed = discord.Embed(title=f"Vote for the {ctx.guild.name}", description="❥ Special <@&786884615192313866> Role with 2x Guild-wide multi.\n❥ 2,500 Casino Cash. Collect using ,collectincome in <#786117471840895016>\n❥ Access to <#929613393097293874> with 2x Amaari\n❥ Guild wide 1x Amaari.", color=ctx.author.color)
-			
+					embed = discord.Embed(
+						title=f"Vote for the {ctx.guild.name}", 
+						description=f"❥ Special <@&786884615192313866> role with 1x guild-wide multi.\n"
+						f"❥ 1x extra entry into all frisky giveaways."
+						f"❥ Access to <#929613393097293874> with 2x Amaari"
+						f"❥ 2,500 Casino Cash. Collect using `,collectincome` in <#786117471840895016>\n", 
+						color=ctx.author.color
+					)
 					msg = await ctx.send(embed=embed, components=[create_actionrow(*buttons)],hidden=True)
 				else:
 					await ctx.send(f"Already have voted role!",hidden=True)
@@ -801,6 +838,99 @@ class heistutils(commands.Cog):
 		msg = await ctx.channel.send(content=message, components=[create_actionrow(*buttons)], delete_after=3600)
 		await ctx.send(content=f"Heist setup done!",hidden=True)
 		self.bot.heist_setup_data = deepcopy(data)
+
+	@cog_ext.cog_subcommand(base="Heist", name="Stats",description="Show Heist related statistics", guild_ids=guild_ids,
+		base_default_permission=False, base_permissions=founder_perm,
+		options = [
+			create_option(name="channel", description="Get Heist Results from which channel", required=False, option_type=7),
+		]
+	)
+	async def heiststats(self, ctx,channel = None):
+		await ctx.defer(hidden=True)
+
+		if channel == None:
+			channel = ctx.channel
+		# channel = self.bot.get_channel(804708111301738576)
+
+		fined_amount = 0
+		payouts = 0
+		count_robbers = 0
+		count_died = 0
+		count_success = 0
+		count_fined = 0
+		highest_fined = 0
+		highest_fined_msg = ""
+		highest_fined_link = ""
+
+		entire_msg_list = []
+
+		found_heist = 0
+		async for message in channel.history(limit=20):
+			if message.content.startswith("```") and message.author.id == 270904126974590976:
+				#await ctx.send(message.content)
+				found_heist = 1
+				each_member = message.content.split("\n")[1:-1]
+				each_member = [i for i in each_member if i != '']
+				entire_msg_list.extend(each_member)
+				count_robbers += len(each_member) 
+				#await ctx.send(each_member)
+				for i in each_member:
+					if i.startswith('+'):
+						count_success += 1
+						payout = i.split("⏣ ")[1].split(" ")[0].replace(",","",50)
+						if payout.endswith("."): payout = payout[:-1]
+						payouts = int(payout)
+					elif i.startswith('#'):
+						fine_payout = i.split("⏣ ")[1].split(" ")[0].replace(",","",50)
+						if fine_payout.endswith("."): fine_payout = fine_payout[:-1] 
+						fined_amount +=  int(fine_payout) 
+						count_fined += 1
+						if int(fine_payout) > highest_fined : 
+							highest_fined = int(fine_payout)
+							highest_fined_msg = f"```diff\n{i}\n```"
+							highest_fined_link = message.jump_url
+					else:
+						count_died += 1
+
+			elif message.content.startswith("Amazing job everybody") and message.author.id == 270904126974590976:
+				heist_message = message.content.split("racked ")[1]
+		if found_heist == 0:
+			await ctx.send(f"<:tgk_warning:840638147838738432> Heist results not found! <:tgk_warning:840638147838738432>",hidden=True)
+			return
+		embed = discord.Embed(
+				title=f"<a:celebrateyay:821698856202141696>  **Heist Stats**  <a:celebrateyay:821698856202141696>",
+				description=f"**{count_robbers} robbers** teamed up to rack {heist_message}\n",
+							# f"**Professional Robbers:** {count_success} ({np.round((count_success*100/count_robbers),2)}%)\n"
+							# f"**Amateur Robbers:** {count_fined} ({np.round((count_fined*100/count_robbers),2)}%)\n"
+							# f"**RIP Robbers:** {count_died} ({np.round((count_died*100/count_robbers),2)}%)\n",
+				color=0x9e3bff,
+				timestamp=datetime.datetime.utcnow()
+		)
+		yt_link = "https://www.youtube.com/channel/UCA_-mknv10nj-E1rP34zfeQ"
+		embed.add_field(name=f"Professional Robbers:",value=f"{count_success} ({np.round((count_success*100/count_robbers),2)}%)",inline=True)
+		embed.add_field(name=f"Amateur Robbers:",value=f"{count_fined} ({np.round((count_fined*100/count_robbers),2)}%)",inline=True)
+		embed.add_field(name=f"RIP Robbers:",value=f"{count_died} ({np.round((count_died*100/count_robbers),2)}%)",inline=True)
+		embed.add_field(name=f"Total Amount Fined:",value=f"**[⏣ {fined_amount:,}]({yt_link})**",inline=True)
+		embed.add_field(name=f"Noobest Robber Paid:",value=f"**[⏣ {highest_fined:,}]({yt_link})**",inline=True)
+		embed.add_field(name=f"Most Fined:",value=f"{highest_fined_msg}",inline=False)
+		embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+		# embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/837999751068778517/950451312619831336/heist_time.gif")
+				
+
+		gk = self.bot.get_guild(785839283847954433)
+		ace_feed = self.bot.get_guild(947525009247707157)
+		
+		heisttime = await gk.fetch_emoji(932911351154741308)
+		pressf = await ace_feed.fetch_emoji(951574174957195364)
+
+		buttons = [
+			create_button(style=ButtonStyle.blurple,emoji=heisttime, label="Show my results!",disabled=False, custom_id="setup:heiststats"),
+			create_button(style=ButtonStyle.blurple,emoji=pressf, label=" Let's pay respects to the fined!",disabled=False, custom_id="setup:pressf")
+		]
+		msg = await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)],delete_after = 7200)
+		await ctx.send(content=f"Stats sent!",hidden=True)
+		self.bot.heist_stats_data = deepcopy(entire_msg_list)
+		self.bot.respect_list = []
 
 def setup(bot):
 	bot.add_cog(heistutils(bot))
