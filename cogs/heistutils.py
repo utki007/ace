@@ -910,10 +910,10 @@ class heistutils(commands.Cog):
 		embed.add_field(name=f"Professional Robbers:",value=f"{count_success} ({np.round((count_success*100/count_robbers),2)}%)",inline=True)
 		embed.add_field(name=f"Amateur Robbers:",value=f"{count_fined} ({np.round((count_fined*100/count_robbers),2)}%)",inline=True)
 		embed.add_field(name=f"RIP Robbers:",value=f"{count_died} ({np.round((count_died*100/count_robbers),2)}%)",inline=True)
-		embed.add_field(name=f"Total Amount Fined:",value=f"**[⏣ {fined_amount:,}]({yt_link})**",inline=True)
 		embed.add_field(name=f"Heist Payouts:",value=f"**[⏣ {payouts:,}]({yt_link})**",inline=True)
-		# embed.add_field(name=f"Noobest Robber Paid:",value=f"**[⏣ {highest_fined:,}]({yt_link})**",inline=True)
-		embed.add_field(name=f"Most Fined:",value=f"{highest_fined_msg}",inline=False)
+		embed.add_field(name=f"Total Amount Fined:",value=f"**[⏣ {fined_amount:,}]({yt_link})**",inline=True)
+		embed.add_field(name=f"Noobest Robber Paid:",value=f"**[⏣ {highest_fined:,}]({yt_link})**",inline=True)
+		# embed.add_field(name=f"Most Fined:",value=f"{highest_fined_msg}",inline=False)
 		embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
 		# embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/837999751068778517/950451312619831336/heist_time.gif")
 				
