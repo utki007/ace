@@ -426,9 +426,10 @@ class heistutils(commands.Cog):
 					buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
 					embed = discord.Embed(
 						title=f"Vote for the {ctx.guild.name}", 
-						description=f"❥ Special <@&786884615192313866> role with 1x guild-wide multi.\n"
-						f"❥ 1x extra entry into all frisky giveaways."
-						f"❥ Access to <#929613393097293874> with 2x Amaari"
+						description=
+						f"❥ 1x extra entry into all frisky giveaways.\n"
+						f"❥ Special <@&786884615192313866> role with 1x guild-wide multi.\n"
+						f"❥ Access to <#929613393097293874> with 2x Amaari.\n"
 						f"❥ 2,500 Casino Cash. Collect using `,collectincome` in <#786117471840895016>\n", 
 						color=ctx.author.color
 					)
@@ -668,10 +669,11 @@ class heistutils(commands.Cog):
 					buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
 					embed = discord.Embed(
 						title=f"Vote for the {ctx.guild.name}", 
-						description=f"❥ Special <@&786884615192313866> role with 1x guild-wide multi.\n"
-						f"❥ 1x extra entry into all frisky giveaways."
-						f"❥ Access to <#929613393097293874> with 2x Amaari"
-						f"❥ 2,500 Casino Cash. Collect using `,collectincome` in <#786117471840895016>\n", 
+						description=
+						f"❥ 1x extra entry into all frisky giveaways.\n"
+						f"❥ Special <@&786884615192313866> role with 1x guild-wide multi.\n"
+						f"❥ Access to <#929613393097293874> with 2x Amaari.\n"
+						f"❥ 2,500 Casino Cash. Collect using `,collectincome` in <#786117471840895016>\n",
 						color=ctx.author.color
 					)
 					msg = await ctx.send(embed=embed, components=[create_actionrow(*buttons)],hidden=True)
@@ -859,7 +861,7 @@ class heistutils(commands.Cog):
 		msg = await ctx.channel.send(content=message, components=[create_actionrow(*buttons)], delete_after=3600)
 		await ctx.send(content=f"Heist setup done!",hidden=True)
 		self.bot.heist_setup_data = deepcopy(data)
-		
+
 		await asyncio.sleep(3600)
 		buttonsexpireall = [
 			create_button(style=ButtonStyle.green,emoji=heistemoji,label="Heist Time!", disabled=True, custom_id="setup:heist")
@@ -959,7 +961,7 @@ class heistutils(commands.Cog):
 		await ctx.send(content=f"Stats sent!",hidden=True)
 		self.bot.heist_stats_data = deepcopy(entire_msg_list)
 		self.bot.respect_list = []
-		
+
 		await asyncio.sleep(30)
 		buttonsexpire = [
 			create_button(style=ButtonStyle.blurple,emoji=heisttime, label="Show my results!",disabled=False, custom_id="setup:heiststats"),
@@ -967,7 +969,7 @@ class heistutils(commands.Cog):
 		]
 		await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpire)])
 		await ctx.channel.send(f"**{len(self.bot.respect_list)}** people have paid their **respects to the fined!**")
-
+		
 		await asyncio.sleep(3600)
 		buttonsexpireall = [
 			create_button(style=ButtonStyle.blurple,emoji=heisttime, label="Show my results!",disabled=True, custom_id="setup:heiststats"),
