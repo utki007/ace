@@ -1,3 +1,4 @@
+import asyncio
 import datetime
 import re
 import random
@@ -14,6 +15,8 @@ from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
 from django.forms import HiddenInput
 from amari import AmariClient
+import datetime
+from datetime import date
 
 time_regex = re.compile("(?:(\d{1,5})(h|s|m|d))+?")
 
@@ -21,14 +24,14 @@ time_dict = {"h": 3600, "s": 1, "m": 60, "d": 86400}
 guild_ids=[785839283847954433]
 
 staff_perm = {
-    785839283847954433:
-    [
-        create_permission(785842380565774368, SlashCommandPermissionType.ROLE, True),
-        create_permission(799037944735727636, SlashCommandPermissionType.ROLE, True),
-        create_permission(785845265118265376, SlashCommandPermissionType.ROLE, True),
-        create_permission(787259553225637889, SlashCommandPermissionType.ROLE, True),
-        create_permission(803230347575820289, SlashCommandPermissionType.ROLE, True),
-    ]
+	785839283847954433:
+	[
+		create_permission(785842380565774368, SlashCommandPermissionType.ROLE, True),
+		create_permission(799037944735727636, SlashCommandPermissionType.ROLE, True),
+		create_permission(785845265118265376, SlashCommandPermissionType.ROLE, True),
+		create_permission(787259553225637889, SlashCommandPermissionType.ROLE, True),
+		create_permission(803230347575820289, SlashCommandPermissionType.ROLE, True),
+	]
 }
 
 # class TimeConverter(commands.Converter):
@@ -500,13 +503,13 @@ class giveaway(commands.Cog):
 	@cog_ext.cog_slash(name="event",description="Host an Event", guild_ids=guild_ids,
 		default_permission=False,permissions=staff_perm,
 		options=[
-      			create_option(name="name", description="Name of the event", option_type=3, required=True),
+	  			create_option(name="name", description="Name of the event", option_type=3, required=True),
 				create_option(name="sponsor", description="Can be host too", required=True, option_type=6),
-    			create_option(name="message", description="Note from Sponsor", option_type=3, required=True),
-       			create_option(name="prize", description="Prize of the giveaway", option_type=3, required=True),
+				create_option(name="message", description="Note from Sponsor", option_type=3, required=True),
+	   			create_option(name="prize", description="Prize of the giveaway", option_type=3, required=True),
 				create_option(name="channel", description="Event channel", required=True, option_type=7),
 				create_option(name="winners", description="Number of the winners.", option_type=4, required=False)
-    	]
+		]
 	)
 	async def event(self, ctx, name, sponsor: discord.Member, message, prize, channel, winners: int = 1):
 		await ctx.defer(hidden=True)
@@ -521,11 +524,11 @@ class giveaway(commands.Cog):
 		desc = desc + f"> <a:donormessage:941782118491635802>  <a:yellowrightarrow:801446308778344468> {message.title()}\n"
 		desc = desc + f"Thank our event sponsor in <#785847439579676672> \n**\n**\n"
 		event_embed = discord.Embed(
-                title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
-                description = desc,
-                color=0x9e3bff,
-            	timestamp=datetime.datetime.utcnow()
-        )
+				title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
+				description = desc,
+				color=0x9e3bff,
+				timestamp=datetime.datetime.utcnow()
+		)
 		event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
 		event_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/940143383609999392.gif?size=128&quality=lossless")
 
@@ -541,6 +544,73 @@ class giveaway(commands.Cog):
 		msg = await ctx.channel.send(content=f"{event.mention}",embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Success!", components=[create_actionrow(*buttons)])
 		# await ctx.send(content=f"`{event.mention}`",embed = event_embed)
+
+	@cog_ext.cog_slash(name="goal",description="Our member goal embed", guild_ids=guild_ids,
+		default_permission=False,permissions=staff_perm,
+		options=[
+			create_option(name="target", description="Current Member Target", option_type=4, required=True),
+			create_option(name="hidden", description="Send embed as hidden or not?", required=False, option_type=5)
+		]
+	)
+	async def goal(self, ctx, target, hidden = False):
+		await ctx.defer(hidden=hidden)
+		goal = target
+		guild = ctx.guild
+		members = guild.members
+		count = 0
+		for i in members:
+			if i.bot:
+				count = count + 1
+		
+		member = guild.member_count - count
+
+		today = str(datetime.datetime.utcnow()).split(" ")[0].split("-")
+		today = date(int(today[0]),int(today[1]),int(today[2]))
+
+		member_joined_today = 0
+
+		for i in ctx.guild.members:
+			member_join = str(i.joined_at).split(" ")[0].split('-')
+			member_join = date(int(member_join[0]),int(member_join[1]),int(member_join[2]))
+			howlong = (today-member_join).days
+			if howlong < 1:
+				member_joined_today+=1
+
+		embed = discord.Embed(
+				title=f"<a:celebrateyay:821698856202141696>  **Our Goal**  <a:celebrateyay:821698856202141696>",
+				# description=f"",
+				color=0x78AB46,
+				timestamp=datetime.datetime.utcnow()
+		)
+		if member >= goal:
+			embed.set_image(url=f"https://minecraftskinstealer.com/achievement/11/Achievement+Reached%21/{goal}+members+reached%21")
+		else:
+			embed.set_image(url=f"https://minecraftskinstealer.com/achievement/11/TGK's+Goal%21/{goal - member}+members+needed%21")
+		embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+		embed.add_field(name="**✦ Human Count:** ",value=f"> **__{member}__**",inline=True)
+		embed.add_field(name="**✦ Joined Today:** ",value=f"> **__{member_joined_today}__**",inline=True)
+		embed.add_field(name="**✦ Goal:** ",value=f"> **__{goal}__**",inline=True)
+		if goal > member:
+			embed.add_field(name="**✦  Status:** ",value=f"> Need **{goal - member}** more people, **_Invite when_** ?",inline=False)
+		else:
+			embed.add_field(name="**Status:** ",value=f"Target has been achieved!",inline=False)	
+				
+		gk = self.bot.get_guild(785839283847954433)
+		emoji = await gk.fetch_emoji(942521024476487741)
+		buttons = [
+			create_button(style=ButtonStyle.green,emoji=emoji, label="Click here to hack giveaways!",disabled=False, custom_id="reaction:voted")
+		]
+		# await ctx.send(content=f"Goal Sent!",hidden=True)
+
+		if hidden == False:
+			msg = await ctx.send(embed=embed, components=[create_actionrow(*buttons)], hidden=hidden)
+			await asyncio.sleep(3600)
+			buttonsexpireall = [
+				create_button(style=ButtonStyle.green,emoji=emoji, label="Click here to hack giveaways!",disabled=True, custom_id="reaction:voted")
+			]
+			await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpireall)])
+		else:
+			await ctx.send(embed=embed, hidden=hidden)
 
 def setup(bot):
 	bot.add_cog(giveaway(bot))

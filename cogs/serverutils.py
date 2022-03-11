@@ -51,47 +51,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 		color.set_footer(
 				text=f"Developed by utki007 & Jay")
 		await ctx.send(embed=color)
-  
-	
-	@commands.command(name="gamer")
-	@commands.check_any(checks.can_use(), checks.is_me())
-	async def gamer(self,ctx):
-		
-		start = time.time()
-		
-		guild = self.bot.get_guild(785839283847954433)
-		users = guild.members
-		
-		gamer = discord.utils.get(guild.roles, id=790667905330970674)
-		bgmi = discord.utils.get(guild.roles, id=795711140108697630)
-		trainee = discord.utils.get(guild.roles, id=811307500321505320)
-		bl = discord.utils.get(guild.roles, id=936900151325360138)
-		valorant = discord.utils.get(guild.roles, id=795711130378829835)
-		
-		am = discord.AllowedMentions(
-			users=False,  # Whether to ping individual user @mentions
-			everyone=False,  # Whether to ping @everyone or @here mentions
-			roles=False,  # Whether to ping role @mentions
-			replied_user=False,  # Whether to ping on replies to messages
-		)
-		await ctx.message.delete()
-		message = await ctx.send(f"Starting to assign gamer role to members ... ", allowed_mentions=am)
-		j = 0
-		for i in users:
-			if (bgmi in i.roles or valorant in i.roles) and (trainee in i.roles and gamer not in i.roles and bl not in i.roles):
-				try:
-					await i.add_roles(gamer)
-					await ctx.send(f"{i.name} has been given {gamer.mention} role.", allowed_mentions=am)
-					j = j + 1
-				except:
-					await ctx.send(f"Failed to assign {gamer.mention} role to {i.mention}", allowed_mentions=am)
-		
-		end = time.time()
-		if j != 0:    
-			await ctx.send(f"Took {round((end - start) * 1000, 3)} ms to assign role to {j} members")
-		else:
-			await message.edit(content=f"No user is left to be assigned {gamer.mention} role!", allowed_mentions=am)
-	
+
 	@commands.command(name="bar",description="To be used in public channels after completing a task")
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def bar(self,ctx):
