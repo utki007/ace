@@ -910,6 +910,7 @@ class heistutils(commands.Cog):
 		embed.add_field(name=f"Professional Robbers:",value=f"{count_success} ({np.round((count_success*100/count_robbers),2)}%)",inline=True)
 		embed.add_field(name=f"Amateur Robbers:",value=f"{count_fined} ({np.round((count_fined*100/count_robbers),2)}%)",inline=True)
 		embed.add_field(name=f"RIP Robbers:",value=f"{count_died} ({np.round((count_died*100/count_robbers),2)}%)",inline=True)
+		embed.add_field(name=f"Heist Payouts:",value=f"**[⏣ {payouts:,}]({yt_link})**",inline=True)
 		embed.add_field(name=f"Total Amount Fined:",value=f"**[⏣ {fined_amount:,}]({yt_link})**",inline=True)
 		embed.add_field(name=f"Noobest Robber Paid:",value=f"**[⏣ {highest_fined:,}]({yt_link})**",inline=True)
 		embed.add_field(name=f"Most Fined:",value=f"{highest_fined_msg}",inline=False)
@@ -927,10 +928,17 @@ class heistutils(commands.Cog):
 			create_button(style=ButtonStyle.blurple,emoji=heisttime, label="Show my results!",disabled=False, custom_id="setup:heiststats"),
 			create_button(style=ButtonStyle.blurple,emoji=pressf, label=" Let's pay respects to the fined!",disabled=False, custom_id="setup:pressf")
 		]
-		msg = await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)],delete_after = 7200)
+		msg = await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Stats sent!",hidden=True)
 		self.bot.heist_stats_data = deepcopy(entire_msg_list)
 		self.bot.respect_list = []
+		await asyncio.sleep(30)
+		buttonsexpire = [
+			create_button(style=ButtonStyle.blurple,emoji=heisttime, label="Show my results!",disabled=False, custom_id="setup:heiststats"),
+			create_button(style=ButtonStyle.blurple,emoji=pressf, label=" Let's pay respects to the fined!",disabled=True, custom_id="setup:pressf")
+		]
+		await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpire)])
+		await ctx.channel.send(f"**{len(self.bot.respect_list)}** people have paid their **respects to the fined!**")
 
 def setup(bot):
 	bot.add_cog(heistutils(bot))
