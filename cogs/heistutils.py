@@ -118,7 +118,7 @@ class heistutils(commands.Cog):
 			for embed in embeds:
 				dict = embed.to_dict()
 			if "Black Hole Findings" in dict['title']:
-				await aceFeed.send(f"_**Black Hole Findings**_ under rework!")
+				# await aceFeed.send(f"_**Black Hole Findings**_ under rework!")
 				return
 			await aceFeed.send(content=message.content,embed = embed.from_dict(dict))
 
@@ -726,6 +726,16 @@ class heistutils(commands.Cog):
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
+		await asyncio.sleep(3600)
+		buttonsexpireall = [
+			create_button(style=ButtonStyle.blurple,emoji=heistemoji, disabled=True, custom_id="heist:heist"),
+			create_button(style=ButtonStyle.blurple,emoji=partnerheistemoji, disabled=True, custom_id="heist:partnerHeist"),
+			create_button(style=ButtonStyle.blurple,emoji=outsideheistemoji, disabled=True, custom_id="heist:outside"),
+			create_button(style=ButtonStyle.blurple,emoji=partnershipemoji, disabled=True, custom_id="heist:partnership")#,
+			# create_button(style=ButtonStyle.primary,emoji=nopartneremoji, disabled=False, custom_id="heist:nopartnership")
+		]
+		await msg.edit(embed=event_embed, components=[create_actionrow(*buttonsexpireall)])
+
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Other",description="Non-heist related reaction roles", guild_ids=guild_ids,
 		base_default_permission=True,
 		options=[
@@ -774,6 +784,17 @@ class heistutils(commands.Cog):
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
+
+		await asyncio.sleep(3600)
+		buttonsexpireall = [
+			create_button(style=ButtonStyle.blurple,emoji=gawemoji, disabled=True, custom_id="heist:giveaways"),
+			create_button(style=ButtonStyle.blurple,emoji=flashemoji, disabled=True, custom_id="heist:flash"),
+			create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=True, custom_id="heist:other"),
+			create_button(style=ButtonStyle.blurple,emoji=eventemoji, disabled=True, custom_id="heist:event"),
+			create_button(style=ButtonStyle.primary,emoji=movieemoji, disabled=True, custom_id="heist:movie")
+		]
+		await msg.edit(embed=event_embed, components=[create_actionrow(*buttonsexpireall)])
+
 
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Nopartner",description="No partnership related reaction roles", guild_ids=guild_ids,
 		base_default_permission=True,
@@ -838,6 +859,12 @@ class heistutils(commands.Cog):
 		msg = await ctx.channel.send(content=message, components=[create_actionrow(*buttons)], delete_after=3600)
 		await ctx.send(content=f"Heist setup done!",hidden=True)
 		self.bot.heist_setup_data = deepcopy(data)
+		
+		await asyncio.sleep(3600)
+		buttonsexpireall = [
+			create_button(style=ButtonStyle.green,emoji=heistemoji,label="Heist Time!", disabled=True, custom_id="setup:heist")
+		]
+		await msg.edit(content=message, components=[create_actionrow(*buttonsexpireall)])
 
 	@cog_ext.cog_subcommand(base="Heist", name="Stats",description="Show Heist related statistics", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=founder_perm,
@@ -913,7 +940,7 @@ class heistutils(commands.Cog):
 		embed.add_field(name=f"Heist Payouts:",value=f"**[⏣ {payouts:,}]({yt_link})**",inline=True)
 		embed.add_field(name=f"Total Amount Fined:",value=f"**[⏣ {fined_amount:,}]({yt_link})**",inline=True)
 		embed.add_field(name=f"Noobest Robber Paid:",value=f"**[⏣ {highest_fined:,}]({yt_link})**",inline=True)
-		# embed.add_field(name=f"Most Fined:",value=f"{highest_fined_msg}",inline=False)
+		embed.add_field(name=f"Most Fined:",value=f"{highest_fined_msg}",inline=False)
 		embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
 		# embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/837999751068778517/950451312619831336/heist_time.gif")
 				
@@ -932,6 +959,7 @@ class heistutils(commands.Cog):
 		await ctx.send(content=f"Stats sent!",hidden=True)
 		self.bot.heist_stats_data = deepcopy(entire_msg_list)
 		self.bot.respect_list = []
+		
 		await asyncio.sleep(30)
 		buttonsexpire = [
 			create_button(style=ButtonStyle.blurple,emoji=heisttime, label="Show my results!",disabled=False, custom_id="setup:heiststats"),
@@ -939,6 +967,13 @@ class heistutils(commands.Cog):
 		]
 		await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpire)])
 		await ctx.channel.send(f"**{len(self.bot.respect_list)}** people have paid their **respects to the fined!**")
+
+		await asyncio.sleep(3600)
+		buttonsexpireall = [
+			create_button(style=ButtonStyle.blurple,emoji=heisttime, label="Show my results!",disabled=True, custom_id="setup:heiststats"),
+			create_button(style=ButtonStyle.blurple,emoji=pressf, label=" Let's pay respects to the fined!",disabled=True, custom_id="setup:pressf")
+		]
+		await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpireall)])
 
 def setup(bot):
 	bot.add_cog(heistutils(bot))
