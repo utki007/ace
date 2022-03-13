@@ -79,7 +79,7 @@ class Events(commands.Cog):
         activity = f'over {member} members '
         await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"{activity}"),status= discord.Status.dnd)
     
-    @tasks.loop(seconds=300)
+    @tasks.loop(seconds=600)
     async def clock(self):      
         gk = self.bot.get_guild(785839283847954433)
         ind_time = datetime.datetime.now(timezone("Asia/Kolkata")).strftime('%Y-%m-%d %H:%M:%S.%f')
