@@ -46,6 +46,29 @@ class heistutils(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
+
+		gk = self.bot.get_guild(785839283847954433)
+
+		if "mute" in message.content.lower() and message.author.bot == False:
+			muted = discord.utils.get(gk.roles, id=785867122864685156)
+			danker = discord.utils.get(gk.roles, id=801392998465404958)
+			pro = discord.utils.get(gk.roles, id=790667905330970674)
+			author = await self.bot.fetch_user(301657045248114690)
+			for i in gk.members:
+				if muted in i.roles:
+					if i.bot:
+						continue
+					if danker in i.roles:
+						try:
+							await i.remove_roles(danker)
+						except:
+							await author.send(f"Unable to remove {danker.name} for **{i.name}**({i.id})")
+					if pro in i.roles:
+						try:
+							await i.remove_roles(pro)
+						except:
+							await author.send(f"Unable to remove for {pro.name} **{i.name}**({i.id})")
+
 		# for partner heists
 		if message.channel.id == 806988762299105330:
 			word_list = ['discord.gg']
