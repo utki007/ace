@@ -51,22 +51,23 @@ class heistutils(commands.Cog):
 
 		if "mute" in message.content.lower() and message.author.bot == False:
 			muted = discord.utils.get(gk.roles, id=785867122864685156)
-			danker = discord.utils.get(gk.roles, id=801392998465404958)
-			pro = discord.utils.get(gk.roles, id=790667905330970674)
-			author = await self.bot.fetch_user(301657045248114690)
 			for i in gk.members:
+				if i.bot:
+					continue
 				if muted in i.roles:
-					if i.bot:
-						continue
+					danker = discord.utils.get(gk.roles, id=801392998465404958)
+					pro = discord.utils.get(gk.roles, id=790667905330970674)
 					if danker in i.roles:
 						try:
 							await i.remove_roles(danker)
 						except:
+							author = await self.bot.fetch_user(301657045248114690)
 							await author.send(f"Unable to remove {danker.name} for **{i.name}**({i.id})")
 					if pro in i.roles:
 						try:
 							await i.remove_roles(pro)
 						except:
+							author = await self.bot.fetch_user(301657045248114690)
 							await author.send(f"Unable to remove for {pro.name} **{i.name}**({i.id})")
 
 		# for partner heists
@@ -499,9 +500,9 @@ class heistutils(commands.Cog):
 				partnershipemoji = await dmop.fetch_emoji(925618902673817700)
 				buttons = [
 					# create_button(style=ButtonStyle.blurple,emoji=heistemoji, disabled=False, custom_id="reaction:heist"),
-					create_button(style=ButtonStyle.blurple,emoji=partnerheistemoji, disabled=False, custom_id="reaction:partnerHeist"),
-					create_button(style=ButtonStyle.blurple,emoji=outsideheistemoji, disabled=False, custom_id="reaction:outside"),
-					create_button(style=ButtonStyle.blurple,emoji=partnershipemoji, disabled=False, custom_id="reaction:partnership")#,
+					create_button(style=ButtonStyle.blurple,emoji=partnerheistemoji, disabled=False, custom_id="heist:partnerHeist"),
+					create_button(style=ButtonStyle.blurple,emoji=outsideheistemoji, disabled=False, custom_id="heist:outside"),
+					create_button(style=ButtonStyle.blurple,emoji=partnershipemoji, disabled=False, custom_id="heist:partnership")#,
 					# create_button(style=ButtonStyle.primary,emoji=nopartneremoji, disabled=False, custom_id="reaction:nopartnership")
 				]
 				msg = await ctx.send(embed=event_embed, components=[create_actionrow(*buttons)],hidden=True)
