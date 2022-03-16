@@ -10,13 +10,18 @@ import time as tm
 import asyncio
 import math
 import datetime
+import io
+import os
+import textwrap
+import contextlib
+from traceback import format_exception
 from discord_slash.utils.manage_commands import create_option, create_choice
 from discord_slash import cog_ext, SlashContext, cog_ext, SlashContext
 from discord_slash.utils.manage_commands import create_option, create_choice, create_permission
 from discord_slash.model import SlashCommandPermissionType
 from cogs.channel import channel
 from utils.Checks import checks
-
+from utils.util import clean_code, Pag
 
 staff_perm = {
     785839283847954433:
@@ -93,6 +98,45 @@ class config(commands.Cog, description="config"):
     @commands.cooldown(3,60 , commands.BucketType.user)
     async def teleport(self, ctx, channel):
         await ctx.send(f"{channel.mention}", hidden=True)
+    
+    @commands.command(name="eval", description="Let Owner Run Code within bot", aliases=["exec"])
+    @commands.check_any(checks.is_me())
+    async def _eval(self, ctx, *, code):
+        code = clean_code(code)
+
+        local_variables = {
+            "discord": discord,
+            "commands": commands,
+            "bot": self.bot,
+            "ctx": ctx,
+            "channel": ctx.channel,
+            "author": ctx.author,
+            "guild": ctx.guild,
+            "message": ctx.message
+        }
+
+        stdout = io.StringIO()
+
+        try:
+            with contextlib.redirect_stdout(stdout):
+                exec(
+                    f"async def func():\n{textwrap.indent(code, '    ')}", local_variables,
+                )
+
+                obj = await local_variables["func"]()
+                result = f"{stdout.getvalue()}\n-- {obj}\n"
+        except Exception as e:
+            result = "".join(format_exception(e, e, e.__traceback__))
+
+        pager = Pag(
+            timeout=100,
+            entries=[result[i: i + 2000] for i in range(0, len(result), 2000)],
+            length=1,
+            prefix="```py\n",
+            suffix="```"
+        )
+
+        await pager.start(ctx)
 
 def setup(bot):
    bot.add_cog(config(bot))
