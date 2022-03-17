@@ -257,6 +257,9 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         await ctx.message.delete()
         if "://" not in link:
             link = "https://discord.gg/" + link
+
+        if "channels" in link:
+            channel = int(link.split("/")[-2])
         
         am = discord.AllowedMentions(
             users=False,  # Whether to ping individual user @mentions
@@ -284,7 +287,6 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
                 f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
             )
-            await channel1.send("<@&836228842397106176> @here", delete_after=1)
             await channel2.send(
                 f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
                 # f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
@@ -292,7 +294,6 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
                 f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
             )
-            await channel2.send("@here", delete_after=1)
             await channel3.send(
                 f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
                 # f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
@@ -310,7 +311,6 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
                 f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
             )
-            await channel2.send("@here", delete_after=1)
             await channel3.send(
                 f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
                 # f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
@@ -318,7 +318,6 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
                 f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
             )
-            await channel3.send("<@&836228842397106176> @here", delete_after=1)
             await user.send(f"\n<#{channel}> {link} ")
         else:
             message = await ctx.send(
