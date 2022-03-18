@@ -325,7 +325,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
                 description=f"**Total Items:** {amount}\n"
                             f"**Unit Cost:** {self.bot.emojis_list['DMC']} **{dict['donationCost']:,}**\n"
                             f"**Items Worth:** {self.bot.emojis_list['DMC']} **{amount*dict['donationCost']:,}**\n",
-                color=self.bot.colors["DARK_GOLD"],
+                color=self.bot.colors["Success"],
                 timestamp=datetime.datetime.utcnow()
             )
             embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
