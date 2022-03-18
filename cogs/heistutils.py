@@ -151,7 +151,30 @@ class heistutils(commands.Cog):
 		
 		if ctx.custom_id.startswith("reaction"):
 
-			if ctx.custom_id == "reaction:18+":
+			if ctx.custom_id == "reaction:verify":
+				await ctx.defer(hidden=True)
+				unverify = discord.utils.get(ctx.guild.roles, id=953006119436030054)
+				newbie = discord.utils.get(ctx.guild.roles, id=787566421592899614)
+				if unverify in ctx.author.roles:		
+					await ctx.send(f"You have been verified, check out <#944670050252648468> & <#944670176115294228>", hidden=True)
+					try:
+						await ctx.author.remove_roles(unverify)
+					except:
+						pass
+					if newbie not in ctx.author.roles:
+						try:
+							await ctx.author.add_roles(newbie)
+						except:
+							pass
+				else:
+					await ctx.send(f"You are already verified, create ticket from <#785901543349551104>", hidden=True)
+					if newbie not in ctx.author.roles:
+						try:
+							await ctx.author.add_roles(newbie)
+						except:
+							pass
+					
+			elif ctx.custom_id == "reaction:18+":
 				await ctx.defer(hidden=True)
 				adult = discord.utils.get(ctx.guild.roles, id=942704531031068723)
 				child = discord.utils.get(ctx.guild.roles, id=942704574127550495)
