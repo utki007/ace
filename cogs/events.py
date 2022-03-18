@@ -21,6 +21,7 @@ class Events(commands.Cog):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
         self.change_status.start()
         self.clock.start()
+        self.randomrole.start()
         
         # work channel
         self.work = 848470871307190273
@@ -117,5 +118,14 @@ class Events(commands.Cog):
         vc = gk.get_channel(948098420160233482)
         await vc.edit(name=f"{emoji}。IST。{ind_time}")
         
+    @tasks.loop(seconds=28800)
+    async def randomrole(self):
+        gk = self.bot.get_guild(785839283847954433)
+        random_colour = discord.utils.get(gk.roles, id=954448411191554088)
+        color= discord.Color(random.choice(self.bot.color_list))
+
+        await random_colour.edit(colour=color)
+
+
 def setup(bot):
     bot.add_cog(Events(bot)) 
