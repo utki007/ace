@@ -20,7 +20,7 @@ from utils.mongo import Document
 
 description = '''This is what I have been programmed to do'''
 bot = commands.Bot(
-    command_prefix=["? ","?","gk.","Gk."],
+    command_prefix=["tgk "],
     description=description,
     case_insensitive=True,
     intents= discord.Intents.all(),
@@ -201,7 +201,26 @@ bot.colors = {
 	"DARK_ORANGE": 0xA84300,
 	"DARK_RED": 0x992D22,
 	"DARK_NAVY": 0x2C3E50,
-	"Success":0x78AB46
+	"Success":0x78AB46,
+	"Invisible":0x36393f,
+	"Black":0x050505,
+	"Coral":0xff7f50,
+	"Cherry":0xe91e63,
+	"Lavendar":0xc8c8fa,
+	"BrightGreen":0x29ff00,
+	"Canary":0x122df8,
+	"Peach":0xffe5b4,
+	"Purple":0x9f029f,
+	"Magenta":0xff27f8,
+	"Violet":0x8f00ff,
+	"Milk":0xfdfff5,
+	"Pumpkin":0xb6610a,
+	"Lime":0xb2ff00,
+	"BlushPink":0xff73fa,
+	"Green":0x03ac13,
+	"Pink":0xffc0cb,
+	"Blue":0x00aeff,
+	"Yellow":0xfcfc4f
 }
 bot.color_list = [c for c in bot.colors.values()]
 
