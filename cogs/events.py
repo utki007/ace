@@ -77,8 +77,8 @@ class Events(commands.Cog):
                 count = count + 1
         
         member = guild.member_count - count
-        activity = f'{member} members '
-        await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f"{activity}"),status= discord.Status.dnd)
+        activity = str(member) + " members!" 
+        await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=activity),status= discord.Status.dnd)
     
     @tasks.loop(seconds=600)
     async def clock(self):      
