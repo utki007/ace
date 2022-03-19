@@ -201,9 +201,9 @@ class heistutils(commands.Cog):
 		webhook = discord.utils.get(webhooks, name= self.bot.user.name)
 
 		if webhook is None:
-			webhook = await ctx.channel.create_webhook(name=self.bot.user.name,reason = "For Publishing Heist Results", avatar = await self.bot.user.avatar_url.read())
+			webhook = await announcement_channel.create_webhook(name=self.bot.user.name,reason = "For Publishing Heist Results", avatar = await self.bot.user.avatar_url.read())
 		dank_memer = ctx.guild.get_member(270904126974590976)
-		webhook = DiscordWebhook(url=webhook.url,username = dank_memer.name,avatar_url=f'{dank_memer.avatar_url}')#ctx.author.avatar_url).split("?")[0])
+		webhook = DiscordWebhook(url=webhook.url,username = dank_memer.name,avatar_url=f'{dank_memer.avatar_url}')
 		
 		if announce:
 			for dank_message in dank_results:
