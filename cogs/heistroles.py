@@ -129,6 +129,7 @@ class heistroles(commands.Cog):
 			
 			gk = self.bot.get_guild(785839283847954433)
 			aceFeed = gk.get_channel(946689040344813588)
+			lotto_ping = gk.get_role(951942751681904670)
 
 			am = discord.AllowedMentions(
 				users=False,  # Whether to ping individual user @mentions
@@ -141,9 +142,8 @@ class heistroles(commands.Cog):
 			for embed in embeds:
 				dict = embed.to_dict()
 			if "Black Hole Findings" in dict['title']:
-				# await aceFeed.send(f"_**Black Hole Findings**_ under rework!")
 				return
-			await aceFeed.send(content=message.content,embed = embed.from_dict(dict))
+			await aceFeed.send(content=f"{lotto_ping.mention}",embed = embed.from_dict(dict))
 
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
