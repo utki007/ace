@@ -57,7 +57,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 			desc = desc + f' {timer_left.second} seconds '
 		
 		e = discord.Embed(
-			color= ctx.author.colour,
+			color= discord.Color.random(),
 			title=f"{name.title()}",
 			description=f'**{desc}**',
 			timestamp=end
@@ -109,7 +109,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 			if flag == 0:
 				break    
 			e = discord.Embed(
-				color= discord.Color(random.choice(self.bot.color_list)),
+				color= discord.Color.random(),
 				title=f"{name.title()}",
 				description=f'**{desc}**',
 				timestamp=end
@@ -123,7 +123,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		desc = f'timer ended'
 				
 		e = discord.Embed(
-				color= ctx.author.colour,
+				color= discord.Color.random(),
 				title=f"{name.title()}",
 				description=f'**{desc}**',
 				timestamp=end
@@ -139,7 +139,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 			users.remove(self.bot.user) 
 		
 		dm = discord.Embed(
-				color= ctx.author.colour,
+				color = discord.Color.random(),
 				title=f"{name.title()} has Ended",
 				description=f'**Timer has ended over [here]({timer.jump_url}) . Hurry Up!!**',
 				timestamp=end,
@@ -200,7 +200,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		desc = f'timer ended'
 				
 		e = discord.Embed(
-				color= ctx.author.colour,
+				color= discord.Color.random(),
 				title=f"{tdata['title']}",
 				description=f'**{desc}**',
 				timestamp=date_time_obj
@@ -281,7 +281,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 			desc = f'Timer Ended'
 		
 		e = discord.Embed(
-			color= ctx.author.colour,
+			color= discord.Color.random(),
 			title=f"{tdata['title']}",
 			description=f'**{desc}**',
 			timestamp=date_time_obj
@@ -328,7 +328,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 			if flag == 0:
 				break    
 			e = discord.Embed(
-				color= discord.Color(random.choice(self.bot.color_list)),
+				color= discord.Color.random(),
 				title=f"{tdata['title']}",
 				description=f'**{desc}**',
 				timestamp=date_time_obj
@@ -343,7 +343,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		desc = f'timer ended'
 				
 		e = discord.Embed(
-				color= ctx.author.colour,
+				color= discord.Color.random(),
 				title=f"{tdata['title']}",
 				description=f'**{desc}**',
 				timestamp=date_time_obj
