@@ -136,7 +136,10 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		for reaction in new_msg.reactions:
 			async for user in reaction.users():
 				users.add(user)
+		try:
 			users.remove(self.bot.user) 
+		except:
+			pass
 		
 		dm = discord.Embed(
 				color = discord.Color.random(),
@@ -218,7 +221,11 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		for reaction in new_msg.reactions:
 			async for user in reaction.users():
 				users.add(user)
-			users.remove(self.bot.user)     
+		
+		try:
+			users.remove(self.bot.user) 
+		except:
+			pass
 		
 		try : 
 			buttons = [create_button(style=ButtonStyle.URL, label="Timer ended here", disabled=False, url=f"{message.jump_url}")]
@@ -360,7 +367,11 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		for reaction in new_msg.reactions:
 			async for user in reaction.users():
 				users.add(user)
-			users.remove(self.bot.user)     
+		
+		try:
+			users.remove(self.bot.user) 
+		except:
+			pass 
 		
 		try : 
 			buttons = [create_button(style=ButtonStyle.URL, label="Timer ended here", disabled=False, url=f"{timer.jump_url}")]
@@ -396,7 +407,10 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		for reaction in new_msg.reactions:
 			async for user in reaction.users():
 				users.add(user)
-			users.remove(self.bot.user)     
+		try:
+			users.remove(self.bot.user) 
+		except:
+			pass
 		
 		try : 
 			buttons = [create_button(style=ButtonStyle.URL, label="Timer ended here", disabled=False, url=f"{new_msg.jump_url}")]
