@@ -472,7 +472,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             singlePings = singlePings + f'{df1["name"][idx]} {self.bot.emojis_list["rightArrow"]}  {df1["pingCount"][idx]}\n **\n**'
         
         ping1 = discord.Embed(
-                title=f"    **Reach for Partnerships w.r.t {channel.mention}\n**   ",
+                title=f"    **Reach for __{channel.name}__\n**   ",
                 description= singlePings,
                 color=0x9e3bff,
                 timestamp=datetime.datetime.utcnow()
@@ -511,7 +511,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         
 
             ping2 = discord.Embed(
-                title=f"    **Reach for Partnerships w.r.t {channel.mention}\n**   ",
+                title=f"    **Reach for __{channel.name}__\n**   ",
                 description= doublePings,
                 color=0x9e3bff,
                 timestamp=datetime.datetime.utcnow()
