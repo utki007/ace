@@ -426,7 +426,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
     @commands.command(name="cpings", description="Check Channel Pings")
     #@commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 831405039830564875), commands.is_owner())
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def cpings(self, ctx):
+    async def cpings(self, ctx, channel: discord.TextChannel = None):
         
         
         guild = self.bot.get_guild(785839283847954433)
@@ -438,7 +438,9 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         partnership = discord.utils.get(guild.roles, id=797448080223109120)
         giveaway = discord.utils.get(guild.roles, id=800685251276963861)
 
-        channel = self.bot.get_channel(806988762299105330)
+        if channel == None:
+            channel = self.bot.get_channel(806988762299105330)
+        
         channel_members = channel.members
         
         l = [heist,partnerHeist,outsideHeist,partnership,danker,giveaway]
@@ -470,7 +472,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             singlePings = singlePings + f'{df1["name"][idx]} {self.bot.emojis_list["rightArrow"]}  {df1["pingCount"][idx]}\n **\n**'
         
         ping1 = discord.Embed(
-                title=f"    **Single Pings for Partnership\n**   ",
+                title=f"    **Reach for Partnerships w.r.t {channel.mention}\n**   ",
                 description= singlePings,
                 color=0x9e3bff,
                 timestamp=datetime.datetime.utcnow()
@@ -509,7 +511,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         
 
             ping2 = discord.Embed(
-                title=f"    **Double Pings for Partnership\n**   ",
+                title=f"    **Reach for Partnerships w.r.t {channel.mention}\n**   ",
                 description= doublePings,
                 color=0x9e3bff,
                 timestamp=datetime.datetime.utcnow()
