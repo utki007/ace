@@ -88,7 +88,7 @@ class heistutils(commands.Cog):
 		buttons = [
 			create_button(style=ButtonStyle.green,emoji=heistemoji,label="Heist Time!", disabled=False, custom_id="setup:heist")
 		]
-		msg = await ctx.channel.send(content=message, components=[create_actionrow(*buttons)], delete_after=3600)
+		msg = await ctx.channel.send(content=message, components=[create_actionrow(*buttons)], delete_after=3600, allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
 		await ctx.send(content=f"Heist setup done!",hidden=True)
 		self.bot.heist_setup_data = deepcopy(data)
 
