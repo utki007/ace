@@ -120,7 +120,8 @@ async def on_ready():
 		guild.get_role(944643499272310804),
 		guild.get_role(943533516895965224),
 		guild.get_role(943533522184986636),
-		guild.get_role(944643511570030663)
+		guild.get_role(944643511570030663),
+		guild.get_role(954448411191554088)
 	]
 
 #setting up tokens.py
