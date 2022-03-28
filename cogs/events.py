@@ -39,14 +39,14 @@ class Events(commands.Cog):
             m, s = divmod(error.retry_after, 60)
             h, m = divmod(m, 60)
             if int(h) == 0 and int(m) == 0:
-                await ctx.send(f" You must wait {int(s)} seconds to use this command!")
+                await ctx.send(f"The command is under a cooldown of **{int(s)} seconds** to prevent abuse!")
             elif int(h) == 0 and int(m) != 0:
                 await ctx.send(
-                    f" You must wait {int(m)} minutes and {int(s)} seconds to use this command!"
+                    f"The command is under a cooldown of **{int(m)} minutes and {int(s)} seconds** to prevent abuse!"
                 )
             else:
                 await ctx.send(
-                    f" You must wait {int(h)} hours, {int(m)} minutes and {int(s)} seconds to use this command!"
+                    f"The command is under a cooldown of **{int(h)} hours, {int(m)} minutes and {int(s)} seconds** to prevent abuse!"
                 )
         elif isinstance(error, commands.CheckFailure):
             # If the command has failed a check, trip this
