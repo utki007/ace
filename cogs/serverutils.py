@@ -5,8 +5,17 @@ import pandas as pd
 import numpy as np
 import time 
 import datetime
+from dateutil.relativedelta import relativedelta
+from discord_slash import cog_ext, cog_ext
+from discord_slash.utils.manage_commands import create_option, create_permission
+from discord_slash.model import SlashCommandPermissionType
+from discord_slash.utils.manage_components import create_button, create_actionrow
+from discord_slash.model import ButtonStyle
+from discord_slash.context import ComponentContext
 from colour import Color
 from utils.Checks import checks
+
+
 class serverutils(commands.Cog, description="Server Utility"):
 	
 	def __init__(self, bot):
@@ -80,6 +89,25 @@ class serverutils(commands.Cog, description="Server Utility"):
 				await ctx.channel.send(f"{ctx.author.mention}, DM cancelled")
 		except:
 			await ctx.send(f"{ctx.author.mention}, DM was not sent because there was no confirmation!")
+
+	@commands.command(name="vote",description="Get vote link")
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def vote(self,ctx):
+		await ctx.message.delete()
+		gk = self.bot.get_guild(785839283847954433)
+		emoji = await gk.fetch_emoji(942521024476487741)
+		buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
+		embed = discord.Embed(
+			title=f"Vote for the {ctx.guild.name}", 
+			description=
+			f"❥ 1x extra entry into all frisky giveaways.\n"
+			f"❥ Special <@&786884615192313866> role with 1x guild-wide multi.\n"
+			f"❥ Access to <#929613393097293874> with 2x Amaari.\n"
+			f"❥ 2,500 Casino Cash. Collect using `,collectincome` in <#786117471840895016>\n", 
+			color=ctx.author.color
+		)
+
+		msg = await ctx.send(embed=embed, components=[create_actionrow(*buttons)])
 
 	# @commands.command(name="star",description="To star a message")
 	# @commands.check_any(checks.can_use(), checks.is_me())
