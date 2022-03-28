@@ -109,41 +109,20 @@ class serverutils(commands.Cog, description="Server Utility"):
 
 		await ctx.send(embed=embed, components=[create_actionrow(*buttons)])
 
-	# @commands.command(name="star",description="To star a message")
-	# @commands.check_any(checks.can_use(), checks.is_me())
-	# async def star(self,ctx):
-	# 	message = await ctx.channel.fetch_message(ctx.message.reference.message_id)
-	# 	embeds = message.embeds
-	# 	dict = {}
-	# 	for embed in embeds:
-	# 		dict = embed.to_dict()
-	# 	gk = self.bot.get_guild(785839283847954433)
-	# 	starboard = gk.get_channel(930922016255656026)
-		
-	# 	# footer = {}
-	# 	# footer["text"] = f"Developed by utki007 & Jay"
-	# 	# footer["icon_url"] = ctx.guild.icon_url
-	# 	# dict["footer"] = footer
-	# 	dict["footer"] = {'text':f"Developed by utki007 & Jay", 'icon_url': f'{ctx.guild.icon_url}'}
-	# 	field = {'name': "Source", 'value': f"[Jump!]({message.jump_url})", 'inline': False}
-		
-	# 	if 'fields' not in dict:
-	# 		dict["fields"]= []
-	# 	dict['fields'].append(field)
+	@commands.command(name="revive",description="Revive server")
+	@commands.cooldown(1, 28800, commands.BucketType.guild)
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def revival(self,ctx):
+		await ctx.message.delete()
+		gk = self.bot.get_guild(785839283847954433)		
+		revival = discord.utils.get(gk.roles, id=942704600883023872)
+		emoji = await gk.fetch_emoji(942521024476487741)
+		embed = discord.Embed(
+			title=f"Revival team has been summoned!",
+			color=discord.Color.random()
+		)
 
-	# 	# if 'timestamp' not in dict:
-	# 	# 	dict["timestamp"] = f'{int(datetime.datetime.now().timestamp())}'
-	# 	# else:
-	# 	# 	timestamp = str(dict['timestamp'].split('+')[0])
-	# 	# 	dict['timestamp'] = f'<t:{int(datetime.strptime(timestamp,"%Y-%m-%dT%H:%M:%S.%f").timestamp())}:D>'
-
-	# 	# await ctx.send(dict['timestamp'])
-	# 	# await ctx.send(message)
-	# 	await ctx.send(content=message.content,embed = discord.Embed.from_dict(dict))
-
-	# 	# message = await starboard.send(content=message.content,embed = embed.from_dict(dict))
-			
-		
+		await ctx.send(content = f"{revival.mention}" ,embed=embed)
 	  
 def setup(bot):
 	bot.add_cog(serverutils(bot))
