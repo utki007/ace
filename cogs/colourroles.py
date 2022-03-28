@@ -80,6 +80,23 @@ class colourroles(commands.Cog):
 					await ctx.author.add_roles(green)
 					await ctx.send(f"The colour role {green.mention} has been added to you.", hidden=True)
 			
+			elif ctx.custom_id == "colour:random":
+				await ctx.defer(hidden=True)
+				random = discord.utils.get(ctx.guild.roles, id=954448411191554088)
+				if random in ctx.author.roles:
+					await clean_colour_roles(self.bot,ctx.author)
+					await ctx.send(f"The colour role {random.mention} has been removed from you.", hidden=True)
+				else:
+					trainee = discord.utils.get(ctx.guild.roles, id=811307500321505320)  
+					if trainee in ctx.author.roles:
+						await clean_colour_roles(self.bot,ctx.author)
+						await ctx.author.add_roles(random)
+						await ctx.send(f"The colour role {random.mention} has been added to you.", hidden=True)
+						return
+					else:
+						await ctx.send(f"To get {random.mention} colour role, you need to have {trainee.mention} role.", hidden=True)
+			
+
 			elif ctx.custom_id == "colour:blushpink":
 				await ctx.defer(hidden=True)
 				blushpink = discord.utils.get(ctx.guild.roles, id=943532255538720788)
@@ -97,7 +114,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {blushpink.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {blushpink.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 			
 			elif ctx.custom_id == "colour:lime":
 				await ctx.defer(hidden=True)
@@ -116,7 +133,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {lime.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {lime.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 			
 			elif ctx.custom_id == "colour:pumpkin":
 				await ctx.defer(hidden=True)
@@ -135,7 +152,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {pumpkin.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {pumpkin.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 		
 			elif ctx.custom_id == "colour:milk":
 				await ctx.defer(hidden=True)
@@ -154,7 +171,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {milk.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {milk.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 			
 			elif ctx.custom_id == "colour:violet":
 				await ctx.defer(hidden=True)
@@ -173,7 +190,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {violet.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {violet.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 			
 			elif ctx.custom_id == "colour:magenta":
 				await ctx.defer(hidden=True)
@@ -192,7 +209,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {magenta.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {magenta.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 			
 			elif ctx.custom_id == "colour:purple":
 				await ctx.defer(hidden=True)
@@ -211,7 +228,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {purple.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {purple.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 			
 			elif ctx.custom_id == "colour:peach":
 				await ctx.defer(hidden=True)
@@ -230,7 +247,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {peach.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {peach.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 			
 			elif ctx.custom_id == "colour:canary":
 				await ctx.defer(hidden=True)
@@ -249,7 +266,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {canary.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {canary.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 			
 			elif ctx.custom_id == "colour:brightgreen":
 				await ctx.defer(hidden=True)
@@ -268,7 +285,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {brightgreen.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {brightgreen.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 
 			elif ctx.custom_id == "colour:lavendar":
 				await ctx.defer(hidden=True)
@@ -287,7 +304,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {lavendar.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {lavendar.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 
 			elif ctx.custom_id == "colour:cherry":
 				await ctx.defer(hidden=True)
@@ -306,7 +323,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {cherry.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {cherry.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 
 			elif ctx.custom_id == "colour:coral":
 				await ctx.defer(hidden=True)
@@ -325,7 +342,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {coral.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {coral.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 
 			elif ctx.custom_id == "colour:black":
 				await ctx.defer(hidden=True)
@@ -344,7 +361,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {black.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {black.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 
 			elif ctx.custom_id == "colour:invisible":
 				await ctx.defer(hidden=True)
@@ -363,7 +380,7 @@ class colourroles(commands.Cog):
 						else:
 							roles.append(i.mention)
 						
-					await ctx.send(f"To get {invisible.mention}colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
+					await ctx.send(f"To get {invisible.mention} colour role, you need to have any role from {', '.join(role for role in roles)}.", hidden=True)
 
 	@cog_ext.cog_subcommand(base="Colourroles", name="Basic",description="Basic perk colour-roles", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=founder_perm
@@ -481,6 +498,26 @@ class colourroles(commands.Cog):
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
+
+	@cog_ext.cog_subcommand(base="Colourroles", name="Random",description="Random colour-roles", guild_ids=guild_ids,
+		base_default_permission=True
+	)
+	async def colourrandom(self, ctx):
+		await ctx.defer(hidden=True)
+
+		event_embed = discord.Embed(
+				title=f"<a:gk_rainbow:944635677490970644>   **{'Random Colour Role': ^15}**   <a:gk_rainbow:944635677490970644>",
+				color=0xffe5b4
+		)
+		test = self.bot.get_guild(787210891208818710)
+		
+		random = await test.fetch_emoji(958077879437127741)
+		buttons = [
+			create_button(style=ButtonStyle.grey,emoji=random, label="Random Colour", disabled=False, custom_id="colour:random")
+		]
+		await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
+		await ctx.send(content=f"Colour role created!",hidden=True)
+
 
 def setup(bot):
 	bot.add_cog(colourroles(bot))
