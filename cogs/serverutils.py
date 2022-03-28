@@ -116,13 +116,43 @@ class serverutils(commands.Cog, description="Server Utility"):
 		await ctx.message.delete()
 		gk = self.bot.get_guild(785839283847954433)		
 		revival = discord.utils.get(gk.roles, id=942704600883023872)
-		emoji = await gk.fetch_emoji(942521024476487741)
 		embed = discord.Embed(
 			title=f"Revival team has been summoned!",
 			color=discord.Color.random()
 		)
 
 		await ctx.send(content = f"{revival.mention}" ,embed=embed)
+
+
+	@commands.command(name="rc",description="Change role colour",aliases=["randomcolor"])
+	@commands.cooldown(3, 28800, commands.BucketType.user)
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def randomcolor(self,ctx):
+		await ctx.message.delete()
+
+		gk = self.bot.get_guild(785839283847954433)		
+		random = discord.utils.get(gk.roles, id=954448411191554088)
+
+		old_color = random.color
+		new_color = discord.Color.random()
+
+		if random in ctx.author.roles:
+			await random.edit(colour=new_color)
+
+			embed = discord.Embed(
+				title = f"Random colour changed!",
+				description = f"{ctx.author.mention} changed colour of {random.mention} from {old_color} to {new_color}",
+				color = new_color
+			)
+
+			await ctx.send(embed=embed)
+		else:
+			unauthorized = discord.Embed(
+				color=self.bot.colors["RED"], 
+				title = f"Unauthorized to use this command!!!",
+				description=f"{self.bot.emojis_list['Warrning']} | Need to have {random.mention} role to change its colour!"
+			)
+			await ctx.send(embed=unauthorized)
 	  
 def setup(bot):
 	bot.add_cog(serverutils(bot))
