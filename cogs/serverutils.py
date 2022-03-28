@@ -107,7 +107,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 			color=ctx.author.color
 		)
 
-		msg = await ctx.send(embed=embed, components=[create_actionrow(*buttons)])
+		await ctx.send(embed=embed, components=[create_actionrow(*buttons)])
 
 	# @commands.command(name="star",description="To star a message")
 	# @commands.check_any(checks.can_use(), checks.is_me())
