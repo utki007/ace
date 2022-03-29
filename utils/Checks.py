@@ -17,12 +17,11 @@ class checks():
 		async def predicate(ctx):
 			try:
 				command = ctx.bot.perm[ctx.command.name]
-				if command is None:
-					command = await ctx.bot.active_cmd.find(command.name)
+				# if command is None:
+				# 	command = await ctx.bot.active_cmd.find(command.name)
 			except:
 				try:
-					if command is None:
-						command = await ctx.bot.active_cmd.find(command.name)
+					command = await ctx.bot.active_cmd.find(command.name)
 				except:
 					if command is None:
 						command = {"_id": ctx.command.name, "allowed_roles": [], "allowed_users": [],"disable": False}
