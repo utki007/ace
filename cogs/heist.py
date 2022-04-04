@@ -362,7 +362,7 @@ class dankHeist(commands.Cog,name="Dank Heist", description="Heist Manager"):
             replied_user=False,  # Whether to ping on replies to messages
         )
         await ctx.message.delete()
-        ty = await ctx.send(f"Make sure to Thank our Amazing <@&836228842397106176>'s  for the heist in <#785847439579676672>", allowed_mentions=am)
+        ty = await ctx.send(f"Make sure to Thank our Amazing <@&940581716312084530>'s  for the heist in <#785847439579676672>", allowed_mentions=am)
         await ty.add_reaction(f'<:thankyou:930419246792601640>')
    
 
