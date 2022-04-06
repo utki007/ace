@@ -27,7 +27,6 @@ bot = commands.Bot(
     help_command = None
 )
 bot.giveaway = {}
-bot.perm = {}
 slash = SlashCommand(bot, sync_commands=True, sync_on_cog_reload=True)
 
 @bot.event
@@ -39,10 +38,6 @@ async def on_ready():
 	currentGive = await bot.give.get_all()
 	for give in currentGive:
 		bot.giveaway[give["_id"]] = give
-	
-	currentPerm = await bot.active_cmd.get_all()
-	for perm in currentPerm:
-		bot.perm[perm["_id"]] = perm
 
 	guild = bot.get_guild(785839283847954433)
 	bot.role_dict = {
