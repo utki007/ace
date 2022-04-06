@@ -31,8 +31,8 @@ class sticky(commands.Cog, description="Sticky Utility"):
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
         """Event which checks for sticky messages to resend."""
-        if message.author.bot:
-            return
+        # if message.author.bot:
+        #     return
         channel = message.channel
         myquery = {"_id": channel.id}
         info = self.mycol.find(myquery)
