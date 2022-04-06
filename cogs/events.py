@@ -51,12 +51,8 @@ class Events(commands.Cog):
         elif isinstance(error, commands.CheckFailure):
             # If the command has failed a check, trip this
             await ctx.send("Hey! You lack permission to use this command.")
-        elif isinstance(error, commands.DisabledCommand):
-            await ctx.send('The command is disabed by Owner')
         elif isinstance(error, CommandDisableByDev):
-            await ctx.send('The command is disabed by Jay/Utki')
-        elif isinstance(error, commands.MaxConcurrencyReached):
-            await ctx.send('Please Wait for last Game to End')
+            await ctx.send('This command is currently disabled by developers.')
         elif isinstance(error, commands.CommandInvokeError):
             return
         elif isinstance(error, commands.CommandNotFound):
