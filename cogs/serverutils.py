@@ -69,6 +69,14 @@ class serverutils(commands.Cog, description="Server Utility"):
 		# await ctx.send(random.choice(l))
 		await ctx.send(l[0])
 
+	@commands.command(name="celebrate",description="To be used in public channels after completing a gaw")
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def celebrate(self,ctx):
+		await ctx.message.delete()
+		l = ["https://cdn.discordapp.com/attachments/785848096809549856/808028491856478258/image0-2-1.gif"]
+		# await ctx.send(random.choice(l))
+		await ctx.send(l[0])
+
 	@commands.command(name="dm",description="Dm a user!")
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def dm(self,ctx,member: discord.Member,*,message: str):
@@ -87,6 +95,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 					await ctx.channel.send(f"Unable to dm {member} with message: {message}")
 			else:
 				await ctx.channel.send(f"{ctx.author.mention}, DM cancelled")
+			await msg.delete()
 		except:
 			await ctx.send(f"{ctx.author.mention}, DM was not sent because there was no confirmation!")
 
@@ -125,7 +134,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 
 
 	@commands.command(name="rc",description="Change role colour",aliases=["randomcolor"])
-	@commands.cooldown(3, 28800, commands.BucketType.user)
+	@commands.cooldown(1, 28800, commands.BucketType.user)
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def randomcolor(self,ctx):
 		await ctx.message.delete()
