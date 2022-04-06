@@ -15,7 +15,7 @@ class checks():
 
 	def can_use():
 		async def predicate(ctx):
-			command = await ctx.bot.active_cmd.find(command.name)
+			command = await ctx.bot.active_cmd.find(ctx.command.name)
 			if command is None:
 				command = {"_id": ctx.command.name, "allowed_roles": [], "allowed_users": [],"disable": False}
 				await ctx.bot.active_cmd.upsert(command)
