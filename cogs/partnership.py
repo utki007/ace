@@ -2,17 +2,10 @@
 import discord
 from discord import embeds
 from discord.ext import commands, tasks
-import os
 import pandas as pd
 import numpy as np
 import pymongo
-import dns
-import time
-import asyncio
-import math
-import time
 import datetime
-import json
 from utils.Checks import checks
 # helper functions
 from utils.custom_pagination import *
@@ -524,5 +517,23 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         message = await ctx.send(embed = ping1)
         await addPages(self.bot,ctx,message,pages)
         
+        
+    @commands.command(name="invite", description="Fetch Server Details", aliases=["inv","id"])
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def invite(self, ctx, invite: str = None):
+
+        await ctx.message.delete()
+        if invite == None:
+            invite = ctx.guild.invite_url
+        else:
+            try:
+                invite = invite.replace("https://discord.gg/","")
+                invite = f"https://discord.gg/{invite}"
+                invite = await self.bot.fetch_invite(invite)
+            except:
+                return await ctx.send(f"{ctx.author.mention} Invalid Invite")
+        
+        await ctx.send(f"**Server ID for _{invite.guild}_:** {invite.guild.id}\n")
+
 def setup(bot):
     bot.add_cog(partnership(bot))
