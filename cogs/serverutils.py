@@ -134,7 +134,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 
 
 	@commands.command(name="rc",description="Change role colour",aliases=["randomcolor"])
-	@commands.cooldown(1, 28800, commands.BucketType.user)
+	@commands.cooldown(1, 14400, commands.BucketType.user)
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def randomcolor(self,ctx):
 		await ctx.message.delete()
