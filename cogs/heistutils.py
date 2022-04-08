@@ -150,7 +150,7 @@ class heistutils(commands.Cog):
 						if fine_payout.endswith("."): fine_payout = fine_payout[:-1] 
 						fined_amount +=  int(fine_payout) 
 						count_fined += 1
-						if int(fine_payout) > highest_fined : 
+						if int(fine_payout) >= highest_fined : 
 							highest_fined = int(fine_payout)
 							highest_fined_msg = f"```diff\n{i}\n```"
 							highest_fined_link = message.jump_url
