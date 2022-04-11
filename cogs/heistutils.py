@@ -23,6 +23,7 @@ staff_perm = {
 	785839283847954433:
 	[
 		create_permission(785842380565774368, SlashCommandPermissionType.ROLE, True),
+		create_permission(803635405638991902, SlashCommandPermissionType.ROLE, True),
 		create_permission(799037944735727636, SlashCommandPermissionType.ROLE, True),
 		create_permission(785845265118265376, SlashCommandPermissionType.ROLE, True),
 		create_permission(787259553225637889, SlashCommandPermissionType.ROLE, True),
@@ -33,7 +34,10 @@ staff_perm = {
 founder_perm = {
 	785839283847954433:
 	[
-		create_permission(785842380565774368, SlashCommandPermissionType.ROLE, True)
+		create_permission(785842380565774368, SlashCommandPermissionType.ROLE, True),
+		create_permission(803635405638991902, SlashCommandPermissionType.ROLE, True),
+		create_permission(799037944735727636, SlashCommandPermissionType.ROLE, True),
+		create_permission(820896669700194354, SlashCommandPermissionType.ROLE, True)
 	]
 }
 
