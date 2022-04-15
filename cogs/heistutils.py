@@ -89,7 +89,7 @@ class heistutils(commands.Cog):
 		try:
 			timer = await convert_to_time(timer)
 			timer = await calculate(timer)
-			timer += 19800 
+			# timer += 19800 
 		
 			timer = datetime.datetime.utcnow() + datetime.timedelta(seconds=timer)
 		except:
@@ -304,11 +304,11 @@ class heistutils(commands.Cog):
 		lock_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/801343188945207297.gif?v=1")
 
 		try:
-			await self.bot.wait_for("message", check=lambda m: m.author.id == 270904126974590976 and ("you're not popular enough and didn't get enough people to rob the bank" in m.content or "for an unsuccessful robbery" in m.content or "Amazing job everybody, we racked up a total of" in m.content or "rang the police on you" in m.content), timeout=180)
-			if "you're not popular enough and didn't get enough people to rob the bank" in message.content.lower() or "for an unsuccessful robbery" in message.content.lower() or "rang the police on you" in message.content.lower():
+			heist_end = await self.bot.wait_for("message", check=lambda m: m.author.id == 270904126974590976 and ("you're not popular enough and didn't get enough people to rob the bank" in m.content or "for an unsuccessful robbery" in m.content or "Amazing job everybody, we racked up a total of" in m.content or "rang the police on you" in m.content), timeout=180)
+			if "you're not popular enough and didn't get enough people to rob the bank" in heist_end.content.lower() or "for an unsuccessful robbery" in heist_end.content.lower() or "rang the police on you" in heist_end.content.lower():
 				await ctx.channel.send(f"Retrying heist in 5 mins",delete_after=5)
 				return
-			elif "Amazing job everybody" in message.content.lower():
+			elif "Amazing job everybody" in heist_end.content.lower():
 				await ctx.channel.edit(sync_permissions=True)
 				await ctx.channel.send(embed=lock_embed)
 				await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Heist has been completed successfully!",hidden = True)
