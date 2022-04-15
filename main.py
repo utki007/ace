@@ -27,6 +27,7 @@ bot = commands.Bot(
     help_command = None
 )
 bot.giveaway = {}
+bot.heist_setup_date = []
 slash = SlashCommand(bot, sync_commands=True, sync_on_cog_reload=True)
 
 @bot.event

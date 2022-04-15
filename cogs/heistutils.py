@@ -15,29 +15,18 @@ from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
 import numpy as np
 import discord_webhook
+from utils.convertor import *
+from cogs.timer import *
 from discord_webhook import DiscordWebhook,DiscordEmbed
 
 guild_ids=[785839283847954433]
-
-staff_perm = {
-	785839283847954433:
-	[
-		create_permission(785842380565774368, SlashCommandPermissionType.ROLE, True),
-		create_permission(803635405638991902, SlashCommandPermissionType.ROLE, True),
-		create_permission(799037944735727636, SlashCommandPermissionType.ROLE, True),
-		create_permission(785845265118265376, SlashCommandPermissionType.ROLE, True),
-		create_permission(787259553225637889, SlashCommandPermissionType.ROLE, True),
-		create_permission(820896669700194354, SlashCommandPermissionType.ROLE, True),
-	]
-}
 
 founder_perm = {
 	785839283847954433:
 	[
 		create_permission(785842380565774368, SlashCommandPermissionType.ROLE, True),
 		create_permission(803635405638991902, SlashCommandPermissionType.ROLE, True),
-		create_permission(799037944735727636, SlashCommandPermissionType.ROLE, True),
-		create_permission(820896669700194354, SlashCommandPermissionType.ROLE, True)
+		create_permission(799037944735727636, SlashCommandPermissionType.ROLE, True)
 	]
 }
 
@@ -45,6 +34,10 @@ class heistutils(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		self.bot.respect_list = []
+		# some roles for tgk
+		self.heist_role = 804068344612913163
+		self.default_role = 787566421592899614
+		self.starter_role = 802233925036408892
 		
 	@commands.Cog.listener()
 	async def on_ready(self):
@@ -54,53 +47,274 @@ class heistutils(commands.Cog):
 	@cog_ext.cog_subcommand(base="Heist", name="Setup",description="Setup Role Specific Heist", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=founder_perm,
 		options=[
-			create_option(name="voterbypass", description="Can voter bypass?", required=True, option_type=5),
 			create_option(name="required_role", description="Enter requirement role to Unhide channel for it", required=True, option_type=8),
+			create_option(name="amount", description="Enter heist amount", required=True, option_type=3),
+			create_option(name="channel", description="Enter heist channel", required=True, option_type=7),
+			create_option(name="timer", description="Set heist time", required=True, option_type=3),
+			create_option(name="ping", description="Want to ping heist?", required=False, option_type=5),
+			create_option(name="title", description="Embed Title", option_type=3, required=False),
 			create_option(name="bypassrole1", description="Enter role which can bypass", required=False, option_type=8),
 			create_option(name="bypassrole2", description="Enter role which can bypass", required=False, option_type=8),
-			create_option(name="message", description="Content for the message", option_type=3, required=False)
+			create_option(name="bypassrole3", description="Enter role which can bypass", required=False, option_type=8)
 		]
 	)
-	async def heistsetup(self, ctx, voterbypass,required_role,bypassrole1 = None,bypassrole2 = None, message = None):
+	async def heistsetup(self, ctx, required_role,amount,channel,timer,starter = None,ping = False, title = None,bypassrole1 = None,bypassrole2 = None,bypassrole3 = None):
 		await ctx.defer(hidden=True)
 
-		data = {}
+		# await ctx.invoke(self.bot.get_command('timer'), timer, "heist")
 
+		try:
+			everyone_role = discord.utils.get(ctx.guild.roles, name="@everyone")
+			default_role = discord.utils.get(ctx.guild.roles, id=self.default_role)
+			heist_ping = discord.utils.get(ctx.guild.roles, id=self.heist_role)
+			starter_role = discord.utils.get(ctx.guild.roles, id=self.starter_role)
+		except:
+			warning = discord.Embed(
+			color=self.bot.colors["RED"], 
+			description=f"{self.bot.emojis_list['Warrning']} | Error with default Heist Roles!!")
+			await ctx.send(embed = warning,hidden=True)
+			return
+
+		try:
+			amount = await convert_to_numeral(amount)
+			amount = await calculate(amount)
+			amount = int(amount)
+		except:
+			warning = discord.Embed(
+				color=self.bot.colors["RED"],
+				description=f"{self.bot.emojis_list['Warrning']} | Error with Heist Amount!!")
+			await ctx.send(embed = warning,hidden=True)
+			return
+		
+		try:
+			timer = await convert_to_time(timer)
+			timer = await calculate(timer)
+			timer += 19800 
+		
+			timer = datetime.datetime.utcnow() + datetime.timedelta(seconds=timer)
+		except:
+			warning = discord.Embed(
+				color=self.bot.colors["RED"],
+				description=f"{self.bot.emojis_list['Warrning']} | Error with Heist Timer!!")
+			await ctx.send(embed = warning,hidden=True)
+			return
+		
+		if "heist" not in channel.name.lower():
+			warning = discord.Embed(
+				color=self.bot.colors["RED"],
+				description=f"{self.bot.emojis_list['Warrning']} | Invalid heist channel!!")
+			await ctx.send(embed = warning,hidden=True)
+			return
+		
+		am = discord.AllowedMentions(users=False, everyone=False, roles=False, replied_user=False)
+
+		embedrole = f"**_Required Role:_** \n<a:tgk_arrow:832387973281480746> {required_role.mention if required_role != ctx.guild.default_role else everyone_role} **\n**\n"
+		# dealing with roles
+		bypass_roles_list = []
+		flag = 0
+		if bypassrole1 != None:
+			bypass_roles_list.append(bypassrole1)
+			flag = 1
+		if bypassrole2 != None:
+			bypass_roles_list.append(bypassrole2)
+			flag = 1
+		if bypassrole3 != None:
+			bypass_roles_list.append(bypassrole3)
+			flag = 1
+		
+		if flag == 1:
+			embedrole += f"**_Bypass Roles:_** \n"
+			for role in bypass_roles_list:
+				embedrole += f"<a:tgk_arrow:832387973281480746> {role.mention} \n"
+
+		title = title if title != None else "Heist Time!"
+		all_roles_list = []
+		all_roles_list.append(required_role)
+		all_roles_list.extend(bypass_roles_list)
+		
+
+		if bypass_roles_list !=[]:
+			role_string =  f"> {required_role.mention}\n"
+			for role in bypass_roles_list:
+				role_string += f"> {role.mention}\n"
+		else:
+			role_string = f"> {required_role.mention}\n"
+
+		self.bot.heist_setup_data = [i.id for i in all_roles_list]
+		
+		desc = f"{ctx.author.mention} is hosting a heist!**\n**\n"
+		desc = desc + f"> <a:TGK_paisa_hi_paisa_hoga:849509579565301780>  **⏣ {int(amount):,}**\n"
+		desc = desc + f"> <a:timesand:832701552845389866>  <t:{int(datetime.datetime.timestamp(timer))}:t> (<t:{int(datetime.datetime.timestamp(timer))}:R>)\n"
+
+		event_embed = discord.Embed(
+				title=f"<a:bhaago:821993760492879872>  **{title.title(): ^15}**  <a:bhaago:821993760492879872>",
+				description = desc,
+				color=0x9e3bff,
+				timestamp=datetime.datetime.utcnow()
+		)
+		event_embed.add_field(
+				name=f"**\n**",
+				value=f"{embedrole} \n",
+				inline=False
+		)
+		event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+		event_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/932911351154741308.gif?size=128&quality=lossless")
+		event_embed.set_image(url="https://media.discordapp.net/attachments/840291742859001876/943806099537162250/0E67BE40-2287-4A6F-9520-C6FD5E548227.gif")
+
+		message = title
 		if message == None:
 			message = f"Click below to see if you meet heist requirement!"
 
-		voted = discord.utils.get(ctx.guild.roles, id=786884615192313866 )
-		data['required_role'] = required_role.id
-		if voterbypass:
-			data['voterbypass'] = voted.id
-		else:
-			data['voterbypass'] = None
-		try:
-			data['bypassrole1'] = bypassrole1.id
-		except:
-			data['bypassrole1'] = None
-		try:
-			data['bypassrole2'] = bypassrole2.id
-		except:
-			data["bypassrole2"] = None
-
 		gk = self.bot.get_guild(785839283847954433)
 		dmop = self.bot.get_guild(838646783785697290)
-
+		
+		emojig = self.bot.get_guild(815849745327194153)
+		emoji = await emojig.fetch_emoji(941790535151144990)
 		heistemoji = await gk.fetch_emoji(932911351154741308)
 
-		buttons = [
-			create_button(style=ButtonStyle.green,emoji=heistemoji,label="Heist Time!", disabled=False, custom_id="setup:heist")
-		]
-		msg = await ctx.channel.send(content=message, components=[create_actionrow(*buttons)], delete_after=3600, allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
-		await ctx.send(content=f"Heist setup done!",hidden=True)
-		self.bot.heist_setup_data = deepcopy(data)
+		message = await channel.send("**\n**",delete_after=0)
+		# await message.add_reaction("<a:Girl7_Celebrate:941800075271733350>")
+		url = message.jump_url
 
+		buttons = [
+			create_button(style=ButtonStyle.green,emoji=heistemoji,label="Check Requirements!", disabled=False, custom_id="setup:heist"),
+			create_button(style=ButtonStyle.URL, label="Heist Channel!", emoji=emoji, disabled=False, url=url)
+		]
+		if ping:
+			msg = await ctx.channel.send(heist_ping.mention, embed=event_embed,components=[create_actionrow(*buttons)])
+		else:
+			msg = await ctx.channel.send(embed=event_embed,components=[create_actionrow(*buttons)])
+		await ctx.send(f"Heist has been created!",hidden=True)
+
+		# requiremnet lock/unlock
+		a_info1 = discord.Embed(
+				color=discord.Color.random(), 
+				description=f'Unlocking {channel.mention} for the following roles:\n{role_string}')
+		
+		a_roleinfo = await ctx.channel.send(embed = a_info1, allowed_mentions=am) 
+
+		for role in all_roles_list:
+			overwrite = channel.overwrites_for(role)
+			overwrite.view_channel = True
+
+			await channel.set_permissions(role, overwrite=overwrite)
+			await asyncio.sleep(0.5)
+		
+		overwrite = channel.overwrites_for(everyone_role)
+		overwrite.view_channel = False
+		await channel.set_permissions(everyone_role, overwrite=overwrite)
+		await asyncio.sleep(0.5)
+
+
+		
+		unlock_embed = discord.Embed(
+			title=f"<a:tgk_run:832700446711611422>       **{'Requirement Heist'}**       <a:tgk_run:832700446711611422> ",
+			description=f"Heist channel is unlocked for :\n\n{role_string}",
+			color=discord.Color.random(),
+			timestamp=datetime.datetime.utcnow()
+		)
+		unlock_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+		unlock_embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/831970404762648586/833039923548389397/tenor.gif")
+
+		await channel.send(embed=unlock_embed)
+		await a_roleinfo.edit(embed=unlock_embed)
+
+
+		# expire buttons
 		await asyncio.sleep(3600)
 		buttonsexpireall = [
-			create_button(style=ButtonStyle.green,emoji=heistemoji,label="Heist Time!", disabled=True, custom_id="setup:heist")
+			create_button(style=ButtonStyle.grey,emoji=heistemoji,label="Check if you can join heist!", disabled=True, custom_id="setup:heist"),
+			create_button(style=ButtonStyle.URL, label="Heist Channel!", emoji=emoji, disabled=True, url=url)
 		]
-		await msg.edit(content=message, components=[create_actionrow(*buttonsexpireall)])
+		await msg.edit(content="Heist Over!", components=[create_actionrow(*buttonsexpireall)])
+
+
+	@cog_ext.cog_subcommand(base="Heist", name="Start",description="Start the heist!", guild_ids=guild_ids,
+		base_default_permission=False, base_permissions=founder_perm,
+		options = [
+			create_option(name="starter", description="Which will start the heist?", required=False, option_type=6)
+		]
+	)
+	async def heiststart(self, ctx, starter: discord.Member = None):
+		await ctx.defer(hidden=True)
+		am = discord.AllowedMentions(users=False, everyone=False, roles=False, replied_user=False)
+		if starter == None:
+			starter = ctx.author
+		try:
+			heist_ping = discord.utils.get(ctx.guild.roles, id=self.heist_role)
+			starter_role = discord.utils.get(ctx.guild.roles, id=self.starter_role)
+		except:
+			warning = discord.Embed(
+			color=self.bot.colors["RED"], 
+			description=f"{self.bot.emojis_list['Warrning']} | Error with default Heist Roles!!")
+			await ctx.send(embed = warning,hidden=True)
+			return
+		
+		if starter_role not in starter.roles:
+			await starter.add_roles(starter_role)
+			await asyncio.sleep(0.5)
+		await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Starter role has been assigned!",hidden = True)
+		
+		starter_embed = discord.Embed(
+			description=f" {self.bot.emojis_list['SuccessTick']} | *{starter_role.mention}* added to  **{starter.name}**  ",
+			color=self.bot.colors["Success"]
+		)
+		await ctx.channel.send(embed=starter_embed, delete_after=15)
+		starter_message = await ctx.channel.send(f"{starter.mention} start the heist now!", delete_after=70)
+		heist_search = await ctx.channel.send(f" {self.bot.emojis_list['60sec']} **Searching for heist in this channel**. Type `cancel` to cancel the heist", delete_after=60)
+		
+		while(1):
+			try:
+				message = await self.bot.wait_for("message", check=lambda m: (m.author.id == ctx.author.id and "cancel" in m.content.lower()) or (m.author.id == 270904126974590976), timeout=60)
+				if "cancel" in message.content.lower():
+					cancel_message = await ctx.channel.send(f"{self.bot.emojis_list['Warrning']} | Heist has been cancelled. Blame {ctx.author.mention}!",allowed_mentions=am)
+					await cancel_message.add_reaction("<:TGK_PepeCryHands:785907739427602482>")
+					await starter.remove_roles(starter_role)
+					await heist_search.delete()
+					await starter_message.delete()
+					await message.delete()
+					return
+				elif message.embeds:
+					if	'title' in message.embeds[0].to_dict():
+						if "is starting a bank robbery" in message.embeds[0].to_dict()['title']:
+							await message.add_reaction("<a:TGK_heisttime:932911351154741308>")
+							await heist_search.delete()
+							await starter_message.delete()
+							try:
+								await starter.remove_roles(starter_role)
+								break
+							except:
+								await ctx.send(f"{self.bot.emojis_list['Warrning']} | Error removing starter role from {starter.mention}!",hidden = True)
+								break
+				else:
+					continue
+			except asyncio.TimeoutError:	
+				cancel_message = await ctx.channel.send(f"{self.bot.emojis_list['Warrning']} | Heist has been timed out. Blame {starter.mention}!",allowed_mentions=am)
+				await cancel_message.add_reaction("<:TGK_PepeCryHands:785907739427602482>")
+				await heist_search.delete()
+				await starter_message.delete()
+				return
+						
+		lock_embed = discord.Embed(
+			title=f"<a:tgk_run:832700446711611422>       **{'Everyone can view now'}**       <a:tgk_run:832700446711611422> ",
+			description=f"Good luck guys!!! \n",
+			color=ctx.author.color,
+			timestamp=datetime.datetime.utcnow()
+		)
+		lock_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/801343188945207297.gif?v=1")
+
+		try:
+			await self.bot.wait_for("message", check=lambda m: m.author.id == 270904126974590976 and ("you're not popular enough and didn't get enough people to rob the bank" in m.content or "for an unsuccessful robbery" in m.content or "Amazing job everybody, we racked up a total of" in m.content or "rang the police on you" in m.content), timeout=180)
+			if "you're not popular enough and didn't get enough people to rob the bank" in message.content.lower() or "for an unsuccessful robbery" in message.content.lower() or "rang the police on you" in message.content.lower():
+				await ctx.channel.send(f"Retrying heist in 5 mins",delete_after=5)
+				return
+			elif "Amazing job everybody" in message.content.lower():
+				await ctx.channel.edit(sync_permissions=True)
+				await ctx.channel.send(embed=lock_embed)
+				await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Heist has been completed successfully!",hidden = True)
+		except asyncio.TimeoutError:
+			await ctx.channel.send(f"Retrying heist in 5 mins",delete_after=5)
+			return
 
 	@cog_ext.cog_subcommand(base="Heist", name="Stats",description="Show Heist related statistics", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=founder_perm,
@@ -234,8 +448,6 @@ class heistutils(commands.Cog):
 			create_button(style=ButtonStyle.blurple,emoji=pressf, label=" Let's pay respects to the fined!",disabled=True, custom_id="setup:pressf")
 		]
 		await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpireall)])
-
-
 
 def setup(bot):
 	bot.add_cog(heistutils(bot))

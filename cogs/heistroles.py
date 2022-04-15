@@ -550,8 +550,7 @@ class heistroles(commands.Cog):
 		elif ctx.custom_id.startswith("setup"):	
 			if ctx.custom_id == "setup:heist":
 				await ctx.defer(hidden=True)
-				data = self.bot.heist_setup_data
-				setup_roles = data.values()
+				setup_roles = self.bot.heist_setup_data
 				roles = []
 				role_map = {
 					804068344612913163: "heist:heist",
@@ -581,7 +580,7 @@ class heistroles(commands.Cog):
 				if req_role != []:
 					desc = f"You need any one of the following roles to join heist. \nGrind, donate or apply in <#939809122281480282> to get them! \n"
 					for i in req_role:
-						desc = desc + f"\n{i.mention}"
+						desc = desc + f"\n> {i.mention}"
 				if icons == 1:
 					desc = desc + f"\n\nClick on the below buttons to join heist!"
 				embed = discord.Embed(title=f"Heist Requirement: ",description=desc, color=0x9e3bff)
