@@ -21,12 +21,13 @@ from discord_webhook import DiscordWebhook,DiscordEmbed
 
 guild_ids=[785839283847954433]
 
-founder_perm = {
+heist_perm = {
 	785839283847954433:
 	[
 		create_permission(785842380565774368, SlashCommandPermissionType.ROLE, True),
 		create_permission(803635405638991902, SlashCommandPermissionType.ROLE, True),
-		create_permission(799037944735727636, SlashCommandPermissionType.ROLE, True)
+		create_permission(799037944735727636, SlashCommandPermissionType.ROLE, True),
+		create_permission(820896669700194354, SlashCommandPermissionType.ROLE, True)
 	]
 }
 
@@ -45,7 +46,7 @@ class heistutils(commands.Cog):
 
 
 	@cog_ext.cog_subcommand(base="Heist", name="Setup",description="Setup Role Specific Heist", guild_ids=guild_ids,
-		base_default_permission=False, base_permissions=founder_perm,
+		base_default_permission=False, base_permissions=heist_perm,
 		options=[
 			create_option(name="required_role", description="Enter requirement role to Unhide channel for it", required=True, option_type=8),
 			create_option(name="amount", description="Enter heist amount", required=True, option_type=3),
@@ -230,12 +231,13 @@ class heistutils(commands.Cog):
 
 
 	@cog_ext.cog_subcommand(base="Heist", name="Start",description="Start the heist!", guild_ids=guild_ids,
-		base_default_permission=False, base_permissions=founder_perm,
+		base_default_permission=False, base_permissions=heist_perm,
 		options = [
-			create_option(name="starter", description="Which will start the heist?", required=False, option_type=6)
+			create_option(name="announcement_channel", description="Which channel to announce heist results in?", required=True, option_type=7),
+			create_option(name="starter", description="Who will start the heist?", required=False, option_type=6)
 		]
 	)
-	async def heiststart(self, ctx, starter: discord.Member = None):
+	async def heiststart(self, ctx, announcement_channel ,starter: discord.Member = None):
 		await ctx.defer(hidden=True)
 		am = discord.AllowedMentions(users=False, everyone=False, roles=False, replied_user=False)
 		if starter == None:
@@ -252,7 +254,7 @@ class heistutils(commands.Cog):
 		
 		if starter_role not in starter.roles:
 			await starter.add_roles(starter_role)
-			await asyncio.sleep(0.5)
+			# await asyncio.sleep(0.5)
 		await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Starter role has been assigned!",hidden = True)
 		
 		starter_embed = discord.Embed(
@@ -260,64 +262,199 @@ class heistutils(commands.Cog):
 			color=self.bot.colors["Success"]
 		)
 		await ctx.channel.send(embed=starter_embed, delete_after=15)
-		starter_message = await ctx.channel.send(f"{starter.mention} start the heist now!", delete_after=70)
-		heist_search = await ctx.channel.send(f" {self.bot.emojis_list['60sec']} **Searching for heist in this channel**. Type `cancel` to cancel the heist", delete_after=60)
+		starter_message = await ctx.channel.send(f"{starter.mention} start the heist now!")
+		heist_search = await ctx.channel.send(f" {self.bot.emojis_list['60sec']} **Searching for heist in this channel**. Type `cancel` to cancel the heist")
 		
-		while(1):
-			try:
-				message = await self.bot.wait_for("message", check=lambda m: (m.author.id == ctx.author.id and "cancel" in m.content.lower()) or (m.author.id == 270904126974590976), timeout=60)
-				if "cancel" in message.content.lower():
-					cancel_message = await ctx.channel.send(f"{self.bot.emojis_list['Warrning']} | Heist has been cancelled. Blame {ctx.author.mention}!",allowed_mentions=am)
-					await cancel_message.add_reaction("<:TGK_PepeCryHands:785907739427602482>")
-					await starter.remove_roles(starter_role)
-					await heist_search.delete()
-					await starter_message.delete()
-					await message.delete()
-					return
-				elif message.embeds:
-					if	'title' in message.embeds[0].to_dict():
-						if "is starting a bank robbery" in message.embeds[0].to_dict()['title']:
-							await message.add_reaction("<a:TGK_heisttime:932911351154741308>")
-							await heist_search.delete()
-							await starter_message.delete()
-							try:
-								await starter.remove_roles(starter_role)
-								break
-							except:
-								await ctx.send(f"{self.bot.emojis_list['Warrning']} | Error removing starter role from {starter.mention}!",hidden = True)
-								break
-				else:
-					continue
-			except asyncio.TimeoutError:	
-				cancel_message = await ctx.channel.send(f"{self.bot.emojis_list['Warrning']} | Heist has been timed out. Blame {starter.mention}!",allowed_mentions=am)
-				await cancel_message.add_reaction("<:TGK_PepeCryHands:785907739427602482>")
+		try:
+			heist_message = await self.bot.wait_for("message", check=lambda m: (m.author.id == 270904126974590976 and ("you're not popular enough and didn't get enough people to rob the bank" in m.content or "for an unsuccessful robbery" in m.content or "Amazing job everybody, we racked up a total of" in m.content)) or (m.author.id == ctx.author.id and "cancel" in m.content.lower()), timeout=600)
+			# heist_message = await self.bot.wait_for("message", check=lambda m: (m.author.id == ctx.author.id and ("you're not popular enough and didn't get enough people to rob the bank" in m.content or "for an unsuccessful robbery" in m.content or "Amazing job everybody, we racked up a total of" in m.content)) or (m.author.id == ctx.author.id and "cancel" in m.content.lower()), timeout=10)
+			if heist_message.content.lower() == "cancel":
+				cancel_embed = discord.Embed(
+					description =  	f"> Heist has been cancelled due to unforeseen circumstances.\n"
+									f"> Trying again in <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=300)))}:R>!",
+					color = self.bot.colors["RED"]
+				)
+				cancel_message = await ctx.channel.send(embed=cancel_embed)
+				await cancel_message.add_reaction(f"{self.bot.emojis_list['sadrain']}")
+				# await starter.remove_roles(starter_role)
 				await heist_search.delete()
 				await starter_message.delete()
+				await heist_message.delete()
 				return
-						
-		lock_embed = discord.Embed(
-			title=f"<a:tgk_run:832700446711611422>       **{'Everyone can view now'}**       <a:tgk_run:832700446711611422> ",
-			description=f"Good luck guys!!! \n",
-			color=ctx.author.color,
-			timestamp=datetime.datetime.utcnow()
-		)
-		lock_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/801343188945207297.gif?v=1")
 
+<<<<<<< Updated upstream
 		try:
 			heist_end = await self.bot.wait_for("message", check=lambda m: m.author.id == 270904126974590976 and ("you're not popular enough and didn't get enough people to rob the bank" in m.content or "for an unsuccessful robbery" in m.content or "Amazing job everybody, we racked up a total of" in m.content or "rang the police on you" in m.content), timeout=180)
 			if "you're not popular enough and didn't get enough people to rob the bank" in heist_end.content.lower() or "for an unsuccessful robbery" in heist_end.content.lower() or "rang the police on you" in heist_end.content.lower():
 				await ctx.channel.send(f"Retrying heist in 5 mins",delete_after=5)
 				return
 			elif "Amazing job everybody" in heist_end.content.lower():
+=======
+			elif "Amazing job everybody, we racked up a total of" in heist_message.content:
+				lock_embed = discord.Embed(
+					title=f"{'Channel is reset'}",
+					description=f"Good luck guys!!! \n",
+					color=ctx.author.color,
+					timestamp=datetime.datetime.utcnow()
+				)
+				lock_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/801343188945207297.gif?v=1")
+				
+>>>>>>> Stashed changes
 				await ctx.channel.edit(sync_permissions=True)
 				await ctx.channel.send(embed=lock_embed)
-				await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Heist has been completed successfully!",hidden = True)
+				await heist_search.delete()
+				await starter_message.delete()
+				success_embed = discord.Embed(
+					description =  	f"> {self.bot.emojis_list['SuccessTick']} | Heist has been completed successfully!",
+					color = self.bot.colors["Success"]
+				)
+				await ctx.send(embed = success_embed, hidden = True)
+
+				channel = ctx.channel
+				# for announcement channel
+				fined_amount = 0
+				payouts = 0
+				count_robbers = 0
+				count_died = 0
+				count_success = 0
+				count_fined = 0
+				highest_fined = 0
+				highest_fined_msg = ""
+				highest_fined_link = ""
+
+				entire_msg_list = []
+				dank_results = []
+
+				found_heist = 0
+				await asyncio.sleep(5)
+				async for message in channel.history(limit=20):
+					if message.content.startswith("```") and message.author.id == 270904126974590976:
+						#await ctx.send(message.content)
+						dank_results.append(message.content)
+						found_heist = 1
+						each_member = message.content.split("\n")[1:-1]
+						each_member = [i for i in each_member if i != '']
+						entire_msg_list.extend(each_member)
+						count_robbers += len(each_member) 
+						#await ctx.send(each_member)
+						for i in each_member:
+							if i.startswith('+'):
+								count_success += 1
+								payout = i.split("⏣ ")[1].split(" ")[0].replace(",","",50)
+								if payout.endswith("."): payout = payout[:-1]
+								payouts = int(payout)
+							elif i.startswith('#'):
+								fine_payout = i.split("⏣ ")[1].split(" ")[0].replace(",","",50)
+								if fine_payout.endswith("."): fine_payout = fine_payout[:-1] 
+								fined_amount +=  int(fine_payout) 
+								count_fined += 1
+								if int(fine_payout) >= highest_fined : 
+									highest_fined = int(fine_payout)
+									highest_fined_msg = f"```diff\n{i}\n```"
+									highest_fined_link = message.jump_url
+							else:
+								count_died += 1
+
+					elif message.content.startswith("Amazing job everybody") and message.author.id == 270904126974590976:
+						heist_message = message.content.split("racked ")[1]
+				if found_heist == 0:
+					await ctx.send(f"<:tgk_warning:840638147838738432> Heist results not found! <:tgk_warning:840638147838738432>",hidden=True)
+					return
+				embed = discord.Embed(
+						title=f"<a:celebrateyay:821698856202141696>  **Heist Stats**  <a:celebrateyay:821698856202141696>",
+						description=f"**{count_robbers} robbers** teamed up to rack {heist_message}\n",
+						color=0x9e3bff,
+						timestamp=datetime.datetime.utcnow()
+				)
+				if highest_fined_link == "":
+					highest_fined_link = "https://www.youtube.com/channel/UCA_-mknv10nj-E1rP34zfeQ"
+				embed.add_field(name=f"Professional Robbers:",value=f"{count_success} ({np.round((count_success*100/count_robbers),2)}%)",inline=True)
+				if count_fined > 0:
+					embed.add_field(name=f"Amateur Robbers:",value=f"{count_fined} ({np.round((count_fined*100/count_robbers),2)}%)",inline=True)
+				embed.add_field(name=f"RIP Robbers:",value=f"{count_died} ({np.round((count_died*100/count_robbers),2)}%)",inline=True)
+				embed.add_field(name=f"Heist Payouts:",value=f"**[⏣ {payouts:,}]({highest_fined_link})**",inline=True)
+				if fined_amount>0:
+					embed.add_field(name=f"Total Amount Fined:",value=f"**[⏣ {fined_amount:,}]({highest_fined_link})**",inline=True)
+				if highest_fined>0:
+					embed.add_field(name=f"Noobest Robber Paid:",value=f"**[⏣ {highest_fined:,}]({highest_fined_link})**",inline=True)
+				if highest_fined_msg != "":
+					embed.add_field(name=f"Most Fined:",value=f"{highest_fined_msg}",inline=False)
+				embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+				
+				gk = self.bot.get_guild(785839283847954433)
+				ace_feed = self.bot.get_guild(947525009247707157)
+				
+				heisttime = await gk.fetch_emoji(932911351154741308)
+				pressf = await ace_feed.fetch_emoji(951574174957195364)
+
+				buttons = [
+					create_button(style=ButtonStyle.blurple,emoji=heisttime, label="Show my results!",disabled=False, custom_id="setup:heiststats"),
+					create_button(style=ButtonStyle.blurple,emoji=pressf, label=" Let's pay respects to the fined!",disabled=False, custom_id="setup:pressf")
+				]
+				msg = await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)])
+				await ctx.send(content=f"Stats sent!",hidden=True)
+				self.bot.heist_stats_data = deepcopy(entire_msg_list)
+				self.bot.respect_list = []
+
+				# announcement of results
+				dank_results.reverse()
+				webhooks = await announcement_channel.webhooks()
+				webhook = discord.utils.get(webhooks, name= self.bot.user.name)
+
+				if webhook is None:
+					webhook = await announcement_channel.create_webhook(name=self.bot.user.name,reason = "For Publishing Heist Results", avatar = await self.bot.user.avatar_url.read())
+				dank_memer = ctx.guild.get_member(270904126974590976)
+				webhook = DiscordWebhook(url=webhook.url,username = dank_memer.name,avatar_url=f'{dank_memer.avatar_url}')
+				
+				for dank_message in dank_results:
+					dank_result_embed = DiscordEmbed(
+						description=dank_message, color=0x9e3bff
+					)
+					dank_result_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url = f'{ctx.guild.icon_url}')
+					dank_result_embed.set_timestamp()
+					webhook.add_embed(dank_result_embed)
+					webhook.execute()
+					webhook.remove_embeds()
+			
+				await asyncio.sleep(30)
+				buttonsexpire = [
+					create_button(style=ButtonStyle.blurple,emoji=heisttime, label="Show my results!",disabled=False, custom_id="setup:heiststats"),
+					create_button(style=ButtonStyle.blurple,emoji=pressf, label=" Let's pay respects to the fined!",disabled=True, custom_id="setup:pressf")
+				]
+				await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpire)])
+				await ctx.channel.send(f"**{len(self.bot.respect_list)}** people have paid their **respects to the fined!**")
+				
+				await asyncio.sleep(3600)
+				buttonsexpireall = [
+					create_button(style=ButtonStyle.blurple,emoji=heisttime, label="Show my results!",disabled=True, custom_id="setup:heiststats"),
+					create_button(style=ButtonStyle.blurple,emoji=pressf, label=" Let's pay respects to the fined!",disabled=True, custom_id="setup:pressf")
+				]
+				await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpireall)])
+
+			else:
+				heist_fail = discord.Embed(
+					description =  	f"> We have failed the heist!\n"
+									f"> Trying again in <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=300)))}:R>!",
+					color = self.bot.colors["RED"]
+				)
+				heist_fail_message = await ctx.channel.send(embed=heist_fail)
+				await heist_fail_message.add_reaction("<:TGK_MochaThumbsUp:943150786320416819>")
+				await heist_search.delete()
+				await starter_message.delete()
+				return
+
 		except asyncio.TimeoutError:
-			await ctx.channel.send(f"Retrying heist in 5 mins",delete_after=5)
+			cancel_message = await ctx.channel.send(f"{self.bot.emojis_list['<a:TGK_sadrain:855305960385937428>']} | Heist has been timed out. Blame {starter.mention}!")
+			await cancel_message.add_reaction("<:TGK_PepeCryHands:785907739427602482>")
+			await heist_search.delete()
+			await starter_message.delete()
 			return
+		finally:
+			await starter.remove_roles(starter_role) 
+
 
 	@cog_ext.cog_subcommand(base="Heist", name="Stats",description="Show Heist related statistics", guild_ids=guild_ids,
-		base_default_permission=False, base_permissions=founder_perm,
+		base_default_permission=False, base_permissions=heist_perm,
 		options = [
 			create_option(name="channel", description="Get Heist Results from which channel", required=False, option_type=7),
 			create_option(name="limit", description="Amount of messages to parse", option_type=4, required=False),
@@ -386,18 +523,21 @@ class heistutils(commands.Cog):
 				color=0x9e3bff,
 				timestamp=datetime.datetime.utcnow()
 		)
-		yt_link = "https://www.youtube.com/channel/UCA_-mknv10nj-E1rP34zfeQ"
+		if highest_fined_link == "":
+			highest_fined_link = "https://www.youtube.com/channel/UCA_-mknv10nj-E1rP34zfeQ"
 		embed.add_field(name=f"Professional Robbers:",value=f"{count_success} ({np.round((count_success*100/count_robbers),2)}%)",inline=True)
-		embed.add_field(name=f"Amateur Robbers:",value=f"{count_fined} ({np.round((count_fined*100/count_robbers),2)}%)",inline=True)
+		if count_fined > 0:
+			embed.add_field(name=f"Amateur Robbers:",value=f"{count_fined} ({np.round((count_fined*100/count_robbers),2)}%)",inline=True)
 		embed.add_field(name=f"RIP Robbers:",value=f"{count_died} ({np.round((count_died*100/count_robbers),2)}%)",inline=True)
 		embed.add_field(name=f"Heist Payouts:",value=f"**[⏣ {payouts:,}]({highest_fined_link})**",inline=True)
-		embed.add_field(name=f"Total Amount Fined:",value=f"**[⏣ {fined_amount:,}]({highest_fined_link})**",inline=True)
-		embed.add_field(name=f"Noobest Robber Paid:",value=f"**[⏣ {highest_fined:,}]({highest_fined_link})**",inline=True)
-		embed.add_field(name=f"Most Fined:",value=f"{highest_fined_msg}",inline=False)
+		if fined_amount>0:
+			embed.add_field(name=f"Total Amount Fined:",value=f"**[⏣ {fined_amount:,}]({highest_fined_link})**",inline=True)
+		if highest_fined>0:
+			embed.add_field(name=f"Noobest Robber Paid:",value=f"**[⏣ {highest_fined:,}]({highest_fined_link})**",inline=True)
+		if highest_fined_msg != "":
+			embed.add_field(name=f"Most Fined:",value=f"{highest_fined_msg}",inline=False)
 		embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-		# embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/837999751068778517/950451312619831336/heist_time.gif")
-				
-
+		
 		gk = self.bot.get_guild(785839283847954433)
 		ace_feed = self.bot.get_guild(947525009247707157)
 		

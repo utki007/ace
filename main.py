@@ -243,7 +243,8 @@ bot.emojis_list = {
 	"stop" : "<:tgk_stop:858740746868621313>",
 	"pinkdot" : "<:tgk_pinkdot:928932787610865675>",
 	"tgk" : "<a:gk_icon:945766027592089681>",
-	"waiting" : "<a:gk_waiting:945772518776664104>"
+	"waiting" : "<a:gk_waiting:945772518776664104>",
+	"sadrain" : "<a:TGK_sadrain:855305960385937428>"
 }
 
 bot.clock_emojis_dict = {
