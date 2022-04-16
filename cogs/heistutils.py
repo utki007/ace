@@ -282,14 +282,6 @@ class heistutils(commands.Cog):
 				await heist_message.delete()
 				return
 
-<<<<<<< Updated upstream
-		try:
-			heist_end = await self.bot.wait_for("message", check=lambda m: m.author.id == 270904126974590976 and ("you're not popular enough and didn't get enough people to rob the bank" in m.content or "for an unsuccessful robbery" in m.content or "Amazing job everybody, we racked up a total of" in m.content or "rang the police on you" in m.content), timeout=180)
-			if "you're not popular enough and didn't get enough people to rob the bank" in heist_end.content.lower() or "for an unsuccessful robbery" in heist_end.content.lower() or "rang the police on you" in heist_end.content.lower():
-				await ctx.channel.send(f"Retrying heist in 5 mins",delete_after=5)
-				return
-			elif "Amazing job everybody" in heist_end.content.lower():
-=======
 			elif "Amazing job everybody, we racked up a total of" in heist_message.content:
 				lock_embed = discord.Embed(
 					title=f"{'Channel is reset'}",
@@ -299,7 +291,6 @@ class heistutils(commands.Cog):
 				)
 				lock_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/801343188945207297.gif?v=1")
 				
->>>>>>> Stashed changes
 				await ctx.channel.edit(sync_permissions=True)
 				await ctx.channel.send(embed=lock_embed)
 				await heist_search.delete()
