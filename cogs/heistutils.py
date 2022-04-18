@@ -284,8 +284,8 @@ class heistutils(commands.Cog):
 
 			elif "Amazing job everybody, we racked up a total of" in heist_message.content:
 				lock_embed = discord.Embed(
-					title=f"{'Channel is reset'}",
-					description=f"Good luck guys!!! \n",
+					title=f"{'Channel has been reset!'}",
+					description=f"> Thank you for joining! \n> Stay for more heists!\n",
 					color=ctx.author.color,
 					timestamp=datetime.datetime.utcnow()
 				)
