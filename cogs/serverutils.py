@@ -136,7 +136,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 	@commands.command(name="flash",description="Flash Ping")
 	@commands.cooldown(1, 1800, commands.BucketType.guild)
 	@commands.check_any(checks.can_use(), checks.is_me())
-	async def flash(self,ctx,*,message: str = "Some flash giveawayss!"):
+	async def flash(self,ctx,*,message: str = "Some flash giveaways!"):
 		await ctx.message.delete()
 		gk = self.bot.get_guild(785839283847954433)		
 		flash = discord.utils.get(gk.roles, id=822021066548969482)
