@@ -255,10 +255,14 @@ class heistutils(commands.Cog):
 		if starter_role not in starter.roles:
 			await starter.add_roles(starter_role)
 			# await asyncio.sleep(0.5)
-		await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Starter role has been assigned!",hidden = True)
+		heist_start = discord.Embed(
+			description =  	f"> {self.bot.emojis_list['SuccessTick']} | Heist has started!\n",
+			color=self.bot.colors["Success"]
+		)
+		await ctx.send(embed=heist_start,hidden=True)
 		
 		starter_embed = discord.Embed(
-			description=f" {self.bot.emojis_list['SuccessTick']} | *{starter_role.mention}* added to  **{starter.name}**  ",
+			description =  	f"> {self.bot.emojis_list['SuccessTick']} | {starter_role.mention} has been added to  **{starter.mention}**",
 			color=self.bot.colors["Success"]
 		)
 		await ctx.channel.send(embed=starter_embed, delete_after=15)
@@ -299,7 +303,7 @@ class heistutils(commands.Cog):
 					description =  	f"> {self.bot.emojis_list['SuccessTick']} | Heist has been completed successfully!",
 					color = self.bot.colors["Success"]
 				)
-				await ctx.send(embed = success_embed, hidden = True)
+				# await ctx.send(embed = success_embed, hidden = True)
 
 				channel = ctx.channel
 				# for announcement channel
@@ -383,7 +387,7 @@ class heistutils(commands.Cog):
 					create_button(style=ButtonStyle.blurple,emoji=pressf, label=" Let's pay respects to the fined!",disabled=False, custom_id="setup:pressf")
 				]
 				msg = await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)])
-				await ctx.send(content=f"Stats sent!",hidden=True)
+				# await ctx.send(content=f"Stats sent!",hidden=True)
 				self.bot.heist_stats_data = deepcopy(entire_msg_list)
 				self.bot.respect_list = []
 
