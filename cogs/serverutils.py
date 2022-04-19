@@ -133,6 +133,34 @@ class serverutils(commands.Cog, description="Server Utility"):
 		await ctx.send(content = f"{revival.mention}" ,embed=embed)
 
 
+	@commands.command(name="flash",description="Flash Ping")
+	@commands.cooldown(1, 1800, commands.BucketType.guild)
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def flash(self,ctx,*,message: str = "Some flash giveawayss!"):
+		await ctx.message.delete()
+		gk = self.bot.get_guild(785839283847954433)		
+		flash = discord.utils.get(gk.roles, id=822021066548969482)
+		embed = discord.Embed(
+			title=f"{message}",
+			color=discord.Color.random()
+		)
+
+		await ctx.send(content = f"{flash.mention}" ,embed=embed)
+
+	@commands.command(name="giveaway",description="Gaw Ping",aliases = ["gaw"])
+	@commands.cooldown(1, 600, commands.BucketType.guild)
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def gaw(self,ctx,*,message: str = "Giveaway time!"):
+		await ctx.message.delete()
+		gk = self.bot.get_guild(785839283847954433)		
+		gaw = discord.utils.get(gk.roles, id=800685251276963861)
+		embed = discord.Embed(
+			title=f"{message}",
+			color=discord.Color.random()
+		)
+
+		await ctx.send(content = f"{gaw.mention}" ,embed=embed)
+
 	@commands.command(name="rc",description="Change role colour",aliases=["randomcolor"])
 	@commands.cooldown(1, 14400, commands.BucketType.user)
 	@commands.check_any(checks.can_use(), checks.is_me())
