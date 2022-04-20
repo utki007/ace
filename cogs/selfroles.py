@@ -242,8 +242,7 @@ class selfroles(commands.Cog):
 		)
 		
 		test = self.bot.get_guild(787210891208818710)
-
-		verify = await test.fetch_emoji(802995101528883262)
+		verify = await test.fetch_emoji(966187540774269008)
 
 		buttons = [
 			create_button(style=ButtonStyle.grey,emoji=verify, label="Verify", disabled=False, custom_id="reaction:verify")
