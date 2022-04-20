@@ -275,12 +275,12 @@ class heistutils(commands.Cog):
 			if heist_message.content.lower() == "cancel":
 				cancel_embed = discord.Embed(
 					description =  	f"> Heist has been cancelled due to unforeseen circumstances.\n"
-									f"> Trying again in <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=300)))}:R>!",
+									f"> Trying again <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=300)))}:R>!",
 					color = self.bot.colors["RED"]
 				)
 				cancel_message = await ctx.channel.send(embed=cancel_embed)
 				await cancel_message.add_reaction(f"{self.bot.emojis_list['sadrain']}")
-				# await starter.remove_roles(starter_role)
+				await starter.remove_roles(starter_role)
 				await heist_search.delete()
 				await starter_message.delete()
 				await heist_message.delete()
@@ -428,10 +428,11 @@ class heistutils(commands.Cog):
 
 			else:
 				heist_fail = discord.Embed(
-					description =  	f"> We have failed the heist!\n"
-									f"> Trying again in <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=300)))}:R>!",
-					color = self.bot.colors["RED"]
+					title = f"<a:failrob:966281578533773362> Heist Failed! <a:failrob:966281578533773362>",
+					description =  	f"> Trying again <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=300)))}:R>!",
+					color = 0xff0000
 				)
+				heist_fail.set_image(url="https://cdn.discordapp.com/attachments/848803006186520596/966295619075473478/ah-shit-here-we-go-again-ah-shit.gif")
 				heist_fail_message = await ctx.channel.send(embed=heist_fail)
 				await heist_fail_message.add_reaction("<:TGK_MochaThumbsUp:943150786320416819>")
 				await heist_search.delete()
