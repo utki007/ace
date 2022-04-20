@@ -1,4 +1,5 @@
 # importing the required libraries
+import random
 import discord
 from discord.ext import commands, tasks
 import pandas as pd
@@ -65,9 +66,11 @@ class serverutils(commands.Cog, description="Server Utility"):
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def bar(self,ctx):
 		await ctx.message.delete()
-		l = ["https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif"]
-		# await ctx.send(random.choice(l))
-		await ctx.send(l[0])
+		l = [
+			"https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif",
+			"https://media.discordapp.net/attachments/840291742859001876/943806099537162250/0E67BE40-2287-4A6F-9520-C6FD5E548227.gif"
+		]
+		await ctx.send(random.choice(l))
 
 	@commands.command(name="celebrate",description="To be used in public channels after completing a gaw")
 	@commands.check_any(checks.can_use(), checks.is_me())
