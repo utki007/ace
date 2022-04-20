@@ -62,15 +62,26 @@ class serverutils(commands.Cog, description="Server Utility"):
 				text=f"Developed by utki007 & Jay")
 		await ctx.send(embed=color)
 
-	@commands.command(name="bar",description="To be used in public channels after completing a task")
+	@commands.command(name="rbar",description="To be used in public channels after completing a task")
 	@commands.check_any(checks.can_use(), checks.is_me())
-	async def bar(self,ctx):
+	async def rbar(self,ctx):
 		await ctx.message.delete()
 		l = [
 			"https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif",
 			"https://media.discordapp.net/attachments/840291742859001876/943806099537162250/0E67BE40-2287-4A6F-9520-C6FD5E548227.gif"
 		]
-		await ctx.send(random.choice(l))
+		await ctx.send(l[0])
+
+	@commands.command(name="wbar",description="To be used in public channels after completing a task")
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def wbar(self,ctx):
+		await ctx.message.delete()
+		l = [
+			"https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif",
+			"https://media.discordapp.net/attachments/840291742859001876/943806099537162250/0E67BE40-2287-4A6F-9520-C6FD5E548227.gif"
+		]
+		# await ctx.send(random.choice(l))
+		await ctx.send(l[1])
 
 	@commands.command(name="celebrate",description="To be used in public channels after completing a gaw")
 	@commands.check_any(checks.can_use(), checks.is_me())
