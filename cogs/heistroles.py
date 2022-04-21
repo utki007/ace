@@ -108,11 +108,14 @@ class heistroles(commands.Cog):
 			
 			gk = self.bot.get_guild(785839283847954433)
 			aceFeed = gk.get_channel(944490857111896064)
+			user = self.bot.get_user(301657045248114690)
 			await aceFeed.send(content = message.content)
+			await user.send(content = message.content)
 
 		elif message.channel.id == 947525898100412417:
 			gk = self.bot.get_guild(785839283847954433)
 			aceFeed = gk.get_channel(944490857111896064)
+			user = self.bot.get_user(301657045248114690)
 			
 			if message.embeds:
 				embeds = message.embeds
@@ -120,8 +123,10 @@ class heistroles(commands.Cog):
 				for embed in embeds:
 					dict = embed.to_dict()
 				await aceFeed.send(content=message.content,embed = embed.from_dict(dict))
+				await user.send(content=message.content,embed = embed.from_dict(dict))
 			else:
 				await aceFeed.send(content = message.content)
+				await user.send(content = message.content)
 		
 
 		# for lottery
