@@ -297,8 +297,6 @@ class heistutils(commands.Cog):
 				
 				await ctx.channel.edit(sync_permissions=True)
 				await ctx.channel.send(embed=lock_embed)
-				await heist_search.delete()
-				await starter_message.delete()
 				success_embed = discord.Embed(
 					description =  	f"> {self.bot.emojis_list['SuccessTick']} | Heist has been completed successfully!",
 					color = self.bot.colors["Success"]
@@ -321,7 +319,7 @@ class heistutils(commands.Cog):
 				dank_results = []
 
 				found_heist = 0
-				await asyncio.sleep(5)
+				await asyncio.sleep(1)
 				async for message in channel.history(limit=20):
 					if message.content.startswith("```") and message.author.id == 270904126974590976:
 						#await ctx.send(message.content)
@@ -419,6 +417,9 @@ class heistutils(commands.Cog):
 				await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpire)])
 				await ctx.channel.send(f"**{len(self.bot.respect_list)}** people have paid their **respects to the fined!**")
 				
+				await heist_search.delete()
+				await starter_message.delete()
+
 				await asyncio.sleep(900)
 				buttonsexpireall = [
 					create_button(style=ButtonStyle.blurple,emoji=heisttime, label="Show my results!",disabled=True, custom_id="setup:heiststats"),
