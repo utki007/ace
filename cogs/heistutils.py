@@ -192,7 +192,7 @@ class heistutils(commands.Cog):
 				color=discord.Color.random(), 
 				description=f'Unlocking {channel.mention} for the following roles:\n{role_string}')
 		
-		a_roleinfo = await ctx.channel.send(embed = a_info1, allowed_mentions=am) 
+		# a_roleinfo = await ctx.channel.send(embed = a_info1, allowed_mentions=am) 
 
 		for role in all_roles_list:
 			overwrite = channel.overwrites_for(role)
@@ -218,7 +218,7 @@ class heistutils(commands.Cog):
 		unlock_embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/831970404762648586/833039923548389397/tenor.gif")
 
 		await channel.send(embed=unlock_embed)
-		await a_roleinfo.edit(embed=unlock_embed)
+		# await a_roleinfo.edit(embed=unlock_embed)
 
 
 		# expire buttons
