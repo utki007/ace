@@ -155,11 +155,18 @@ class serverutils(commands.Cog, description="Server Utility"):
 		gk = self.bot.get_guild(785839283847954433)		
 		flash = discord.utils.get(gk.roles, id=822021066548969482)
 		embed = discord.Embed(
-			title=f"{message}",
+			description=f"> {message}",
 			color=discord.Color.random()
 		)
-
-		await ctx.send(content = f"{flash.mention}" ,embed=embed)
+		if ctx.channel.category.id == 812711141994266644:
+			await ctx.send(content = f"{flash.mention}" ,embed=embed)
+		else:
+			embed = discord.Embed(
+				title="Incorrect Usage",
+				description=f"> Flash ping is only available in <#812711141994266644> category!",
+				color=discord.Color.red()
+			)
+			await ctx.send(embed=embed)
 
 	@commands.command(name="giveaway",description="Gaw Ping",aliases = ["gaw"])
 	@commands.cooldown(1, 600, commands.BucketType.guild)
@@ -169,11 +176,18 @@ class serverutils(commands.Cog, description="Server Utility"):
 		gk = self.bot.get_guild(785839283847954433)		
 		gaw = discord.utils.get(gk.roles, id=800685251276963861)
 		embed = discord.Embed(
-			title=f"{message}",
+			description=f"> {message}",
 			color=discord.Color.random()
 		)
-
-		await ctx.send(content = f"{gaw.mention}" ,embed=embed)
+		if ctx.channel.category.id == 812711141994266644:
+			await ctx.send(content = f"{gaw.mention}" ,embed=embed)
+		else:
+			embed = discord.Embed(
+				title="Incorrect Usage",
+				description=f"> Giveaway ping is only available in <#812711141994266644> category!",
+				color=discord.Color.red()
+			)
+			await ctx.send(embed=embed)	
 
 	@commands.command(name="rc",description="Change role colour",aliases=["randomcolor"])
 	@commands.cooldown(1, 14400, commands.BucketType.user)
