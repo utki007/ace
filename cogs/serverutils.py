@@ -191,11 +191,11 @@ class serverutils(commands.Cog, description="Server Utility"):
 	
 	@commands.command(name="check", description="End all giveaways in a channel")
 	@commands.check_any(checks.can_use(), checks.is_me())
-	async def sfadd(self, ctx, id:int):
+	async def check(self, ctx, id:int):
 		partner_deals = await self.bot.shero.find_by_id(id)
 		if partner_deals:
 			deal = discord.Embed(
-				title=f"**{'Deal found for `id`!': ^15}**",
+				title=f"**{'Deal found for `{id}`!': ^15}**",
 				description =  	f"> Pings: `{partner_deals['pings']}`!\n",
 				color= 0x5865F2,
 				timestamp= datetime.datetime.utcnow()
