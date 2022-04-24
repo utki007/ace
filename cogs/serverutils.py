@@ -194,8 +194,9 @@ class serverutils(commands.Cog, description="Server Utility"):
 	async def check(self, ctx, id:int):
 		partner_deals = await self.bot.shero.find_by_id(id)
 		if partner_deals:
+			title = f"Deal found for {id}!"
 			deal = discord.Embed(
-				title=f"**{'Deal found for `{id}`!': ^15}**",
+				title=f"**{title: ^15}**",
 				description =  	f"> Pings: `{partner_deals['pings']}`!\n",
 				color= 0x5865F2,
 				timestamp= datetime.datetime.utcnow()
@@ -204,7 +205,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 		else:
 			deal = discord.Embed(
 				title=f"**{'No partner deal found!': ^15}**",
-				description =  	f"> Either dm <@301657045248114690> (301657045248114690) or make a ticket from <#785901543349551104>!\n",
+				description =  	f"> Either dm <@301657045248114690> (301657045248114690) or \n> make a ticket from <#785901543349551104>!\n",
 				color= discord.Color.red(),
 				timestamp= datetime.datetime.utcnow()
 			)
