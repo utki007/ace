@@ -188,6 +188,27 @@ class serverutils(commands.Cog, description="Server Utility"):
 				color=discord.Color.red()
 			)
 			await ctx.send(embed=embed)	
+	
+	@commands.command(name="check", description="End all giveaways in a channel")
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def sfadd(self, ctx, id:int):
+		partner_deals = await self.bot.shero.find_by_id(id)
+		if partner_deals:
+			deal = discord.Embed(
+				title=f"**{'Deal found for `id`!': ^15}**",
+				description =  	f"> Pings: `{partner_deals['pings']}`!\n",
+				color= 0x5865F2,
+				timestamp= datetime.datetime.utcnow()
+			)
+			await ctx.send(embed=deal)
+		else:
+			deal = discord.Embed(
+				title=f"**{'No partner deal found!': ^15}**",
+				description =  	f"> Either dm <@301657045248114690> (301657045248114690) or make a ticket from <#785901543349551104>!\n",
+				color= discord.Color.red(),
+				timestamp= datetime.datetime.utcnow()
+			)
+			await ctx.send(embed=deal)
 
 	@commands.command(name="rc",description="Change role colour",aliases=["randomcolor"])
 	@commands.cooldown(1, 14400, commands.BucketType.user)
