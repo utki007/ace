@@ -479,8 +479,8 @@ class heistroles(commands.Cog):
 						title=f"Vote for the {ctx.guild.name}", 
 						description=
 						f"❥ 1x extra entry into all frisky giveaways.\n"
-						f"❥ Special <@&786884615192313866> role with 1x guild-wide multi.\n"
-						f"❥ Access to <#929613393097293874> with 2x Amaari.\n"
+						f"❥ Special <@&786884615192313866> role with 1x guild-wide amari-multi.\n"
+						f"❥ Access to <#929613393097293874> with 2x Amari.\n"
 						f"❥ 2,500 Casino Cash. Collect using `,collectincome` in <#786117471840895016>\n", 
 						color=ctx.author.color
 					)
@@ -721,8 +721,8 @@ class heistroles(commands.Cog):
 						title=f"Vote for the {ctx.guild.name}", 
 						description=
 						f"❥ 1x extra entry into all frisky giveaways.\n"
-						f"❥ Special <@&786884615192313866> role with 1x guild-wide multi.\n"
-						f"❥ Access to <#929613393097293874> with 2x Amaari.\n"
+						f"❥ Special <@&786884615192313866> role with 1x guild-wide amari-multi.\n"
+						f"❥ Access to <#929613393097293874> with 2x Amari.\n"
 						f"❥ 2,500 Casino Cash. Collect using `,collectincome` in <#786117471840895016>\n",
 						color=ctx.author.color
 					)
