@@ -96,7 +96,7 @@ class heistroles(commands.Cog):
 					buttons = [
 						create_button(style=ButtonStyle.green,emoji=yes, label="Hide this channel for me!", disabled=False, custom_id="nopartner:no")
 					]
-					await partnerHeists.purge(limit=1, check=check, before=None)
+					await partnerHeists.purge(limit=10, check=check, before=None)
 					await message.channel.send(
 								content=f"Do you want to stop receiving pings?",
 								components=[create_actionrow(*buttons)], allowed_mentions=am
