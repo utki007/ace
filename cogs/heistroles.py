@@ -81,7 +81,7 @@ class heistroles(commands.Cog):
 				partnerHeists = message.channel
 
 				def check(msg):
-					return msg.author.id == 810041263452848179
+					return msg.author.id == self.bot.user.id
 				playzone = self.bot.get_guild(815849745327194153)
 
 				yes = await playzone.fetch_emoji(942341153573978113)
@@ -96,7 +96,7 @@ class heistroles(commands.Cog):
 					buttons = [
 						create_button(style=ButtonStyle.green,emoji=yes, label="Hide this channel for me!", disabled=False, custom_id="nopartner:no")
 					]
-					await partnerHeists.purge(limit=10, check=check, before=None)
+					await partnerHeists.purge(limit=1, check=check, before=None)
 					await message.channel.send(
 								content=f"Do you want to stop receiving pings?",
 								components=[create_actionrow(*buttons)], allowed_mentions=am
@@ -149,6 +149,37 @@ class heistroles(commands.Cog):
 			if "Black Hole Findings" in dict['title']:
 				return
 			await aceFeed.send(content=f"{lotto_ping.mention}",embed = embed.from_dict(dict))
+
+		word_list = ['vote link','how to get vote role', 'how to vote', 'pls vote', 'how to vote for server', 'link to vote']
+		if message.author.bot:
+			return
+
+		messageContent = message.content.lower()
+			
+		channel_ids = [785847439579676672, 799364834927968336, 799378297855279125, 935763990670348309]
+		immune_users = [301657045248114690, 488614633670967307, 562738920031256576, 413651113485533194]
+		
+		if "vote" in messageContent and message.channel.id in channel_ids and message.author.id not in immune_users:
+			guild = message.guild.id
+			guild = message.guild.id
+			gk = self.bot.get_guild(785839283847954433)
+			emoji = await gk.fetch_emoji(942521024476487741)
+			buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
+			embed = discord.Embed(
+				title=f"Vote for the {message.guild.name}", 
+				description=
+				f"❥ 1x extra entry into all frisky giveaways.\n"
+				f"❥ Special <@&786884615192313866> role with 1x guild-wide amari-multi.\n"
+				f"❥ Access to <#929613393097293874> with 2x Amari.\n"
+				f"❥ 2,500 Casino Cash. Collect using `,collectincome` in <#786117471840895016>\n", 
+				color=message.author.color
+			)
+	
+			return await message.reply(embed=embed, components=[create_actionrow(*buttons)])
+			
+		if "heist" in messageContent and message.channel.id in channel_ids and message.author.id not in immune_users:
+			return await message.reply('Keep an 👁️ on <#960535386768166992> for heist related requirements/updates.', delete_after=3, mention_author=False)
+
 
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
@@ -846,7 +877,6 @@ class heistroles(commands.Cog):
 			create_button(style=ButtonStyle.primary,emoji=movieemoji, disabled=True, custom_id="heist:movie")
 		]
 		await msg.edit(embed=event_embed, components=[create_actionrow(*buttonsexpireall)])
-
 
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Nopartner",description="No partnership related reaction roles", guild_ids=guild_ids,
 		base_default_permission=True,
