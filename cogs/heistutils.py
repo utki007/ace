@@ -297,10 +297,10 @@ class heistutils(commands.Cog):
 				
 				await ctx.channel.edit(sync_permissions=True)
 				await ctx.channel.send(embed=lock_embed)
-				success_embed = discord.Embed(
-					description =  	f"> {self.bot.emojis_list['SuccessTick']} | Heist has been completed successfully!",
-					color = self.bot.colors["Success"]
-				)
+				# success_embed = discord.Embed(
+				# 	description =  	f"> {self.bot.emojis_list['SuccessTick']} | Heist has been completed successfully!",
+				# 	color = self.bot.colors["Success"]
+				# )
 				# await ctx.send(embed = success_embed, hidden = True)
 
 				channel = ctx.channel
@@ -319,7 +319,7 @@ class heistutils(commands.Cog):
 				dank_results = []
 
 				found_heist = 0
-				await asyncio.sleep(1)
+				await asyncio.sleep(3)
 				async for message in channel.history(limit=20):
 					if message.content.startswith("```") and message.author.id == 270904126974590976:
 						#await ctx.send(message.content)
@@ -335,7 +335,10 @@ class heistutils(commands.Cog):
 								count_success += 1
 								payout = i.split("⏣ ")[1].split(" ")[0].replace(",","",50)
 								if payout.endswith("."): payout = payout[:-1]
-								payouts = int(payout)
+								try:
+									payouts = int(payout)
+								except:
+									pass
 							elif i.startswith('#'):
 								fine_payout = i.split("⏣ ")[1].split(" ")[0].replace(",","",50)
 								if fine_payout.endswith("."): fine_payout = fine_payout[:-1] 
