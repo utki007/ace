@@ -271,7 +271,6 @@ class heistutils(commands.Cog):
 		
 		try:
 			heist_message = await self.bot.wait_for("message", check=lambda m: (m.author.id == 270904126974590976 and ("you're not popular enough and didn't get enough people to rob the bank" in m.content or "for an unsuccessful robbery" in m.content or "Amazing job everybody, we racked up a total of" in m.content)) or (m.author.id == ctx.author.id and "cancel" in m.content.lower()), timeout=600)
-			# heist_message = await self.bot.wait_for("message", check=lambda m: (m.author.id == ctx.author.id and ("you're not popular enough and didn't get enough people to rob the bank" in m.content or "for an unsuccessful robbery" in m.content or "Amazing job everybody, we racked up a total of" in m.content)) or (m.author.id == ctx.author.id and "cancel" in m.content.lower()), timeout=10)
 			if heist_message.content.lower() == "cancel":
 				cancel_embed = discord.Embed(
 					description =  	f"> Heist has been cancelled due to unforeseen circumstances.\n"
@@ -287,6 +286,7 @@ class heistutils(commands.Cog):
 				return
 
 			elif "Amazing job everybody, we racked up a total of" in heist_message.content:
+				await starter.remove_roles(starter_role) 
 				lock_embed = discord.Embed(
 					title=f"{'Channel has been reset!'}",
 					description=f"> Thank you for joining! \n> Stay for more heists!\n",
@@ -431,6 +431,7 @@ class heistutils(commands.Cog):
 				await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpireall)])
 
 			else:
+				await starter.remove_roles(starter_role) 
 				heist_fail = discord.Embed(
 					title = f"<a:failrob:966281578533773362> Heist Failed! <a:failrob:966281578533773362>",
 					description =  	f"> Trying again <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=300)))}:R>!",
