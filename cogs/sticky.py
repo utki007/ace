@@ -50,7 +50,6 @@ class sticky(commands.Cog, description="Sticky Utility"):
             pass
         else:
             try:
-                await asyncio.sleep(20)
                 await last.delete()
             except discord.NotFound:
                 pass
@@ -158,7 +157,7 @@ class sticky(commands.Cog, description="Sticky Utility"):
         if payload.message_id != last:
             return
         content = dict["content"]
-        await asyncio.sleep(20)
+        await asyncio.sleep(30)
         msg = await self.send_stickied(channel, content)
         newvalues = {"$set": {"last_message_id": msg.id}}
         self.mycol.update_one(myquery, newvalues)
