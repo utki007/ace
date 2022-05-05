@@ -178,7 +178,7 @@ class heistroles(commands.Cog):
 			return await message.reply(embed=embed, components=[create_actionrow(*buttons)])
 			
 		if "heist" in messageContent and message.channel.id in channel_ids and message.author.id not in immune_users:
-			return await message.reply('Keep an 👁️ on <#960535386768166992> for heist related requirements/updates.', delete_after=3, mention_author=False)
+			return await message.reply('Keep an 👁️ on <#927241961038045236> for heist related requirements/updates.', delete_after=3, mention_author=False)
 
 
 	@commands.Cog.listener()
