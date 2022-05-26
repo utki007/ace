@@ -190,6 +190,7 @@ class heistroles(commands.Cog):
 				await ctx.defer(hidden=True)
 				unverify = discord.utils.get(ctx.guild.roles, id=953006119436030054)
 				newbie = discord.utils.get(ctx.guild.roles, id=787566421592899614)
+				danker = discord.utils.get(ctx.guild.roles, id=801392998465404958)
 				if unverify in ctx.author.roles:		
 					await ctx.send(f"You have been verified, check out <#944670050252648468> & <#944670176115294228>", hidden=True)
 					try:
@@ -201,11 +202,21 @@ class heistroles(commands.Cog):
 							await ctx.author.add_roles(newbie)
 						except:
 							pass
+					if danker not in ctx.author.roles:
+						try:
+							await ctx.author.add_roles(danker)
+						except:
+							pass
 				else:
 					await ctx.send(f"You are already verified, create ticket from <#785901543349551104>", hidden=True)
 					if newbie not in ctx.author.roles:
 						try:
 							await ctx.author.add_roles(newbie)
+						except:
+							pass
+					if danker not in ctx.author.roles:
+						try:
+							await ctx.author.add_roles(danker)
 						except:
 							pass
 					
