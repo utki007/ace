@@ -36,7 +36,7 @@ class lasttoleave(commands.Cog, description="Last to Leave Manager"):
                 f"Unauthorized to use this command <:pepeHmm:928623994050072577>"
             )
             
-        if ctx.channel != 933363028475396106:
+        if ctx.channel.id != 933363028475396106:
             await ctx.send(
                 f"This command shouldn't be used here <:pepeHmm:928623994050072577>"
             )
