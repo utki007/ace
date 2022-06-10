@@ -230,26 +230,5 @@ class selfroles(commands.Cog):
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
-	@cog_ext.cog_subcommand(base="Selfrole", name="Verify",description="Verify users", guild_ids=guild_ids,
-		base_default_permission=True
-	)
-	async def selfverifyrr(self, ctx):
-		await ctx.defer(hidden=True)
-
-		event_embed = discord.Embed(
-				title=f"<a:gk_rainbow:944635677490970644>   **{'Verification': ^15}**   <a:gk_rainbow:944635677490970644>",
-				color=0xffe5b4
-		)
-		
-		test = self.bot.get_guild(787210891208818710)
-		verify = await test.fetch_emoji(966187540774269008)
-
-		buttons = [
-			create_button(style=ButtonStyle.grey,emoji=verify, label="Verify", disabled=False, custom_id="reaction:verify")
-		]
-		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
-		await ctx.send(content=f"Verification created!",hidden=True)
-
-
 def setup(bot):
 	bot.add_cog(selfroles(bot))
