@@ -708,14 +708,14 @@ class heistroles(commands.Cog):
 					await ctx.author.add_roles(event)
 					await ctx.send(f"The role {event.mention} has been added to you.", hidden=True)
 			
-			elif ctx.custom_id == "heist:movie":
+			elif ctx.custom_id == "heist:chat":
 				await ctx.defer(hidden=True)
-				movie = discord.utils.get(ctx.guild.roles, id=791347199119327252)
-				if movie in ctx.author.roles:
-					await ctx.send(f"You already have the {movie.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
+				chat = discord.utils.get(ctx.guild.roles, id=942704600883023872)
+				if chat in ctx.author.roles:
+					await ctx.send(f"You already have the {chat.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
 				else:
-					await ctx.author.add_roles(movie)
-					await ctx.send(f"The role {movie.mention} has been added to you.", hidden=True)
+					await ctx.author.add_roles(chat)
+					await ctx.send(f"The role {chat.mention} has been added to you.", hidden=True)
 
 			elif ctx.custom_id == "heist:voted":
 				await ctx.defer(hidden=True)
@@ -811,7 +811,7 @@ class heistroles(commands.Cog):
 		flash = discord.utils.get(guild.roles, id=822021066548969482)
 		other = discord.utils.get(guild.roles, id=848809346972516363)
 		event = discord.utils.get(guild.roles, id=836925033506275399)
-		movie = discord.utils.get(guild.roles, id=791347199119327252)
+		chat = discord.utils.get(guild.roles, id=942704600883023872)
 
 		event_embed = discord.Embed(
 				title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
@@ -819,7 +819,7 @@ class heistroles(commands.Cog):
 							f"<a:celebrate:817302382630273054>  {self.bot.emojis_list['right']} {flash.mention}\n"
 							f"<a:tgk_gift:820323551520358440> {self.bot.emojis_list['right']} {other.mention}\n"
 							f"<a:calendar:854663256420909066>  {self.bot.emojis_list['right']} {event.mention}\n"                            
-							f"<a:tgk_movienight:842675039833030666> {self.bot.emojis_list['right']} {movie.mention}\n",
+							f"<a:gk_chatrevive:944667909702185010> {self.bot.emojis_list['right']} {chat.mention}\n",
 				color=0x9e3bff,
 				timestamp=datetime.datetime.utcnow()
 		)
@@ -833,14 +833,14 @@ class heistroles(commands.Cog):
 		flashemoji = await gk.fetch_emoji(817302382630273054)
 		otheremoji = await gk.fetch_emoji(820323551520358440)
 		eventemoji = await gk.fetch_emoji(854663256420909066)
-		movieemoji = await gk.fetch_emoji(842675039833030666)
+		chatemoji = await gk.fetch_emoji(944667909702185010)
 
 		buttons = [
 			create_button(style=ButtonStyle.blurple,emoji=gawemoji, disabled=False, custom_id="heist:giveaways"),
 			create_button(style=ButtonStyle.blurple,emoji=flashemoji, disabled=False, custom_id="heist:flash"),
 			create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=False, custom_id="heist:other"),
 			create_button(style=ButtonStyle.blurple,emoji=eventemoji, disabled=False, custom_id="heist:event"),
-			create_button(style=ButtonStyle.primary,emoji=movieemoji, disabled=False, custom_id="heist:movie")
+			create_button(style=ButtonStyle.primary,emoji=chatemoji, disabled=False, custom_id="heist:movie")
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
@@ -851,7 +851,7 @@ class heistroles(commands.Cog):
 			create_button(style=ButtonStyle.blurple,emoji=flashemoji, disabled=True, custom_id="heist:flash"),
 			create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=True, custom_id="heist:other"),
 			create_button(style=ButtonStyle.blurple,emoji=eventemoji, disabled=True, custom_id="heist:event"),
-			create_button(style=ButtonStyle.primary,emoji=movieemoji, disabled=True, custom_id="heist:movie")
+			create_button(style=ButtonStyle.primary,emoji=chatemoji, disabled=True, custom_id="heist:chat")
 		]
 		await msg.edit(embed=event_embed, components=[create_actionrow(*buttonsexpireall)])
 
