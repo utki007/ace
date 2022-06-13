@@ -827,13 +827,13 @@ class heistroles(commands.Cog):
 		# event_embed.set_image(url="https://cdn.discordapp.com/attachments/831970404762648586/833255266127970334/rob.gif")
 		
 		gk = self.bot.get_guild(785839283847954433)
-		dmop = self.bot.get_guild(838646783785697290)
+		playzone = self.bot.get_guild(815849745327194153)
 
 		gawemoji = await gk.fetch_emoji(806631994770849843)
 		flashemoji = await gk.fetch_emoji(817302382630273054)
 		otheremoji = await gk.fetch_emoji(820323551520358440)
 		eventemoji = await gk.fetch_emoji(854663256420909066)
-		chatemoji = await gk.fetch_emoji(944667909702185010)
+		chatemoji = await playzone.fetch_emoji(944667909702185010)
 
 		buttons = [
 			create_button(style=ButtonStyle.blurple,emoji=gawemoji, disabled=False, custom_id="heist:giveaways"),
