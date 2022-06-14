@@ -134,7 +134,6 @@ class heistroles(commands.Cog):
 			
 			gk = self.bot.get_guild(785839283847954433)
 			aceFeed = gk.get_channel(946689040344813588)
-			lotto_ping = gk.get_role(951942751681904670)
 
 			am = discord.AllowedMentions(
 				users=False,  # Whether to ping individual user @mentions
@@ -148,7 +147,7 @@ class heistroles(commands.Cog):
 				dict = embed.to_dict()
 			if "Black Hole Findings" in dict['title']:
 				return
-			await aceFeed.send(content=f"{lotto_ping.mention}",embed = embed.from_dict(dict))
+			await aceFeed.send(embed = embed.from_dict(dict))
 
 		word_list = ['vote link','how to get vote role', 'how to vote', 'pls vote', 'how to vote for server', 'link to vote']
 		if message.author.bot:
