@@ -20,7 +20,6 @@ class Events(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
         self.change_status.start()
-        self.clock.start()
         self.randomrole.start()
         
         # work channel
@@ -75,45 +74,7 @@ class Events(commands.Cog):
         member = guild.member_count - count
         activity = str(member) + " members!" 
         await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=activity),status= discord.Status.dnd)
-    
-    @tasks.loop(seconds=600)
-    async def clock(self):      
-        gk = self.bot.get_guild(785839283847954433)
-        ind_time = datetime.datetime.now(timezone("Asia/Kolkata")).strftime('%Y-%m-%d %H:%M:%S.%f')
-        ind_time = ind_time.split(" ")[1].split(":")
-        hours = int(ind_time[0])
-        minutes = ind_time[1]
-        post = ""
-        if hours > 12:
-            hours -= 12
-            post = "p.m."
-        elif hours == 12:
-            post = "p.m."
-        else:
-            post = "a.m."
 
-        if hours < 9:
-            ind_time = f"0{hours}:{minutes} {post}"
-        else:
-            ind_time = f"{hours}:{minutes} {post}"
-
-        emoji = ""
-        if int(minutes) > 45:
-            if hours == 12:
-                clock_list_next = self.bot.clock_emojis_dict[1]
-            else:
-                clock_list_next = self.bot.clock_emojis_dict[hours+1]
-            emoji = clock_list_next[0]
-        elif int(minutes) > 15:
-            clock_list_current = self.bot.clock_emojis_dict[hours] 
-            emoji = clock_list_current[1]
-        else:
-            clock_list_current = self.bot.clock_emojis_dict[hours]
-            emoji = clock_list_current[0] 
-
-        vc = gk.get_channel(948098420160233482)
-        await vc.edit(name=f"{emoji}。IST。{ind_time}")
-        
     @tasks.loop(seconds=28800)
     async def randomrole(self):
         gk = self.bot.get_guild(785839283847954433)
