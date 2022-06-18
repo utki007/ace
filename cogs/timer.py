@@ -58,7 +58,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		
 		e = discord.Embed(
 			color= discord.Color.random(),
-			title=f"{name.title()}",
+			title=f"{name}",
 			description=f'**{desc}**',
 			timestamp=end
 		)
@@ -110,7 +110,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 				break    
 			e = discord.Embed(
 				color= discord.Color.random(),
-				title=f"{name.title()}",
+				title=f"{name}",
 				description=f'**{desc}**',
 				timestamp=end
 			)
@@ -124,7 +124,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 				
 		e = discord.Embed(
 				color= discord.Color.random(),
-				title=f"{name.title()}",
+				title=f"{name}",
 				description=f'**{desc}**',
 				timestamp=end
 		)
@@ -143,7 +143,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		
 		dm = discord.Embed(
 				color = discord.Color.random(),
-				title=f"{name.title()} has Ended",
+				title=f"{name} has Ended",
 				description=f'**Timer has ended over [here]({timer.jump_url}) . Hurry Up!!**',
 				timestamp=end,
 				url = timer.jump_url
@@ -163,7 +163,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 
 		try : 
 			buttons = [create_button(style=ButtonStyle.URL, label="Timer ended here", disabled=False, url=f"{timer.jump_url}")]
-			end_message = await ctx.send(f"{ctx.author.mention} your timer for **{name.title()}** has Ended!", components=[create_actionrow(*buttons)])
+			end_message = await ctx.send(f"{ctx.author.mention} your timer for **{name}** has Ended!", components=[create_actionrow(*buttons)])
 			await end_message.add_reaction(self.bot.emojis_list["waiting"])
 		except:
 			pass  
@@ -236,7 +236,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 
 		try : 
 			buttons = [create_button(style=ButtonStyle.URL, label="Timer ended here", disabled=False, url=f"{message.jump_url}")]
-			end_message = await ctx.send(f"{ctx.author.mention} your timer for **{tdata['title'].title()}** has Ended!", components=[create_actionrow(*buttons)])
+			end_message = await ctx.send(f"{ctx.author.mention} your timer for **{tdata['title']}** has Ended!", components=[create_actionrow(*buttons)])
 			await end_message.add_reaction(self.bot.emojis_list["waiting"])
 			await message.delete()
 		except:
@@ -383,7 +383,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 
 		try : 
 			buttons = [create_button(style=ButtonStyle.URL, label="Timer ended here", disabled=False, url=f"{timer.jump_url}")]
-			end_message = await ctx.send(f"{ctx.author.mention} your timer for **{tdata['title'].title()}** has Ended!", components=[create_actionrow(*buttons)])
+			end_message = await ctx.send(f"{ctx.author.mention} your timer for **{tdata['title']}** has Ended!", components=[create_actionrow(*buttons)])
 			await end_message.add_reaction(self.bot.emojis_list["waiting"])
 		except:
 			pass  
@@ -423,7 +423,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 
 		try : 
 			buttons = [create_button(style=ButtonStyle.URL, label="Timer ended here", disabled=False, url=f"{new_msg.jump_url}")]
-			end_message = await ctx.send(f"{ctx.author.mention} your timer for **{tdata['title'].title()}** has Ended!", components=[create_actionrow(*buttons)])
+			end_message = await ctx.send(f"{ctx.author.mention} your timer for **{tdata['title']}** has Ended!", components=[create_actionrow(*buttons)])
 			await end_message.add_reaction(self.bot.emojis_list["waiting"])
 		except:
 			pass  
