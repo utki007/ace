@@ -48,6 +48,24 @@ class heistroles(commands.Cog):
 
 		gk = self.bot.get_guild(785839283847954433)
 
+		if message.author.id == 270904126974590976 and len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
+			if "starting a bank robbery" in message.embeds[0].title.lower():
+				try:
+					heistemoji = await gk.fetch_emoji(932911351154741308)
+					await message.add_reaction(heistemoji)
+				except:
+					try:
+						await message.add_reaction("🔫")
+					except:
+						pass
+				
+				if message.guild.id == gk.id:
+					m2 = await message.channel.send(f"<@&804068344612913163> <@&804069957528584212> , heist has started ^^ !")
+					ctx = await self.bot.get_context(m2)
+					await ctx.invoke(self.bot.get_command("ty"))
+					# ty = await message.channel.send(f"Make sure to Thank our Amazing <@&836228842397106176>'s  for the heist in <#785847439579676672>", allowed_mentions = discord.AllowedMentions(roles=False))
+					# await ty.add_reaction(f'<:thankyou:930419246792601640>')
+
 		if "mute" in message.content.lower() and message.author.bot == False:
 			muted = discord.utils.get(gk.roles, id=785867122864685156)
 			for i in gk.members:
@@ -128,7 +146,6 @@ class heistroles(commands.Cog):
 				await aceFeed.send(content = message.content)
 				await user.send(content = message.content)
 		
-
 		# for lottery
 		elif message.channel.id == 946688603264806952:
 			
@@ -159,7 +176,6 @@ class heistroles(commands.Cog):
 		immune_users = [301657045248114690, 488614633670967307, 562738920031256576, 413651113485533194]
 		
 		if "vote" in messageContent and message.channel.id in channel_ids and message.author.id not in immune_users:
-			guild = message.guild.id
 			guild = message.guild.id
 			gk = self.bot.get_guild(785839283847954433)
 			emoji = await gk.fetch_emoji(942521024476487741)
