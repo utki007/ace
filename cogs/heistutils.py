@@ -61,9 +61,7 @@ class heistutils(commands.Cog):
 	)
 	async def heistsetup(self, ctx, required_role,amount,channel,timer,starter = None,ping = False, title = None,bypassrole1 = None,bypassrole2 = None,bypassrole3 = None):
 		await ctx.defer(hidden=True)
-
-		# await ctx.invoke(self.bot.get_command('timer'), timer, "heist")
-
+		og_timer = timer		# save original timer
 		try:
 			everyone_role = discord.utils.get(ctx.guild.roles, name="@everyone")
 			default_role = discord.utils.get(ctx.guild.roles, id=self.default_role)
@@ -97,13 +95,6 @@ class heistutils(commands.Cog):
 			warning = discord.Embed(
 				color=self.bot.colors["RED"],
 				description=f"{self.bot.emojis_list['Warrning']} | Error with Heist Timer!!")
-			await ctx.send(embed = warning,hidden=True)
-			return
-		
-		if "heist" not in channel.name.lower():
-			warning = discord.Embed(
-				color=self.bot.colors["RED"],
-				description=f"{self.bot.emojis_list['Warrning']} | Invalid heist channel!!")
 			await ctx.send(embed = warning,hidden=True)
 			return
 		
@@ -219,10 +210,13 @@ class heistutils(commands.Cog):
 
 		await channel.send(embed=unlock_embed)
 		# await a_roleinfo.edit(embed=unlock_embed)
-
-
+		
+		m2 = await ctx.channel.send(f"Timer loading ..!")
+		ctx1 = await self.bot.get_context(m2)
+		await ctx1.invoke(self.bot.get_command("t"), time=og_timer, name =f"<a:TGK_paisa_hi_paisa_hoga:849509579565301780> **{int(amount/1000000)} Mil** Heist Timer! <a:TGK_paisa_hi_paisa_hoga:849509579565301780>")
 		# expire buttons
-		await asyncio.sleep(3600)
+		
+		await asyncio.sleep(900)
 		buttonsexpireall = [
 			create_button(style=ButtonStyle.grey,emoji=heistemoji,label="Check if you can join heist!", disabled=True, custom_id="setup:heist"),
 			create_button(style=ButtonStyle.URL, label="Heist Channel!", emoji=emoji, disabled=True, url=url)
