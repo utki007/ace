@@ -145,26 +145,6 @@ class heistroles(commands.Cog):
 			else:
 				await aceFeed.send(content = message.content)
 				await user.send(content = message.content)
-		
-		# for lottery
-		elif message.channel.id == 946688603264806952:
-			
-			gk = self.bot.get_guild(785839283847954433)
-			aceFeed = gk.get_channel(946689040344813588)
-
-			am = discord.AllowedMentions(
-				users=False,  # Whether to ping individual user @mentions
-				everyone=False,  # Whether to ping @everyone or @here mentions
-				roles=False,  # Whether to ping role @mentions
-				replied_user=False,  # Whether to ping on replies to messages
-			)
-			embeds = message.embeds
-			dict = {}
-			for embed in embeds:
-				dict = embed.to_dict()
-			if "Black Hole Findings" in dict['title']:
-				return
-			await aceFeed.send(embed = embed.from_dict(dict))
 
 		word_list = ['vote link','how to get vote role', 'how to vote', 'pls vote', 'how to vote for server', 'link to vote']
 		if message.author.bot:
