@@ -19,7 +19,7 @@ from utils.convertor import *
 class donationTracker(commands.Cog, description="Donation Tracker"):
 
     def __init__(self, bot):
-        self.bot= bot
+        self.bot = bot
         # self.mongoconnection = os.environ['MongoConnectionUrl']
         self.mongoconnection = self.bot.connection_url
         self.mybot = pymongo.MongoClient(self.mongoconnection)
@@ -34,19 +34,20 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         self.bal = "bal"
         self.name = "name"
         self.id = "_id"
-        
+
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
-        
 
     # add a donator if he doesn't exist
+
     async def create_donor(self, user):
         dict = {}
         dict["_id"] = user.id
         dict["name"] = user.name[0:15]
         dict["bal"] = 0
-        dict["event"] = [{"name": "750", "bal": 0},{"name": "1.5k", "bal": 0},{"name": "3k" , "bal": 0}]
+        dict["event"] = [{"name": "750", "bal": 0}, {"name": "1.5k", "bal": 0}, {
+            "name": "3k", "bal": 0}, {"name": "6k", "bal": 0}]
         self.mycol.insert_one(dict)
 
     @commands.group(name="donation", aliases=['dono'])
@@ -55,38 +56,38 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         if ctx.invoked_subcommand is None:
             # await ctx.message.delete()
             help = discord.Embed(
-                title = "Donation Tracker",
-                description = f"Track all Donations",
-                color = 0x9e3bff,
+                title="Donation Tracker",
+                description=f"Track all Donations",
+                color=0x9e3bff,
                 timestamp=datetime.datetime.utcnow()
             )
             help.add_field(
                 name="<a:TGK_sparkles:838838345316040744> __Donor Bank__",
-                value=  f"Usage = `?[bal|balance] <member>` \n"
-                        f"Ex: `?bal @user`",
-                inline = False)
+                value=f"Usage = `?[bal|balance] <member>` \n"
+                f"Ex: `?bal @user`",
+                inline=False)
             help.add_field(
                 name="<a:TGK_sparkles:838838345316040744> __Nickname__",
                 value=f"usage = `?[nick|ign] <member> <nick>`\n"
-                    f"ex = `?nick @user haddi`",
-                inline = False)
+                f"ex = `?nick @user haddi`",
+                inline=False)
             help.add_field(
                 name="<a:TGK_sparkles:838838345316040744> __Regular Donation__",
-                value=  f"**1.** Add donation to donor's bank\n"
-                        f"ex = `?[donation|dono] [add|a] <member> <amount>`\n"
-                        f"**2.** Remove donation from donor's bank\n"
-                        f"ex = `?[donation|dono] [remove|r] <member> <amount>`\n"
-                        f"**3.** Displays top donors of the Server\n"
-                        f"ex = `?[donation|dono] [leaderboard|lb]`\n",
-                inline = False)
-            
+                value=f"**1.** Add donation to donor's bank\n"
+                f"ex = `?[donation|dono] [add|a] <member> <amount>`\n"
+                f"**2.** Remove donation from donor's bank\n"
+                f"ex = `?[donation|dono] [remove|r] <member> <amount>`\n"
+                f"**3.** Displays top donors of the Server\n"
+                f"ex = `?[donation|dono] [leaderboard|lb]`\n",
+                inline=False)
+
             help.set_author(name=ctx.guild.name,
-                                icon_url=ctx.guild.icon_url)
+                            icon_url=ctx.guild.icon_url)
             help.set_footer(
                 text=f"Developed by utki007 & Jay", icon_url=self.bot.user.avatar_url)
             # help.set_thumbnail(
             #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
-            await ctx.send(embed = help)
+            await ctx.send(embed=help)
 
     @donation.command(name="add", description="Add Donation for a member", usage="<member> <amount>", aliases=['a'])
     @commands.check_any(checks.can_use(), checks.is_me())
@@ -134,8 +135,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             colour=0x78AB46,
             timestamp=datetime.datetime.utcnow()
         )
-        display.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-        display.set_thumbnail(url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
+        display.set_footer(text=f"Developed by utki007 & Jay",
+                           icon_url=ctx.guild.icon_url)
+        display.set_thumbnail(
+            url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
 
         dmMessage = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK Donation Bank__  <a:TGK_Pandaswag:830525027341565982>\n\n",
@@ -148,14 +151,16 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             timestamp=datetime.datetime.utcnow()
         )
 
-        dmMessage.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-        dmMessage.set_thumbnail(url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
+        dmMessage.set_footer(
+            text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+        dmMessage.set_thumbnail(
+            url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
 
         try:
             await ctx.send(embed=display)
         except:
-            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠",delete_after=30)
-            pass 
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠", delete_after=30)
+            pass
         try:
             await ctx.message.delete()
         except:
@@ -166,7 +171,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             am = discord.AllowedMentions(
                 users=False,  # Whether to ping individual user @mentions
             )
-            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:",delete_after=30, allowed_mentions=am)
+            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:", delete_after=30, allowed_mentions=am)
             pass
 
         # for logging
@@ -176,7 +181,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             colour=0x78AB46
         )
 
-        logg.set_footer(text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
+        logg.set_footer(
+            text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
         channel = self.bot.get_channel(self.logChannel)
         registry = self.bot.get_channel(self.registry)
@@ -184,31 +190,31 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             if ctx.channel.id != registry.id:
                 await registry.send(embed=display)
         except:
-            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠", delete_after=30)
             pass
         try:
             await channel.send(embed=logg)
         except:
-            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠", delete_after=30)
             pass
-        
-        roles_added = await donor_roles(self.bot,dict[self.bal],member)
-        
+
+        roles_added = await donor_roles(self.bot, dict[self.bal], member)
+
         am = discord.AllowedMentions(
             users=False,  # Whether to ping individual user @mentions
             everyone=False,  # Whether to ping @everyone or @here mentions
             roles=False,  # Whether to ping role @mentions
             replied_user=False,  # Whether to ping on replies to messages
         )
-        
+
         try:
-            if roles_added !=[]:
+            if roles_added != []:
                 for i in roles_added:
                     await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
         except:
             await ctx.send(f"{ctx.author.mention}, Unable to add donor roles!")
             pass
-            
+
     @donation.command(name="remove", description="Remove donation from a member", usage="<member> <amount>", aliases=['r'])
     @commands.check_any(checks.can_use(), checks.is_me())
     #@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889), commands.is_owner())
@@ -250,8 +256,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to add bal to the database. Try again later!!. ⚠")
             return
-            
-        
 
         # showing donor balance
         self.bal = "bal"
@@ -265,13 +269,15 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             timestamp=datetime.datetime.utcnow()
         )
 
-        display.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-        display.set_thumbnail(url="https://cdn.discordapp.com/emojis/830548561329782815.gif?v=1")
+        display.set_footer(text=f"Developed by utki007 & Jay",
+                           icon_url=ctx.guild.icon_url)
+        display.set_thumbnail(
+            url="https://cdn.discordapp.com/emojis/830548561329782815.gif?v=1")
 
         dmMessage = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK Donation Bank__  <a:TGK_Pandaswag:830525027341565982>\n\n",
             description=f"\n**Amount Debited:** ⏣ {amount:,}\n"
-                            # f"**By: ** {ctx.author.mention}\n"
+            # f"**By: ** {ctx.author.mention}\n"
                         f"**Total Donation:** ⏣ {dict[self.bal]:,} \n\n"
                         f"**_Sanctioned By: _** {ctx.author.mention}\n\n"
                         f"**__If it was not authorized by you then \n do reach out to an admin/owner.__** \n\n",
@@ -279,14 +285,16 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             timestamp=datetime.datetime.utcnow()
         )
 
-        dmMessage.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-        dmMessage.set_thumbnail(url="https://cdn.discordapp.com/emojis/830548561329782815.gif?v=1")
+        dmMessage.set_footer(
+            text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+        dmMessage.set_thumbnail(
+            url="https://cdn.discordapp.com/emojis/830548561329782815.gif?v=1")
 
         try:
             await ctx.send(embed=display)
         except:
-            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠",delete_after=30)
-            pass 
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠", delete_after=30)
+            pass
         registry = self.bot.get_channel(self.registry)
         try:
             if ctx.channel.id != registry.id:
@@ -303,7 +311,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             am = discord.AllowedMentions(
                 users=False,  # Whether to ping individual user @mentions
             )
-            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:",delete_after=30, allowed_mentions=am)
+            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:", delete_after=30, allowed_mentions=am)
             pass
 
         # for logging
@@ -313,27 +321,28 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             colour=0xE74C3C
         )
 
-        logg.set_footer(text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
+        logg.set_footer(
+            text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
         channel = self.bot.get_channel(self.logChannel)
         try:
             await channel.send(embed=logg)
-           
+
         except:
-            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠", delete_after=30)
             pass
-        
-        roles_added = await donor_roles(self.bot,dict[self.bal],member)
-        
+
+        roles_added = await donor_roles(self.bot, dict[self.bal], member)
+
         am = discord.AllowedMentions(
             users=False,  # Whether to ping individual user @mentions
             everyone=False,  # Whether to ping @everyone or @here mentions
             roles=False,  # Whether to ping role @mentions
             replied_user=False,  # Whether to ping on replies to messages
         )
-        
+
         try:
-            if roles_added !=[]:
+            if roles_added != []:
                 for i in roles_added:
                     await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
         except:
@@ -342,12 +351,13 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
     @donation.command(name="leaderboard", description="Checout top donators", usage="", aliases=['lb'])
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def topdono(self, ctx,  number:int=5):
+    async def topdono(self, ctx,  number: int = 5):
 
-        if number<5:
+        if number < 5:
             number = 5
-            
-        myquery = self.mycol.find({}, {"_id": 1, "name": 1, "bal": 1, "event": 1})
+
+        myquery = self.mycol.find(
+            {}, {"_id": 1, "name": 1, "bal": 1, "event": 1})
 
         n = 0
         list = []
@@ -364,7 +374,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         df = pd.DataFrame(list)
         # await ctx.send(l)
 
-        df = df[["_id", "name", "bal"]].sort_values(by= "bal", ascending = False)
+        df = df[["_id", "name", "bal"]].sort_values(by="bal", ascending=False)
         df = df.head()
         # await ctx.send(df)
 
@@ -410,7 +420,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         # embed.add_field(
         #     name="Note: ", value=f"to check your donation do `?bal`", inline=True)
 
-        embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+        embed.set_footer(text=f"Developed by utki007 & Jay",
+                         icon_url=ctx.guild.icon_url)
         # embed.set_footer(
         #     text=f"{self.bot.user.name} | Developed by utki007 and Jay", icon_url=self.bot.user.avatar_url)
         # embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
@@ -421,7 +432,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
     @commands.command(name="nick", description="this nick appears on your donor bank", usage="<member> <nick>", aliases=['ign'])
     @commands.is_owner()
     async def nick(self, ctx, member: discord.Member, nick: str = "setNewNick"):
-
 
         if ctx.author.guild_permissions.administrator:
             myquery = {"_id": member.id}
@@ -610,44 +620,43 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         if ctx.invoked_subcommand is None:
             # await ctx.message.delete()
             help = discord.Embed(
-                title = "Donation Tracker",
-                description = f"Track all Donations",
-                color = 0x9e3bff,
+                title="Donation Tracker",
+                description=f"Track all Donations",
+                color=0x9e3bff,
                 timestamp=datetime.datetime.utcnow()
             )
             help.add_field(
                 name="<a:TGK_sparkles:838838345316040744> __Donor Bank__",
-                value=  f"Usage = `?[bal|balance] <member>` \n"
-                        f"Ex: `?bal @user`",
-                inline = False)
+                value=f"Usage = `?[bal|balance] <member>` \n"
+                f"Ex: `?bal @user`",
+                inline=False)
             help.add_field(
                 name="<a:TGK_sparkles:838838345316040744> __Nickname__",
                 value=f"usage = `?[nick|ign] <member> <nick>`\n"
-                    f"ex = `?nick @user haddi`",
-                inline = False)
+                f"ex = `?nick @user haddi`",
+                inline=False)
             help.add_field(
                 name="<a:TGK_sparkles:838838345316040744> __Special Donation__",
-                value=  f"**1.** Add donation to a special event\n"
-                        f"ex = `?celeb add <event-name> <member> <amount>`\n"
-                        f"**2.** Remove donation from a special event\n"
-                        f"ex = `?celeb remove <event-name> <member> <amount>`\n"
-                        f"**3.** Displays top donors for the Event\n"
-                        f"ex = `?celeb lb <event-name>`\n",
-                inline = False)
-            
+                value=f"**1.** Add donation to a special event\n"
+                f"ex = `?celeb add <event-name> <member> <amount>`\n"
+                f"**2.** Remove donation from a special event\n"
+                f"ex = `?celeb remove <event-name> <member> <amount>`\n"
+                f"**3.** Displays top donors for the Event\n"
+                f"ex = `?celeb lb <event-name>`\n",
+                inline=False)
+
             help.set_author(name=ctx.guild.name,
-                                icon_url=ctx.guild.icon_url)
+                            icon_url=ctx.guild.icon_url)
             help.set_footer(
                 text=f"Developed by utki007 & Jay", icon_url=self.bot.user.avatar_url)
             # help.set_thumbnail(
             #         url="https://cdn.discordapp.com/emojis/802121702384730112.gif?v=1")
-            await ctx.send(embed = help)
+            await ctx.send(embed=help)
 
-    @celeb.command(name="add", description="Add donation to a special event", usage="<event-name> <member> <amount>",aliases=["a"])
+    @celeb.command(name="add", description="Add donation to a special event", usage="<event-name> <member> <amount>", aliases=["a"])
     @commands.check_any(checks.can_use(), checks.is_me())
     async def add(self, ctx, name: str, member: discord.Member, amount):
 
-        
         try:
             amount = await convert_to_numeral(amount)
             amount = await calculate(amount)
@@ -706,7 +715,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable add bal to the database. Try again later!!. ⚠")
             return
-            
 
         # showing donor balance
         display = discord.Embed(
@@ -719,8 +727,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             colour=0x78AB46,
             timestamp=datetime.datetime.utcnow()
         )
-        display.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-        display.set_thumbnail(url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
+        display.set_footer(text=f"Developed by utki007 & Jay",
+                           icon_url=ctx.guild.icon_url)
+        display.set_thumbnail(
+            url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
 
         dmMessage = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK Donation Bank__  <a:TGK_Pandaswag:830525027341565982>\n\n",
@@ -734,20 +744,22 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             timestamp=datetime.datetime.utcnow()
         )
 
-        dmMessage.set_footer(text=f"Developed by utki & Jay", icon_url=ctx.guild.icon_url)
-        dmMessage.set_thumbnail(url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
+        dmMessage.set_footer(text=f"Developed by utki & Jay",
+                             icon_url=ctx.guild.icon_url)
+        dmMessage.set_thumbnail(
+            url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
 
         try:
             await ctx.send(embed=display)
         except:
-            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠",delete_after=30)
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠", delete_after=30)
             pass
         registry = self.bot.get_channel(self.celebRegistry)
         try:
             if ctx.channel.id != registry.id:
                 await registry.send(embed=display)
         except:
-            pass 
+            pass
         try:
             await ctx.message.delete()
         except:
@@ -758,7 +770,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             am = discord.AllowedMentions(
                 users=False,  # Whether to ping individual user @mentions
             )
-            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:", allowed_mentions=am,delete_after=30)
+            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:", allowed_mentions=am, delete_after=30)
             pass
 
         # for logging
@@ -768,27 +780,28 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             colour=ctx.author.colour
         )
 
-        logg.set_footer(text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
+        logg.set_footer(
+            text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
         channel = self.bot.get_channel(self.logChannel)
         try:
             await channel.send(embed=logg)
-           
+
         except:
-            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠", delete_after=30)
             pass
-        
-        roles_added = await donor_roles(self.bot,dict[self.bal],member)
-        
+
+        roles_added = await donor_roles(self.bot, dict[self.bal], member)
+
         am = discord.AllowedMentions(
             users=False,  # Whether to ping individual user @mentions
             everyone=False,  # Whether to ping @everyone or @here mentions
             roles=False,  # Whether to ping role @mentions
             replied_user=False,  # Whether to ping on replies to messages
         )
-        
+
         try:
-            if roles_added !=[]:
+            if roles_added != []:
                 for i in roles_added:
                     await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
         except:
@@ -797,9 +810,9 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
         # for celeb roles
 
-        celeb_roles_to_add = await event_roles(self.bot,event_bal,member,name)
+        celeb_roles_to_add = await event_roles(self.bot, event_bal, member, name)
 
-        if celeb_roles_to_add !=[]:
+        if celeb_roles_to_add != []:
             for i in celeb_roles_to_add:
                 try:
                     await member.add_roles(i)
@@ -808,11 +821,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                     await ctx.send(f"{self.bot.emojis_list['Cross']} | Unable to add {i.mention} to {member.mention}", allowed_mentions=am)
                     pass
 
-    @celeb.command(name="remove", description="Remove donation from a special", usage="<event-name> <member> <amount>",aliases=["r"])
+    @celeb.command(name="remove", description="Remove donation from a special", usage="<event-name> <member> <amount>", aliases=["r"])
     @commands.check_any(checks.can_use(), checks.is_me())
     async def remove(self, ctx, name: str, member: discord.Member, amount):
 
-        
         try:
             amount = await convert_to_numeral(amount)
             amount = await calculate(amount)
@@ -888,8 +900,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             timestamp=datetime.datetime.utcnow()
         )
 
-        display.set_footer(text=f"Developed by utki & Jay", icon_url=ctx.guild.icon_url)
-        display.set_thumbnail(url="https://cdn.discordapp.com/emojis/830548561329782815.gif?v=1")
+        display.set_footer(text=f"Developed by utki & Jay",
+                           icon_url=ctx.guild.icon_url)
+        display.set_thumbnail(
+            url="https://cdn.discordapp.com/emojis/830548561329782815.gif?v=1")
 
         dmMessage = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK Donation Bank__  <a:TGK_Pandaswag:830525027341565982>\n\n",
@@ -903,14 +917,16 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             timestamp=datetime.datetime.utcnow()
         )
 
-        dmMessage.set_footer(text=f"Developed by utki & Jay", icon_url=ctx.guild.icon_url)
-        dmMessage.set_thumbnail(url="https://cdn.discordapp.com/emojis/830548561329782815.gif?v=1")
+        dmMessage.set_footer(text=f"Developed by utki & Jay",
+                             icon_url=ctx.guild.icon_url)
+        dmMessage.set_thumbnail(
+            url="https://cdn.discordapp.com/emojis/830548561329782815.gif?v=1")
 
         try:
             await ctx.send(embed=display)
         except:
-            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠",delete_after=30)
-            pass 
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠", delete_after=30)
+            pass
         registry = self.bot.get_channel(self.celebRegistry)
         try:
             if ctx.channel.id != registry.id:
@@ -927,9 +943,9 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             am = discord.AllowedMentions(
                 users=False,  # Whether to ping individual user @mentions
             )
-            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:",delete_after=30, allowed_mentions=am)
+            await ctx.send(f":warning:  {member.mention}, Unable to send receipt as your dm's are closed :warning:", delete_after=30, allowed_mentions=am)
             pass
-            
+
         # for logging
         logg = discord.Embed(
             title="__Donation Removed__",
@@ -937,27 +953,28 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             colour=ctx.author.colour
         )
 
-        logg.set_footer(text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
+        logg.set_footer(
+            text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
 
         channel = self.bot.get_channel(self.logChannel)
         try:
             await channel.send(embed=logg)
-           
+
         except:
-            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠",delete_after=30)
+            await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠", delete_after=30)
             pass
-        
-        roles_added = await donor_roles(self.bot,dict[self.bal],member)
-        
+
+        roles_added = await donor_roles(self.bot, dict[self.bal], member)
+
         am = discord.AllowedMentions(
             users=False,  # Whether to ping individual user @mentions
             everyone=False,  # Whether to ping @everyone or @here mentions
             roles=False,  # Whether to ping role @mentions
             replied_user=False,  # Whether to ping on replies to messages
         )
-        
+
         try:
-            if roles_added !=[]:
+            if roles_added != []:
                 for i in roles_added:
                     await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Added {i.mention} to {member.mention}", allowed_mentions=am)
         except:
@@ -966,7 +983,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
     @celeb.command(name="lb", description="Remove donation from a special", usage="<event-name>")
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def _leaderboard(self, ctx, name : str, number: int = 1):
+    async def _leaderboard(self, ctx, name: str, number: int = 1):
         myquery = self.mycol.find(
             {}, {"_id": 1, "name": 1, "bal": 1, "event": 1})
 
@@ -988,9 +1005,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             celeb_name = "event_" + l[i]
             df[celeb_name] = df.event.apply(lambda x: x[i]["bal"])
 
-        df = df[["_id", "name", "bal", "event_"+name]].sort_values(by = "event_"+name, ascending = False)
+        df = df[["_id", "name", "bal", "event_"+name]
+                ].sort_values(by="event_"+name, ascending=False)
         # await ctx.send(top3)
-        nameofevent ="event_"+name
+        nameofevent = "event_"+name
         # total = df["3k"].sum()
         totalmembers = f"{df['event_'+name][df['event_'+name]>0].size}"
 
@@ -1043,7 +1061,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         # embed.add_field(
         #     name="Donation Status: ", value=f"Accepting", inline=True)
 
-        embed.set_footer(text=f"Developed by utki007 and Jay", icon_url=ctx.guild.icon_url)
+        embed.set_footer(text=f"Developed by utki007 and Jay",
+                         icon_url=ctx.guild.icon_url)
         # embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
         # embed.set_image(url="https://cdn.discordapp.com/attachments/829432099894591498/831618199590010900/tenor.gif")
         try:

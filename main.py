@@ -52,7 +52,7 @@ async def on_ready():
 		"250" : guild.get_role(810129497931513868),
 		"500" : guild.get_role(810129641473703956)
 	}
-	bot.event_3k = {
+	bot.event_6k = {
 		"0" : guild.get_role(943535266143039500),
 		"2" : guild.get_role(940581716312084530),
 		"5" : guild.get_role(940580910913450044),
