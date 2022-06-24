@@ -831,7 +831,7 @@ class heistroles(commands.Cog):
 			create_button(style=ButtonStyle.blurple,emoji=flashemoji, disabled=False, custom_id="heist:flash"),
 			create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=False, custom_id="heist:other"),
 			create_button(style=ButtonStyle.blurple,emoji=eventemoji, disabled=False, custom_id="heist:event"),
-			create_button(style=ButtonStyle.primary,emoji=chatemoji, disabled=False, custom_id="heist:movie")
+			create_button(style=ButtonStyle.primary,emoji=chatemoji, disabled=False, custom_id="heist:chat")
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
