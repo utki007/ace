@@ -70,67 +70,66 @@ class heistroles(commands.Cog):
 						m2 = await message.channel.send(f"|| @here <@&804068344612913163> <@&804069957528584212> || Heist has started ^^ !")
 						ctx = await self.bot.get_context(m2)
 						await ctx.invoke(self.bot.get_command("ty"))
-			
-
-			# elif message.content.startswith("```"):
-			# 	heistersFeed = self.bot.get_channel(990207355142688808)
-			# 	keywords_list = ['barely', 'bribed', 'came', 'caught', 'died', 'ended', 'escaped', 'extracted', 'feared', 'got', 'hacked', 'just', 'ran', 'really', 'scored', 'snuck', 'stole', 'took', 'tripped', 'turned', 'was']
-			# 	each_line = message.content.split("\n")[1:-1]
-			# 	for result in each_line:
-			# 		payout = 0
-			# 		if result.startswith('+'):
-			# 			payout = result.split("⏣ ")[1].split(" ")[0].replace(",", "", 50)
-			# 			if payout.endswith("."):
-			# 				payout = payout[:-1]
-			# 			try:
-			# 				payouts = int(payout)
-			# 				if payouts < 50000:
-			# 					break
-			# 			except:
-			# 				pass
-			# 		name = ""
-			# 		resultAfterPrefixRemoval = result.split(" ")[1:]
-			# 		for word in resultAfterPrefixRemoval:
-			# 			if word not in keywords_list:
-			# 				name = name + " " + word
-			# 			else:
-			# 				break
-			# 		name = name.strip(" ")
-			# 		if guild.get_member_named(name) != None:
-			# 			member = guild.get_member_named(name)
+	
+			elif message.content.startswith("```"):
+				heistersFeed = self.bot.get_channel(990207355142688808)
+				keywords_list = ['barely', 'bribed', 'came', 'caught', 'died', 'ended', 'escaped', 'extracted', 'feared', 'got', 'hacked', 'just', 'left', 'ran', 'really', 'scored', 'showed', 'snuck', 'stole', 'stopped', 'took', 'tripped', 'turned', 'was']
+				each_line = message.content.split("\n")[1:-1]
+				for result in each_line:
+					payouts = 0
+					if result.startswith('+'):
+						payout = result.split("⏣ ")[1].split(" ")[0].replace(",", "", 50)
+						if payout.endswith("."):
+							payout = payout[:-1]
+						try:
+							payouts = int(payout)
+							if payouts < 50000:
+								break
+						except:
+							pass
+					name = ""
+					resultAfterPrefixRemoval = result.split(" ")[1:]
+					for word in resultAfterPrefixRemoval:
+						if word not in keywords_list:
+							name = name + " " + word
+						else:
+							break
+					name = name.strip(" ")
+					if guild.get_member_named(name) != None:
+						member = guild.get_member_named(name)
 						
-			# 			data = await self.bot.heisters.find(member.id)
-			# 			if data == None:
-			# 				data = {
-			# 					"_id" : member.id,
-			# 					"name" : member.name,
-			# 					"time" : {},
-			# 					"freeloaded" : {},
-			# 					"payouts" : {}
-			# 				}
+						data = await self.bot.heisters.find(member.id)
+						if data == None:
+							data = {
+								"_id" : member.id,
+								"name" : member.name,
+								"time" : {},
+								"freeloaded" : {},
+								"payouts" : {}
+							}
 						
-			# 			data["time"][f"{guild.id}"] = datetime.datetime.now()
+						data["time"][f"{guild.id}"] = datetime.datetime.now()
 						
-			# 			if f"{guild.id}" in data["payouts"].keys():
-			# 				data["payouts"][f"{guild.id}"]["count"] += 1
-			# 				data["payouts"][f"{guild.id}"]["total_payouts"] += payouts
-			# 			else:
-			# 				data["payouts"][f"{guild.id}"] = {
-			# 					"count" : 1,
-			# 					"total_payouts" : payouts
-			# 				}
+						if f"{guild.id}" in data["payouts"].keys():
+							data["payouts"][f"{guild.id}"]["count"] += 1
+							data["payouts"][f"{guild.id}"]["total_payouts"] += payouts
+						else:
+							data["payouts"][f"{guild.id}"] = {
+								"count" : 1,
+								"total_payouts" : payouts
+							}
 
-			# 			if f"{guild.id}" not in data["freeloaded"].keys():
-			# 				data["freeloaded"][f"{guild.id}"] = 0
+						if f"{guild.id}" not in data["freeloaded"].keys():
+							data["freeloaded"][f"{guild.id}"] = 0
 
-			# 			await self.bot.heisters.upsert(data)
-			# 		else:
-			# 			memberNotFound = discord.Embed(
-			# 				title=f"> Member Not Found in `{guild.name.title()}` !",
-			# 				description=f"```diff\n{result}\n```\n> **Probable name:** {name}",
-			# 				color=discord.Color.random(),
-			# 			)
-			# 			await heistersFeed.send(embed = memberNotFound)
+						await self.bot.heisters.upsert(data)
+					else:
+						memberNotFound = discord.Embed(
+							title=f"> Member Not Found in `{guild.name.title()}` !",
+							description=f"```diff\n{result}\n```\n> **Probable name:** {name}",
+							color=discord.Color.random(),
+						)
+						await heistersFeed.send(embed = memberNotFound)
 						
 		# for partner heists
 		if message.channel.id == 806988762299105330:
