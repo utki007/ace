@@ -14,6 +14,7 @@ from discord_slash.utils.manage_components import create_button, create_actionro
 from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
 import numpy as np
+import datetime
 
 guild_ids=[785839283847954433]
 
@@ -47,46 +48,90 @@ class heistroles(commands.Cog):
 	async def on_message(self, message):
 
 		gk = self.bot.get_guild(785839283847954433)
+		guild = message.guild
 
-		if message.author.id == 270904126974590976 and len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
-			if "starting a bank robbery" in message.embeds[0].title.lower():
-				try:
-					heistemoji = await gk.fetch_emoji(932911351154741308)
-					await message.add_reaction(heistemoji)
-				except:
+		if self.bot.user.id == 859107514082394142:
+			return
+
+		if message.author.id == 270904126974590976:
+			
+			if len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
+				if "starting a bank robbery" in message.embeds[0].title.lower():
 					try:
-						await message.add_reaction("🔫")
+						heistemoji = await gk.fetch_emoji(932911351154741308)
+						await message.add_reaction(heistemoji)
 					except:
-						pass
-				
-				if message.guild.id == gk.id:
-					m2 = await message.channel.send(f"|| @here <@&804068344612913163> <@&804069957528584212> || Heist has started ^^ !")
-					ctx = await self.bot.get_context(m2)
-					await ctx.invoke(self.bot.get_command("ty"))
-					# ty = await message.channel.send(f"Make sure to Thank our Amazing <@&836228842397106176>'s  for the heist in <#785847439579676672>", allowed_mentions = discord.AllowedMentions(roles=False))
-					# await ty.add_reaction(f'<:thankyou:930419246792601640>')
-
-		if "mute" in message.content.lower() and message.author.bot == False:
-			muted = discord.utils.get(gk.roles, id=785867122864685156)
-			for i in gk.members:
-				if i.bot:
-					continue
-				if muted in i.roles:
-					danker = discord.utils.get(gk.roles, id=801392998465404958)
-					pro = discord.utils.get(gk.roles, id=790667905330970674)
-					if danker in i.roles:
 						try:
-							await i.remove_roles(danker)
+							await message.add_reaction("🔫")
 						except:
-							author = await self.bot.fetch_user(301657045248114690)
-							await author.send(f"Unable to remove {danker.name} for **{i.name}**({i.id})")
-					if pro in i.roles:
-						try:
-							await i.remove_roles(pro)
-						except:
-							author = await self.bot.fetch_user(301657045248114690)
-							await author.send(f"Unable to remove for {pro.name} **{i.name}**({i.id})")
+							pass
+					
+					if message.guild.id == gk.id:
+						m2 = await message.channel.send(f"|| @here <@&804068344612913163> <@&804069957528584212> || Heist has started ^^ !")
+						ctx = await self.bot.get_context(m2)
+						await ctx.invoke(self.bot.get_command("ty"))
+			
 
+			elif message.content.startswith("```"):
+				heistersFeed = self.bot.get_channel(990207355142688808)
+				keywords_list = ['barely', 'bribed', 'came', 'caught', 'died', 'ended', 'escaped', 'extracted', 'feared', 'got', 'hacked', 'just', 'ran', 'really', 'scored', 'snuck', 'stole', 'took', 'tripped', 'turned', 'was']
+				each_line = message.content.split("\n")[1:-1]
+				for result in each_line:
+					payout = 0
+					if result.startswith('+'):
+						payout = result.split("⏣ ")[1].split(" ")[0].replace(",", "", 50)
+						if payout.endswith("."):
+							payout = payout[:-1]
+						try:
+							payouts = int(payout)
+							if payouts < 50000:
+								break
+						except:
+							pass
+					name = ""
+					resultAfterPrefixRemoval = result.split(" ")[1:]
+					for word in resultAfterPrefixRemoval:
+						if word not in keywords_list:
+							name = name + " " + word
+						else:
+							break
+					name = name.strip(" ")
+					if guild.get_member_named(name) != None:
+						member = guild.get_member_named(name)
+						
+						data = await self.bot.heisters.find(member.id)
+						if data == None:
+							data = {
+								"_id" : member.id,
+								"name" : member.name,
+								"time" : {},
+								"freeloaded" : {},
+								"payouts" : {}
+							}
+						
+						data["time"][f"{guild.id}"] = datetime.datetime.now()
+						
+						if f"{guild.id}" in data["payouts"].keys():
+							data["payouts"][f"{guild.id}"]["count"] += 1
+							data["payouts"][f"{guild.id}"]["total_payouts"] += payouts
+						else:
+							data["payouts"][f"{guild.id}"] = {
+								"count" : 1,
+								"total_payouts" : payouts
+							}
+
+						if f"{guild.id}" not in data["freeloaded"].keys():
+							data["freeloaded"][f"{guild.id}"] = 0
+
+						await self.bot.heisters.upsert(data)
+					else:
+						memberNotFound = discord.Embed(
+							title=f"> Member Not Found in `{guild.name.title()}` !",
+							description=f"```diff\n{result}\n```\n> **Probable name:** {name}",
+							color=discord.Color.random(),
+						)
+						await heistersFeed.send(embed = memberNotFound)
+						
 		# for partner heists
 		if message.channel.id == 806988762299105330:
 			word_list = ['discord.gg']
