@@ -118,9 +118,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 
         messageIds = messageIds.split(" ")
 
-        list = ['barely', 'bribed', 'came', 'caught', 'died', 'ended', 'escaped', 'extracted', 'feared', 'got',
-                'hacked', 'just', 'ran', 'really', 'scored', 'snuck', 'stole', 'took', 'tripped', 'turned', 'was',
-                'showed', 'left', 'stopped']
+        list = ['barely', 'bribed', 'came', 'caught', 'died', 'ended', 'escaped', 'extracted', 'feared', 'got', 'hacked', 'just', 'left', 'ran', 'really', 'scored', 'showed', 'snuck', 'stole', 'stopped', 'took', 'tripped', 'turned', 'was']
 
         ban = []
         dank_messages = []
