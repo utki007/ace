@@ -29,9 +29,6 @@ class serverutils(commands.Cog, description="Server Utility"):
 	@commands.command(no_pm=True)
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def poll(self, ctx, *, question: str):
-		"""
-		Quick and easy yes/no poll, for multiple answers, see !quickpoll
-		"""
 		msg = await ctx.send("**{}** asks: {}?".format(ctx.message.author, question.replace("@", "@\u200b")))
 		try:
 			await ctx.message.delete()

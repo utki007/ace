@@ -44,7 +44,6 @@ class heistutils(commands.Cog):
 	async def on_ready(self):
 		print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-
 	@cog_ext.cog_subcommand(base="Heist", name="Setup",description="Setup Role Specific Heist", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=heist_perm,
 		options=[
@@ -222,7 +221,6 @@ class heistutils(commands.Cog):
 			create_button(style=ButtonStyle.URL, label="Heist Channel!", emoji=emoji, disabled=True, url=url)
 		]
 		await msg.edit(content="Heist Over!", components=[create_actionrow(*buttonsexpireall)])
-
 
 	@cog_ext.cog_subcommand(base="Heist", name="Start",description="Start the heist!", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=heist_perm,
