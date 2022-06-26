@@ -148,7 +148,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 
 
 	@commands.command(name="flash",description="Flash Ping")
-	@commands.cooldown(1, 1800, commands.BucketType.guild)
+	@commands.cooldown(1, 180, commands.BucketType.guild)
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def flash(self,ctx,*,message: str = "Some flash giveaways!"):
 		await ctx.message.delete()
@@ -169,7 +169,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 			await ctx.send(embed=embed)
 
 	@commands.command(name="giveaway",description="Gaw Ping",aliases = ["gaw"])
-	@commands.cooldown(1, 600, commands.BucketType.guild)
+	@commands.cooldown(1, 300, commands.BucketType.guild)
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def gaw(self,ctx,*,message: str = "Giveaway time!"):
 		await ctx.message.delete()
