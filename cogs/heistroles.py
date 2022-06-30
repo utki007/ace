@@ -131,8 +131,6 @@ class heistroles(commands.Cog):
 								color=discord.Color.random(),
 							)
 							await heistersFeed.send(embed = memberNotFound)
-						else:
-							await heistersFeed.send(f"```diff\n{result}lol\n```")
 						
 		# for partner heists
 		if message.channel.id == 806988762299105330:
