@@ -124,7 +124,7 @@ class heistroles(commands.Cog):
 
 						await self.bot.heisters.upsert(data)
 					else:
-						if "diff" not in name:
+						if name != "":
 							memberNotFound = discord.Embed(
 								title=f"> Member Not Found in `{guild.name.title()}` !",
 								description=f"```diff\n{result}\n```\n> **Probable name:** {name}",
@@ -132,7 +132,7 @@ class heistroles(commands.Cog):
 							)
 							await heistersFeed.send(embed = memberNotFound)
 						else:
-							await heistersFeed.send(f"```diff\n{result}\n```")
+							await heistersFeed.send(f"```diff\n{result}lol\n```")
 						
 		# for partner heists
 		if message.channel.id == 806988762299105330:
