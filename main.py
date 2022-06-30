@@ -270,6 +270,7 @@ if __name__ == "__main__":
 	bot.endgive = Document(bot.db, "back_up_giveaway")
 	bot.active_cmd = Document(bot.db, "Active_commands")
 	bot.heisters = Document(bot.db, "heisters")
+	bot.donorBank = Document(bot.db, "donorBank")
 
 	for file in os.listdir('./cogs'):
 		if file.endswith(".py") and not file.startswith("_")and not file.startswith('test'):
