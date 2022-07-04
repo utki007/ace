@@ -1144,7 +1144,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             # showing donor balance
         display = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s Grinder Record__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-            description=f"\n**Number of days added: ** {number}\n"
+            description=f"\n**Number of days paid: ** {number} days\n"
                         f"**Amount Credited to Grinder Bank: ** ⏣ `{amount:,}`\n"
                         f"**Next donation due on: ** <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D> <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> \n\n"
                         f"**Grinder Bank: ** ⏣ `{data['grinder_record']['amount']:,}` \n"
