@@ -1071,6 +1071,263 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             pass
         await ctx.send(embed=embed)
 
+    @commands.command(name="gupdate", aliases=['gu', 'gadd', 'ga'])
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def gupdate(self, ctx, member: discord.Member, number: int = 1):
+        await ctx.message.delete()
+        if number > 7:
+            warning = discord.Embed(
+                color=self.bot.colors["RED"],
+                description=f"{self.bot.emojis_list['Warrning']} | Can't pay more than 7 days in advance!!"
+            )
+            await ctx.send(embed=warning)
+            return
+        if number < 0:
+            warning = discord.Embed(
+                color=self.bot.colors["RED"],
+                description=f"{self.bot.emojis_list['Warrning']} | Can't pay in backdate!!"
+            )
+            await ctx.send(embed=warning)
+            return
+        data = await self.bot.donorBank.find(member.id)
+        if data == None:
+            await self.create_donor(member)
+            data = await self.bot.donorBank.find(member.id)
+
+        gk = self.bot.get_guild(785839283847954433)
+        grinder = gk.get_role(836228842397106176)
+        trial = gk.get_role(932149422719107102)
+        legendary = gk.get_role(806804472700600400)
+        epic = gk.get_role(835866393458901033)
+        ordinary = gk.get_role(835866409992716289)
+        lazy = gk.get_role(835889385390997545)
+
+        amount = 0
+        amount_per_grind = 0
+        if legendary in member.roles:
+            amount_per_grind = 4e6
+            amount = amount_per_grind * number
+        elif epic in member.roles:
+            amount_per_grind = 3e6
+            amount = amount_per_grind * number
+        elif ordinary in member.roles:
+            amount_per_grind = 2e6
+            amount = amount_per_grind * number
+        elif lazy in member.roles:
+            amount_per_grind = 1e6
+            amount = amount_per_grind * number
+
+        date = datetime.date.today()
+        time = datetime.datetime(
+            date.year, date.month, date.day) + datetime.timedelta(days=number)
+
+        grinder_record = {
+            "amount": amount,
+            "amount_per_grind": amount_per_grind,
+            "time": time,
+            "frequency": number
+        }
+
+        if "grinder_record" in data.keys():
+            data["grinder_record"]["frequency"] += 1*number
+            data["grinder_record"]["amount"] += amount
+            data["grinder_record"]["time"] += datetime.timedelta(days=number)
+            data["grinder_record"]["amount_per_grind"] = amount_per_grind
+        else:
+            data["grinder_record"] = grinder_record
+
+        try:
+            await self.bot.donorBank.upsert(data)
+        except:
+            await ctx.send(f"{self.bot.emojis_list['Warrning']} | Error updating donor data")
+            return
+            # showing donor balance
+        display = discord.Embed(
+            title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s Grinder Record__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+            description=f"\n**Number of days added: ** {number}\n"
+                        f"**Amount Credited to Grinder Bank: ** ⏣ `{amount:,}`\n"
+                        f"**Next donation due on: ** <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D> <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> \n\n"
+                        f"**Grinder Bank: ** ⏣ `{data['grinder_record']['amount']:,}` \n"
+                        f"**Total Donation: ** ⏣ `{data['bal']:,}` \n"
+                        f"**_Sanctioned By: _** {ctx.author.mention}\n\n"
+                        f"**_𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧_** \n",
+            colour=0x78AB46,
+            timestamp=datetime.datetime.utcnow()
+        )
+        display.set_footer(text=f"Developed by utki007 & Jay",
+                           icon_url=ctx.guild.icon_url)
+        display.set_thumbnail(
+            url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
+        await ctx.send(embed=display)
+        await ctx.invoke(self.bot.get_command("dono a"), member=member, amount=str(amount))
+        await member.send(
+            f"{self.bot.emojis_list['SuccessTick']} | You have been completed your **Grinder Requirements** till <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D>."
+            f" I will notify you <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> to submit your next `⏣ {int(amount_per_grind):,}` again."
+        )
+
+    @commands.command(name="gcheck", aliases=['gc'])
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def gcheck(self, ctx):
+        # await ctx.message.delete()
+        data = await self.bot.donorBank.find(ctx.author.id)
+        if "grinder_record" not in data.keys():
+            await ctx.send(f"{ctx.author.mention} You are not a grinder yet!")
+        else:
+            display = discord.Embed(
+                title=f"<a:TGK_Pandaswag:830525027341565982>  __{ctx.author.name.upper()}'s Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+                description=f"**Next donation due on: ** <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D> <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> \n\n"
+                            f"**Grinded for:** `{data['grinder_record']['frequency']} days` !\n"
+                            f"**Grinder Bank: ** ⏣ `{data['grinder_record']['amount']:,}`\n"
+                            f"**Total Donation: ** ⏣ `{data['bal']:,}` \n\n"
+                            f"**_𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧_** \n",
+                colour=0x78AB46,
+                timestamp=datetime.datetime.utcnow()
+            )
+            display.set_footer(text=f"Developed by utki007 & Jay",
+                               icon_url=ctx.guild.icon_url)
+            display.set_thumbnail(
+                url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
+            await ctx.send(embed=display)
+
+    @commands.command(name="glist", aliases=['gl', 'gstatus', 'gs'])
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def glist(self, ctx):
+        await ctx.message.delete()
+        waiting = discord.Embed(
+            color=discord.Color.random(),
+            description=f"> Loading Grinder Data {self.bot.emojis_list['Typing']} "
+        )
+        msg = await ctx.send(embed=waiting)
+
+        gk = self.bot.get_guild(785839283847954433)
+        grinder = gk.get_role(836228842397106176)
+        trial = gk.get_role(932149422719107102)
+
+        grinder_records = []
+        desc = ""
+        desc_not_found = ""
+        for member in ctx.guild.members:
+            if grinder in member.roles or trial in member.roles:
+                data = await self.bot.donorBank.find(member.id)
+                if data != None and "grinder_record" in data.keys():
+                    grinder_records.append(
+                        [member.id, member.mention, data['grinder_record']['time']])
+                else:
+                    desc_not_found += f"{member.mention} `{member.id}`\n"
+
+        df = pd.DataFrame(grinder_records, columns=['ID', 'Mention', 'Time'])
+        df = df.sort_values(by='Time', ascending=True)
+
+        for ind in df.index:
+            desc += f"> {df['Mention'][ind]} {self.bot.emojis_list['rightArrow']} <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:D> <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R> \n"
+
+        display = discord.Embed(
+            title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Status__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+            description=f"{desc}",
+            colour=0x78AB46,
+            timestamp=datetime.datetime.utcnow()
+        )
+        display.set_footer(text=f"Developed by utki007 & Jay",
+                           icon_url=ctx.guild.icon_url)
+        display.set_thumbnail(
+            url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
+        await msg.edit(embed=display)
+        if desc_not_found != "":
+            grinders_not_found = discord.Embed(
+                title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Data Not Found__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+                description=f"{desc_not_found}",
+                colour=0xff0000,
+                timestamp=datetime.datetime.utcnow()
+            )
+            grinders_not_found.set_footer(text=f"Developed by utki007 & Jay",
+                                          icon_url=ctx.guild.icon_url)
+            grinders_not_found.set_thumbnail(
+                url="https://cdn.discordapp.com/emojis/790932345284853780.gif?size=128&quality=lossless")
+            await ctx.send(embed=grinders_not_found)
+
+    @commands.command(name="gpay", aliases=['gp', 'gpayout', 'gremind', 'gr'])
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def gpay(self, ctx):
+        await ctx.message.delete()
+        waiting = discord.Embed(
+            color=discord.Color.random(),
+            description=f"> Loading Grinder Data {self.bot.emojis_list['Typing']} "
+        )
+        msg = await ctx.send(embed=waiting)
+
+        gk = self.bot.get_guild(785839283847954433)
+        grinder = gk.get_role(836228842397106176)
+        trial = gk.get_role(932149422719107102)
+
+        date = datetime.date.today()
+        current_time = datetime.datetime(
+            date.year, date.month, date.day) + datetime.timedelta(days=0)
+
+        grinder_records = []
+        desc = ""
+        desc_not_found = ""
+        for member in ctx.guild.members:
+            if grinder in member.roles or trial in member.roles:
+                data = await self.bot.donorBank.find(member.id)
+                if data != None and "grinder_record" in data.keys():
+                    if data['grinder_record']['time'] == current_time:
+                        grinder_records.append([member.id, member.mention, data['grinder_record']
+                                               ['time'], current_time, 0, data['grinder_record']['amount_per_grind']])
+                    else:
+                        grinder_records.append([member.id, member.mention, data['grinder_record']['time'], current_time, int(
+                            str(data['grinder_record']['time'] - current_time).split(" ")[0]), data['grinder_record']['amount_per_grind']])
+
+        df = pd.DataFrame(grinder_records, columns=[
+                          'ID', 'Mention', 'Donated Time', 'Current Time', 'Time Difference', 'Amount Per Grind'])
+        df = df.sort_values(by='Donated Time', ascending=True)
+
+        desc = ""
+        for ind in df.index:
+            try:
+                member = ctx.guild.get_member(df['ID'][ind])
+            except:
+                desc += f"> {df['Mention'][ind]} \n"
+                desc += f"> **Donated on:** <t:{int(datetime.datetime.timestamp(df['Donated Time'][ind]))}:D> <t:{int(datetime.datetime.timestamp(df['Donated Time'][ind]))}:R> \n"
+                if df['Time Difference'][ind] < 0:
+                    desc += f"> **Pending from:** {-df['Time Difference'][ind]} days!\n\n"
+                else:
+                    desc += f"> **Due in:** {df['Time Difference'][ind]} days!\n\n"
+            if df['Time Difference'][ind] < 0:
+                message_for_pending = ""
+                if df['Time Difference'][ind] < 0:
+                    message_for_pending += f"> **Pending from:** {-df['Time Difference'][ind]} days!\n\n"
+                else:
+                    message_for_pending += f"> **Due in:** {df['Time Difference'][ind]} days!\n\n"
+                payment_pending = discord.Embed(
+                    title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK's Grinders Team__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+                    description=f"{self.bot.emojis_list['rightArrow']} The daily grinder requirement has been checked.\n"
+                                f"{self.bot.emojis_list['rightArrow']} Donations are pending from **{-df['Time Difference'][ind]} days**! \n"
+                                f"{self.bot.emojis_list['rightArrow']} Send `⏣ {int(-df['Time Difference'][ind]*df['Amount Per Grind'][ind]):,}` in <#851663580620521472> \n"
+                                f"{self.bot.emojis_list['rightArrow']} The next requirement check will take place <t:{int(datetime.datetime.timestamp(current_time + datetime.timedelta(days=1)))}:R>.  \n",
+                    colour=ctx.author.colour,
+                    timestamp=datetime.datetime.utcnow()
+                )
+                payment_pending.set_footer(text=f"Dm/ping utki007 if any queries.",
+                                           icon_url=ctx.guild.icon_url)
+                await member.send(content=f"Hello {member.name}! I have a message for you:", embed=payment_pending)
+                await asyncio.sleep(0.5)
+        if desc != "":
+            grinders_not_found = discord.Embed(
+                title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Data Not Found__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+                description=f"{desc}",
+                colour=0xff0000,
+                timestamp=datetime.datetime.utcnow()
+            )
+            grinders_not_found.set_footer(text=f"Developed by utki007 & Jay",
+                                          icon_url=ctx.guild.icon_url)
+            grinders_not_found.set_thumbnail(
+                url="https://cdn.discordapp.com/emojis/790932345284853780.gif?size=128&quality=lossless")
+            await ctx.send(embed=grinders_not_found)
+        waiting = discord.Embed(
+            color=discord.Color.green(),
+            description=f"{self.bot.emojis_list['SuccessTick']} | Sent Grinder Reminders Successfully!"
+        )
+        await msg.edit(embed=waiting, delete_after=900)
 
 def setup(bot):
     bot.add_cog(donationTracker(bot))
