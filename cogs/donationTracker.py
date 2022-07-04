@@ -1307,14 +1307,13 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                     message_for_pending += f"> **Due in:** {df['Time Difference'][ind]} days!\n\n"
                 payment_pending = discord.Embed(
                     title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK's Grinders Team__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-                    description=f"{self.bot.emojis_list['rightArrow']} The daily grinder requirement has been checked.\n"
-                                f"{self.bot.emojis_list['rightArrow']} Donations are pending from **{-df['Time Difference'][ind]} days**! \n"
-                                f"{self.bot.emojis_list['rightArrow']} Send `⏣ {int(-df['Time Difference'][ind]*df['Amount Per Grind'][ind]):,}` in <#851663580620521472> \n"
-                                f"{self.bot.emojis_list['rightArrow']} The next requirement check will take place <t:{int(datetime.datetime.timestamp(current_time + datetime.timedelta(days=1)))}:R>.  \n",
+                    description=f"{self.bot.emojis_list['rightArrow']} Your grinder donations are pending for **{-df['Time Difference'][ind]} days**. \n"
+                                f"{self.bot.emojis_list['rightArrow']} Please send `⏣ {int(-df['Time Difference'][ind]*df['Amount Per Grind'][ind]):,}` in <#851663580620521472> today. \n"
+                                f"{self.bot.emojis_list['rightArrow']} Inform staff if you have any trouble with donations.  \n",
                     colour=ctx.author.colour,
                     timestamp=datetime.datetime.utcnow()
                 )
-                payment_pending.set_footer(text=f"Dm/ping utki007 if any queries.",
+                payment_pending.set_footer(text=f"Developed by utki007 & Jay",
                                            icon_url=ctx.guild.icon_url)
                 await member.send(content=f"Hello {member.name}! I have a message for you:", embed=payment_pending)
                 await asyncio.sleep(0.5)
