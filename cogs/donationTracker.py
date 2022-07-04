@@ -1160,10 +1160,17 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
         await ctx.send(embed=display)
         await ctx.invoke(self.bot.get_command("dono a"), member=member, amount=str(amount))
-        await member.send(
-            f"{self.bot.emojis_list['SuccessTick']} | You have been completed your **Grinder Requirements** till <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D>."
-            f" I will notify you <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> to submit your next `⏣ {int(amount_per_grind):,}` again."
-        )
+        try:
+            await member.send(
+                f"{self.bot.emojis_list['SuccessTick']} | You have been completed your **Grinder Requirements** till <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D>."
+                f" I will notify you <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> to submit your next `⏣ {int(amount_per_grind):,}` again."
+            )
+        except:
+            await ctx.send(
+                f"{self.bot.emojis_list['Warrning']} | Error sending message to {member.mention}"
+                f"{self.bot.emojis_list['SuccessTick']} | You have been completed your **Grinder Requirements** till <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D>."
+                f" I will notify you <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> to submit your next `⏣ {int(amount_per_grind):,}` again."
+            )
 
     @commands.command(name="gcheck", aliases=['gc'])
     @commands.check_any(checks.can_use(), checks.is_me())
