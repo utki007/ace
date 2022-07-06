@@ -235,5 +235,5 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
 				await ctx.send(f"Unable to send for {i}")
 		await ctx.message.delete()
 
-def setup(bot):
-   bot.add_cog(blacklist(bot))
+async def setup(bot):
+   await bot.add_cog(blacklist(bot))

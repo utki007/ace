@@ -1,7 +1,6 @@
 import time
 import discord
-from TagScriptEngine import Interpreter, adapter, block
-from discord.ext.buttons import Paginator
+from TagScriptEngine import Interpreter, block
 from discord.ext import commands,tasks
 
 blocks = [
