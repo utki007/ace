@@ -1296,19 +1296,23 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 desc += f"> {df['Mention'][ind]} \n"
                 desc += f"> **Donated on:** <t:{int(datetime.datetime.timestamp(df['Donated Time'][ind]))}:D> <t:{int(datetime.datetime.timestamp(df['Donated Time'][ind]))}:R> \n"
                 if df['Time Difference'][ind] < 0:
-                    desc += f"> **Pending from:** {-df['Time Difference'][ind]} days!\n\n"
+                    desc += f"> **Pending from:** {-df['Time Difference'][ind]+1} days!\n\n"
+                elif df['Time Difference'][ind] == 0:
+                    desc += f"> **Donation is due today!\n\n"
                 else:
                     desc += f"> **Due in:** {df['Time Difference'][ind]} days!\n\n"
             if df['Time Difference'][ind] < 0:
                 message_for_pending = ""
                 if df['Time Difference'][ind] < 0:
-                    message_for_pending += f"> **Pending from:** {-df['Time Difference'][ind]} days!\n\n"
+                    message_for_pending += f"> **Pending from:** {-df['Time Difference'][ind]+1} days!\n\n"
+                elif df['Time Difference'][ind] == 0:
+                    desc += f"> **Donation is due today!\n\n"
                 else:
                     message_for_pending += f"> **Due in:** {df['Time Difference'][ind]} days!\n\n"
                 payment_pending = discord.Embed(
                     title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK's Grinders Team__  <a:TGK_Pandaswag:830525027341565982>\n\n",
                     description=f"{self.bot.emojis_list['rightArrow']} Your grinder donations are pending for **{-df['Time Difference'][ind]} days**. \n"
-                                f"{self.bot.emojis_list['rightArrow']} Please send `⏣ {int(-df['Time Difference'][ind]*df['Amount Per Grind'][ind]):,}` in <#851663580620521472> today. \n"
+                                f"{self.bot.emojis_list['rightArrow']} Please send `⏣ {(int(-df['Time Difference'][ind]+1)*df['Amount Per Grind'][ind]):,}` in <#851663580620521472> today. \n"
                                 f"{self.bot.emojis_list['rightArrow']} Inform staff if you have any trouble with donations.  \n",
                     colour=ctx.author.colour,
                     timestamp=datetime.datetime.utcnow()
@@ -1316,6 +1320,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 payment_pending.set_footer(text=f"Developed by utki007 & Jay",
                                            icon_url=ctx.guild.icon_url)
                 await member.send(content=f"Hello {member.name}! I have a message for you:", embed=payment_pending)
+                await ctx.send(content=f"Sent {member.mention} the following message:", embed=payment_pending,delete_after=600)
                 await asyncio.sleep(0.5)
         if desc != "":
             grinders_not_found = discord.Embed(
