@@ -53,15 +53,15 @@ async def on_ready():
 		"500" : guild.get_role(810129641473703956)
 	}
 	bot.event_6k = {
-		"0" : guild.get_role(943535266143039500),
-		"2" : guild.get_role(940581716312084530),
-		"5" : guild.get_role(940580910913450044),
-		"11" : guild.get_role(940581045038899230),
-		"33" : guild.get_role(940581297145905212),
-		"69" : guild.get_role(940581256301772820),
-		"100" : guild.get_role(940581347267866625),
-		"250" : guild.get_role(942719030752583680)
-	}
+        "0" : guild.get_role(943535266143039500),
+        "2" : guild.get_role(940581716312084530),
+        "11" : guild.get_role(940581045038899230),
+        "69" : guild.get_role(940581256301772820),
+        "111" : guild.get_role(940581347267866625),
+        "250" : guild.get_role(942719030752583680),
+        "690" : guild.get_role(940580910913450044),
+        "1000" : guild.get_role(940581297145905212)
+    }
 
 	bot.premium_colour_users = [
 		guild.get_role(810128946791579679),
@@ -71,7 +71,8 @@ async def on_ready():
 		guild.get_role(811308414889361458),
 		guild.get_role(836551065733431348),
 		guild.get_role(821052747268358184),
-		guild.get_role(818129661325869058)
+		guild.get_role(818129661325869058),
+		guild.get_role(943535266143039500)
 	]
 		
 	bot.elite_colour_users = [
@@ -83,8 +84,8 @@ async def on_ready():
 		guild.get_role(830013421239140403),
 		guild.get_role(821052747268358184),
 		guild.get_role(818129661325869058),
-		guild.get_role(786477872029892639)
-
+		guild.get_role(786477872029892639),
+		guild.get_role(940581256301772820)
 	]	
 
 	bot.legendary_colour_users = [
@@ -94,7 +95,8 @@ async def on_ready():
 		guild.get_role(830013421239140403),
 		guild.get_role(821052747268358184),
 		guild.get_role(818129661325869058),
-		guild.get_role(803614652989702194) 
+		guild.get_role(803614652989702194),
+		guild.get_role(940581347267866625) 
 	]
 
 	bot.all_colour_pack = [
@@ -245,22 +247,6 @@ bot.emojis_list = {
 	"tgk" : "<a:gk_icon:945766027592089681>",
 	"waiting" : "<a:gk_waiting:945772518776664104>",
 	"sadrain" : "<a:TGK_sadrain:855305960385937428>"
-}
-
-bot.clock_emojis_dict = {
-    0 : ["🕛","🕧"],
-	1 : ["🕐","🕜"],
-	2 : ["🕑","🕝"],
-	3 : ["🕒","🕞"],
-	4 : ["🕓","🕟"],
-	5 : ["🕔","🕠"],
-	6 : ["🕕","🕡"],
-	7 : ["🕖","🕢"],
-	8 : ["🕗","🕣"],
-	9 : ["🕘","🕤"],
-	10 : ["🕙","🕥"],
-	11 : ["🕚","🕦"],
-	12 : ["🕛","🕧"]
 }
 
 if __name__ == "__main__":
