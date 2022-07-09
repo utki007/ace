@@ -1311,7 +1311,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                     message_for_pending += f"> **Due in:** {df['Time Difference'][ind]} days!\n\n"
                 payment_pending = discord.Embed(
                     title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK's Grinders Team__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-                    description=f"{self.bot.emojis_list['rightArrow']} Your grinder donations are pending for **{-df['Time Difference'][ind]} days**. \n"
+                    description=f"{self.bot.emojis_list['rightArrow']} Your grinder donations are pending for **{-df['Time Difference'][ind]+1} days**. \n"
                                 f"{self.bot.emojis_list['rightArrow']} Please send `⏣ {(int(-df['Time Difference'][ind]+1)*df['Amount Per Grind'][ind]):,}` in <#851663580620521472> today. \n"
                                 f"{self.bot.emojis_list['rightArrow']} Inform staff if you have any trouble with donations.  \n",
                     colour=ctx.author.colour,
