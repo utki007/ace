@@ -1296,7 +1296,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 desc += f"> {df['Mention'][ind]} \n"
                 desc += f"> **Donated on:** <t:{int(datetime.datetime.timestamp(df['Donated Time'][ind]))}:D> <t:{int(datetime.datetime.timestamp(df['Donated Time'][ind]))}:R> \n"
                 if df['Time Difference'][ind] < 0:
-                    desc += f"> **Pending from:** {-df['Time Difference'][ind]+1} days!\n\n"
+                    desc += f"> **Pending from:** {-df['Time Difference'][ind]} days!\n\n"
                 elif df['Time Difference'][ind] == 0:
                     desc += f"> **Donation is due today!\n\n"
                 else:
@@ -1304,7 +1304,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             if df['Time Difference'][ind] < 0:
                 message_for_pending = ""
                 if df['Time Difference'][ind] < 0:
-                    message_for_pending += f"> **Pending from:** {-df['Time Difference'][ind]+1} days!\n\n"
+                    message_for_pending += f"> **Pending from:** {-df['Time Difference'][ind]} days!\n\n"
                 elif df['Time Difference'][ind] == 0:
                     desc += f"> **Donation is due today!\n\n"
                 else:
