@@ -155,6 +155,28 @@ class serverutils(commands.Cog, description="Server Utility"):
 			)
 			await ctx.send(embed=embed)
 
+	@commands.command(name="mflash",description="Flash Ping",aliases = ["megaflash"])
+	@commands.cooldown(1, 300, commands.BucketType.guild)
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def mflash(self,ctx,*,message: str = "Some jodd flashes!"):
+		await ctx.message.delete()
+		gk = self.bot.get_guild(785839283847954433)		
+		flash = discord.utils.get(gk.roles, id=822021066548969482)
+		gaw = discord.utils.get(gk.roles, id=800685251276963861)
+		embed = discord.Embed(
+			description=f"> {message}",
+			color=discord.Color.random()
+		)
+		if ctx.channel.category.id == 812711141994266644:
+			await ctx.send(content = f"{flash.mention} {gaw.mention}" ,embed=embed)
+		else:
+			embed = discord.Embed(
+				title="Incorrect Usage",
+				description=f"> Ping is only available in <#812711141994266644> category!",
+				color=discord.Color.red()
+			)
+			await ctx.send(embed=embed)
+
 	@commands.command(name="giveaway",description="Gaw Ping",aliases = ["gaw"])
 	@commands.cooldown(1, 300, commands.BucketType.guild)
 	@commands.check_any(checks.can_use(), checks.is_me())
@@ -175,6 +197,28 @@ class serverutils(commands.Cog, description="Server Utility"):
 				color=discord.Color.red()
 			)
 			await ctx.send(embed=embed)	
+
+	@commands.command(name="eventping",description="Event ping",aliases = ["se","event"])
+	@commands.cooldown(1, 300, commands.BucketType.guild)
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def eventping(self,ctx,*,message: str = "Form up for some events!"):
+		await ctx.message.delete()
+		gk = self.bot.get_guild(785839283847954433)		
+		event = discord.utils.get(gk.roles, id=836925033506275399)
+		embed = discord.Embed(
+			description=f"> {message}",
+			color=discord.Color.random()
+		)
+		if ctx.channel.id == 849498983172800562 or ctx.channel.id == 960077349116862505:
+			await ctx.send(content = f"{event.mention}" ,embed=embed)
+		else:
+			embed = discord.Embed(
+				title="Incorrect Usage",
+				description=f"> Event ping is only available in <#849498983172800562> channel!",
+				color=discord.Color.red()
+			)
+			await ctx.send(embed=embed)	
+		await ctx.send(content = f"{event.mention}" ,embed=embed)
 
 	@commands.command(name="rc",description="Change role colour",aliases=["randomcolor"])
 	@commands.cooldown(1, 14400, commands.BucketType.user)
