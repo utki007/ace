@@ -1301,7 +1301,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                     desc += f"> **Donation is due today!\n\n"
                 else:
                     desc += f"> **Due in:** {df['Time Difference'][ind]} days!\n\n"
-            if df['Time Difference'][ind] < 0:
+            if df['Time Difference'][ind] <= 0:
                 message_for_pending = ""
                 if df['Time Difference'][ind] < 0:
                     message_for_pending += f"> **Pending from:** {-df['Time Difference'][ind]} days!\n\n"
