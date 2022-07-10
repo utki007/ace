@@ -172,8 +172,18 @@ class heistroles(commands.Cog):
 			gk = self.bot.get_guild(785839283847954433)
 			aceFeed = gk.get_channel(944490857111896064)
 			user = self.bot.get_user(301657045248114690)
-			await aceFeed.send(content = message.content)
-			await user.send(content = message.content)
+			content = message.content
+			emojis = list(set(re.findall(":\w*:\d*", content )))
+			emoji_only = []
+			for emoji in emojis:
+				k = emoji.replace(":","",2)
+				if k.isdigit() == False:
+					if k.lower() != "https":
+						emoji_only.append(emoji)
+			for emoji in emoji_only:
+				content = content.replace(emoji,"",100)
+			await aceFeed.send(content = content)
+			await user.send(content = content)
 
 		elif message.channel.id == 947525898100412417:
 			gk = self.bot.get_guild(785839283847954433)
