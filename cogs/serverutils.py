@@ -217,8 +217,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 				description=f"> Event ping is only available in <#849498983172800562> channel!",
 				color=discord.Color.red()
 			)
-			await ctx.send(embed=embed)	
-		await ctx.send(content = f"{event.mention}" ,embed=embed)
+			await ctx.send(embed=embed)
 
 	@commands.command(name="rc",description="Change role colour",aliases=["randomcolor"])
 	@commands.cooldown(1, 14400, commands.BucketType.user)
