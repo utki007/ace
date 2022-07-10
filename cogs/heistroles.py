@@ -182,6 +182,8 @@ class heistroles(commands.Cog):
 						emoji_only.append(emoji)
 			for emoji in emoji_only:
 				content = content.replace(emoji,"",100)
+			content = content.replace("<>","",100)
+			content = content.replace("<a>","",100)
 			await aceFeed.send(content = content)
 			await user.send(content = content)
 
