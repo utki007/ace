@@ -341,9 +341,10 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         
         l = [heist,partnerHeist,outsideHeist,partnership]
         
-        spings = {"name" : [],"pingCount":[]}
+        spings = {"name" : [],"pingCount":[],"id":[]}
         for i in l:
             spings["name"].append(i.mention)
+            spings["id"].append(i.id)
             spings["pingCount"].append(len(set(channel_members).intersection(set(i.members))))
         
         # for double pings 
@@ -361,7 +362,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         singlePings = "**\n**"
         
         for idx in df1.index:
-            singlePings = singlePings + f'{df1["name"][idx]} {self.bot.emojis_list["rightArrow"]}  {df1["pingCount"][idx]}\n **\n**'
+            singlePings = singlePings + f'{df1["name"][idx]} {self.bot.emojis_list["rightArrow"]}  {df1["pingCount"][idx]}\n> **ID: ** `{df1["id"][idx]}` \n **\n**'
         
         ping1 = discord.Embed(
                 title=f"    **Single Pings for Partnership\n**   ",
@@ -371,7 +372,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         )
         ping1.set_footer(
             text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-        ping1.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
+        # ping1.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
         pages = [ping1]
         
         
@@ -410,7 +411,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             )
             ping2.set_footer(
                 text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-            ping2.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
+            # ping2.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
             pages.append(ping2)
         
         message = await ctx.send(embed = ping1)
@@ -438,13 +439,15 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         
         l = [heist,partnerHeist,outsideHeist,partnership,danker,giveaway]
         
-        spings = {"name" : [],"pingCount":[]} 
+        spings = {"name" : [],"pingCount":[],"id":[]} 
 
         everyone_role = discord.utils.get(ctx.guild.roles, name="@everyone")
         spings["name"].append(everyone_role)
+        spings["id"].append(everyone_role.id)
         spings["pingCount"].append(len(set(channel_members)))
         for i in l:
             spings["name"].append(i.mention)
+            spings["id"].append(i.id)
             spings["pingCount"].append(len(set(channel_members).intersection(set(i.members))))
         
         # for double pings 
@@ -462,7 +465,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         singlePings = "**\n**"
         
         for idx in df1.index:
-            singlePings = singlePings + f'{df1["name"][idx]} {self.bot.emojis_list["rightArrow"]}  {df1["pingCount"][idx]}\n **\n**'
+            singlePings = singlePings + f'{df1["name"][idx]} {self.bot.emojis_list["rightArrow"]}  {df1["pingCount"][idx]}\n> **ID: ** `{df1["id"][idx]}` \n **\n**'
         
         ping1 = discord.Embed(
                 title=f"    **Reach for __{channel.name}__\n**   ",
@@ -472,7 +475,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         )
         ping1.set_footer(
             text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-        ping1.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
+        # ping1.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
         pages = [ping1]
         
         
@@ -511,7 +514,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             )
             ping2.set_footer(
                 text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-            ping2.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
+            # ping2.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
             pages.append(ping2)
         
         message = await ctx.send(embed = ping1)
