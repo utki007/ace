@@ -453,6 +453,7 @@ class heistutils(commands.Cog):
 			webhook.add_embed(dank_result_embed)
 			webhook.execute()
 			webhook.remove_embeds()
+			await asyncio.sleep(1)
 
 		await asyncio.sleep(30)
 		buttonsexpire = [
