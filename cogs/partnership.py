@@ -10,24 +10,26 @@ from utils.Checks import checks
 # helper functions
 from utils.custom_pagination import *
 
+
 def commonPing(role1, role2):
     ping1 = set(role1)
     ping2 = set(role2)
 
     if len(ping1.intersection(ping2)) > 0:
-        return(len(ping1.intersection(ping2)))  
+        return(len(ping1.intersection(ping2)))
     else:
         return(-1)
+
 
 class partnership(commands.Cog, name="Partnership Manager", description="Manages all partnerships with TGK"):
 
     def __init__(self, bot):
-        self.bot= bot
+        self.bot = bot
         self.mongoconnection = self.bot.connection_url
         self.mybot = pymongo.MongoClient(self.mongoconnection)
         self.mydb = self.mybot['TGK']
         self.mycol = self.mydb["partnerships"]
-        
+
         # channel ids
         self.partnerheist = 806988762299105330
         # for tgk
@@ -36,22 +38,20 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
     @commands.Cog.listener()
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
-    
+
     async def create_partner(self, ctx, id, pings):
         dict = {}
         dict["_id"] = id
         dict["pings"] = pings
-        self.mycol.insert_one(dict)    
+        self.mycol.insert_one(dict)
 
     @commands.group(name="Partnership", description="Moderator only Command to add/remove partnership pings", usage="add/remove member pings[optional]", aliases=["psh"])
-    #@commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916), commands.is_owner())
     @commands.check_any(checks.can_use(), checks.is_me())
     async def partnership(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send(f"use `help partnership` or `help psh` to know more!!!")
 
     @partnership.command(name="add", description="Add a Partner with Pings", aliases=['a'])
-    #@commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889, 843775369470672916), commands.is_owner())
     @commands.check_any(checks.can_use(), checks.is_me())
     async def addpartner(self, ctx, member: discord.Member, *, pings: str):
         try:
@@ -91,7 +91,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
         if flag == 0:
             try:
-                await self.create_partner( ctx, member.id, pp)
+                await self.create_partner(ctx, member.id, pp)
                 embed = discord.Embed(
                     color=self.bot.colors["Success"],
                     description=f'{self.bot.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!')
@@ -103,18 +103,18 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                     description=f'{self.bot.emojis_list["Warrning"]} | Unable to add them. Contact Jay or utki.')
                 await ctx.channel.send(embed=embed)
                 return
-        
+
         try:
             newvalues = {"$set": {"pings": pp}}
             self.mycol.update_one(myquery, newvalues)
             embed = discord.Embed(
-                    color=self.bot.colors["Success"],
-                    description=f'{self.bot.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!')
+                color=self.bot.colors["Success"],
+                description=f'{self.bot.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!')
             await ctx.send(embed=embed)
         except:
             embed = discord.Embed(
-                    color=self.bot.colors["RED"],
-                    description=f'{self.bot.emojis_list["BrokenStatus"]} | Unable to add them. Contact Jay or utki.')
+                color=self.bot.colors["RED"],
+                description=f'{self.bot.emojis_list["BrokenStatus"]} | Unable to add them. Contact Jay or utki.')
             await ctx.channel.send(embed=embed)
             return
 
@@ -137,14 +137,13 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             pass
 
     @partnership.command(name="remove", description="Remove a Partner", aliases=['r'])
-    #@commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376), commands.is_owner())
     @commands.check_any(checks.can_use(), checks.is_me())
     async def rpartner(self, ctx, member: discord.Member):
         try:
             await ctx.message.delete()
         except:
             pass
-        
+
         myquery = {"_id": member.id}
         info = self.mycol.find(myquery)
         flag = 0
@@ -159,7 +158,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 description=f"{self.bot.emojis_list['Warrning']} | {member.mention}'s Partnership data not found!!!")
             await ctx.send(embed=embed)
             return
-        
+
         try:
             self.mycol.remove(myquery)
             embed = discord.Embed(
@@ -168,11 +167,11 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             await ctx.send(embed=embed)
         except:
             embed = discord.Embed(
-                    color=self.bot.colors["RED"],
-                    description=f'{self.bot.emojis_list["BrokenStatus"]} | Unable to erase data. Contact Jay or utki.')
+                color=self.bot.colors["RED"],
+                description=f'{self.bot.emojis_list["BrokenStatus"]} | Unable to erase data. Contact Jay or utki.')
             await ctx.channel.send(embed=embed)
             return
-        
+
         # for logging
         logg = discord.Embed(
             title="__Partner Logging__",
@@ -193,7 +192,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
     @commands.command(name="ping_heist", description="Ping your Heist", aliases=['ph'])
     @commands.cooldown(1, 3600, commands.BucketType.user)
-    async def pingheist(self, ctx,*, text: str=''):
+    async def pingheist(self, ctx, *, text: str = ''):
         try:
             await ctx.message.delete()
         except:
@@ -206,7 +205,6 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             title=f"Unauthorized to use this command!!!",
             description=f"{self.bot.emojis_list['Warrning']} | If you think it's a mistake, do reach out to an Owner/Admin!!!\n Repeatetive usage may lead to a blacklist!")
 
-        
         myquery = {"_id": ctx.author.id}
         info = self.mycol.find(myquery)
         flag = 0
@@ -214,11 +212,11 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         for x in info:
             dict = x
             flag = 1
-        
+
         if flag == 0:
             await ctx.send(embed=unauthorized, delete_after=30)
             return
-        pp = dict["pings"]    
+        pp = dict["pings"]
         am = discord.AllowedMentions(
             users=False,  # Whether to ping individual user @mentions
             everyone=False,  # Whether to ping @everyone or @here mentions
@@ -227,16 +225,16 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         )
         if ctx.channel.id == self.partnerheist:
             if text != "":
-                await ctx.send(text,allowed_mentions=am)
+                await ctx.send(text, allowed_mentions=am)
             await ctx.send(f'{" ".join(map(str,pp))} **Join up**!!!')
         elif ctx.guild.id == 838646783785697290:
             if text != "":
-                await ctx.send(text,allowed_mentions=am)
+                await ctx.send(text, allowed_mentions=am)
             await ctx.send(f'{" ".join(map(str,pp))} **Join up**!!!')
         elif ctx.channel.category.id == 817049348977983506:
             if text != "":
-                await ctx.send(text,allowed_mentions=am)
-            await ctx.send(f'{" ".join(map(str,pp))} **Join up**!!!') 
+                await ctx.send(text, allowed_mentions=am)
+            await ctx.send(f'{" ".join(map(str,pp))} **Join up**!!!')
         else:
             warning = discord.Embed(
                 color=self.bot.colors["RED"],
@@ -244,8 +242,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             await ctx.send(embed=warning, delete_after=15)
 
     @commands.command(name="Grinders", description="Ping Grinders Heist", aliases=['grind', 'hg'])
-    #@commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 787259553225637889,835889385390997545,836228842397106176), commands.is_owner(),commands.bot_has_any_role(842485323329568769,933605749400166451))
-    @commands.check_any(checks.can_use(), checks.is_me(), commands.bot_has_any_role(842485323329568769,933605749400166451))
+    @commands.check_any(checks.can_use(), checks.is_me(), commands.bot_has_any_role(842485323329568769, 933605749400166451))
     async def grind(self, ctx, channel: int, link: str):
         await ctx.message.delete()
         if "://" not in link:
@@ -255,7 +252,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         if "channels" in link:
             channel = int(link.split("/")[-2])
             link_type = "Channel Link"
-        
+
         am = discord.AllowedMentions(
             users=False,  # Whether to ping individual user @mentions
             everyone=False,  # Whether to ping @everyone or @here mentions
@@ -267,7 +264,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         # guild2 = self.bot.get_guild(838646783785697290)
         # guild3 = self.bot.get_guild(927399549063004270)
 
-        guilds = [838646783785697290,927399549063004270]
+        guilds = [838646783785697290, 927399549063004270]
 
         channel1 = self.bot.get_channel(846766444695650345)
         channel2 = self.bot.get_channel(840231915100569650)
@@ -319,17 +316,14 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 f"To be used only in Heist channels. Let me report this!"
             )
             await user.send(f"<#{channel}> {link} \n used here {message.jump_url}")
-            
-    
+
     @commands.command(name="pings", description="Check Partner Pings")
-    #@commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 831405039830564875), commands.is_owner())
     @commands.check_any(checks.can_use(), checks.is_me())
     async def pings(self, ctx):
-        
-        
+
         guild = self.bot.get_guild(785839283847954433)
-        
-        heist = discord.utils.get(guild.roles, id=804068344612913163 )
+
+        heist = discord.utils.get(guild.roles, id=804068344612913163)
         partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
         outsideHeist = discord.utils.get(guild.roles, id=806795854475165736)
         danker = discord.utils.get(guild.roles, id=801392998465404958)
@@ -338,74 +332,74 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
         channel = self.bot.get_channel(806988762299105330)
         channel_members = channel.members
-        
-        l = [heist,partnerHeist,outsideHeist,partnership]
-        
-        spings = {"name" : [],"pingCount":[],"id":[]}
+
+        l = [heist, partnerHeist, outsideHeist, partnership]
+
+        spings = {"name": [], "pingCount": [], "id": []}
         for i in l:
             spings["name"].append(i.mention)
             spings["id"].append(i.id)
-            spings["pingCount"].append(len(set(channel_members).intersection(set(i.members))))
-        
-        # for double pings 
+            spings["pingCount"].append(
+                len(set(channel_members).intersection(set(i.members))))
+
+        # for double pings
         res = [(a, b) for idx, a in enumerate(l) for b in l[idx + 1:]]
-        dpings = {"pingCount":[],"role1":[],"role2":[]}
+        dpings = {"pingCount": [], "role1": [], "role2": []}
         for i in res:
-            role1,role2 = i
-            dpings["pingCount"].append(len(set(channel_members).intersection(set(role1.members).union(set(role2.members)))))
+            role1, role2 = i
+            dpings["pingCount"].append(len(set(channel_members).intersection(
+                set(role1.members).union(set(role2.members)))))
             dpings["role1"].append(role1)
             dpings["role2"].append(role2)
-            
+
         df = pd.DataFrame(spings)
-        df1 = df.sort_values(by= "pingCount", ascending = False)
-        
+        df1 = df.sort_values(by="pingCount", ascending=False)
+
         singlePings = "**\n**"
-        
+
         for idx in df1.index:
-            singlePings = singlePings + f'{df1["name"][idx]} {self.bot.emojis_list["rightArrow"]}  {df1["pingCount"][idx]}\n> **ID: ** `{df1["id"][idx]}` \n **\n**'
-        
+            singlePings = singlePings + \
+                f'{df1["name"][idx]} {self.bot.emojis_list["rightArrow"]}  {df1["pingCount"][idx]}\n> **ID: ** `{df1["id"][idx]}` \n **\n**'
+
         ping1 = discord.Embed(
-                title=f"    **Single Pings for Partnership\n**   ",
-                description= singlePings,
-                color=0x9e3bff,
-                timestamp=datetime.datetime.utcnow()
+            title=f"    **Single Pings for Partnership\n**   ",
+            description=singlePings,
+            color=0x9e3bff,
+            timestamp=datetime.datetime.utcnow()
         )
         ping1.set_footer(
             text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
         # ping1.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
         pages = [ping1]
-        
-        
-        
+
         df = pd.DataFrame(dpings)
-        df2 = df.sort_values(by= "pingCount", ascending = False)
+        df2 = df.sort_values(by="pingCount", ascending=False)
         try:
             await ctx.message.delete()
         except:
             pass
-        
+
         rows = len(df2.index)
-        
-        for i in np.arange(0,rows,3):
+
+        for i in np.arange(0, rows, 3):
             if i + 3 < rows:
                 temp = df2[i:i+3]
             else:
                 temp = df2[i:]
-            
-        
+
             doublePings = "**\n**"
-        
-        
+
             for idx in temp.index:
-                doublePings = doublePings + f'{temp["role1"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(set(channel_members).intersection(set(temp["role1"][idx].members)))}\n'
-                doublePings = doublePings + f'{temp["role2"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(set(channel_members).intersection(set(temp["role2"][idx].members)))}\n'
-                doublePings = doublePings + f'**_Unique Members:_** {self.bot.emojis_list["rightArrow"]}  **{temp["pingCount"][idx]}**\n **\n**'
-        
-        
+                doublePings = doublePings + \
+                    f'{temp["role1"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(set(channel_members).intersection(set(temp["role1"][idx].members)))}\n'
+                doublePings = doublePings + \
+                    f'{temp["role2"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(set(channel_members).intersection(set(temp["role2"][idx].members)))}\n'
+                doublePings = doublePings + \
+                    f'**_Unique Members:_** {self.bot.emojis_list["rightArrow"]}  **{temp["pingCount"][idx]}**\n **\n**'
 
             ping2 = discord.Embed(
                 title=f"    **Double Pings for Partnership\n**   ",
-                description= doublePings,
+                description=doublePings,
                 color=0x9e3bff,
                 timestamp=datetime.datetime.utcnow()
             )
@@ -413,19 +407,17 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
             # ping2.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
             pages.append(ping2)
-        
-        message = await ctx.send(embed = ping1)
-        await addPages(self.bot,ctx,message,pages)
+
+        message = await ctx.send(embed=ping1)
+        await addPages(self.bot, ctx, message, pages)
 
     @commands.command(name="cpings", description="Check Channel Pings")
-    #@commands.check_any(commands.has_any_role(785842380565774368, 799037944735727636, 785845265118265376, 831405039830564875), commands.is_owner())
     @commands.check_any(checks.can_use(), checks.is_me())
     async def cpings(self, ctx, channel: discord.TextChannel = None):
-        
-        
+
         guild = self.bot.get_guild(785839283847954433)
-        
-        heist = discord.utils.get(guild.roles, id=804068344612913163 )
+
+        heist = discord.utils.get(guild.roles, id=804068344612913163)
         partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
         outsideHeist = discord.utils.get(guild.roles, id=806795854475165736)
         danker = discord.utils.get(guild.roles, id=801392998465404958)
@@ -434,12 +426,12 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
         if channel == None:
             channel = self.bot.get_channel(806988762299105330)
-        
+
         channel_members = channel.members
-        
-        l = [heist,partnerHeist,outsideHeist,partnership,danker,giveaway]
-        
-        spings = {"name" : [],"pingCount":[],"id":[]} 
+
+        l = [heist, partnerHeist, outsideHeist, partnership, danker, giveaway]
+
+        spings = {"name": [], "pingCount": [], "id": []}
 
         everyone_role = discord.utils.get(ctx.guild.roles, name="@everyone")
         spings["name"].append(everyone_role)
@@ -448,80 +440,78 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         for i in l:
             spings["name"].append(i.mention)
             spings["id"].append(i.id)
-            spings["pingCount"].append(len(set(channel_members).intersection(set(i.members))))
-        
-        # for double pings 
+            spings["pingCount"].append(
+                len(set(channel_members).intersection(set(i.members))))
+
+        # for double pings
         res = [(a, b) for idx, a in enumerate(l) for b in l[idx + 1:]]
-        dpings = {"pingCount":[],"role1":[],"role2":[]}
+        dpings = {"pingCount": [], "role1": [], "role2": []}
         for i in res:
-            role1,role2 = i
-            dpings["pingCount"].append(len(set(channel_members).intersection(set(role1.members).union(set(role2.members)))))
+            role1, role2 = i
+            dpings["pingCount"].append(len(set(channel_members).intersection(
+                set(role1.members).union(set(role2.members)))))
             dpings["role1"].append(role1)
             dpings["role2"].append(role2)
-            
+
         df = pd.DataFrame(spings)
-        df1 = df.sort_values(by= "pingCount", ascending = False)
-        
+        df1 = df.sort_values(by="pingCount", ascending=False)
+
         singlePings = "**\n**"
-        
+
         for idx in df1.index:
-            singlePings = singlePings + f'{df1["name"][idx]} {self.bot.emojis_list["rightArrow"]}  {df1["pingCount"][idx]}\n> **ID: ** `{df1["id"][idx]}` \n **\n**'
-        
+            singlePings = singlePings + \
+                f'{df1["name"][idx]} {self.bot.emojis_list["rightArrow"]}  {df1["pingCount"][idx]}\n> **ID: ** `{df1["id"][idx]}` \n **\n**'
+
         ping1 = discord.Embed(
-                title=f"    **Reach for __{channel.name}__\n**   ",
-                description= singlePings,
-                color=0x9e3bff,
-                timestamp=datetime.datetime.utcnow()
+            title=f"    **Reach for __{channel.name}__\n**   ",
+            description=singlePings,
+            color=0x9e3bff,
+            timestamp=datetime.datetime.utcnow()
         )
         ping1.set_footer(
             text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
         # ping1.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
         pages = [ping1]
-        
-        
-        
+
         df = pd.DataFrame(dpings)
-        df2 = df.sort_values(by= "pingCount", ascending = False)
+        df2 = df.sort_values(by="pingCount", ascending=False)
         try:
             await ctx.message.delete()
         except:
             pass
-        
+
         rows = len(df2.index)
-        
-        for i in np.arange(0,rows,3):
+
+        for i in np.arange(0, rows, 3):
             if i + 3 < rows:
                 temp = df2[i:i+3]
             else:
                 temp = df2[i:]
-            
-        
+
             doublePings = "**\n**"
-        
-        
+
             for idx in temp.index:
-                doublePings = doublePings + f'{temp["role1"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(set(channel_members).intersection(set(temp["role1"][idx].members)))}\n'
-                doublePings = doublePings + f'{temp["role2"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(set(channel_members).intersection(set(temp["role2"][idx].members)))}\n'
-                doublePings = doublePings + f'**_Unique Members:_** {self.bot.emojis_list["rightArrow"]}  **{temp["pingCount"][idx]}**\n **\n**'
-        
-        
+                doublePings = doublePings + \
+                    f'{temp["role1"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(set(channel_members).intersection(set(temp["role1"][idx].members)))}\n'
+                doublePings = doublePings + \
+                    f'{temp["role2"][idx].mention} {self.bot.emojis_list["rightArrow"]}  {len(set(channel_members).intersection(set(temp["role2"][idx].members)))}\n'
+                doublePings = doublePings + \
+                    f'**_Unique Members:_** {self.bot.emojis_list["rightArrow"]}  **{temp["pingCount"][idx]}**\n **\n**'
 
             ping2 = discord.Embed(
                 title=f"    **Reach for __{channel.name}__\n**   ",
-                description= doublePings,
+                description=doublePings,
                 color=0x9e3bff,
                 timestamp=datetime.datetime.utcnow()
             )
             ping2.set_footer(
                 text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-            # ping2.set_thumbnail(url="https://cdn.discordapp.com/emojis/831410960472080424.gif?v=1")
             pages.append(ping2)
-        
-        message = await ctx.send(embed = ping1)
-        await addPages(self.bot,ctx,message,pages)
-        
-        
-    @commands.command(name="invite", description="Fetch Server Details", aliases=["inv","id"])
+
+        message = await ctx.send(embed=ping1)
+        await addPages(self.bot, ctx, message, pages)
+
+    @commands.command(name="invite", description="Fetch Server Details", aliases=["inv", "id"])
     @commands.check_any(checks.can_use(), checks.is_me())
     async def invite(self, ctx, invite: str = None):
 
@@ -530,13 +520,14 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             invite = ctx.guild.invite_url
         else:
             try:
-                invite = invite.replace("https://discord.gg/","")
+                invite = invite.replace("https://discord.gg/", "")
                 invite = f"https://discord.gg/{invite}"
                 invite = await self.bot.fetch_invite(invite)
             except:
                 return await ctx.send(f"{ctx.author.mention} Invalid Invite")
-        
+
         await ctx.send(f"**Server ID for _{invite.guild}_:** {invite.guild.id}\n")
+
 
 def setup(bot):
     bot.add_cog(partnership(bot))
