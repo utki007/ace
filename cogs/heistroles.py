@@ -657,7 +657,8 @@ class heistroles(commands.Cog):
 				flag = 0
 				for i in data:
 					if ctx.author.name in i:
-						await ctx.send(f"```diff\n{i}\n```")
+						heistdata = await self.bot.heisters.find(ctx.author.id)
+						await ctx.send(f"```diff\n{i}\n```",hidden=True)
 						flag = 1
 						break
 				if flag == 0:
