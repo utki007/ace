@@ -427,8 +427,6 @@ class heistutils(commands.Cog):
 			create_button(style=ButtonStyle.blurple, emoji=pressf,
 			              label=" Let's pay respects to the fined!", disabled=False, custom_id="setup:pressf")
 		]
-		msg = await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)])
-		await ctx.send(content=f"Stats sent!", hidden=True)
 		self.bot.heist_stats_data = deepcopy(entire_msg_list)
 		self.bot.respect_list = []
 
@@ -453,7 +451,10 @@ class heistutils(commands.Cog):
 			webhook.add_embed(dank_result_embed)
 			webhook.execute()
 			webhook.remove_embeds()
-			await asyncio.sleep(1)
+			await asyncio.sleep(0.5)
+		
+		msg = await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)])
+		await ctx.send(content=f"Stats sent!", hidden=True)
 
 		await asyncio.sleep(30)
 		buttonsexpire = [
