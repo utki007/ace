@@ -657,7 +657,29 @@ class heistroles(commands.Cog):
 				flag = 0
 				for i in data:
 					if ctx.author.name in i:
-						heistdata = await self.bot.heisters.find(ctx.author.id)
+						# heistdata = await self.bot.heisters.find(ctx.author.id)
+						# if ctx.author.id == 301657045248114690 and heistdata != None:
+						# 	if i.startswith("+"):
+						# 		title = "Heist Stats: Successful Heist"
+						# 	elif i.startswith("-"):
+						# 		title = "Heist Stats: Died in Heist"
+						# 	else:
+						# 		title = "Heist Stats: Fined in Heist"
+						# 	total_payouts = f'{np.round(heistdata["payouts"][str(ctx.guild.id)]["total_payouts"]/1e6,2)}'
+						# 	heist_stats = discord.Embed(
+						# 		title = title,
+						# 		color=discord.Color.random(),
+						# 		timestamp = datetime.datetime.utcnow()
+						# 	)
+						# 	heist_stats.add_field(name=f"Heisted Amount `(in July)`: ",value=f'{total_payouts} Mil',inline=True)
+						# 	heist_stats.add_field(name=f"Heists Joined: ",value=heistdata["payouts"][str(ctx.guild.id)]["count"],inline=True)
+						# 	heist_stats.add_field(name=f"Average per heist: ",value=f'{np.round(float(total_payouts)/int(heistdata["payouts"][str(ctx.guild.id)]["count"]),1)} Mil',inline=True)
+						# 	heist_stats.add_field(name=f"Heist Result: ",value=f"```diff\n{i}\n```",inline=True)
+						# 	heist_stats.set_footer(
+						# 				text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
+						# 	await ctx.send(embed=heist_stats,hidden=True)
+						# else:
+						# 	await ctx.send(f"```diff\n{i}\n```",hidden=True)
 						await ctx.send(f"```diff\n{i}\n```",hidden=True)
 						flag = 1
 						break
