@@ -105,8 +105,9 @@ class serverutils(commands.Cog, description="Server Utility"):
 	async def vote(self,ctx):
 		await ctx.message.delete()
 		gk = self.bot.get_guild(785839283847954433)
-		emoji = await gk.fetch_emoji(942521024476487741)
-		buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
+		playzone = self.bot.get_guild(815849745327194153)
+		emoji = await playzone.fetch_emoji(967152178617811064)
+		buttons = [create_button(style=ButtonStyle.URL, label="Vote here!", emoji=emoji, url="https://top.gg/servers/785839283847954433/vote")]
 		embed = discord.Embed(
 			title=f"Vote for the {ctx.guild.name}", 
 			description=
@@ -117,7 +118,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 			color=ctx.author.color
 		)
 
-		await ctx.send(embed=embed, components=[create_actionrow(*buttons)])
+		await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)])
 
 	@commands.command(name="revive",description="Revive server")
 	@commands.cooldown(1, 28800, commands.BucketType.guild)
