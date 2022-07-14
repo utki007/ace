@@ -214,9 +214,9 @@ class heistroles(commands.Cog):
 		
 		if "vote" in messageContent and message.channel.id in channel_ids and message.author.id not in immune_users:
 			guild = message.guild.id
-			gk = self.bot.get_guild(785839283847954433)
-			emoji = await gk.fetch_emoji(942521024476487741)
-			buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
+			playzone = self.bot.get_guild(815849745327194153)
+			emoji = await playzone.fetch_emoji(967152178617811064)
+			buttons = [create_button(style=ButtonStyle.URL, label="Vote here!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
 			embed = discord.Embed(
 				title=f"Vote for the {message.guild.name}", 
 				description=
@@ -226,8 +226,10 @@ class heistroles(commands.Cog):
 				f"❥ 2,500 Casino Cash. Collect using `,collectincome` in <#786117471840895016>\n", 
 				color=message.author.color
 			)
-	
-			return await message.reply(embed=embed, components=[create_actionrow(*buttons)])
+			try:
+				await message.reply(embed=embed, components=[create_actionrow(*buttons)])
+			except:
+				pass
 
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
