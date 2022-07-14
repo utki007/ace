@@ -1306,7 +1306,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 if df['Time Difference'][ind] < 0:
                     message_for_pending += f"> **Pending from:** {-df['Time Difference'][ind]} days!\n\n"
                 elif df['Time Difference'][ind] == 0:
-                    desc += f"> **Donation is due today!\n\n"
+                    message_for_pending += f"> **Donation is due today!\n\n"
                 else:
                     message_for_pending += f"> **Due in:** {df['Time Difference'][ind]} days!\n\n"
                 payment_pending = discord.Embed(
