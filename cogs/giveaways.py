@@ -553,7 +553,7 @@ class giveaway(commands.Cog):
 		]
 	)
 	async def goal(self, ctx, target, hidden = False):
-		await ctx.defer(hidden=hidden)
+		await ctx.defer(hidden=True)
 		goal = target
 		guild = ctx.guild
 		members = guild.members
@@ -603,14 +603,15 @@ class giveaway(commands.Cog):
 		# await ctx.send(content=f"Goal Sent!",hidden=True)
 
 		if hidden == False:
-			msg = await ctx.send(embed=embed, components=[create_actionrow(*buttons)], hidden=hidden)
-			await asyncio.sleep(3600)
+			msg = await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)])
+			await ctx.send(content=f"Goal Sent!",hidden=True)
+			await asyncio.sleep(3)
 			buttonsexpireall = [
 				create_button(style=ButtonStyle.green,emoji=emoji, label="Click here to hack giveaways!",disabled=True, custom_id="reaction:voted")
 			]
 			await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpireall)])
 		else:
-			await ctx.send(embed=embed, hidden=hidden)
+			await ctx.send(embed=embed, hidden=True)
 
 def setup(bot):
 	bot.add_cog(giveaway(bot))
