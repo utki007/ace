@@ -605,7 +605,7 @@ class giveaway(commands.Cog):
 		if hidden == False:
 			msg = await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)])
 			await ctx.send(content=f"Goal Sent!",hidden=True)
-			await asyncio.sleep(3)
+			await asyncio.sleep(1800)
 			buttonsexpireall = [
 				create_button(style=ButtonStyle.green,emoji=emoji, label="Click here to hack giveaways!",disabled=True, custom_id="reaction:voted")
 			]
