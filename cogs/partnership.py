@@ -528,6 +528,49 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
         await ctx.send(f"**Server ID for _{invite.guild}_:** {invite.guild.id}\n")
 
+    @commands.command(name="reach", description="Check Reach for a Channel")
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def reach(self, ctx, channel: discord.TextChannel, *, roleIds):
+        roleIds = roleIds.split(" ")
+        everyone = False
+        here = False
+        if "everyone" in roleIds:
+            everyone_role = discord.utils.get(ctx.guild.roles, name="@everyone")
+            everyone = True
+        if "here" in roleIds:
+            here_members = []
+            for member in ctx.guild.members:
+                if member.status != discord.Status.offline:
+                    here_members.append(member)
+            here = True
+        roleIds = [int(i) for i in roleIds if i!='' and i not in ["everyone", "here"]]
+        roleIds = [discord.utils.get(ctx.guild.roles, id=i) for i in roleIds]
+        roleIds = [i for i in roleIds if i != None]
+        if len(roleIds) == 0 and not everyone and not here:
+            return await ctx.send(f"{ctx.author.mention} Invalid Role IDs!")
+        roles = roleIds
+        roleIds = [i.id for i in roleIds]
+        Reach = f"Channel: {channel.mention} `{channel.id}` \n\n"
+        memberset = set()
+        for role in roles:
+            Reach += f"      <:arrow:997836661335543908> {role.name} `{role.id}` members:{len(role.members)} reach:{len(set(channel.members).intersection(set(role.members)))/len(role.members):.0%}\n"
+            memberset = memberset.union(set(role.members))
+        if everyone:
+            Reach += f"      <:arrow:997836661335543908> @everyone {len(everyone_role.members)} reach:{len(set(channel.members).intersection(set(everyone_role.members)))/len(everyone_role.members):.0%}\n"
+            memberset = memberset.union(set(everyone_role.members))
+        if here:
+            Reach += f"      <:arrow:997836661335543908> @here {len(here_members)+30} reach:{len(set(channel.members).intersection(set(here_members)))+30/len(here_members)+30:.0%}\n"
+            memberset = memberset.union(set(here_members))
+        Reach += f"> **Total Reach:** {len(set(channel.members).intersection(memberset))} out of {len(memberset)}  targeted members  \n> which represents {len(set(channel.members).intersection(memberset))/len(memberset):.0%}"
+
+        reach = discord.Embed(
+            title=f"    **Roles reach\n**   ",
+            description=Reach,
+            color=ctx.author.colour,
+            timestamp=datetime.datetime.utcnow()
+        )
+        reach.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+        await ctx.send(embed=reach)
 
 def setup(bot):
     bot.add_cog(partnership(bot))
