@@ -559,7 +559,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             Reach += f"      <:arrow:997836661335543908> @everyone {len(everyone_role.members)} reach:{len(set(channel.members).intersection(set(everyone_role.members)))/len(everyone_role.members):.0%}\n"
             memberset = memberset.union(set(everyone_role.members))
         if here:
-            Reach += f"      <:arrow:997836661335543908> @here {len(here_members)+30} reach:{len(set(channel.members).intersection(set(here_members)))+30/len(here_members)+30:.0%}\n"
+            Reach += f"      <:arrow:997836661335543908> @here {len(here_members)} reach:{len(set(channel.members).intersection(set(here_members)))/len(here_members):.0%}\n"
             memberset = memberset.union(set(here_members))
         Reach += f"> **Total Reach:** {len(set(channel.members).intersection(memberset))} out of {len(memberset)}  targeted members  \n> which represents {len(set(channel.members).intersection(memberset))/len(memberset):.0%}"
 
