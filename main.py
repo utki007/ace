@@ -249,6 +249,18 @@ bot.emojis_list = {
 	"sadrain" : "<a:TGK_sadrain:855305960385937428>"
 }
 
+bot.number_emojis = {
+	"1" : "<:tgk_one:997924560827580426>",
+	"2" : "<:tgk_two:997924663835500555>",
+	"3" : "<:tgk_three:997924727756685382>",
+	"4" : "<:tgk_four:997924802432090192>",
+	"5" : "<:tgk_five:997924860590301284>",
+	"6" : "<:tgk_six:997924922120753183>",
+	"7" : "<:tgk_seven:997924975958831114>",
+	"8" : "<:tgk_eight:997925024516280390>",
+	"9" : "<:tgk_nine:997925086281613426>"
+}
+
 if __name__ == "__main__":
 	bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
 	bot.db = bot.mongo["TGK"]
