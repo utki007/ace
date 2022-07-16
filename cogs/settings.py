@@ -50,7 +50,7 @@ class settings(commands.Cog, description="Server SPecific Settings"):
     @settings.command()
     @commands.check_any(checks.can_use(), checks.is_me())
     async def reach_roleIds(self, ctx, *, roleIds:str):
-        roleIds = [f'<@&{roleIds}>' if roleIds not in ['','here', 'everyone'] else f'@{roleIds}' for roleIds in roleIds.split(' ')]
+        roleIds = [int(roleIds) if roleIds not in ['','here', 'everyone'] else f'{roleIds}' for roleIds in roleIds.split(' ')]
         await self.bot.db.settings.update_one(
             {"_id": ctx.guild.id},
             {"$set": {"reach_roleIds": roleIds}},
