@@ -1252,7 +1252,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 url="https://cdn.discordapp.com/emojis/790932345284853780.gif?size=128&quality=lossless")
             await ctx.send(embed=grinders_not_found)
 
-    @commands.command(name="gpay", aliases=['gp', 'gpayout', 'gremind', 'gr'])
+    @commands.command(name="gpay", aliases=['gp', 'gpayout'])
     @commands.check_any(checks.can_use(), checks.is_me())
     async def gpay(self, ctx):
         await ctx.message.delete()
