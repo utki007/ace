@@ -1,6 +1,6 @@
 # importing the required libraries
 import discord
-from discord.ext import commands,tasks
+from discord.ext import commands, tasks
 import random
 import time
 import os
@@ -20,15 +20,16 @@ from utils.mongo import Document
 
 description = '''This is what I have been programmed to do'''
 bot = commands.Bot(
-    command_prefix=["? ","?","gk.","Gk."],
+    command_prefix=["? ", "?", "gk.", "Gk."],
     description=description,
     case_insensitive=True,
-    intents= discord.Intents.all(),
-    help_command = None
+    intents=discord.Intents.all(),
+    help_command=None
 )
 bot.giveaway = {}
 bot.heist_stats_data = []
 slash = SlashCommand(bot, sync_commands=True, sync_on_cog_reload=True)
+
 
 @bot.event
 async def on_ready():
@@ -42,26 +43,26 @@ async def on_ready():
 
 	guild = bot.get_guild(785839283847954433)
 	bot.role_dict = {
-		"0" : guild.get_role(810134737829888050),
-		"1" : guild.get_role(810128078789410846),
-		"5" : guild.get_role(810128257491795979),
-		"10" : guild.get_role(810128946791579679),
-		"25" : guild.get_role(810128522365763615),
-		"50" : guild.get_role(810128688267919381),
-		"100" : guild.get_role(810129351692648479),
-		"250" : guild.get_role(810129497931513868),
-		"500" : guild.get_role(810129641473703956)
+		"0": guild.get_role(810134737829888050),
+		"1": guild.get_role(810128078789410846),
+		"5": guild.get_role(810128257491795979),
+		"10": guild.get_role(810128946791579679),
+		"25": guild.get_role(810128522365763615),
+		"50": guild.get_role(810128688267919381),
+		"100": guild.get_role(810129351692648479),
+		"250": guild.get_role(810129497931513868),
+		"500": guild.get_role(810129641473703956)
 	}
 	bot.event_6k = {
-        "0" : guild.get_role(943535266143039500),
-        "2" : guild.get_role(940581716312084530),
-        "11" : guild.get_role(940581045038899230),
-        "69" : guild.get_role(940581256301772820),
-        "111" : guild.get_role(940581347267866625),
-        "250" : guild.get_role(942719030752583680),
-        "690" : guild.get_role(940580910913450044),
-        "1000" : guild.get_role(940581297145905212)
-    }
+            "0": guild.get_role(943535266143039500),
+            "2": guild.get_role(940581716312084530),
+            "11": guild.get_role(940581045038899230),
+            "69": guild.get_role(940581256301772820),
+            "111": guild.get_role(940581347267866625),
+            "250": guild.get_role(942719030752583680),
+            "690": guild.get_role(940580910913450044),
+            "1000": guild.get_role(940581297145905212)
+        }
 
 	bot.premium_colour_users = [
 		guild.get_role(810128946791579679),
@@ -74,7 +75,7 @@ async def on_ready():
 		guild.get_role(818129661325869058),
 		guild.get_role(943535266143039500)
 	]
-		
+
 	bot.elite_colour_users = [
 		guild.get_role(810128688267919381),
 		guild.get_role(810129351692648479),
@@ -86,7 +87,7 @@ async def on_ready():
 		guild.get_role(818129661325869058),
 		guild.get_role(786477872029892639),
 		guild.get_role(940581256301772820)
-	]	
+	]
 
 	bot.legendary_colour_users = [
 		guild.get_role(810129497931513868),
@@ -96,7 +97,7 @@ async def on_ready():
 		guild.get_role(821052747268358184),
 		guild.get_role(818129661325869058),
 		guild.get_role(803614652989702194),
-		guild.get_role(940581347267866625) 
+		guild.get_role(940581347267866625)
 	]
 
 	bot.all_colour_pack = [
@@ -137,7 +138,6 @@ else:
 	bot.connection_url2 = os.environ["mongoBanDB"]
 	bot.amari = os.environ["amari"]
 
-# logging.basicConfig(level=logging.INFO)
 @bot.command(hidden=True)
 @commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
 async def load(ctx, extension):
@@ -151,6 +151,7 @@ async def unload(ctx, extension):
 	bot.unload_extension(f'cogs.{extension}')
 	await ctx.send(f'The {extension} is successfully unloaded.')
 
+
 @bot.command(hidden=True)
 @commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
 async def reload(ctx, extension):
@@ -159,10 +160,9 @@ async def reload(ctx, extension):
 	await ctx.send(f'The {extension} is successfully reloaded.')
 
 
-
-@slash.slash(name="Logout", description="Shutdown bot", default_permission=False, guild_ids=[785839283847954433],permissions={
-	785839283847954433:[create_permission(488614633670967307, SlashCommandPermissionType.USER, True),
-					create_permission(301657045248114690, SlashCommandPermissionType.USER, True)]
+@slash.slash(name="Logout", description="Shutdown bot", default_permission=False, guild_ids=[785839283847954433], permissions={
+    785839283847954433: [create_permission(488614633670967307, SlashCommandPermissionType.USER, True),
+                         create_permission(301657045248114690, SlashCommandPermissionType.USER, True)]
 })
 @commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
 async def logout(ctx):
@@ -179,7 +179,6 @@ async def logout_error(ctx, error):
 		raise error
 
 
-	
 bot.colors = {
 	"WHITE": 0xFFFFFF,
 	"AQUA": 0x1ABC9C,
@@ -200,65 +199,65 @@ bot.colors = {
 	"DARK_ORANGE": 0xA84300,
 	"DARK_RED": 0x992D22,
 	"DARK_NAVY": 0x2C3E50,
-	"Success":0x78AB46,
-	"Invisible":0x36393f,
-	"Black":0x050505,
-	"Coral":0xff7f50,
-	"Cherry":0xe91e63,
-	"Lavendar":0xc8c8fa,
-	"BrightGreen":0x29ff00,
-	"Canary":0x122df8,
-	"Peach":0xffe5b4,
-	"Purple":0x9f029f,
-	"Magenta":0xff27f8,
-	"Violet":0x8f00ff,
-	"Milk":0xfdfff5,
-	"Pumpkin":0xb6610a,
-	"Lime":0xb2ff00,
-	"BlushPink":0xff73fa,
-	"Green":0x03ac13,
-	"Pink":0xffc0cb,
-	"Blue":0x00aeff,
-	"Yellow":0xfcfc4f
+	"Success": 0x78AB46,
+	"Invisible": 0x36393f,
+	"Black": 0x050505,
+	"Coral": 0xff7f50,
+	"Cherry": 0xe91e63,
+	"Lavendar": 0xc8c8fa,
+	"BrightGreen": 0x29ff00,
+	"Canary": 0x122df8,
+	"Peach": 0xffe5b4,
+	"Purple": 0x9f029f,
+	"Magenta": 0xff27f8,
+	"Violet": 0x8f00ff,
+	"Milk": 0xfdfff5,
+	"Pumpkin": 0xb6610a,
+	"Lime": 0xb2ff00,
+	"BlushPink": 0xff73fa,
+	"Green": 0x03ac13,
+	"Pink": 0xffc0cb,
+	"Blue": 0x00aeff,
+	"Yellow": 0xfcfc4f
 }
 bot.color_list = [c for c in bot.colors.values()]
 
 bot.emojis_list = {
-	"DMC" : "⏣",
-	"Hi" : "<a:pikahi:785911570336186418>",
-	"Freeloader" : "<a:TGK_freeloader:840517161386377226>",
-	"Cross" : "<a:tgk_cross:840637370038353940>",
-	"Check" : "<a:tgk_check:840637950806458440>",
-	"Warrning" : "<a:animatedwarning:967044024429068329>",
-	"SuccessTick" : "<a:success_tick:840639358834180107>",
-	"SuccessStatus" : "<:tgk_success_status:840639832681480202>", 
-	"BrokenStatus" : "<:tgk_broken_status:840640567103848459>",
-	"IssuesStatus" : "<:tgk_issues_status:840643265955233822>",
-	"Typing" : "<a:tgk_typing:840642605545160757>",
-	"Timer" : "<a:tgk_timer:841624339169935390>",
-	"60sec" : "<a:tgk_cd:841625640880570369>",
-	"banHammer" : "<a:tgk_banhammer:849699763065585734>",
-	"rightArrow" : "<a:yellowrightarrow:801446308778344468>",
-	"leftArrow" : "<a:tgk_leftarrow:858674346477617172>",
-	"left" : "<a:tgk_left:858729283588587521>",
-	"right" : "<a:tgk_right:858729390065057803>",
-	"stop" : "<:tgk_stop:967439499527335946>",
-	"pinkdot" : "<:tgk_pinkdot:928932787610865675>",
-	"tgk" : "<a:gk_icon:945766027592089681>",
-	"waiting" : "<a:gk_waiting:945772518776664104>",
-	"sadrain" : "<a:TGK_sadrain:855305960385937428>"
+	"DMC": "⏣",
+	"Hi": "<a:pikahi:785911570336186418>",
+	"Freeloader": "<a:TGK_freeloader:840517161386377226>",
+	"Cross": "<a:tgk_cross:840637370038353940>",
+	"Check": "<a:tgk_check:840637950806458440>",
+	"Warrning": "<a:animatedwarning:967044024429068329>",
+	"SuccessTick": "<a:success_tick:840639358834180107>",
+	"SuccessStatus": "<:tgk_success_status:840639832681480202>",
+	"BrokenStatus": "<:tgk_broken_status:840640567103848459>",
+	"IssuesStatus": "<:tgk_issues_status:840643265955233822>",
+	"Typing": "<a:tgk_typing:840642605545160757>",
+	"Timer": "<a:tgk_timer:841624339169935390>",
+	"60sec": "<a:tgk_cd:841625640880570369>",
+	"banHammer": "<a:tgk_banhammer:849699763065585734>",
+	"rightArrow": "<a:yellowrightarrow:801446308778344468>",
+	"leftArrow": "<a:tgk_leftarrow:858674346477617172>",
+	"left": "<a:tgk_left:858729283588587521>",
+	"right": "<a:tgk_right:858729390065057803>",
+	"stop": "<:tgk_stop:967439499527335946>",
+	"pinkdot": "<:tgk_pinkdot:928932787610865675>",
+	"tgk": "<a:gk_icon:945766027592089681>",
+	"waiting": "<a:gk_waiting:945772518776664104>",
+	"sadrain": "<a:TGK_sadrain:855305960385937428>"
 }
 
 bot.number_emojis = {
-	"1" : "<:tgk_one:997924560827580426>",
-	"2" : "<:tgk_two:997924663835500555>",
-	"3" : "<:tgk_three:997924727756685382>",
-	"4" : "<:tgk_four:997924802432090192>",
-	"5" : "<:tgk_five:997924860590301284>",
-	"6" : "<:tgk_six:997924922120753183>",
-	"7" : "<:tgk_seven:997924975958831114>",
-	"8" : "<:tgk_eight:997925024516280390>",
-	"9" : "<:tgk_nine:997925086281613426>"
+	"1": "<:tgk_one:997924560827580426>",
+	"2": "<:tgk_two:997924663835500555>",
+	"3": "<:tgk_three:997924727756685382>",
+	"4": "<:tgk_four:997924802432090192>",
+	"5": "<:tgk_five:997924860590301284>",
+	"6": "<:tgk_six:997924922120753183>",
+	"7": "<:tgk_seven:997924975958831114>",
+	"8": "<:tgk_eight:997925024516280390>",
+	"9": "<:tgk_nine:997925086281613426>"
 }
 
 if __name__ == "__main__":
@@ -269,9 +268,10 @@ if __name__ == "__main__":
 	bot.active_cmd = Document(bot.db, "Active_commands")
 	bot.heisters = Document(bot.db, "heisters")
 	bot.donorBank = Document(bot.db, "donorBank")
+	bot.settings = Document(bot.db, "settings")
 
 	for file in os.listdir('./cogs'):
-		if file.endswith(".py") and not file.startswith("_")and not file.startswith('test'):
+		if file.endswith(".py") and not file.startswith("_") and not file.startswith('test'):
 			bot.load_extension(f"cogs.{file[:-3]}")
 
 	bot.run(bot.botToken)
