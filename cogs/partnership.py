@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import pymongo
 import datetime
+import itertools
 from utils.Checks import checks
 # helper functions
 from utils.custom_pagination import *
@@ -553,7 +554,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         Reach = f"Channel: {channel.mention} `{channel.id}` \n\n"
         memberset = set()
         if everyone:
-            Reach += f"      <:arrow:997836661335543908> @everyone {len(everyone_role.members)} reach:{len(set(channel.members).intersection(set(everyone_role.members)))/len(everyone_role.members):.0%}\n"
+            Reach += f"      <:arrow:997836661335543908> @everyone {len(everyone_role.members)} reach: **{len(set(channel.members).intersection(set(everyone_role.members)))} Members** ({len(set(channel.members).intersection(set(everyone_role.members)))/len(everyone_role.members):.0%})\n"
             memberset = memberset.union(set(everyone_role.members))
         else:
             for role in roles:
@@ -562,7 +563,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         if here:
             Reach += f"      <:arrow:997836661335543908> @here {len(here_members)} reach:{len(set(channel.members).intersection(set(here_members)))/len(here_members):.0%}\n"
             memberset = memberset.union(set(here_members))
-        Reach += f"> **Total Reach:** {len(set(channel.members).intersection(memberset))} out of {len(memberset)}  targeted members  \n> which represents {len(set(channel.members).intersection(memberset))/len(memberset):.0%}"
+        Reach += f"\n**Total Reach:** {len(set(channel.members).intersection(memberset))} out of {len(memberset)}  targeted members  \nwhich represents {len(set(channel.members).intersection(memberset))/len(memberset):.0%}"
 
         reach = discord.Embed(
             title=f"    **Roles reach\n**   ",
@@ -572,6 +573,56 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         )
         reach.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
         await ctx.send(embed=reach)
+
+    @commands.command(name="get_reach", description="Check Reach for a Channel",aliases=["gr"])
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def getReach(self, ctx, channel: discord.TextChannel, memberCount: int):
+        calculate = await ctx.send("https://cdn.discordapp.com/attachments/837999751068778517/997904460955254884/calculation-math.gif")
+        guild = ctx.guild
+
+        heist = discord.utils.get(guild.roles, id=804068344612913163)
+        partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
+        outsideHeist = discord.utils.get(guild.roles, id=806795854475165736)
+        partnership = discord.utils.get(guild.roles, id=797448080223109120)
+        everyone_role = discord.utils.get(ctx.guild.roles, name="@everyone")
+        
+        l = [heist, partnerHeist, outsideHeist, partnership, everyone_role, "here"]
+        here_members = []
+        for member in ctx.guild.members:
+          if member.status != discord.Status.offline:
+            here_members.append(member)
+        desc = ""
+        dict = {}
+        for L in range(0, len(l)+1):
+            for subset in itertools.combinations(l, L):
+                if len(subset) == 0:
+                    continue
+                elif len(subset) > 3:
+                    continue
+                memberset = set()
+                roles = list(subset)
+                flag = 0
+                for role in roles:
+                  if role == "here":
+                    memberset = memberset.union(set(here_members))
+                    flag = 1
+                  else:
+                    memberset = memberset.union(set(role.members))
+                key = len(set(channel.members).intersection(memberset))
+                if everyone_role in roles:
+                    value = ["everyone"]
+                else:
+                    value = [i.id for i in roles if i != "here"]
+                    if flag == 1:
+                        value.append("here")
+                dict[key] = " ".join([str(i) for i in value])
+                    
+        reaches = dict.keys()
+        minkey = max(i for i in reaches if i < memberCount)
+        maxkey = min(i for i in reaches if i > memberCount) 
+        await ctx.invoke(self.bot.get_command("reach"),channel = channel, roleIds = dict[minkey]) 
+        await ctx.invoke(self.bot.get_command("reach"),channel = channel, roleIds = dict[maxkey]) 
+        await calculate.delete()
 
 def setup(bot):
     bot.add_cog(partnership(bot))
