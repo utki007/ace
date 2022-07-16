@@ -552,12 +552,13 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         roleIds = [i.id for i in roleIds]
         Reach = f"Channel: {channel.mention} `{channel.id}` \n\n"
         memberset = set()
-        for role in roles:
-            Reach += f"      <:arrow:997836661335543908> {role.name} `{role.id}` members:{len(role.members)} reach:{len(set(channel.members).intersection(set(role.members)))/len(role.members):.0%}\n"
-            memberset = memberset.union(set(role.members))
         if everyone:
             Reach += f"      <:arrow:997836661335543908> @everyone {len(everyone_role.members)} reach:{len(set(channel.members).intersection(set(everyone_role.members)))/len(everyone_role.members):.0%}\n"
             memberset = memberset.union(set(everyone_role.members))
+        else:
+            for role in roles:
+                Reach += f"      <:arrow:997836661335543908> {role.name} `{role.id}` members:{len(role.members)} reach:{len(set(channel.members).intersection(set(role.members)))/len(role.members):.0%}\n"
+                memberset = memberset.union(set(role.members))
         if here:
             Reach += f"      <:arrow:997836661335543908> @here {len(here_members)} reach:{len(set(channel.members).intersection(set(here_members)))/len(here_members):.0%}\n"
             memberset = memberset.union(set(here_members))
