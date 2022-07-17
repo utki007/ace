@@ -56,7 +56,7 @@ class settings(commands.Cog, description="Server SPecific Settings"):
             {"$set": {"reach_roleIds": roleIds}},
             upsert=True
         )
-        await ctx.send(f"**Reach role ids updated: ** {' '.join(roleIds)}", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
+        await ctx.send(f"**Reach role ids updated: ** {' '.join([str(i) for i in roleIds])}", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
         await ctx.message.delete()
 
 def setup(bot):
