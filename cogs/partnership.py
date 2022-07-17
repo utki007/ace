@@ -577,21 +577,92 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
     @commands.command(name="get_reach", description="Check Reach for a Channel",aliases=["gr"])
     @commands.check_any(checks.can_use(), checks.is_me())
     async def getReach(self, ctx, channel: discord.TextChannel, memberCount: int):
-        calculate = await ctx.send("https://cdn.discordapp.com/attachments/837999751068778517/997904460955254884/calculation-math.gif")
-        guild = ctx.guild
 
-        heist = discord.utils.get(guild.roles, id=804068344612913163)
-        partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
-        outsideHeist = discord.utils.get(guild.roles, id=806795854475165736)
-        partnership = discord.utils.get(guild.roles, id=797448080223109120)
         everyone_role = discord.utils.get(ctx.guild.roles, name="@everyone")
         
-        l = [heist, partnerHeist, outsideHeist, partnership, everyone_role, "here"]
+        l = []
+        k = []
+        data = await self.bot.settings.find(ctx.guild.id)
+        if data is not None and "reach_roleIds" in data.keys():
+            l = data["reach_roleIds"]
+            if "here" in l:
+                k.append("here")
+            if "everyone" in l:
+                k.append(everyone_role)
+        else:
+            return await ctx.send(f"{ctx.author.mention} No Roles Set for this server!\n> Use `{ctx.prefix}gk.settings reach_roleIds your_ids` to set roles")
+        
+        calculate = await ctx.send("https://cdn.discordapp.com/attachments/837999751068778517/997904460955254884/calculation-math.gif")
+
+        l = [discord.utils.get(ctx.guild.roles, id=i) for i in l if i not in ["everyone", "here"]]
+        l.extend(k)
+
         here_members = []
         for member in ctx.guild.members:
           if member.status != discord.Status.offline:
             here_members.append(member)
-        desc = ""
+
+        dict = {}
+        for L in range(0, len(l)+1):
+            for subset in itertools.combinations(l, L):
+                if len(subset) == 0:
+                    continue
+                elif len(subset) > 3:
+                    continue
+                memberset = set()
+                roles = list(subset)
+                flag = 0
+                for role in roles:
+                  if role == "here":
+                    memberset = memberset.union(set(here_members))
+                    flag = 1
+                  else:
+                    memberset = memberset.union(set(role.members))
+                key = len(set(channel.members).intersection(memberset))
+                if everyone_role in roles:
+                    value = ["everyone"]
+                else:
+                    value = [i.id for i in roles if i != "here"]
+                    if flag == 1:
+                        value.append("here")
+                dict[key] = " ".join([str(i) for i in value])
+                    
+        reaches = dict.keys()
+        minkey = max(i for i in reaches if i < memberCount)
+        maxkey = min(i for i in reaches if i > memberCount) 
+        await ctx.invoke(self.bot.get_command("reach"),channel = channel, roleIds = dict[minkey]) 
+        await ctx.invoke(self.bot.get_command("reach"),channel = channel, roleIds = dict[maxkey]) 
+        await calculate.delete()
+
+
+    @commands.command(name="get_event_reach", description="Check Reach for a Event Channel",aliases=["ger"])
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def getEventReach(self, ctx, channel: discord.TextChannel, memberCount: int):
+        
+        everyone_role = discord.utils.get(ctx.guild.roles, name="@everyone")
+        
+        l = []
+        k = []
+        data = await self.bot.settings.find(ctx.guild.id)
+        if data is not None and "event_reach_roleIds" in data.keys():
+            l = data["event_reach_roleIds"]
+            if "here" in l:
+                k.append("here")
+            if "everyone" in l:
+                k.append(everyone_role)
+        else:
+            return await ctx.send(f"{ctx.author.mention} No Roles Set for this server!\n> Use `{ctx.prefix}gk.settings reach_roleIds your_ids` to set roles")
+
+        calculate = await ctx.send("https://cdn.discordapp.com/attachments/837999751068778517/997904460955254884/calculation-math.gif")
+
+        l = [discord.utils.get(ctx.guild.roles, id=i) for i in l if i not in ["everyone", "here"]]
+        l.extend(k)
+
+        here_members = []
+        for member in ctx.guild.members:
+          if member.status != discord.Status.offline:
+            here_members.append(member)
+
         dict = {}
         for L in range(0, len(l)+1):
             for subset in itertools.combinations(l, L):
