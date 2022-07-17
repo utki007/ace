@@ -260,6 +260,7 @@ bot.number_emojis = {
 	"9": "<:tgk_nine:997925086281613426>"
 }
 
+
 if __name__ == "__main__":
 	bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
 	bot.db = bot.mongo["TGK"]
