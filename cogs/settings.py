@@ -56,8 +56,18 @@ class settings(commands.Cog, description="Server SPecific Settings"):
             {"$set": {"reach_roleIds": roleIds}},
             upsert=True
         )
-        await ctx.send(f"**Reach role ids updated: ** {' '.join([str(i) for i in roleIds])}", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
-        await ctx.message.delete()
+        await ctx.send(f"**Reach role ids updated: ** {' '.join([f'<@&{roleId}>' if roleId not in ['','here', 'everyone'] else f'@{roleId}' for roleId in roleIds])}", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
+
+    @settings.command()
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def event_reach_roleIds(self, ctx, *, roleIds:str):
+        roleIds = [int(roleIds) if roleIds not in ['','here', 'everyone'] else f'{roleIds}' for roleIds in roleIds.split(' ')]
+        await self.bot.db.settings.update_one(
+            {"_id": ctx.guild.id},
+            {"$set": {"event_reach_roleIds": roleIds}},
+            upsert=True
+        )
+        await ctx.send(f"**Event reach role ids updated: ** {' '.join([f'<@&{roleId}>' if roleId not in ['','here', 'everyone'] else f'@{roleId}' for roleId in roleIds])}", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
 
 def setup(bot):
     bot.add_cog(settings(bot))
