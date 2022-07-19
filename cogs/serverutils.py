@@ -1,4 +1,5 @@
 # importing the required libraries
+import asyncio
 import random
 import discord
 from discord.ext import commands, tasks
@@ -151,7 +152,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 		playzone = self.bot.get_guild(815849745327194153)
 		emoji = await playzone.fetch_emoji(967152178617811064)
 		buttons = [create_button(style=ButtonStyle.URL, label="Vote here!",
-		                         emoji=emoji, url="https://top.gg/servers/785839283847954433/vote")]
+                           emoji=emoji, url="https://top.gg/servers/785839283847954433/vote")]
 		embed = discord.Embed(
 			title=f"Vote for the {ctx.guild.name}",
 			description=f"❥ 1x extra entry into all frisky giveaways.\n"
@@ -291,6 +292,60 @@ class serverutils(commands.Cog, description="Server Utility"):
 				description=f"{self.bot.emojis_list['Warrning']} | Need to have {random.mention} role to change its colour!"
 			)
 			await ctx.send(embed=unauthorized)
+
+	@commands.command(name="reactrole", description="React to a message to get a role", aliases=["rr"])
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def reactrole(self, ctx, name):
+		await ctx.message.delete()
+		warning = discord.Embed(
+                    color=self.bot.colors["RED"],
+                    description=f"{self.bot.emojis_list['Warrning']} | React role `{name}` does not exist!"
+                )
+		data = await self.bot.settings.find(ctx.guild.id)
+		if "react_roles" in data:
+			data = data["react_roles"]
+		else:
+			return await ctx.send(embed=warning, delete_after=10)
+		if name not in data.keys():
+			return await ctx.send(embed=warning, delete_after=10)
+
+		title = data[name]["title"]
+		roleIds = data[name]["roleIds"]
+		roleIds = [int(i) for i in roleIds]
+		roles = [discord.utils.get(ctx.guild.roles, id=i) for i in roleIds]
+		desc = ""
+
+		for i in range(int(len(roles))):
+			desc += f"{self.bot.number_emojis[str(i+1)]} {roles[i].mention}\n"
+
+		reactrole_embed = discord.Embed(
+                    title=title.title(),
+                    description=desc,
+                    color=ctx.author.colour
+                )
+		reactrole_embed.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+		reactrole_message = await ctx.send(embed=reactrole_embed)
+
+		for i in range(int(len(roles))):
+			try:
+				await reactrole_message.add_reaction(self.bot.number_emojis[str(i+1)])
+			except:
+				await ctx.send("Could not add reactions to reactrole.", delete_after=10)
+				await reactrole_message.delete()
+
+		reaction = None
+		while True:
+			try:
+				reaction, user = await self.bot.wait_for("reaction_add", timeout=20)
+				if user.bot:
+					continue
+
+				if str(reaction.emoji) in self.bot.number_emojis.values():
+					role = roles[list(self.bot.number_emojis.values()).index(str(reaction.emoji))]
+					await user.add_roles(role, reason=f'{user.name} reacted to reactrole {name.title()}')
+			except:
+				await reactrole_message.delete()
+				return
 
 
 def setup(bot):
