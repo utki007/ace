@@ -336,7 +336,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 		reaction = None
 		while True:
 			try:
-				reaction, user = await self.bot.wait_for("reaction_add", timeout=20)
+				reaction, user = await self.bot.wait_for("reaction_add", timeout=6000)
 				if user.bot:
 					continue
 
