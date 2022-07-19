@@ -247,7 +247,7 @@ bot.emojis_list = {
 	"waiting": "<a:gk_waiting:945772518776664104>",
 	"sadrain": "<a:TGK_sadrain:855305960385937428>"
 }
-
+ 
 bot.number_emojis = {
 	"1": "<:tgk_one:997924560827580426>",
 	"2": "<:tgk_two:997924663835500555>",
