@@ -43,6 +43,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 	@commands.command(name="multipoll", aliases=["mpoll"])
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def multipoll(self, ctx, *, questions_and_choices: str):
+		await ctx.message.delete()
 		delimiter = ' '
 		if '|' in questions_and_choices:
 			delimiter = '|'
@@ -70,8 +71,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 		poll = discord.Embed(
                     title=title.title(),
                     description=desc,
-                    color=ctx.author.colour,
-                    timestamp=datetime.datetime.utcnow()
+                    color=ctx.author.colour
                 )
 		poll.set_footer(
 			text=f"Poll created by {ctx.author.name}", icon_url=ctx.author.avatar_url)
