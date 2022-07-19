@@ -87,7 +87,7 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 					await ctx.send(f"What is the title of the react role?")
 					try:
 						react_role_title = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id, timeout=30)
-						react_role_title = react_role_title.content.lower()
+						react_role_title = react_role_title.content.title()
 
 						await ctx.send(f"What are the role ids for the react role?")
 						try:
