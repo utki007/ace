@@ -342,7 +342,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 
 				if str(reaction.emoji) in self.bot.number_emojis.values():
 					role = roles[list(self.bot.number_emojis.values()).index(str(reaction.emoji))]
-					await user.add_roles(role, reason=f'{user.name} reacted to reactrole {name.title()}')
+					await user.add_roles(role, reason=f'User reacted to reactrole {name.title()}!')
 			except:
 				await reactrole_message.delete()
 				return
