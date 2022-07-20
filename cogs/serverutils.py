@@ -316,14 +316,14 @@ class serverutils(commands.Cog, description="Server Utility"):
 		desc = ""
 
 		for i in range(int(len(roles))):
-			desc += f"{self.bot.number_emojis[str(i+1)]} {roles[i].mention}\n"
+			desc += f"{self.bot.number_emojis[str(i+1)]} ・ {roles[i].mention}\n"
 
 		reactrole_embed = discord.Embed(
                     title=title.title(),
                     description=desc,
                     color=ctx.author.colour
                 )
-		reactrole_embed.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+		# reactrole_embed.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
 		reactrole_message = await ctx.send(embed=reactrole_embed)
 
 		for i in range(int(len(roles))):
