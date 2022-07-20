@@ -316,7 +316,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 		desc = ""
 
 		for i in range(int(len(roles))):
-			desc += f"{self.bot.number_emojis[str(i+1)]} ・ {roles[i].mention}\n"
+			desc += f"{self.bot.number_emojis[str(i+1)]} <a:TGK_yellowrightarrow2:960062147537297448> {roles[i].mention}\n"
 
 		reactrole_embed = discord.Embed(
                     title=title.title(),
