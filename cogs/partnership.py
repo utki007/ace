@@ -592,7 +592,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         else:
             return await ctx.send(f"{ctx.author.mention} No Roles Set for this server!\n> Use `{ctx.prefix}gk.settings reach_roleIds your_ids` to set roles")
         
-        calculate = await ctx.send("https://cdn.discordapp.com/attachments/837999751068778517/997904460955254884/calculation-math.gif")
+        calculate = await ctx.send("https://cdn.discordapp.com/attachments/999553621895155723/999578868820234280/calculation-math.gif")
 
         l = [discord.utils.get(ctx.guild.roles, id=i) for i in l if i not in ["everyone", "here"]]
         l.extend(k)
@@ -653,7 +653,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         else:
             return await ctx.send(f"{ctx.author.mention} No Roles Set for this server!\n> Use `{ctx.prefix}gk.settings reach_roleIds your_ids` to set roles")
 
-        calculate = await ctx.send("https://cdn.discordapp.com/attachments/837999751068778517/997904460955254884/calculation-math.gif")
+        calculate = await ctx.send("https://cdn.discordapp.com/attachments/999553621895155723/999578868820234280/calculation-math.gif")
 
         l = [discord.utils.get(ctx.guild.roles, id=i) for i in l if i not in ["everyone", "here"]]
         l.extend(k)
