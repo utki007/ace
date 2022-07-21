@@ -18,6 +18,7 @@ from utils.Checks import checks
 # import convertor
 from utils.convertor import *
 
+
 class dankutils(commands.Cog, description="Dank Utility"):
 
 	def __init__(self, bot):
@@ -55,12 +56,14 @@ class dankutils(commands.Cog, description="Dank Utility"):
 						{"$set": {"freeloaded." + str(guild.id): flCount + 1}},
 						upsert=True
 					)
+					if flCount > 5:
+						flCount = 5
 					banDuration = (flCount + 2) * 86400
 					data = {
 						'_id': member.id,
 						'BannedAt': datetime.datetime.now(),
 						'BanDuration': banDuration,
-						'BanedBy': self.bot.user.id ,
+						'BanedBy': self.bot.user.id,
 						'guildId': guild.id,
 					}
 					myquery = {"_id": member.id}
@@ -83,20 +86,18 @@ class dankutils(commands.Cog, description="Dank Utility"):
 						pass
 
 					await guild.ban(member, reason="Freeloaded after joining heist!")
-					desc =''
-					desc+= f"> **Member:** {member.name} `{member.id}`\n"
-					desc+= f"> **Last Joined Heist:** <t:{int(time.timestamp())}:R>\n"
-					desc+= f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:R>\n"
-					desc+= f"> **Banned for:** {flCount+2} days!\n"
+					desc = ''
+					desc += f"> **Member:** {member.name} `{member.id}`\n"
+					desc += f"> **Last Joined Heist:** <t:{int(time.timestamp())}:D>\n"
+					desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
+					desc += f"> **Banned till:** {int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=banDuration)))} ({flCount+2} days)\n"
 					embed = discord.Embed(
-						title= f"<a:Siren:999394017005543464> Freeloader Spotted! <a:Siren:999394017005543464>",
-						description = desc,
+						title=f"<a:Siren:999394017005543464> Freeloader Spotted! <a:Siren:999394017005543464>",
+						description=desc,
 						color=discord.Color.random()
 					)
 					embed.set_footer(text=f"{guild.name}", icon_url=guild.icon_url)
-					await freeloadersFeed.send(embed = embed)
-				else:
-					await freeloadersFeed.send(f"Not a freeloader!\n> {member.mention} `{member.id}` has left {guild.name}")
+					await freeloadersFeed.send(embed=embed)
 
 	@commands.command(name="calculate", aliases=["calc", "c", "cal"])
 	async def calculate(self, ctx, *, query):
@@ -161,7 +162,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 		)
 		# fl.set_author(name=ctx.guild.name, icon_url="https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024")
 		fl.set_footer(text=f"Developed by utki007 & Jay",
-					  icon_url=self.bot.user.avatar_url)
+                    icon_url=self.bot.user.avatar_url)
 		fl.set_thumbnail(
 			url=f'https://cdn.discordapp.com/emojis/831301479691845632.gif?v=1')
 		await ctx.message.delete()
@@ -179,7 +180,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 		messageIds = messageIds.split(" ")
 
 		list = ['barely', 'bribed', 'came', 'caught', 'died', 'ended', 'escaped', 'extracted', 'feared', 'got', 'hacked',
-				'just', 'left', 'ran', 'really', 'scored', 'showed', 'snuck', 'stole', 'stopped', 'took', 'tripped', 'turned', 'was']
+                    'just', 'left', 'ran', 'really', 'scored', 'showed', 'snuck', 'stole', 'stopped', 'took', 'tripped', 'turned', 'was']
 
 		ban = []
 		dank_messages = []
@@ -311,7 +312,6 @@ class dankutils(commands.Cog, description="Dank Utility"):
 				dict = x
 				flag = 1
 
-			
 			try:
 				try:
 					entry = await ctx.guild.fetch_ban(user)
