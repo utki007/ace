@@ -38,6 +38,16 @@ class dankutils(commands.Cog, description="Dank Utility"):
 	async def on_member_remove(self, member):
 		guild = member.guild
 		freeloadersFeed = self.bot.get_channel(999361292253011988)
+		channel = self.bot.get_channel(999361292253011988)
+		
+		data = await self.bot.settings.find(guild.id)
+		if "banFreeloader" in data and data!=None:
+			data = data["banFreeloader"]["channel"]
+		
+		try:
+			channel = guild.get_channel(data)
+		except:
+			await freeloadersFeed.send(f"[ @everyone ] \n> Channel not found in guild {guild.name} (`{guild.id}`)")
 
 		heistdata = await self.bot.heisters.find(member.id)
 
@@ -83,21 +93,26 @@ class dankutils(commands.Cog, description="Dank Utility"):
 							self.mycol.update_one(myquery, newvalues)
 					except:
 						await freeloadersFeed.send(f"Error while updating data to octane!\n> {member.mention} `{member.id}` has left {guild.name}")
+						await channel.send(f"Error while updating data to octane!\n> {member.mention} `{member.id}` has left {guild.name}")
 						pass
 
 					await guild.ban(member, reason="Freeloaded after joining heist!")
 					desc = ''
-					desc += f"> **Member:** {member.name} `{member.id}`\n"
+					desc += f"> **Member:** __**{member}**__ \n"
+					desc += f"> **ID:** __**`{member.id}`**__ \n"
 					desc += f"> **Last Joined Heist:** <t:{int(time.timestamp())}:D>\n"
 					desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
-					desc += f"> **Banned till:** {int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=banDuration)))} ({flCount+2} days)\n"
+					desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=banDuration)))}:D> ({flCount+2} days)\n"
 					embed = discord.Embed(
 						title=f"<a:Siren:999394017005543464> Freeloader Spotted! <a:Siren:999394017005543464>",
 						description=desc,
 						color=discord.Color.random()
 					)
+					embed.set_thumbnail(url=member.avatar_url)
 					embed.set_footer(text=f"{guild.name}", icon_url=guild.icon_url)
 					await freeloadersFeed.send(embed=embed)
+					if channel.id != freeloadersFeed.id:
+						await channel.send(embed=embed)
 
 	@commands.command(name="calculate", aliases=["calc", "c", "cal"])
 	async def calculate(self, ctx, *, query):
