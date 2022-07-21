@@ -118,7 +118,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def celebrate(self, ctx):
 		await ctx.message.delete()
-		l = ["https://cdn.discordapp.com/attachments/785848096809549856/808028491856478258/image0-2-1.gif"]
+		l = ["https://cdn.discordapp.com/attachments/999555672733663285/999583176504651827/celebrate.gif"]
 		# await ctx.send(random.choice(l))
 		await ctx.send(l[0])
 
