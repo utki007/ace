@@ -122,5 +122,15 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 		except:
 			await ctx.send(f"{ctx.author.mention}, try again later once you are sure!",delete_after=10)
 
+	@settings.command(name="banFreeloader", aliases=['bfl'])
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def banFreeloader(self, ctx, channel: discord.TextChannel):
+		await self.bot.db.settings.update_one(
+			{"_id": ctx.guild.id},
+			{"$set": {"banFreeloader": {"channel": channel.id}}},
+			upsert=True
+		)
+		await ctx.send(f"**Freeloader ban channel set to:** {channel.mention}", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
+
 def setup(bot):
 	bot.add_cog(settings(bot))
