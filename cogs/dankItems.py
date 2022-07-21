@@ -294,8 +294,6 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
         # embed.add_field(name=f"Total Donated Value: ",value=total,inline=True)
         embed.set_footer(
             text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-        # embed.set_thumbnail(
-        #         url="https://cdn.discordapp.com/attachments/837999751068778517/840658188675317800/donate.gif")
         await ctx.message.delete()
         await ctx.send(embed=embed)
         
