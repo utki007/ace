@@ -37,8 +37,23 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 			)
 			help.add_field(
 				name="<a:TGK_sparkles:838838345316040744> __Partnership Management__",
-				value=f"Usage = `gk.settings reach_roleIds <enter role id separated by space>` \n"
-				f"Ex: `gk.settings reach_roleIds here everyone>`",
+				value=f"Usage = `gk.settings [reach_roleIds|gr] <enter role id separated by space>` \n"
+				f"Ex: `gk.settings gr here everyone>`",
+				inline=False)
+			help.add_field(
+				name="<a:TGK_sparkles:838838345316040744> __Event Partnership Management__",
+				value=f"Usage = `gk.settings [event_reach_roleIds|ger] <enter role id separated by space>` \n"
+				f"Ex: `gk.settings ger here everyone>`",
+				inline=False)
+			help.add_field(
+				name="<a:TGK_sparkles:838838345316040744> __React Role Management__",
+				value=f"Usage = `gk.settings [configure_react_roles|rr]` \n"
+				f"Ex: `gk.settings rr`",
+				inline=False)
+			help.add_field(
+				name="<a:TGK_sparkles:838838345316040744> __Freeloader Management__",
+				value=f"Usage = `gk.settings [banFreeloader|bfl] <channel>` \n"
+				f"Ex: `gk.settings bfl #general`",
 				inline=False)
 
 			help.set_author(name=ctx.guild.name,
@@ -47,7 +62,7 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 				text=f"{ctx.guild.name}", icon_url=self.bot.user.avatar_url)
 			await ctx.send(embed=help)
 
-	@settings.command()
+	@settings.command(name="reach_roleIds", aliases=['gr'])
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def reach_roleIds(self, ctx, *, roleIds:str):
 		roleIds = [int(roleIds) if roleIds not in ['','here', 'everyone'] else f'{roleIds}' for roleIds in roleIds.split(' ')]
@@ -58,7 +73,7 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 		)
 		await ctx.send(f"**Reach role ids updated: ** {' '.join([f'<@&{roleId}>' if roleId not in ['','here', 'everyone'] else f'@{roleId}' for roleId in roleIds])}", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
 
-	@settings.command()
+	@settings.command(name="event_reach_roleIds", aliases=['ger'])
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def event_reach_roleIds(self, ctx, *, roleIds:str):
 		roleIds = [int(roleIds) if roleIds not in ['','here', 'everyone'] else f'{roleIds}' for roleIds in roleIds.split(' ')]
@@ -69,7 +84,7 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 		)
 		await ctx.send(f"**Event reach role ids updated: ** {' '.join([f'<@&{roleId}>' if roleId not in ['','here', 'everyone'] else f'@{roleId}' for roleId in roleIds])}", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
 
-	@settings.command()
+	@settings.command(name="configure_react_roles", aliases=['rr'])
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def configure_react_roles(self, ctx):
 
