@@ -37,12 +37,12 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 			)
 			help.add_field(
 				name="<a:TGK_sparkles:838838345316040744> __Partnership Management__",
-				value=f"Usage = `gk.settings [reach_roleIds|gr] <enter role id separated by space>` \n"
+				value=f"Usage = `gk.settings [reach_roleIds|gr] ids \n"
 				f"Ex: `gk.settings gr here everyone>`",
 				inline=False)
 			help.add_field(
 				name="<a:TGK_sparkles:838838345316040744> __Event Partnership Management__",
-				value=f"Usage = `gk.settings [event_reach_roleIds|ger] <enter role id separated by space>` \n"
+				value=f"Usage = `gk.settings [event_reach_roleIds|ger] ids` \n"
 				f"Ex: `gk.settings ger here everyone>`",
 				inline=False)
 			help.add_field(
