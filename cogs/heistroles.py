@@ -105,11 +105,13 @@ class heistroles(commands.Cog):
 								"name" : member.name,
 								"time" : {},
 								"freeloaded" : {},
-								"payouts" : {}
+								"payouts" : {},
+								"lastPayouts": {}
 							}
 						
 						data["time"][f"{guild.id}"] = datetime.datetime.now()
-						
+						data["lastPayouts"][f"{guild.id}"] = f"```diff/n{result}/n```"
+
 						if f"{guild.id}" in data["payouts"].keys():
 							data["payouts"][f"{guild.id}"]["count"] += 1
 							data["payouts"][f"{guild.id}"]["total_payouts"] += payouts
