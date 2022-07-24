@@ -1133,7 +1133,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         if "grinder_record" in data.keys():
             data["grinder_record"]["frequency"] += 1*number
             data["grinder_record"]["amount"] += amount
-            data["grinder_record"]["time"] += datetime.timedelta(days=number)
+            if number == 0:
+                data["grinder_record"]["time"] = time
+            else:
+                data["grinder_record"]["time"] += datetime.timedelta(days=number)
             data["grinder_record"]["amount_per_grind"] = amount_per_grind
         else:
             data["grinder_record"] = grinder_record
