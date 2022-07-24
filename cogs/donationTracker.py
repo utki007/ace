@@ -1118,8 +1118,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             amount = amount_per_grind * number
 
         date = datetime.date.today()
-        time = datetime.datetime(
-            date.year, date.month, date.day) + datetime.timedelta(days=number)
+        if number == 0:
+            time = datetime.datetime(date.year, date.month, date.day)
+        else:
+            time = datetime.datetime(date.year, date.month, date.day) + datetime.timedelta(days=number)
 
         grinder_record = {
             "amount": amount,
