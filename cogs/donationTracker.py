@@ -1039,8 +1039,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             counter = counter + 1
 
             if n > 0:
-                desc = desc + \
-                    f"|{rank: ^3}|{df['name'][ind]: ^15}|{f'{int(n / 10**(3 * millidx)):,}{millnames[millidx]}' :>7}  | \n"
+                desc += f"|{rank: ^3}|{df['name'][ind]: ^15}|{f'{round(n / 10**(3 * millidx),1):,}{millnames[millidx]}' :>7}  | \n"
 
         member = ctx.author
         """Get to know the top donors"""
