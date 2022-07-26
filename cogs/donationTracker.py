@@ -1080,13 +1080,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
     @commands.check_any(checks.can_use(), checks.is_me())
     async def gupdate(self, ctx, member: discord.Member, number: int = 1):
         await ctx.message.delete()
-        if number > 7:
-            warning = discord.Embed(
-                color=self.bot.colors["RED"],
-                description=f"{self.bot.emojis_list['Warrning']} | Can't pay more than 7 days in advance!!"
-            )
-            await ctx.send(embed=warning)
-            return
         if number < 0:
             warning = discord.Embed(
                 color=self.bot.colors["RED"],
