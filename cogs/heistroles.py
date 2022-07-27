@@ -67,7 +67,7 @@ class heistroles(commands.Cog):
 							pass
 					
 					if message.guild.id == gk.id:
-						m2 = await message.channel.send(f"|| @here <@&804068344612913163> <@&804069957528584212> || Heist has started ^^ !")
+						m2 = await message.channel.send(f"<@&804068344612913163> <@&804069957528584212> Heist has started ^^ !")
 						ctx = await self.bot.get_context(m2)
 						await ctx.invoke(self.bot.get_command("ty"))
 	
