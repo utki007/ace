@@ -49,6 +49,7 @@ class heistroles(commands.Cog):
 
 		gk = self.bot.get_guild(785839283847954433)
 		guild = message.guild
+		errorFeed = self.bot.get_channel(1002668942277492868)
 
 		if self.bot.user.id == 859107514082394142:
 			return
@@ -70,7 +71,26 @@ class heistroles(commands.Cog):
 						m2 = await message.channel.send(f"<@&804068344612913163> <@&804069957528584212> Heist has started ^^ !")
 						ctx = await self.bot.get_context(m2)
 						await ctx.invoke(self.bot.get_command("ty"))
-	
+					
+					return
+
+				elif "fields" in message.embeds[0].to_dict().keys() and "thumbnail" in message.embeds[0].to_dict().keys():
+					data = {}
+					embed_dict = message.embeds[0].to_dict()
+					if (len(message.embeds[0].to_dict()['fields'])>2 and message.embeds[0].to_dict()['fields'][2]['value'] != None):
+						data["_id"] = embed_dict['fields'][2]['value'].replace('`','',2)
+					data["image_link"] = embed_dict['thumbnail']['url']
+					data["trade_value"] = int(re.findall("\⏣\s(.*)", embed_dict['description'])[-1].split(" ")[0].replace(",","",5))
+					data['item_name'] = []
+					data['item_name'].append(data['_id'].lower())
+					data['item_name'].append(embed_dict['title'].split("**")[1].lower())
+
+					try:
+						await self.bot.items.upsert(data)
+					except:
+						await errorFeed.send(f"{message.embeds[0].to_dict()}")
+					return
+
 			elif message.content.startswith("```"):
 				heistersFeed = self.bot.get_channel(990207355142688808)
 				keywords_list = ['barely', 'bribed', 'came', 'caught', 'died', 'ended', 'escaped', 'extracted', 'feared', 'got', 'hacked', 'just', 'left', 'ran', 'really', 'scored', 'showed', 'snuck', 'stole', 'stopped', 'took', 'tripped', 'turned', 'was']
