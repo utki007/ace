@@ -36,6 +36,8 @@ class dankutils(commands.Cog, description="Dank Utility"):
 
 	@commands.Cog.listener()
 	async def on_member_remove(self, member):
+		if self.bot.user.id == 859107514082394142:
+			return
 		guild = member.guild
 		freeloadersFeed = self.bot.get_channel(999361292253011988)
 		channel = self.bot.get_channel(999361292253011988)
