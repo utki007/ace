@@ -102,7 +102,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 					desc += f"> **ID:** __**`{member.id}`**__ \n"
 					desc += f"> **Last Joined Heist:** <t:{int(time.timestamp())}:D>\n"
 					desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
-					desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=banDuration)))}:D> ({flCount+2} days)\n"
+					desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=banDuration)))}:D> ({flCount+5} days)\n"
 					embed = discord.Embed(
 						title=f"<a:Siren:999394017005543464> Freeloader Spotted! <a:Siren:999394017005543464>",
 						description=desc,
