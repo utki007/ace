@@ -57,7 +57,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 			if "time" in heistdata.keys() and str(guild.id) in heistdata["time"].keys():
 				time = heistdata["time"][str(guild.id)]
 				last_heist_joined = ((datetime.datetime.now()-time).total_seconds())
-				if last_heist_joined < 259200:
+				if last_heist_joined < 1209600:
 					flCount = heistdata["freeloaded"][str(guild.id)]
 					if flCount == None:
 						flCount = 0
@@ -66,9 +66,9 @@ class dankutils(commands.Cog, description="Dank Utility"):
 						{"$set": {"freeloaded." + str(guild.id): flCount + 1}},
 						upsert=True
 					)
-					if flCount > 5:
-						flCount = 5
-					banDuration = (flCount + 2) * 86400
+					if flCount > 9:
+						flCount = 9
+					banDuration = (flCount + 5) * 86400
 					data = {
 						'_id': member.id,
 						'BannedAt': datetime.datetime.now(),
