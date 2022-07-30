@@ -11,6 +11,7 @@ import asyncio
 import math
 import time
 import datetime
+import re
 from utils.Checks import checks
 # helper functions
 from utils.convertor import *
@@ -91,7 +92,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
     @donation.command(name="add", description="Add Donation for a member", usage="<member> <amount>", aliases=['a'])
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def adono(self, ctx, member: discord.Member, amount):
+    async def adono(self, ctx, member: discord.Member, amount, sendMessage : bool = True):
 
         try:
             amount = await convert_to_numeral(amount)
@@ -157,12 +158,14 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
 
         try:
-            await ctx.send(embed=display)
+            if sendMessage:
+                await ctx.send(embed=display)
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠", delete_after=30)
             pass
         try:
-            await ctx.message.delete()
+            if sendMessage:
+                await ctx.message.delete()
         except:
             pass
         try:
@@ -658,7 +661,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
     @celeb.command(name="add", description="Add donation to a special event", usage="<event-name> <member> <amount>", aliases=["a"])
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def add(self, ctx, name: str, member: discord.Member, amount):
+    async def add(self, ctx, name: str , member: discord.Member, amount , sendMessage : bool = True):
 
         try:
             amount = await convert_to_numeral(amount)
@@ -753,7 +756,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
 
         try:
-            await ctx.send(embed=display)
+            if sendMessage:
+                await ctx.send(embed=display)
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to show donor balance. Try again later!!. ⚠", delete_after=30)
             pass
@@ -764,7 +768,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         except:
             pass
         try:
-            await ctx.message.delete()
+            if sendMessage:
+                await ctx.message.delete()
         except:
             pass
         try:
@@ -823,7 +828,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 except:
                     await ctx.send(f"{self.bot.emojis_list['Cross']} | Unable to add {i.mention} to {member.mention}", allowed_mentions=am)
                     pass
-
+    
     @celeb.command(name="remove", description="Remove donation from a special", usage="<event-name> <member> <amount>", aliases=["r"])
     @commands.check_any(checks.can_use(), checks.is_me())
     async def remove(self, ctx, name: str, member: discord.Member, amount):
@@ -1076,6 +1081,72 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             pass
         await ctx.send(embed=embed)
 
+    @celeb.command(name="logthis", description="Automatic logging donation to a special event", aliases=["log"])
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def clog(self, ctx):
+        if ctx.message.reference is None:
+            await ctx.message.delete()
+            return await ctx.send(f"{ctx.author.mention}, Please use this command while responding to a message!",delete_after=5)
+        message = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+        if message is None:
+            await ctx.message.delete()
+            return await ctx.send(f"{ctx.author.mention}, Please use this command while responding to a message!",delete_after=5)
+        if len(message.embeds)<0 or message.author.id != 270904126974590976:
+            return await ctx.send(f"{ctx.author.mention} , Not a valid dank memer message!",delete_after=10)
+        if "title" in message.embeds[0].to_dict().keys() and message.embeds[0].title != "Successful Trade!":
+            return await ctx.send(f"{ctx.author.mention} , Not a valid successful trade embed!!",delete_after=10)
+        embed_dict = message.embeds[0].to_dict()
+        gk = self.bot.get_guild(785839283847954433)
+        name = embed_dict['fields'][0]['name']
+        member = gk.get_member_named(name)
+        if member == None:
+            return await ctx.send(f"{ctx.author.mention} , Can't find donor in {gk.name}!!",delete_after=10)
+        
+        donations = embed_dict['fields'][0]['value']
+        emojis = list(set(re.findall(":\w*:\d*", donations )))
+        for emoji in emojis :
+            donations = donations.replace(emoji,"",100)
+        donations  = donations.replace("<>","",100)
+        donations  = donations.replace("<a>","",100)
+        donations  = donations.replace("**","",100)
+        donations = donations.split("\n")
+        items = await self.bot.items.get_all()
+        item_dict = {}
+        for item in items:
+            item_dict[item['item_name'][1]] = item['trade_value']
+        
+        amount = 0
+        logged_items = ""
+        for donated in donations:
+            if "⏣" not in donated:
+                item_quantity = int(donated.split(" ")[0].replace("x","",1))
+                item_name = (" ".join(donated.split(" ")[1:])).strip()
+                item_name = item_name.lower()
+                if item_name not in item_dict.keys():
+                    return await ctx.send(f"{ctx.author.mention} , Can't find item {item_name} in the database!!\n> Do `Pls shop {item_name}`",delete_after=10)
+                item_value = int(item_dict[item_name])
+                amount += 1.2 * item_quantity * item_value
+                logged_items += f"> **{item_quantity}x** **{item_name.title()}** - **`⏣ {int(1.2 * item_quantity * item_value):,}`**\n"
+            else:
+                value = int((donated.split(" ")[1]).replace(",","",10))
+                amount += value
+        donor = await self.bot.donorBank.find_by_custom({'_id': member.id})
+        if donor != None:
+            bal = next((item for item in donor['event'] if item["name"] == "6k"), None)['bal']
+        
+        logg = discord.Embed(
+            title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s 6k Celeb Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+            description=f"**Logged Items:**\n{logged_items}",
+            colour=0x78AB46,
+            timestamp=datetime.datetime.utcnow()
+        )
+        logg.add_field(name="Amount Added: ", value=f"**⏣ {int(amount):,}**", inline=True)
+        logg.add_field(name="Total Celeb Donation: ", value=f"**⏣ {int(bal+amount):,}**", inline=True) 
+        logg.set_footer(text = f"Automatic Logging - {self.bot.user.name }", icon_url = self.bot.user.avatar_url)
+
+        await ctx.send(embed=logg)
+        await ctx.invoke(self.bot.get_command("celeb a"),name="6k", member=member, amount=str(amount) , sendMessage=False)
+
     @commands.command(name="gupdate", aliases=['gu', 'gadd', 'ga'])
     @commands.check_any(checks.can_use(), checks.is_me())
     async def gupdate(self, ctx, member: discord.Member, number: int = 1):
@@ -1162,7 +1233,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         display.set_thumbnail(
             url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
         await ctx.send(embed=display)
-        await ctx.invoke(self.bot.get_command("dono a"), member=member, amount=str(amount))
+        await ctx.invoke(self.bot.get_command("dono a"), member=member, amount=str(amount), sendMessage=False)
         try:
             await member.send(
                 f"{self.bot.emojis_list['SuccessTick']} | You have been completed your **Grinder Requirements** till <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D>."
