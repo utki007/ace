@@ -92,7 +92,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
     @donation.command(name="add", description="Add Donation for a member", usage="<member> <amount>", aliases=['a'])
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def adono(self, ctx, member: discord.Member, amount, sendMessage : bool = True):
+    async def adono(self, ctx, member: discord.Member, amount, sendMessage: bool = True):
 
         try:
             amount = await convert_to_numeral(amount)
@@ -408,7 +408,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 else:
                     desc += f"|{rank: ^3}|{df['name'][ind]: ^15}| {f'{int(n / 10**(3 * millidx)):,}{millnames[millidx]}':>7} | \n"
 
-
         member = ctx.author
         """Get to know the top donors"""
         id = "name"
@@ -661,7 +660,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
     @celeb.command(name="add", description="Add donation to a special event", usage="<event-name> <member> <amount>", aliases=["a"])
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def add(self, ctx, name: str , member: discord.Member, amount , sendMessage : bool = True):
+    async def add(self, ctx, name: str, member: discord.Member, amount, sendMessage: bool = True):
 
         try:
             amount = await convert_to_numeral(amount)
@@ -828,7 +827,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 except:
                     await ctx.send(f"{self.bot.emojis_list['Cross']} | Unable to add {i.mention} to {member.mention}", allowed_mentions=am)
                     pass
-    
+
     @celeb.command(name="remove", description="Remove donation from a special", usage="<event-name> <member> <amount>", aliases=["r"])
     @commands.check_any(checks.can_use(), checks.is_me())
     async def remove(self, ctx, name: str, member: discord.Member, amount):
@@ -1086,66 +1085,72 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
     async def clog(self, ctx):
         if ctx.message.reference is None:
             await ctx.message.delete()
-            return await ctx.send(f"{ctx.author.mention}, Please use this command while responding to a message!",delete_after=5)
+            return await ctx.send(f"{ctx.author.mention}, Please use this command while responding to a message!", delete_after=5)
         message = await ctx.channel.fetch_message(ctx.message.reference.message_id)
         if message is None:
             await ctx.message.delete()
-            return await ctx.send(f"{ctx.author.mention}, Please use this command while responding to a message!",delete_after=5)
-        if len(message.embeds)<0 or message.author.id != 270904126974590976:
-            return await ctx.send(f"{ctx.author.mention} , Not a valid dank memer message!",delete_after=10)
+            return await ctx.send(f"{ctx.author.mention}, Please use this command while responding to a message!", delete_after=5)
+        if len(message.embeds) < 0 or message.author.id != 270904126974590976:
+            return await ctx.send(f"{ctx.author.mention} , Not a valid dank memer message!", delete_after=10)
         if "title" in message.embeds[0].to_dict().keys() and message.embeds[0].title != "Successful Trade!":
-            return await ctx.send(f"{ctx.author.mention} , Not a valid successful trade embed!!",delete_after=10)
+            return await ctx.send(f"{ctx.author.mention} , Not a valid successful trade embed!!", delete_after=10)
         embed_dict = message.embeds[0].to_dict()
         gk = self.bot.get_guild(785839283847954433)
         name = embed_dict['fields'][0]['name']
         member = gk.get_member_named(name)
         if member == None:
-            return await ctx.send(f"{ctx.author.mention} , Can't find donor in {gk.name}!!",delete_after=10)
-        
+            return await ctx.send(f"{ctx.author.mention} , Can't find donor in {gk.name}!!", delete_after=10)
+
         donations = embed_dict['fields'][0]['value']
-        emojis = list(set(re.findall(":\w*:\d*", donations )))
-        for emoji in emojis :
-            donations = donations.replace(emoji,"",100)
-        donations  = donations.replace("<>","",100)
-        donations  = donations.replace("<a>","",100)
-        donations  = donations.replace("**","",100)
+        emojis = list(set(re.findall(":\w*:\d*", donations)))
+        for emoji in emojis:
+            donations = donations.replace(emoji, "", 100)
+        donations = donations.replace("<>", "", 100)
+        donations = donations.replace("<a>", "", 100)
+        donations = donations.replace("**", "", 100)
         donations = donations.split("\n")
         items = await self.bot.items.get_all()
         item_dict = {}
         for item in items:
             item_dict[item['item_name'][1]] = item['trade_value']
-        
+
         amount = 0
         logged_items = ""
         for donated in donations:
             if "⏣" not in donated:
-                item_quantity = int(donated.split(" ")[0].replace("x","",1))
+                item_quantity = int(donated.split(" ")[0].replace("x", "", 1))
                 item_name = (" ".join(donated.split(" ")[1:])).strip()
                 item_name = item_name.lower()
                 if item_name not in item_dict.keys():
-                    return await ctx.send(f"{ctx.author.mention} , Can't find item {item_name} in the database!!\n> Do `Pls shop {item_name}`",delete_after=10)
+                    return await ctx.send(f"{ctx.author.mention} , Can't find item {item_name} in the database!!\n> Do `Pls shop {item_name}`", delete_after=10)
                 item_value = int(item_dict[item_name])
                 amount += 1.2 * item_quantity * item_value
                 logged_items += f"> **{item_quantity}x** **{item_name.title()}** - **`⏣ {int(1.2 * item_quantity * item_value):,}`**\n"
             else:
-                value = int((donated.split(" ")[1]).replace(",","",10))
+                value = int((donated.split(" ")[1]).replace(",", "", 10))
                 amount += value
         donor = await self.bot.donorBank.find_by_custom({'_id': member.id})
         if donor != None:
-            bal = next((item for item in donor['event'] if item["name"] == "6k"), None)['bal']
-        
+            bal = next((item for item in donor['event'] if item["name"] == "6k"), None)[
+                'bal']
+
         logg = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s 6k Celeb Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
             description=f"**Logged Items:**\n{logged_items}",
             colour=0x78AB46,
             timestamp=datetime.datetime.utcnow()
         )
-        logg.add_field(name="Amount Added: ", value=f"**⏣ {int(amount):,}**", inline=True)
-        logg.add_field(name="Total Celeb Donation: ", value=f"**⏣ {int(bal+amount):,}**", inline=True) 
-        logg.set_footer(text = f"Automatic Logging - {self.bot.user.name }", icon_url = self.bot.user.avatar_url)
+        logg.add_field(name="Amount Added: ",
+                       value=f"**⏣ {int(amount):,}**", inline=True)
+        logg.add_field(name="Total Celeb Donation: ",
+                       value=f"**⏣ {int(bal+amount):,}**", inline=True)
+        logg.set_footer(text=f"Developed by utki007 & Jay",
+                        icon_url=ctx.guild.icon_url)
+        logg.set_thumbnail(
+            url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
 
         await ctx.send(embed=logg)
-        await ctx.invoke(self.bot.get_command("celeb a"),name="6k", member=member, amount=str(amount) , sendMessage=False)
+        await ctx.invoke(self.bot.get_command("celeb a"), name="6k", member=member, amount=str(amount), sendMessage=False)
 
     @commands.command(name="gupdate", aliases=['gu', 'gadd', 'ga'])
     @commands.check_any(checks.can_use(), checks.is_me())
@@ -1190,7 +1195,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         if number == 0:
             time = datetime.datetime(date.year, date.month, date.day)
         else:
-            time = datetime.datetime(date.year, date.month, date.day) + datetime.timedelta(days=number)
+            time = datetime.datetime(
+                date.year, date.month, date.day) + datetime.timedelta(days=number)
 
         grinder_record = {
             "amount": amount,
@@ -1205,7 +1211,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             if number == 0:
                 data["grinder_record"]["time"] = time
             else:
-                data["grinder_record"]["time"] += datetime.timedelta(days=number)
+                data["grinder_record"]["time"] += datetime.timedelta(
+                    days=number)
             data["grinder_record"]["amount_per_grind"] = amount_per_grind
         else:
             data["grinder_record"] = grinder_record
@@ -1394,7 +1401,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 payment_pending.set_footer(text=f"Developed by utki007 & Jay",
                                            icon_url=ctx.guild.icon_url)
                 await member.send(content=f"Hello {member.name}! I have a message for you:", embed=payment_pending)
-                await ctx.send(content=f"Sent {member.mention} the following message:", embed=payment_pending,delete_after=600)
+                await ctx.send(content=f"Sent {member.mention} the following message:", embed=payment_pending, delete_after=600)
                 await asyncio.sleep(0.5)
         if desc != "":
             grinders_not_found = discord.Embed(
@@ -1413,6 +1420,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             description=f"{self.bot.emojis_list['SuccessTick']} | Sent Grinder Reminders Successfully!"
         )
         await msg.edit(embed=waiting, delete_after=900)
+
 
 def setup(bot):
     bot.add_cog(donationTracker(bot))
