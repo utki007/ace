@@ -12,6 +12,9 @@ import math
 import time
 import datetime
 from utils.Checks import checks
+# helper functions
+from utils.custom_pagination import *
+from utils.util import Pag
 
 class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All items given for giveaways are tracked here"):
     
@@ -255,7 +258,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
             number = 5
             
         myquery = self.mycol.find(
-            {}, {"itemName": 1, "quantity": 1, "giveawayCost": 1, "emoji": 1})
+            {}, {"_id": 1, "trade_value": 1, "image_link": 1, "item_name": 1})
 
         n = 0
         list = []
@@ -408,7 +411,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
             number = 5
             
         myquery = self.mycol.find(
-            {}, {"itemName": 1, "quantity": 1, "giveawayCost": 1,"donationCost":1, "emoji": 1})
+            {}, {"_id": 1, "trade_value": 1, "image_link": 1, "item_name": 1})
 
         n = 0
         list = []
@@ -419,18 +422,16 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
         
         # creating df
         df = pd.DataFrame(list)
-        df["Total"] = df["giveawayCost"] * df["quantity"]
-        total = df["Total"].sum()
         
-        df = df[["itemName", "quantity", "giveawayCost","emoji","donationCost"]].sort_values(by= "giveawayCost", ascending = False)
+        df = df[["_id", "trade_value", "image_link","item_name"]].sort_values(by= "trade_value", ascending = False)
 
         desc =""
         for ind in df.index:
     
             # await ctx.channel.send(df['itemName'][ind][0])
             
-            donationCost = "donationCost"
-            desc = desc + f"{df['emoji'][ind]: ^3} `|{df['itemName'][ind][0].title(): ^15}|{f'{int(df[donationCost][ind]):,}': >13}|` \n"
+            trade_value = "trade_value"
+            desc = desc + f"`| {df['item_name'][ind][1].title(): <15}|{f'{int(df[trade_value][ind]):,}': >13}|` \n"
 
         # await ctx.send(desc)
 
@@ -438,8 +439,8 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
         
         embed = discord.Embed(
                 title=f"<a:TGK_Pandaswag:830525027341565982>  `{title:^18}`  <a:TGK_Pandaswag:830525027341565982>",
-                description=f"`{'::': ^2}`  `|{'Item Name': ^15}|{'Worth': ^13}|` \n"
-                            f"`{'::': ^2}`  `| :------------:|:-----------:|` \n"
+                description=f"`| {'Item Name': <15}|{'Worth': ^13}|` \n"
+                            f"`|:--------------:|:-----------:|` \n"
                             f"{desc}\n",
                 color=0x9e3bff
             )
@@ -451,6 +452,25 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
         await ctx.message.delete()
         await ctx.send(embed=embed)
     
+    # @commands.command(name="lbtest")
+    # @commands.has_guild_permissions(administrator=True)
+    # async def lbtest(self, ctx):
+    #     items = await self.bot.items.get_all()
+    #     items = sorted(items, key=lambda x: x['_id'])
+
+    #     page = []
+    #     trade_value = "trade_value"
+    #     for item in items:
+    #         description = f"`| {item['item_name'][1].title(): <15}|{f'{int(item[trade_value]):,}': >13}|`"
+    #         page.append(description)
+
+    #     await Pag(
+    #         title=f"<a:TGK_Pandaswag:830525027341565982>  `{'𝕎𝕆ℝ𝕋ℍ-𝕃𝕀𝕊𝕋':^18}`  <a:TGK_Pandaswag:830525027341565982>",
+    #         colour=discord.Color.random(),
+    #         entries=page,
+    #         length=20,
+    #         timeout=300
+    #         ).start(ctx)
     
 def setup(bot):
    bot.add_cog(dankItems(bot))
