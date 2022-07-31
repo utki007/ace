@@ -1129,8 +1129,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             else:
                 value = int((donated.split(" ")[1]).replace(",", "", 10))
                 amount += value
-                logged_items += f"> **DMC Donation** - **`⏣ {value:,}`**\n"
-            
         donor = await self.bot.donorBank.find_by_custom({'_id': member.id})
         if donor != None:
             bal = next((item for item in donor['event'] if item["name"] == "6k"), None)[
