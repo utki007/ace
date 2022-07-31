@@ -75,32 +75,36 @@ class Help(commands.Cog, name="Help command"):
         )
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Donor Bank__",
-            value=  f"Usage = `?[bal|balance] <member>` \n"
-                    f"Ex: `?bal @user`",
+            value=  f"Usage = `gk.[bal|balance] <member>` \n"
+                    f"Ex: `gk.bal @user`",
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Nickname__",
-            value=f"usage = `?[nick|ign] <member> <nick>`\n"
-                  f"ex = `?nick @user haddi`",
+            value=f"usage = `gk.[nick|ign] <member> <nick>`\n"
+                  f"ex = `gk.nick @user haddi`",
             inline = False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Regular Donation__",
-            value=  f"**1.** Add donation to donor's bank\n"
-                    f"ex = `?[donation|dono] [add|a] <member> <amount>`\n"
-                    f"**2.** Remove donation from donor's bank\n"
-                    f"ex = `?[donation|dono] [remove|r] <member> <amount>`\n"
-                    f"**3.** Displays top donors of the Server\n"
-                    f"ex = `?[donation|dono] [leaderboard|lb]`\n",
-            inline = False)
+            value=f"**1.** Add donation to donor's bank\n"
+                f"ex = `gk.[donation|dono] [add|a] <member> <amount>`\n"
+                f"**2.** Remove donation from donor's bank\n"
+                f"ex = `gk.[donation|dono] [remove|r] <member> <amount>`\n"
+                f"**3.** Automatic donation logging\n"
+                f"ex = `gk.[donation|dono] logthis`\n"
+                f"**4.** Displays top donors of the Server\n"
+                f"ex = `gk.[donation|dono] [leaderboard|lb]`\n",
+            inline=False)
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Special Donation__",
-            value=  f"**1.** Add donation to a special event\n"
-                    f"ex = `?celeb add <event-name> <member> <amount>`\n"
-                    f"**2.** Remove donation from a special event\n"
-                    f"ex = `?celeb remove <event-name> <member> <amount>`\n"
-                    f"**3.** Displays top donors for the Event\n"
-                    f"ex = `?celeb lb <event-name>`\n",
-            inline = False)
+            value=f"**1.** Add donation to a special event\n"
+                f"ex = `gk.celeb add <event-name> <member> <amount>`\n"
+                f"**2.** Remove donation from a special event\n"
+                f"ex = `gk.celeb remove <event-name> <member> <amount>`\n"
+                f"**3.** Automatic donation logging for special event\n"
+                f"ex = `gk.celeb logthis`\n"
+                f"**4.** Displays top donors for the Event\n"
+                f"ex = `gk.celeb lb <event-name>`\n",
+            inline=False)
         
         help.set_author(name=ctx.guild.name,
                               icon_url=ctx.guild.icon_url)
