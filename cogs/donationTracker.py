@@ -1209,6 +1209,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 bal = bal['bal']
             else:
                 bal = 0
+        else:
+            bal = 0
 
         logg = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s 6k Celeb Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
