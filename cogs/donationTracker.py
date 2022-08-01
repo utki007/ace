@@ -1194,7 +1194,14 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 item_name = item_name.lower()
                 if item_name not in item_dict.keys():
                     return await ctx.send(f"{ctx.author.mention} , Can't find item {item_name} in the database!!\n> Do `Pls shop {item_name}`", delete_after=10)
-                item_value = int(item_dict[item_name])
+                if item_name == "pepe trophy":
+                    item_value = 50000000
+                elif item_name == "pepe crown":
+                    item_value = 250000000
+                elif item_name == "pepe medal":
+                    item_value = 8000000
+                else:
+                    item_value = int(item_dict[item_name])
                 amount += 1.2 * item_quantity * item_value
                 logged_items += f"> **{item_quantity}x** **{item_name.title()}** - **`⏣ {int(1.2 * item_quantity * item_value):,}`**\n"
             else:
