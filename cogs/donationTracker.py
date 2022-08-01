@@ -1203,7 +1203,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 else:
                     item_value = 1.2 * int(item_dict[item_name])
                 amount += item_quantity * item_value
-                logged_items += f"> **{item_quantity}x** **{item_name.title()}** - **`⏣ {int(1.2 * item_quantity * item_value):,}`**\n"
+                logged_items += f"> **{item_quantity}x** **{item_name.title()}** - **`⏣ {int(item_quantity * item_value):,}`**\n"
             else:
                 value = int((donated.split(" ")[1]).replace(",", "", 10))
                 amount += value
