@@ -245,7 +245,8 @@ bot.emojis_list = {
 	"pinkdot": "<:tgk_pinkdot:928932787610865675>",
 	"tgk": "<a:gk_icon:945766027592089681>",
 	"waiting": "<a:gk_waiting:945772518776664104>",
-	"sadrain": "<a:TGK_sadrain:855305960385937428>"
+	"sadrain": "<a:TGK_sadrain:855305960385937428>",
+	"loading": "<a:gk_loading:1003950094598549525>"
 }
  
 bot.number_emojis = {
