@@ -430,6 +430,9 @@ class heistutils(commands.Cog):
 		self.bot.heist_stats_data = deepcopy(entire_msg_list)
 		self.bot.respect_list = []
 
+		msg = await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)])
+		await ctx.send(content=f"Stats sent!", hidden=True)
+
 		# announcement of results
 		dank_results.reverse()
 		webhooks = await announcement_channel.webhooks()
@@ -452,9 +455,6 @@ class heistutils(commands.Cog):
 			webhook.execute()
 			webhook.remove_embeds()
 			await asyncio.sleep(0.5)
-		
-		msg = await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)])
-		await ctx.send(content=f"Stats sent!", hidden=True)
 
 		await asyncio.sleep(30)
 		buttonsexpire = [
