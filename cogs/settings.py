@@ -137,6 +137,32 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 		except:
 			await ctx.send(f"{ctx.author.mention}, try again later once you are sure!",delete_after=10)
 
+	@settings.command(name="heist-announce", aliases=['ha'])
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def heistAnnounce(self, ctx, add_or_remove: str = 'add', channel: discord.TextChannel = None):
+		settings = await self.bot.settings.find(ctx.guild.id)
+
+		if channel == None:
+			channel = ctx.channel
+		if "heistAnnouncementChannels" in settings:
+			if add_or_remove.lower() == "add":
+				settings["heistAnnouncementChannels"].append(channel.id)
+			elif add_or_remove.lower() == "remove":
+				settings["heistAnnouncementChannels"].remove(channel.id)
+			await self.bot.db.settings.update_one(
+				{"_id": ctx.guild.id},
+				{"$set": {"heistAnnouncementChannels": settings["heistAnnouncementChannels"]}},
+				upsert=True
+			)
+			await ctx.send(f"Channels currently in the heist announcement channels: \n> {', '.join([channel.mention for channel in ctx.guild.channels if channel.id in settings['heistAnnouncementChannels']])}")
+		else:
+			await self.bot.db.settings.update_one(
+				{"_id": ctx.guild.id},
+				{"$set": {"heistAnnouncementChannels": [channel.id]}},
+				upsert=True
+			)
+			await ctx.send(f"Channels currently in the heist announcement channels: \n> {channel.mention}")
+
 	@settings.command(name="banFreeloader", aliases=['bfl'])
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def banFreeloader(self, ctx, channel: discord.TextChannel):
