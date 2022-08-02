@@ -7,6 +7,7 @@ import numpy as np
 import pymongo
 import datetime
 import itertools
+import re
 from utils.Checks import checks
 # helper functions
 from utils.custom_pagination import *
@@ -139,13 +140,13 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
     @partnership.command(name="remove", description="Remove a Partner", aliases=['r'])
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def rpartner(self, ctx, member: discord.Member):
+    async def rpartner(self, ctx, member:int, silent:bool=False):
         try:
             await ctx.message.delete()
         except:
             pass
 
-        myquery = {"_id": member.id}
+        myquery = {"_id": int(member)}
         info = self.mycol.find(myquery)
         flag = 0
         dict = {}
@@ -156,7 +157,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         if flag == 0:
             embed = discord.Embed(
                 color=self.bot.colors["RED"],
-                description=f"{self.bot.emojis_list['Warrning']} | {member.mention}'s Partnership data not found!!!")
+                description=f"{self.bot.emojis_list['Warrning']} | <@{member}>'s (`{member}`) Partnership data not found!!!")
             await ctx.send(embed=embed)
             return
 
@@ -164,19 +165,19 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             self.mycol.remove(myquery)
             embed = discord.Embed(
                 color=self.bot.colors["Success"],
-                description=f"{self.bot.emojis_list['SuccessTick']} |{member.mention}'s partnership data has been erased!!!")
-            await ctx.send(embed=embed)
+                description=f"{self.bot.emojis_list['SuccessTick']} |<@{member}>'s (`{member}`) partnership data has been erased!!!")
+            if silent == False:
+                await ctx.send(embed=embed)
         except:
             embed = discord.Embed(
                 color=self.bot.colors["RED"],
                 description=f'{self.bot.emojis_list["BrokenStatus"]} | Unable to erase data. Contact Jay or utki.')
             await ctx.channel.send(embed=embed)
-            return
 
         # for logging
         logg = discord.Embed(
             title="__Partner Logging__",
-            description=f'{self.bot.emojis_list["SuccessTick"]} |{member.mention} is now removed!!!',
+            description=f'{self.bot.emojis_list["SuccessTick"]} |<@{member}>\'s (`{member}`) is now removed!!!',
             colour=self.bot.colors["Success"],
             timestamp=datetime.datetime.utcnow()
         )
@@ -190,6 +191,31 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠", delete_after=30)
             pass
+
+    @partnership.command(name="list", description="List partners ")
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def listpartner(self, ctx):
+        n = 0
+        msg = await ctx.send(f"{self.bot.emojis_list['loading']} | Fetching data...")
+        list = []
+        myquery = self.mycol.find({}, {"_id": 1, "pings": 1})
+        for x in myquery:
+            dict = x
+            list.append(dict)
+        desc = ""
+        for i in list:
+            member = await self.bot.fetch_user(int(i['_id']))
+            desc += f"{member.mention}  \n> **Pings:** _{' '.join(f'{i}' for i in i['pings'])}_\n> **ID:** `{i['_id']}`\n\n"
+
+        embed = discord.Embed(  
+            color=discord.Color.random(),
+            title=f'Partnership Deals',
+            description=desc)  
+        if desc != "":                  
+            await msg.edit(content=None, embed=embed)
+        else:
+            await msg.edit(content=f"{self.bot.emojis_list['Warrning']} | No Partnership Deals found!!!")
+            return
 
     @commands.command(name="ping_heist", description="Ping your Heist", aliases=['ph'])
     @commands.cooldown(1, 3600, commands.BucketType.user)
@@ -218,29 +244,29 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             await ctx.send(embed=unauthorized, delete_after=30)
             return
         pp = dict["pings"]
-        am = discord.AllowedMentions(
-            users=False,  # Whether to ping individual user @mentions
-            everyone=False,  # Whether to ping @everyone or @here mentions
-            roles=False,  # Whether to ping role @mentions
-            replied_user=False,  # Whether to ping on replies to messages
-        )
-        if ctx.channel.id == self.partnerheist:
-            if text != "":
-                await ctx.send(text, allowed_mentions=am)
-            await ctx.send(f'{" ".join(map(str,pp))} **Join up**!!!')
-        elif ctx.guild.id == 838646783785697290:
-            if text != "":
-                await ctx.send(text, allowed_mentions=am)
-            await ctx.send(f'{" ".join(map(str,pp))} **Join up**!!!')
-        elif ctx.channel.category.id == 817049348977983506:
-            if text != "":
-                await ctx.send(text, allowed_mentions=am)
-            await ctx.send(f'{" ".join(map(str,pp))} **Join up**!!!')
+        pings = f'{" ".join(map(str,pp))}'
+
+        if text == '':
+            text = "**Checkout ou partner-server**!"
+  
+        role_mentions = re.findall("\<\@\&(.*?)\>", text)
+        for roles in role_mentions:
+            text = text.replace(roles, "", 1)
+        text = text.replace("<@&>", "", 100)
+        text = text.replace("@here", "", 100)
+        text = text.replace("@everyone", "", 100)
+
+        text = f"{pings} \n{text}"
+
+        if ctx.channel.id == self.partnerheist or ctx.channel.category.id == 817049348977983506:
+            await ctx.send(text)
         else:
             warning = discord.Embed(
                 color=self.bot.colors["RED"],
-                description=f"{self.bot.emojis_list['Warrning']} | Should only be used in <#{self.partnerheist}>!")
+                description=f"{self.bot.emojis_list['Warrning']} | Should only be used in <#{self.partnerheist}> or in <#817049348977983506>!")
             await ctx.send(embed=warning, delete_after=15)
+        
+        await ctx.invoke(self.bot.get_command("psh r"), member=ctx.author.id, silent=True)
 
     @commands.command(name="Grinders", description="Ping Grinders Heist", aliases=['grind', 'hg'])
     @commands.check_any(checks.can_use(), checks.is_me(), commands.bot_has_any_role(842485323329568769, 933605749400166451))
