@@ -7,7 +7,6 @@ import numpy as np
 import pymongo
 import datetime
 import itertools
-import time
 import re
 from utils.Checks import checks
 # helper functions
@@ -581,14 +580,14 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         Reach = f"Channel: {channel.mention} `{channel.id}` \n\n"
         memberset = set()
         if everyone:
-            Reach += f"      <:arrow:997836661335543908> @everyone {len(everyone_role.members)} reach: **{len(set(channel.members).intersection(set(everyone_role.members)))} Members** ({len(set(channel.members).intersection(set(everyone_role.members)))/len(everyone_role.members):.0%})\n"
+            Reach += f"      <:whitearrow:1004335792514138133> @everyone {len(everyone_role.members)} reach: **{len(set(channel.members).intersection(set(everyone_role.members)))} Members** ({len(set(channel.members).intersection(set(everyone_role.members)))/len(everyone_role.members):.0%})\n"
             memberset = memberset.union(set(everyone_role.members))
         else:
             for role in roles:
-                Reach += f"      <:arrow:997836661335543908> {role.name} `{role.id}` members:{len(role.members)} reach:{len(set(channel.members).intersection(set(role.members)))/len(role.members):.0%}\n"
+                Reach += f"      <:whitearrow:1004335792514138133> {role.name} `{role.id}` members:{len(role.members)} reach:{len(set(channel.members).intersection(set(role.members)))/len(role.members):.0%}\n"
                 memberset = memberset.union(set(role.members))
         if here:
-            Reach += f"      <:arrow:997836661335543908> @here {len(here_members)} reach:{len(set(channel.members).intersection(set(here_members)))/len(here_members):.0%}\n"
+            Reach += f"      <:whitearrow:1004335792514138133> @here {len(here_members)} reach:{len(set(channel.members).intersection(set(here_members)))/len(here_members):.0%}\n"
             memberset = memberset.union(set(here_members))
         Reach += f"\n**Total Reach:** {len(set(channel.members).intersection(memberset))} out of {len(memberset)}  targeted members  \nwhich represents {len(set(channel.members).intersection(memberset))/len(memberset):.0%}"
 
@@ -604,7 +603,6 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
     @commands.command(name="get_reach", description="Check Reach for a Channel",aliases=["gr"])
     @commands.check_any(checks.can_use(), checks.is_me())
     async def getReach(self, ctx, channel: discord.TextChannel, memberCount: int):
-        start = time.time()
         everyone_role = discord.utils.get(ctx.guild.roles, name="@everyone")
         
         l = []
@@ -629,12 +627,12 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             here_members.append(member)
 
         dict = {}
-        for L in range(0, len(l)+1):
+        if len(l)+1 > 3:
+            combo = 3
+        else:
+            combo = len(l)+1
+        for L in range(1, combo):
             for subset in itertools.combinations(l, L):
-                if len(subset) == 0:
-                    continue
-                elif len(subset) > 3:
-                    continue
                 memberset = set()
                 roles = list(subset)
                 flag = 0
@@ -657,12 +655,13 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         try:
             minkey = max(i for i in reaches if i < memberCount)
         except ValueError:
-            minkey = min(reaches)
+            await ctx.invoke(self.bot.get_command("reach"),channel = channel, roleIds = dict[min(reaches)])
+            return await calculate.delete()
         try:
             maxkey = min(i for i in reaches if i > memberCount) 
         except ValueError:
-            maxkey = max(reaches)
-        await ctx.send(f"**Calculated in:** {round((time.time() - start) * 1000, 3)} ms")
+            await ctx.invoke(self.bot.get_command("reach"),channel = channel, roleIds = dict[max(reaches)])
+            return await calculate.delete()
         await ctx.invoke(self.bot.get_command("reach"),channel = channel, roleIds = dict[minkey]) 
         await ctx.invoke(self.bot.get_command("reach"),channel = channel, roleIds = dict[maxkey]) 
         await calculate.delete()
@@ -686,7 +685,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         else:
             return await ctx.send(f"{ctx.author.mention} No Roles Set for this server!\n> Use `{ctx.prefix}gk.settings reach_roleIds your_ids` to set roles")
 
-        calculate = await ctx.send("https://cdn.discordapp.com/attachments/999553621895155723/999578868820234280/calculation-math.gif")
+        calculate = await ctx.send(f"{self.bot.emojis_list['loading']} | Fetching reaches for various roles ...")
 
         l = [discord.utils.get(ctx.guild.roles, id=i) for i in l if i not in ["everyone", "here"]]
         l.extend(k)
@@ -697,12 +696,12 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
             here_members.append(member)
 
         dict = {}
-        for L in range(0, len(l)+1):
+        if len(l)+1 > 3:
+            combo = 3
+        else:
+            combo = len(l)+1
+        for L in range(0, combo):
             for subset in itertools.combinations(l, L):
-                if len(subset) == 0:
-                    continue
-                elif len(subset) > 3:
-                    continue
                 memberset = set()
                 roles = list(subset)
                 flag = 0
@@ -722,8 +721,16 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 dict[key] = " ".join([str(i) for i in value])
                     
         reaches = dict.keys()
-        minkey = max(i for i in reaches if i < memberCount)
-        maxkey = min(i for i in reaches if i > memberCount) 
+        try:
+            minkey = max(i for i in reaches if i < memberCount)
+        except ValueError:
+            await ctx.invoke(self.bot.get_command("reach"),channel = channel, roleIds = dict[min(reaches)])
+            return await calculate.delete()
+        try:
+            maxkey = min(i for i in reaches if i > memberCount) 
+        except ValueError:
+            await ctx.invoke(self.bot.get_command("reach"),channel = channel, roleIds = dict[max(reaches)])
+            return await calculate.delete()
         await ctx.invoke(self.bot.get_command("reach"),channel = channel, roleIds = dict[minkey]) 
         await ctx.invoke(self.bot.get_command("reach"),channel = channel, roleIds = dict[maxkey]) 
         await calculate.delete()
