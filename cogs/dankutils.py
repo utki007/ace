@@ -186,72 +186,75 @@ class dankutils(commands.Cog, description="Dank Utility"):
 		await ctx.send(embed=fl)
 
 	@commands.command(name="banFreeloader", aliases=["bfl"], description="Bans Freeloaders")
-	@commands.check_any(checks.can_use(), checks.is_me())
-	async def banFreeloader(self, ctx, *, messageIds):
-		guild = self.bot.get_guild(ctx.guild.id)
-		await ctx.send(f"{self.bot.emojis_list['banHammer']} | Time to ban freeloaders now ...")
-		await ctx.message.delete()
+	@commands.check_any(checks.is_me())
+	async def banFreeloader(self, ctx, *, channel: discord.TextChannel):
+		guild = ctx.guild
+		
+		freeloadersFeed = self.bot.get_channel(999361292253011988)
+		banishChannel = self.bot.get_channel(999361292253011988)
+		
+		data = await self.bot.settings.find(guild.id)
+		if "banFreeloader" in data and data!=None:
+			data = data["banFreeloader"]["channel"]
+		
+		try:
+			banishChannel = guild.get_channel(data)
+		except:
+			await freeloadersFeed.send(f"[ @everyone ] \n> Channel not found in guild {guild.name} (`{guild.id}`)")
+		
 		counter = 0
 		duration = int(14) * 86400
-
-		messageIds = messageIds.split(" ")
 
 		list = ['barely', 'bribed', 'came', 'caught', 'died', 'ended', 'escaped', 'extracted', 'feared', 'got', 'hacked',
                     'just', 'left', 'ran', 'really', 'scored', 'showed', 'snuck', 'stole', 'stopped', 'took', 'tripped', 'turned', 'was']
 
 		ban = []
 		dank_messages = []
-		for messageId in messageIds:
-			message = await ctx.channel.fetch_message(messageId)
-			each_member = message.content.split("\n")[1:-2]
+		dank_message_counter = 0
+		async for message in channel.history(limit=100):
+			if message.content.startswith("```") and message.author.id == 270904126974590976:
+				dank_message_counter += 1
+				if dank_message_counter == 10:
+					break
+				each_member = message.content.split("\n")[1:-2]
 
-			for i in each_member:
-				name = ""
-				prefix_removal = i.split(" ")[1:]
-				for k in prefix_removal:
-					if k not in list:
-						name = name + " " + k
-					else:
-						break
-				name = name.strip(" ")
-				if guild.get_member_named(name) == None:
-					ban.append(name)
-					dank_messages.append(prefix_removal)
+				for i in each_member:
+					name = ""
+					prefix_removal = i.split(" ")[1:]
+					for k in prefix_removal:
+						if k not in list:
+							name = name + " " + k
+						else:
+							break
+					name = name.strip(" ")
+					if guild.get_member_named(name) == None:
+						ban.append(name)
+						dank_messages.append(prefix_removal)
 
-		await ctx.author.send(f"Freeloaders List: {', '.join(str(i) for i in ban)}")
-
-		channel = self.bot.get_channel(829008100555489301)
+		channel = self.bot.get_channel(786098255448375296)
 		to_ban = ban
 		banlist = []
-		async for message in channel.history(limit=1000):
-			#await ctx.send(message)
+		async for message in channel.history(limit=2500):
+			if message.author.id != 791349410801909811:
+				continue
 			embeds = message.embeds
 			dict = {}
 			for embed in embeds:
 				dict = embed.to_dict()
-			req_dict = dict["fields"][0]
-			member_name = req_dict["value"].split("\n")[0].split(" ")[1:]
-			member_name = " ".join([i for i in member_name])
-			member_id = int(req_dict["value"].split("\n")[2])
+			member_name = dict['author']['name'].split("#")[0]
+			member_id = int(dict['footer']['text'].split(" ")[-1])
 			if member_name in to_ban:
 				banlist.append(member_id)
 				to_ban.remove(member_name)
 
-		# await ctx.author.send(f"**To ban:** {', '.join(str(i) for i in banlist)}")
-		if to_ban == []:
-			await ctx.author.send(f"**Found uids for all members!!**")
-		else:
-			await ctx.author.send(f"**Unable to search for:** {', '.join(str(i) for i in to_ban)}")
-
-		# banlist = list(set(banlist))
 		banList = []
+		await ctx.message.delete()
+		await ctx.send(f"{self.bot.emojis_list['watching']} | Banishing freeloaders to {banishChannel.mention} for 14 days ... ")
 		for i in banlist:
 			user = await self.bot.fetch_user(int(i))
 			banList.append(user)
-		# await ctx.author.send(f"Names: **{' '.join(str(i.id) for i in banList)}**")
 		for user in banList:
 			if ctx.guild.get_member(user.id) is not None:
-				await ctx.author.send(f"{user.id} might be a false freeloader, do check them out!")
 				continue
 			data = {
 				'_id': user.id,
@@ -272,7 +275,6 @@ class dankutils(commands.Cog, description="Dank Utility"):
 			try:
 				try:
 					entry = await ctx.guild.fetch_ban(user)
-					await ctx.send(f"{self.bot.emojis_list['Warrning']} |  **_{user.name.title()}_** is already banned. ({user.id})", delete_after=45)
 					continue
 				except:
 					pass
@@ -287,15 +289,24 @@ class dankutils(commands.Cog, description="Dank Utility"):
 					await ctx.send(f"{user.id} data could not be inserted in Databse. Aborting immediately!!")
 					continue
 				await ctx.guild.ban(user, reason="Freeloaded after joining heist!")
-				counter += 1
-				await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Successfully banned **_{user.name}_** for **{int(duration/ 86400)}** days!!")
+				desc = ''
+				desc += f"> **Member:** __**{user}**__ \n"
+				desc += f"> **ID:** __**`{user.id}`**__ \n"
+				desc += f"> **Last Joined Heist:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
+				desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
+				desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=duration)))}:D> (14 days)\n"
+				embed = discord.Embed(
+					title=f"<a:Siren:999394017005543464> Freeloader Spotted! <a:Siren:999394017005543464>",
+					description=desc,
+					color=discord.Color.random()
+				)
+				embed.set_thumbnail(url=user.avatar_url)
+				embed.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+				await freeloadersFeed.send(embed=embed)
+				if banishChannel.id != freeloadersFeed.id:
+					await banishChannel.send(embed=embed)
 			except:
-				await ctx.send(f"{self.bot.emojis_list['Warrning']} | Unable to ban **_{user.name}_** ({user.id})")
-
-		if counter > 0:
-			await ctx.send(f"{self.bot.emojis_list['banHammer']} | Successfully banned {counter} freeloaders.")
-		else:
-			await ctx.send(f"{self.bot.emojis_list['Freeloader']} | No freeloader found!")
+				await freeloadersFeed.send(f"{self.bot.emojis_list['Warrning']} | Unable to ban **_{user.name}_** ({user.id})")
 
 	@commands.command(name="massBanFreeloader", aliases=["mbfl"], description="Mass bans freeloaders")
 	@commands.check_any(checks.can_use(), checks.is_me())
