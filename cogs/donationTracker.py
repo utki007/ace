@@ -1314,7 +1314,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                         f"**Amount Credited to Grinder Bank: ** ⏣ `{amount:,}`\n"
                         f"**Next donation due on: ** <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D> <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> \n\n"
                         f"**Grinder Bank: ** ⏣ `{data['grinder_record']['amount']:,}` \n"
-                        f"**Total Donation: ** ⏣ `{data['bal']:,}` \n"
+                        f"**Total Donation: ** ⏣ `{data['bal']+amount:,}` \n"
                         f"**_Sanctioned By: _** {ctx.author.mention}\n\n"
                         f"**_𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧_** \n",
             colour=0x78AB46,
