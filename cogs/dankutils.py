@@ -249,7 +249,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 
 		banList = []
 		await ctx.message.delete()
-		await ctx.send(f"{self.bot.emojis_list['watching']} | Banishing freeloaders to {banishChannel.mention} for 14 days ... ")
+		await ctx.send(f"{self.bot.emojis_list['watching']} | Banishing freeloaders in {banishChannel.mention} for 14 days ... ")
 		for i in banlist:
 			user = await self.bot.fetch_user(int(i))
 			banList.append(user)
