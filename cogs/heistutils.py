@@ -466,7 +466,12 @@ class heistutils(commands.Cog):
 		await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpire)])
 		await ctx.channel.send(f"**{len(self.bot.respect_list)}** people have paid their **respects to the fined!**")
 
-		await asyncio.sleep(270)
+		m2 = await ctx.channel.send(f"{self.bot.emojis_list['loading']} | Searching for freeloaders ... ")
+		ctx1 = await self.bot.get_context(m2)
+		await ctx1.invoke(self.bot.get_command("bfl"), channel=channel)
+		
+
+		await asyncio.sleep(140)
 		buttonsexpireall = [
 			create_button(style=ButtonStyle.blurple, emoji=heisttime,
 			              label="Show my results!", disabled=True, custom_id="setup:heiststats"),
