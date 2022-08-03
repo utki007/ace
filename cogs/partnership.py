@@ -7,6 +7,7 @@ import numpy as np
 import pymongo
 import datetime
 import itertools
+import time
 import re
 from utils.Checks import checks
 # helper functions
@@ -603,7 +604,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
     @commands.command(name="get_reach", description="Check Reach for a Channel",aliases=["gr"])
     @commands.check_any(checks.can_use(), checks.is_me())
     async def getReach(self, ctx, channel: discord.TextChannel, memberCount: int):
-
+        start = time.time()
         everyone_role = discord.utils.get(ctx.guild.roles, name="@everyone")
         
         l = []
@@ -618,8 +619,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
         else:
             return await ctx.send(f"{ctx.author.mention} No Roles Set for this server!\n> Use `{ctx.prefix}gk.settings reach_roleIds your_ids` to set roles")
         
-        calculate = await ctx.send("https://cdn.discordapp.com/attachments/999553621895155723/999578868820234280/calculation-math.gif")
-
+        calculate = await ctx.send(f"{self.bot.emojis_list['loading']} | Fetching reaches for various roles ...")
         l = [discord.utils.get(ctx.guild.roles, id=i) for i in l if i not in ["everyone", "here"]]
         l.extend(k)
 
@@ -654,8 +654,15 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
                 dict[key] = " ".join([str(i) for i in value])
                     
         reaches = dict.keys()
-        minkey = max(i for i in reaches if i < memberCount)
-        maxkey = min(i for i in reaches if i > memberCount) 
+        try:
+            minkey = max(i for i in reaches if i < memberCount)
+        except ValueError:
+            minkey = min(reaches)
+        try:
+            maxkey = min(i for i in reaches if i > memberCount) 
+        except ValueError:
+            maxkey = max(reaches)
+        await ctx.send(f"**Calculated in:** {round((time.time() - start) * 1000, 3)} ms")
         await ctx.invoke(self.bot.get_command("reach"),channel = channel, roleIds = dict[minkey]) 
         await ctx.invoke(self.bot.get_command("reach"),channel = channel, roleIds = dict[maxkey]) 
         await calculate.delete()
