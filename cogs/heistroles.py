@@ -130,7 +130,7 @@ class heistroles(commands.Cog):
 							}
 						
 						data["time"][f"{guild.id}"] = datetime.datetime.now()
-						data["lastPayouts"][f"{guild.id}"] = f"```diff/n{result}/n```"
+						data["lastPayouts"][f"{guild.id}"] = f"```diff\n{result}\n```"
 
 						if f"{guild.id}" in data["payouts"].keys():
 							data["payouts"][f"{guild.id}"]["count"] += 1
