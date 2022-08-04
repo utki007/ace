@@ -246,7 +246,8 @@ bot.emojis_list = {
 	"tgk": "<a:gk_icon:945766027592089681>",
 	"waiting": "<a:gk_waiting:945772518776664104>",
 	"sadrain": "<a:TGK_sadrain:855305960385937428>",
-	"loading": "<a:gk_loading:1003950094598549525>"
+	"loading": "<a:gk_loading:1003950094598549525>",
+	"watching": "<a:watching:1004443105451319367>"
 }
  
 bot.number_emojis = {
