@@ -189,6 +189,7 @@ class heistroles(commands.Cog):
 				except:
 					print("Error in partner heist channel")
 		
+		# for acefeed
 		elif message.channel.id == 947525172049621023:
 			
 			gk = self.bot.get_guild(785839283847954433)
@@ -209,6 +210,7 @@ class heistroles(commands.Cog):
 			await aceFeed.send(content = content)
 			await user.send(content = content)
 
+		#for acefeed
 		elif message.channel.id == 947525898100412417:
 			gk = self.bot.get_guild(785839283847954433)
 			aceFeed = gk.get_channel(944490857111896064)
@@ -224,6 +226,53 @@ class heistroles(commands.Cog):
 			else:
 				await aceFeed.send(content = message.content)
 				await user.send(content = message.content)
+
+		elif message.channel.id == 1004666846894624778:
+			
+			bannerVoteChannel = gk.get_channel(1004793048280076359)
+			try:
+				await message.add_reaction(self.bot.emojis_list['loading'])
+			except:
+				return
+			
+			if message.attachments != []:
+				for attachment in message.attachments:
+					bannerEmbed = discord.Embed(
+						color=0x36393f
+					)
+					bannerEmbed.set_author(name=f"{message.author.name}#{message.author.discriminator}", icon_url=message.author.avatar_url)
+					
+					bannerEmbed.set_image(url=attachment.url)
+					bannerMessage = await bannerVoteChannel.send(embed=bannerEmbed)
+					await bannerMessage.add_reaction("<:ace_upvote1:1004651372442034187>")
+					await bannerMessage.add_reaction("<:ace_downvote1:1004651437860589598>")
+					await asyncio.sleep(0.5)
+			else:
+				await asyncio.sleep(0.5)
+				checkMessage =  await message.channel.fetch_message(message.id)
+				if checkMessage == None:
+					return
+				
+				content = message.content
+				pattern = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
+				links = re.findall(pattern, content)
+				if links == []:
+					await message.clear_reactions()
+					await message.add_reaction("<:TGK_pepeHmm:928623994050072577>")
+					return
+				bannerEmbed = discord.Embed(
+					color=0x36393f
+				)
+				bannerEmbed.set_author(name=f"{message.author.name}#{message.author.discriminator}", icon_url=message.author.avatar_url)
+
+				bannerEmbed.set_image(url=links[0])
+			
+				bannerMessage = await bannerVoteChannel.send(embed=bannerEmbed)
+				await bannerMessage.add_reaction("<:ace_upvote1:1004651372442034187>")
+				await bannerMessage.add_reaction("<:ace_downvote1:1004651437860589598>")
+
+			await message.clear_reactions()
+			await message.add_reaction(self.bot.emojis_list['Check'])
 
 		word_list = ['vote link','how to get vote role', 'how to vote', 'pls vote', 'how to vote for server', 'link to vote']
 		if message.author.bot:
