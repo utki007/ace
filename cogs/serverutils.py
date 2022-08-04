@@ -15,6 +15,7 @@ from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
 from colour import Color
 from utils.Checks import checks
+import re
 
 
 class serverutils(commands.Cog, description="Server Utility"):
@@ -70,10 +71,10 @@ class serverutils(commands.Cog, description="Server Utility"):
 			desc += f"{self.bot.number_emojis[str(i+1)]} {choices[i]}\n"
 
 		poll = discord.Embed(
-                    title=title.title(),
-                    description=desc,
-                    color=ctx.author.colour
-                )
+					title=title.title(),
+					description=desc,
+					color=ctx.author.colour
+				)
 		poll.set_footer(
 			text=f"Poll created by {ctx.author.name}", icon_url=ctx.author.avatar_url)
 		poll_msg = await ctx.send(embed=poll)
@@ -100,7 +101,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 		color.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
 		color.set_thumbnail(url=url)
 		color.set_footer(
-                    text=f"Developed by utki007 & Jay")
+					text=f"Developed by utki007 & Jay")
 		await ctx.send(embed=color)
 
 	@commands.command(name="bar", description="To be used in public channels after completing a task")
@@ -152,7 +153,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 		playzone = self.bot.get_guild(815849745327194153)
 		emoji = await playzone.fetch_emoji(967152178617811064)
 		buttons = [create_button(style=ButtonStyle.URL, label="Vote here!",
-                           emoji=emoji, url="https://top.gg/servers/785839283847954433/vote")]
+						   emoji=emoji, url="https://top.gg/servers/785839283847954433/vote")]
 		embed = discord.Embed(
 			title=f"Vote for the {ctx.guild.name}",
 			description=f"❥ 1x extra entry into all frisky giveaways.\n"
@@ -243,7 +244,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 			await ctx.send(embed=embed)
 
 	@commands.command(name="eventping", description="Event ping", aliases=["se", "event"])
-	@commands.cooldown(1, 300, commands.BucketType.guild)
+	@commands.cooldown(1, 3000, commands.BucketType.guild)
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def eventping(self, ctx, *, message: str = "Form up for some events!"):
 		await ctx.message.delete()
@@ -298,9 +299,9 @@ class serverutils(commands.Cog, description="Server Utility"):
 	async def reactrole(self, ctx, name):
 		await ctx.message.delete()
 		warning = discord.Embed(
-                    color=self.bot.colors["RED"],
-                    description=f"{self.bot.emojis_list['Warrning']} | React role `{name}` does not exist!"
-                )
+					color=self.bot.colors["RED"],
+					description=f"{self.bot.emojis_list['Warrning']} | React role `{name}` does not exist!"
+				)
 		data = await self.bot.settings.find(ctx.guild.id)
 		if "react_roles" in data:
 			data = data["react_roles"]
@@ -319,10 +320,10 @@ class serverutils(commands.Cog, description="Server Utility"):
 			desc += f"{self.bot.number_emojis[str(i+1)]} <a:tgk_right:858729390065057803> {roles[i].mention}\n"
 
 		reactrole_embed = discord.Embed(
-                    title=title.title(),
-                    description=desc,
-                    color=ctx.author.colour
-                )
+					title=title.title(),
+					description=desc,
+					color=ctx.author.colour
+				)
 		# reactrole_embed.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
 		reactrole_message = await ctx.send(embed=reactrole_embed)
 
@@ -347,6 +348,61 @@ class serverutils(commands.Cog, description="Server Utility"):
 				await reactrole_message.delete()
 				return
 
+	@commands.command(name="banner", description="Banner Vote", aliases=["bvote"])
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def bannerevote(self, ctx):
+		gk = self.bot.get_guild(785839283847954433)
+		bannerChannel = gk.get_channel(1004666846894624778)
+		bannerVoteChannel = gk.get_channel(1004793048280076359)
+
+		await ctx.message.add_reaction(self.bot.emojis_list['loading'])
+
+		if ctx.channel.id != bannerChannel.id:
+			warning = discord.Embed(
+				color=self.bot.colors["RED"],
+				description=f"{self.bot.emojis_list['Warrning']} | Can only be used in {bannerChannel.mention}!"
+			)
+			return await ctx.send(embed=warning, delete_after=10)
+
+		if ctx.message.reference is None:
+			await ctx.message.delete()
+			return await ctx.send(f"{ctx.author.mention}, Please use this command while responding to a message!", delete_after=5)
+		message = await ctx.channel.fetch_message(ctx.message.reference.message_id)
+		if message is None:
+			await ctx.message.delete()
+			return await ctx.send(f"{ctx.author.mention}, Please use this command while responding to a message!", delete_after=5)
+		
+		
+		if message.attachments != []:
+			for attachment in message.attachments:
+				bannerEmbed = discord.Embed(
+					color=0x36393f
+				)
+				bannerEmbed.set_author(name=f"{message.author.name}#{message.author.discriminator}", icon_url=message.author.avatar_url)
+
+				bannerEmbed.set_image(url=attachment.url)
+				bannerMessage = await bannerVoteChannel.send(embed=bannerEmbed)
+				await bannerMessage.add_reaction("<:ace_upvote1:1004651372442034187>")
+				await bannerMessage.add_reaction("<:ace_downvote1:1004651437860589598>")
+		else:
+			content = message.content
+			pattern = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
+			links = re.findall(pattern, content)
+			if links == []:
+				return
+			bannerEmbed = discord.Embed(
+				color=0x36393f
+			)
+			bannerEmbed.set_author(name=f"{message.author.name}#{message.author.discriminator}", icon_url=message.author.avatar_url)
+
+			bannerEmbed.set_image(url=links[0])
+		
+			bannerMessage = await bannerVoteChannel.send(embed=bannerEmbed)
+			await bannerMessage.add_reaction("<:ace_upvote1:1004651372442034187>")
+			await bannerMessage.add_reaction("<:ace_downvote1:1004651437860589598>")
+
+		await message.add_reaction(self.bot.emojis_list['Check'])
+		await ctx.message.delete()
 
 def setup(bot):
 	bot.add_cog(serverutils(bot))
