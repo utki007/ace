@@ -130,6 +130,8 @@ class heistroles(commands.Cog):
 							}
 						
 						data["time"][f"{guild.id}"] = datetime.datetime.now()
+						if "lastPayouts" not in data:
+							data["lastPayouts"] = {}
 						data["lastPayouts"][f"{guild.id}"] = f"```diff\n{result}\n```"
 
 						if f"{guild.id}" in data["payouts"].keys():
