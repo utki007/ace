@@ -227,8 +227,12 @@ class heistroles(commands.Cog):
 				await aceFeed.send(content = message.content)
 				await user.send(content = message.content)
 
+		# for banner
 		elif message.channel.id == 1004666846894624778:
 			
+			if message.author.bot:
+				return
+
 			bannerVoteChannel = gk.get_channel(1004793048280076359)
 			try:
 				await message.add_reaction(self.bot.emojis_list['loading'])
