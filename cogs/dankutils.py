@@ -100,7 +100,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 
 					await guild.ban(member, reason="Freeloaded after joining heist!")
 					desc = ''
-					desc += f"> **Member:** __**{member.mention}**__ \n"
+					desc += f"> **Member:** __**{member}**__ \n"
 					desc += f"> **ID:** __**`{member.id}`**__ \n"
 					desc += f"> **Last Joined Heist:** <t:{int(time.timestamp())}:D>\n"
 					desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
@@ -290,7 +290,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 					continue
 				await ctx.guild.ban(user, reason="Freeloaded after joining heist!")
 				desc = ''
-				desc += f"> **Member:** __**{user.mention}**__ \n"
+				desc += f"> **Member:** __**{user}**__ \n"
 				desc += f"> **ID:** __**`{user.id}`**__ \n"
 				desc += f"> **Last Joined Heist:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
 				desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
