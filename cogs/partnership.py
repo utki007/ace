@@ -642,8 +642,8 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 				here_members.append(member)
 
 		dict = {}
-		if len(l)+1 > 3:
-			combo = 3
+		if len(l)+1 > 4:
+			combo = 4
 		else:
 			combo = len(l)+1
 		for L in range(1, combo):
@@ -711,8 +711,8 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 				here_members.append(member)
 
 		dict = {}
-		if len(l)+1 > 3:
-			combo = 3
+		if len(l)+1 > 4:
+			combo = 4
 		else:
 			combo = len(l)+1
 		for L in range(0, combo):
