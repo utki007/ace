@@ -11,6 +11,7 @@ import numpy as np
 import json
 import logging
 import asyncio
+import datetime
 import motor.motor_asyncio
 from asyncio import sleep
 from discord_slash import SlashCommand
@@ -43,33 +44,32 @@ async def on_ready():
 
 	guild = bot.get_guild(785839283847954433)
 	bot.role_dict = {
-		"0": guild.get_role(810134737829888050),
-		"1": guild.get_role(810128078789410846),
-		"5": guild.get_role(810128257491795979),
-		"10": guild.get_role(810128946791579679),
-		"25": guild.get_role(810128522365763615),
-		"50": guild.get_role(810128688267919381),
-		"100": guild.get_role(810129351692648479),
-		"250": guild.get_role(810129497931513868),
-		"500": guild.get_role(810129641473703956)
+		"25": guild.get_role(810134737829888050),
+		"25": guild.get_role(810128078789410846),
+		"69": guild.get_role(810128257491795979),
+		"100": guild.get_role(810128946791579679),
+		"250": guild.get_role(810128522365763615),
+		"500": guild.get_role(810128688267919381),
+		"690": guild.get_role(810129351692648479),
+		"1000": guild.get_role(810129497931513868),
+		"3000": guild.get_role(810129641473703956)
 	}
 	bot.event_6k = {
-            "0": guild.get_role(943535266143039500),
-            "2": guild.get_role(940581716312084530),
-            "11": guild.get_role(940581045038899230),
-            "69": guild.get_role(940581256301772820),
-            "111": guild.get_role(940581347267866625),
-            "250": guild.get_role(942719030752583680),
-            "690": guild.get_role(940580910913450044),
-            "1000": guild.get_role(940581297145905212)
-        }
+		"2": guild.get_role(943535266143039500),
+		"2": guild.get_role(940581716312084530),
+		"11": guild.get_role(940581045038899230),
+		"69": guild.get_role(940581256301772820),
+		"111": guild.get_role(940581347267866625),
+		"250": guild.get_role(942719030752583680),
+		"690": guild.get_role(940580910913450044),
+		"1000": guild.get_role(940581297145905212)
+	}
 
 	bot.premium_colour_users = [
-		guild.get_role(810128946791579679),
-		guild.get_role(810128522365763615),
+		guild.get_role(810128257491795979),
 		guild.get_role(836228842397106176),
 		guild.get_role(786477872029892639),
-		guild.get_role(811308414889361458),
+		guild.get_role(811308304197222410),
 		guild.get_role(836551065733431348),
 		guild.get_role(821052747268358184),
 		guild.get_role(818129661325869058),
@@ -77,8 +77,7 @@ async def on_ready():
 	]
 
 	bot.elite_colour_users = [
-		guild.get_role(810128688267919381),
-		guild.get_role(810129351692648479),
+		guild.get_role(810128946791579679),
 		guild.get_role(835866393458901033),
 		guild.get_role(806804472700600400),
 		guild.get_role(836551065733431348),
@@ -90,8 +89,7 @@ async def on_ready():
 	]
 
 	bot.legendary_colour_users = [
-		guild.get_role(810129497931513868),
-		guild.get_role(810129641473703956),
+		guild.get_role(810128522365763615),
 		guild.get_role(806804472700600400),
 		guild.get_role(830013421239140403),
 		guild.get_role(821052747268358184),
