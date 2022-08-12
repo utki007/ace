@@ -44,7 +44,7 @@ async def on_ready():
 
 	guild = bot.get_guild(785839283847954433)
 	bot.role_dict = {
-		"25": guild.get_role(810134737829888050),
+		"24": guild.get_role(810134737829888050),
 		"25": guild.get_role(810128078789410846),
 		"69": guild.get_role(810128257491795979),
 		"100": guild.get_role(810128946791579679),
@@ -54,8 +54,9 @@ async def on_ready():
 		"1000": guild.get_role(810129497931513868),
 		"3000": guild.get_role(810129641473703956)
 	}
+
 	bot.event_6k = {
-		"2": guild.get_role(943535266143039500),
+		"1": guild.get_role(943535266143039500),
 		"2": guild.get_role(940581716312084530),
 		"11": guild.get_role(940581045038899230),
 		"69": guild.get_role(940581256301772820),
