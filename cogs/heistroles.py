@@ -289,23 +289,46 @@ class heistroles(commands.Cog):
 		channel_ids = [785847439579676672, 799364834927968336, 799378297855279125, 935763990670348309]
 		immune_users = [301657045248114690, 488614633670967307, 562738920031256576, 413651113485533194]
 		
-		if "vote" in messageContent and message.channel.id in channel_ids and message.author.id not in immune_users:
-			playzone = self.bot.get_guild(815849745327194153)
-			emoji = await playzone.fetch_emoji(967152178617811064)
-			buttons = [create_button(style=ButtonStyle.URL, label="Vote here!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
-			embed = discord.Embed(
-				title=f"<a:tgk_redcrown:1005473874693079071> {gk.name}",
-				description=f"<:tgk_redarrow:1005361235715424296> `+1x` amari guild-wide\n"
-							f"<:tgk_redarrow:1005361235715424296> Access to [**Special Channel**](https://discord.com/channels/785839283847954433/929613393097293874)\n"
-							f"<:tgk_redarrow:1005361235715424296> `+1x` entry in <@700743797977514004>'s gaws\n",
-				color=0xff0000,
-				url="https://top.gg/servers/785839283847954433/vote"
-			)
-			try:
-				await message.reply(embed=embed, components=[create_actionrow(*buttons)], mention_author=False)
-			except:
-				pass
-
+		if message.channel.id in channel_ids and message.author.id not in immune_users:
+			if "vote" in messageContent:
+				playzone = self.bot.get_guild(815849745327194153)
+				emoji = await playzone.fetch_emoji(967152178617811064)
+				buttons = [create_button(style=ButtonStyle.URL, label="Vote here!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
+				embed = discord.Embed(
+					title=f"<a:tgk_redcrown:1005473874693079071> {gk.name}",
+					description=f"<:tgk_redarrow:1005361235715424296> `+1x` amari guild-wide\n"
+								f"<:tgk_redarrow:1005361235715424296> Access to [**Special Channel**](https://discord.com/channels/785839283847954433/929613393097293874)\n"
+								f"<:tgk_redarrow:1005361235715424296> `+1x` entry in <@700743797977514004>'s gaws\n",
+					color=0xff0000,
+					url="https://top.gg/servers/785839283847954433/vote"
+				)
+				try:
+					await message.reply(embed=embed, components=[create_actionrow(*buttons)], mention_author=False)
+				except:
+					pass
+			elif "heist" in messageContent:
+				data = await self.bot.settings.find(guild.id)
+				if data!=None and "heist_ar" in data:
+					data = data["heist_ar"]
+					if data["time"] + datetime.timedelta(seconds=300) < datetime.datetime.now():
+						await self.bot.db.settings.update_one(
+							{"_id": guild.id},
+							{"$unset": {"heist_ar": ""}},
+							upsert=True
+						)
+					timestamp = int(data['time'].timestamp())
+					heist_channel = self.bot.get_channel(data['channel'])
+					amount = data['amount']
+					desc = f"<:tgk_redarrow:1005361235715424296> **⏣ `{amount:,}`** heist beings in **<t:{timestamp}:R>** \n"
+					if data['role'] != 787566421592899614:
+						role = guild.get_role(data['role'])
+						desc += f"<:tgk_redarrow:1005361235715424296> **Required Role:** **{role.mention}**"
+					embed = discord.Embed(
+						description=desc,
+						color=0xff0000
+					)
+					await message.reply(content=f"Checkout {heist_channel.mention} for more info!" ,embed=embed, mention_author=False)
+					
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
 		
