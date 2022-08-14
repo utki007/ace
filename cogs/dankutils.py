@@ -43,7 +43,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 		channel = self.bot.get_channel(999361292253011988)
 		
 		data = await self.bot.settings.find(guild.id)
-		if "banFreeloader" in data and data!=None:
+		if data!=None and "banFreeloader" in data:
 			data = data["banFreeloader"]["channel"]
 		
 		try:
@@ -194,7 +194,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 		banishChannel = self.bot.get_channel(999361292253011988)
 		
 		data = await self.bot.settings.find(guild.id)
-		if "banFreeloader" in data and data!=None:
+		if data!=None and "banFreeloader" in data:
 			data = data["banFreeloader"]["channel"]
 		
 		try:
