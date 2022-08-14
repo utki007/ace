@@ -212,6 +212,7 @@ class heistutils(commands.Cog):
 		
 		m2 = await ctx.channel.send(f"Timer loading ..!")
 		ctx1 = await self.bot.get_context(m2)
+		await ctx1.invoke(self.bot.get_command("settings heist-ar"),channel=ctx1.channel,amount=str(amount),timer=og_timer,role = required_role)
 		await ctx1.invoke(self.bot.get_command("t"), time=og_timer, name =f"<a:TGK_paisa_hi_paisa_hoga:849509579565301780> **{int(amount/1000000)} Mil** Heist Timer! <a:TGK_paisa_hi_paisa_hoga:849509579565301780>")
 		# expire buttons
 		
@@ -316,16 +317,16 @@ class heistutils(commands.Cog):
 			await starter.remove_roles(starter_role) 
 
 	@cog_ext.cog_subcommand(base="Heist", name="Stats", description="Show Heist related statistics", guild_ids=guild_ids,
-                         base_default_permission=False, base_permissions=heist_perm,
-                         options=[
-                             create_option(name="announcement_channel",
-                                           description="Which channel to announce results in?", required=True, option_type=7),
-                             create_option(name="limit", description="Amount of messages to parse",
-                                           option_type=4, required=False),
-                             create_option(name="channel", description="Get Heist Results from which channel",
-                                           required=False, option_type=7)
-                         ]
-                         )
+						 base_default_permission=False, base_permissions=heist_perm,
+						 options=[
+							 create_option(name="announcement_channel",
+										   description="Which channel to announce results in?", required=True, option_type=7),
+							 create_option(name="limit", description="Amount of messages to parse",
+										   option_type=4, required=False),
+							 create_option(name="channel", description="Get Heist Results from which channel",
+										   required=False, option_type=7)
+						 ]
+						 )
 	async def heiststats(self, ctx, announcement_channel, limit=20, channel=None):
 		await ctx.defer(hidden=True)
 
@@ -387,33 +388,33 @@ class heistutils(commands.Cog):
 			await ctx.send(f"<:tgk_warning:840638147838738432> Heist results not found! <:tgk_warning:840638147838738432>", hidden=True)
 			return
 		embed = discord.Embed(
-                    title=f"<a:celebrateyay:821698856202141696>  **Heist Stats**  <a:celebrateyay:821698856202141696>",
-                    description=f"**{count_robbers} robbers** teamed up to rack {heist_message}\n",
-                    color=0x9e3bff,
-                    timestamp=datetime.datetime.utcnow()
+					title=f"<a:celebrateyay:821698856202141696>  **Heist Stats**  <a:celebrateyay:821698856202141696>",
+					description=f"**{count_robbers} robbers** teamed up to rack {heist_message}\n",
+					color=0x9e3bff,
+					timestamp=datetime.datetime.utcnow()
 		)
 		if highest_fined_link == "":
 			highest_fined_link = "https://www.youtube.com/channel/UCA_-mknv10nj-E1rP34zfeQ"
 		embed.add_field(name=f"Professional Robbers:",
-		                value=f"{count_success} ({np.round((count_success*100/count_robbers),2)}%)", inline=True)
+						value=f"{count_success} ({np.round((count_success*100/count_robbers),2)}%)", inline=True)
 		if count_fined > 0:
 			embed.add_field(name=f"Amateur Robbers:",
-			                value=f"{count_fined} ({np.round((count_fined*100/count_robbers),2)}%)", inline=True)
+							value=f"{count_fined} ({np.round((count_fined*100/count_robbers),2)}%)", inline=True)
 		embed.add_field(name=f"RIP Robbers:",
-		                value=f"{count_died} ({np.round((count_died*100/count_robbers),2)}%)", inline=True)
+						value=f"{count_died} ({np.round((count_died*100/count_robbers),2)}%)", inline=True)
 		embed.add_field(name=f"Heist Payouts:",
-		                value=f"**[⏣ {payouts:,}]({highest_fined_link})**", inline=True)
+						value=f"**[⏣ {payouts:,}]({highest_fined_link})**", inline=True)
 		if fined_amount > 0:
 			embed.add_field(name=f"Total Amount Fined:",
-			                value=f"**[⏣ {fined_amount:,}]({highest_fined_link})**", inline=True)
+							value=f"**[⏣ {fined_amount:,}]({highest_fined_link})**", inline=True)
 		if highest_fined > 0:
 			embed.add_field(name=f"Noobest Robber Paid:",
-			                value=f"**[⏣ {highest_fined:,}]({highest_fined_link})**", inline=True)
+							value=f"**[⏣ {highest_fined:,}]({highest_fined_link})**", inline=True)
 		if highest_fined_msg != "":
 			embed.add_field(name=f"Most Fined:",
-			                value=f"{highest_fined_msg}", inline=False)
+							value=f"{highest_fined_msg}", inline=False)
 		embed.set_footer(text=f"Developed by utki007 & Jay",
-		                 icon_url=ctx.guild.icon_url)
+						 icon_url=ctx.guild.icon_url)
 
 		gk = self.bot.get_guild(785839283847954433)
 		ace_feed = self.bot.get_guild(947525009247707157)
@@ -423,9 +424,9 @@ class heistutils(commands.Cog):
 
 		buttons = [
 			create_button(style=ButtonStyle.blurple, emoji=heisttime,
-			              label="Show my results!", disabled=False, custom_id="setup:heiststats"),
+						  label="Show my results!", disabled=False, custom_id="setup:heiststats"),
 			create_button(style=ButtonStyle.blurple, emoji=pressf,
-			              label=" Let's pay respects to the fined!", disabled=False, custom_id="setup:pressf")
+						  label=" Let's pay respects to the fined!", disabled=False, custom_id="setup:pressf")
 		]
 		self.bot.heist_stats_data = deepcopy(entire_msg_list)
 		self.bot.respect_list = []
@@ -459,9 +460,9 @@ class heistutils(commands.Cog):
 		await asyncio.sleep(30)
 		buttonsexpire = [
 			create_button(style=ButtonStyle.blurple, emoji=heisttime,
-			              label="Show my results!", disabled=False, custom_id="setup:heiststats"),
+						  label="Show my results!", disabled=False, custom_id="setup:heiststats"),
 			create_button(style=ButtonStyle.blurple, emoji=pressf,
-			              label=" Let's pay respects to the fined!", disabled=True, custom_id="setup:pressf")
+						  label=" Let's pay respects to the fined!", disabled=True, custom_id="setup:pressf")
 		]
 		await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpire)])
 		await ctx.channel.send(f"**{len(self.bot.respect_list)}** people have paid their **respects to the fined!**")
@@ -474,11 +475,25 @@ class heistutils(commands.Cog):
 		await asyncio.sleep(140)
 		buttonsexpireall = [
 			create_button(style=ButtonStyle.blurple, emoji=heisttime,
-			              label="Show my results!", disabled=True, custom_id="setup:heiststats"),
+						  label="Show my results!", disabled=True, custom_id="setup:heiststats"),
 			create_button(style=ButtonStyle.blurple, emoji=pressf,
-			              label=" Let's pay respects to the fined!", disabled=True, custom_id="setup:pressf")
+						  label=" Let's pay respects to the fined!", disabled=True, custom_id="setup:pressf")
 		]
 		await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpireall)])
 
+	@commands.command(name="Thanks", description="ty to grinders",aliases = ["ty"], hidden=True)
+	@commands.check_any(checks.can_use(), checks.is_me())
+	#@commands.check_any(commands.has_any_role(785842380565774368 ,799037944735727636,785845265118265376,787259553225637889,843775369470672916), commands.is_owner())
+	async def thanks(self, ctx):
+		am = discord.AllowedMentions(
+			users=False,  # Whether to ping individual user @mentions
+			everyone=False,  # Whether to ping @everyone or @here mentions
+			roles=False,  # Whether to ping role @mentions
+			replied_user=False,  # Whether to ping on replies to messages
+		)
+		await ctx.message.delete()
+		ty = await ctx.send(f"Make sure to Thank our Amazing <@&836228842397106176>'s  for the heist in <#785847439579676672>", allowed_mentions=am)
+		await ty.add_reaction(f'<:thankyou:930419246792601640>')
+		
 def setup(bot):
 	bot.add_cog(heistutils(bot))
