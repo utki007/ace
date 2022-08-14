@@ -155,15 +155,14 @@ class serverutils(commands.Cog, description="Server Utility"):
 		buttons = [create_button(style=ButtonStyle.URL, label="Vote here!",
 						   emoji=emoji, url="https://top.gg/servers/785839283847954433/vote")]
 		embed = discord.Embed(
-			title=f"Vote for the {ctx.guild.name}",
-			description=f"❥ 1x extra entry into all frisky giveaways.\n"
-			f"❥ Special <@&786884615192313866> role with 1x guild-wide amari-multi.\n"
-			f"❥ Access to <#929613393097293874> with 2x Amari.\n"
-			f"❥ 2,500 Casino Cash. Collect using `,collectincome` in <#786117471840895016>\n",
-			color=ctx.author.color
+			title=f"🌹{gk.name}",
+			description=f"<:tgk_redarrow:1005361235715424296> `+1x` amari guild-wide\n"
+						f"<:tgk_redarrow:1005361235715424296> Access to [**Special Channel**](https://discord.com/channels/785839283847954433/929613393097293874)\n"
+						f"<:tgk_redarrow:1005361235715424296> `+1x` entry in <@700743797977514004>'s gaws\n",
+			color=0xff0000,
+			url="https://top.gg/servers/785839283847954433/vote"
 		)
-
-		await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)])
+		await ctx.send(embed=embed, components=[create_actionrow(*buttons)])
 
 	@commands.command(name="revive", description="Revive server")
 	@commands.cooldown(1, 28800, commands.BucketType.guild)
