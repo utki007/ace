@@ -322,7 +322,7 @@ class heistroles(commands.Cog):
 					timestamp = int(data['time'].timestamp())
 					heist_channel = self.bot.get_channel(data['channel'])
 					amount = data['amount']
-					desc = f"<:tgk_redarrow:1005361235715424296> **⏣ `{amount:,}`** heist beings in **<t:{timestamp}:R>** \n"
+					desc = f"<:tgk_redarrow:1005361235715424296> **⏣ `{amount:,}`** heist begins in **<t:{timestamp}:R>** \n"
 					if data['role'] != 787566421592899614:
 						role = guild.get_role(data['role'])
 						desc += f"<:tgk_redarrow:1005361235715424296> **Required Role:** **{role.mention}**"
