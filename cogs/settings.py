@@ -137,32 +137,6 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 		except:
 			await ctx.send(f"{ctx.author.mention}, try again later once you are sure!",delete_after=10)
 
-	@settings.command(name="heist-announce", aliases=['ha'])
-	@commands.check_any(checks.can_use(), checks.is_me())
-	async def heistAnnounce(self, ctx, add_or_remove: str = 'add', channel: discord.TextChannel = None):
-		settings = await self.bot.settings.find(ctx.guild.id)
-
-		if channel == None:
-			channel = ctx.channel
-		if "heistAnnouncementChannels" in settings:
-			if add_or_remove.lower() == "add":
-				settings["heistAnnouncementChannels"].append(channel.id)
-			elif add_or_remove.lower() == "remove":
-				settings["heistAnnouncementChannels"].remove(channel.id)
-			await self.bot.db.settings.update_one(
-				{"_id": ctx.guild.id},
-				{"$set": {"heistAnnouncementChannels": settings["heistAnnouncementChannels"]}},
-				upsert=True
-			)
-			await ctx.send(f"Channels currently in the heist announcement channels: \n> {', '.join([channel.mention for channel in ctx.guild.channels if channel.id in settings['heistAnnouncementChannels']])}")
-		else:
-			await self.bot.db.settings.update_one(
-				{"_id": ctx.guild.id},
-				{"$set": {"heistAnnouncementChannels": [channel.id]}},
-				upsert=True
-			)
-			await ctx.send(f"Channels currently in the heist announcement channels: \n> {channel.mention}")
-
 	@settings.command(name="banFreeloader", aliases=['bfl'])
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def banFreeloader(self, ctx, channel: discord.TextChannel):
@@ -172,6 +146,47 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 			upsert=True
 		)
 		await ctx.send(f"**Freeloader ban channel set to:** {channel.mention}", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
+
+	@settings.command(name="heist-ar", aliases=['ha'])
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def heist_ar(self, ctx, channel:discord.TextChannel,timer,amount:str,role :discord.Role, delete:bool=False):
+		if delete == True:
+			await self.bot.db.settings.update_one(
+				{"_id": ctx.guild.id},
+				{"$unset": {"heist_ar": ""}},
+				upsert=True
+			)
+			# return await ctx.send(f"**Heist has been disabled!**", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
+			return
+		try:
+			amount = await convert_to_numeral(amount)
+			amount = await calculate(amount)
+			amount = int(amount)
+		except:
+			warning = discord.Embed(
+				color=self.bot.colors["RED"],
+				description=f"{self.bot.emojis_list['Warrning']} | Error with Heist Amount!!")
+			await ctx.send(embed = warning,hidden=True)
+			return
+
+		try:
+			timer = await convert_to_time(timer)
+			timer = await calculate(timer)
+			# timer += 19800 
+		
+			timer = datetime.datetime.now() + datetime.timedelta(seconds=timer)
+		except:
+			warning = discord.Embed(
+				color=self.bot.colors["RED"],
+				description=f"{self.bot.emojis_list['Warrning']} | Error with Heist Timer!!")
+			await ctx.send(embed = warning,hidden=True)
+			return
+		await self.bot.db.settings.update_one(
+			{"_id": ctx.guild.id},
+			{"$set": {"heist_ar": {"channel": channel.id, "time": timer, "amount": amount, "role": role.id}}},
+			upsert=True
+		)
+		# await ctx.send(f"**Heist set to:** {channel.mention} for {timer} seconds with {amount} and {role.name}", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
 
 def setup(bot):
 	bot.add_cog(settings(bot))
