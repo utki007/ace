@@ -426,7 +426,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             await ctx.send(f"{ctx.author.mention}, Unable to add donor roles!")
             pass
 
-    @donation.command(name="leaderboard", description="Checout top donators", usage="", aliases=['lb'])
+    @donation.command(name="leaderboard", description="Checkout top donators", usage="", aliases=['lb'])
     @commands.check_any(checks.can_use(), checks.is_me())
     async def topdono(self, ctx,  number: int = 5):
 
@@ -1118,9 +1118,9 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
             if n > 0:
                 if millidx >= 3:
-                    desc += f"|{rank: ^3}|{df['name'][ind]: ^15}| {f'{round(n / 10**(3 * millidx),1):,}{millnames[millidx]}':>7} | \n"
+                    desc += f"|{rank: ^3}| {df['name'][ind]: <13}| {f'{round(n / 10**(3 * millidx),1):,}{millnames[millidx]}':>5} | \n"
                 else:
-                    desc += f"|{rank: ^3}|{df['name'][ind]: ^15}| {f'{int(n / 10**(3 * millidx)):,}{millnames[millidx]}':>7} | \n"
+                    desc += f"|{rank: ^3}| {df['name'][ind]: <13}| {f'{int(n / 10**(3 * millidx)):,}{millnames[millidx]}':>5} | \n"
 
         member = ctx.author
         """Get to know the top donors"""
@@ -1128,7 +1128,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         bal = "bal"
         embed = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982> **`{name.upper()} Specials Top 10`** <a:TGK_Pandaswag:830525027341565982>",
-            description=f"```|{'🏆': ^3}|{'Name': ^15}|{'Donated':>8} |\n"
+            description=f"```|{'🏆': ^3}| {'Name': <13}|{'Amount':>6} |\n"
             f"{desc}```\n\n",
             colour=member.colour,
             timestamp=datetime.datetime.utcnow()
