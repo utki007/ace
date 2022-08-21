@@ -126,7 +126,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         logged_items = ""
         for donated in donations:
             if "⏣" not in donated:
-                item_quantity = int(donated.split(" ")[0].replace("x", "", 1))
+                item_quantity = int(donated.split(" ")[0].replace("x", "", 1).replace(",","",5))
                 item_name = (" ".join(donated.split(" ")[1:])).strip()
                 item_name = item_name.lower()
                 if item_name not in item_dict.keys():
@@ -1189,7 +1189,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         logged_items = ""
         for donated in donations:
             if "⏣" not in donated:
-                item_quantity = int(donated.split(" ")[0].replace("x", "", 1))
+                item_quantity = int(donated.split(" ")[0].replace("x", "", 1).replace(",","",5))
                 item_name = (" ".join(donated.split(" ")[1:])).strip()
                 item_name = item_name.lower()
                 if item_name not in item_dict.keys():
