@@ -159,8 +159,8 @@ class heistroles(commands.Cog):
 							)
 							await heistersFeed.send(embed = memberNotFound)
 						
-		# for partner heists
-		if message.channel.id == 806988762299105330:
+		# for partner heists 806988762299105330
+		if message.channel.id == 1012434586866827376:
 			word_list = ['discord.gg']
 
 			messageContent = message.content.lower()
@@ -187,9 +187,12 @@ class heistroles(commands.Cog):
 						create_button(style=ButtonStyle.green,emoji=yes, label="Hide this channel for me!", disabled=False, custom_id="nopartner:no")
 					]
 					await partnerHeists.purge(limit=10, check=check, before=None)
+					# await message.channel.send(
+					# 			content=f"Grab <@&810593886720098304> from <#944670050252648468> to not get pinged here!",
+					# 			components=[create_actionrow(*buttons)], allowed_mentions=am
+					# )
 					await message.channel.send(
-								content=f"Do you want to stop receiving pings?",
-								components=[create_actionrow(*buttons)], allowed_mentions=am
+								content=f"Grab <@&810593886720098304> from <#944670050252648468> to not get pinged here!", allowed_mentions=am
 					)
 				except:
 					print("Error in partner heist channel")
