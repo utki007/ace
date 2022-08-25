@@ -656,7 +656,7 @@ class heistroles(commands.Cog):
 				await ctx.defer(hidden=True)
 				nopartnership = discord.utils.get(ctx.guild.roles, id=810593886720098304)
 				outside = discord.utils.get(ctx.guild.roles, id=806795854475165736)
-				channel = self.bot.get_channel(806988762299105330)
+				channel = self.bot.get_channel(1012434586866827376)
 				if nopartnership in ctx.author.roles:
 					await ctx.author.remove_roles(nopartnership)
 					await ctx.send(f"**{channel.mention}** is no longer hidden from you!",hidden=True)
@@ -708,7 +708,7 @@ class heistroles(commands.Cog):
 				if outside in ctx.author.roles:
 					await ctx.author.remove_roles(outside)
 					flag = 1
-				channel = self.bot.get_channel(806988762299105330)
+				channel = self.bot.get_channel(1012434586866827376)
 				if flag == 1:
 					await ctx.send(f"**`{channel}`** is now successfully hidden for you!",hidden=True)
 				else:
