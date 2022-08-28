@@ -262,7 +262,18 @@ class heistutils(commands.Cog):
 		heist_search = await ctx.channel.send(f" {self.bot.emojis_list['60sec']} **Searching for heist in this channel**. Type `cancel` to cancel the heist")
 		
 		try:
-			heist_message = await self.bot.wait_for("message", check=lambda m: (m.author.id == 270904126974590976 and ("you're not popular enough and didn't get enough people to rob the bank" in m.embeds[0].to_dict()['description'] or "for an unsuccessful robbery" in m.embeds[0].to_dict()['description'] or "Amazing job everybody, we racked up a total of" in m.embeds[0].to_dict()['description'])) or (m.author.id == ctx.author.id and "cancel" in m.content.lower()), timeout=600)
+			heist_message = await self.bot.wait_for(
+									"message", 
+									check= lambda m: (
+										m.author.id == 270904126974590976 and 
+										(
+											"description" in m.embeds[0].to_dict().keys() and 
+											("you're not popular enough and didn't get enough people to rob the bank" in m.embeds[0].to_dict()['description'] or 
+											"for an unsuccessful robbery" in m.embeds[0].to_dict()['description'] or 
+											"Amazing job everybody, we racked up a total of" in m.embeds[0].to_dict()['description'])
+										)
+									) 
+								or (m.author.id == ctx.author.id and "cancel" in m.content.lower()), timeout=600)
 			if heist_message.content != None and heist_message.content.lower() == "cancel":
 				cancel_embed = discord.Embed(
 					description =  	f"> Heist has been cancelled due to unforeseen circumstances.\n"

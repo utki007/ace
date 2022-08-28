@@ -158,7 +158,74 @@ class heistroles(commands.Cog):
 								color=discord.Color.random(),
 							)
 							await heistersFeed.send(embed = memberNotFound)
-						
+			
+			if len(message.embeds)>0 and "description" in message.embeds[0].to_dict().keys():
+				if "amazing job everybody, we racked up a total of" in message.embeds[0].title.lower():
+					lock_embed = discord.Embed(
+						title=f"{'Channel has been reset!'}",
+						description=f"> Thank you for joining! \n> Stay for more heists!\n",
+						color=0xffbbff,
+						timestamp=datetime.datetime.utcnow()
+					)
+					lock_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/801343188945207297.gif?v=1")
+					
+					await ctx.channel.edit(sync_permissions=True)
+					await ctx.channel.send(embed=lock_embed)
+
+					desc = message.embeds[0].to_dict()['description']
+					pattern = "⏣\s[0-9,]*"
+					heist_amount = int(re.findall(pattern,desc)[0].replace("⏣ ","",1).replace(",","",5))
+					pattern = "`[0-9]*`"
+					stats_list = re.findall(pattern,desc)
+					stats_list = [int(stats.replace("`","",2)) for stats in stats_list]
+					count_success = stats_list[0]
+					count_fined = stats_list[-1]
+					count_died = stats_list[1]
+					count_robbers = count_success + count_fined + count_died
+					
+					embed = discord.Embed(
+						title=f"<a:celebrateyay:821698856202141696>  **Heist Stats**  <a:celebrateyay:821698856202141696>",
+						description=f"**{count_robbers} robbers** teamed up to rack up a total of **⏣ {heist_amount:,}**!\n",
+						color=0x9e3bff,
+						timestamp=datetime.datetime.utcnow()
+					)
+					payouts_list = [
+						f"barely escaped the police with ⏣ {heist_amount:,}.",
+						f"scored ⏣ {heist_amount:,}.",
+						f"came home with ⏣ {heist_amount:,} and a few wounds.",
+						f"feared nothing and took ⏣ {heist_amount:,}.",
+						f"snuck out with ⏣ {heist_amount:,}.",
+						f"extracted ⏣ {heist_amount:,}.",
+						f"came out with ⏣ {heist_amount:,} despite getting tackled by police."
+					]
+					highest_fined_link = "https://www.youtube.com/channel/UCA_-mknv10nj-E1rP34zfeQ"
+					embed.add_field(name=f"Professional Robbers:",
+									value=f"{count_success} ({np.round((count_success*100/count_robbers),2)}%)", inline=True)
+					if count_fined > 0:
+						embed.add_field(name=f"Amateur Robbers:",
+										value=f"{count_fined} ({np.round((count_fined*100/count_robbers),2)}%)", inline=True)
+					embed.add_field(name=f"RIP Robbers:",
+									value=f"{count_died} ({np.round((count_died*100/count_robbers),2)}%)", inline=True)
+					embed.add_field(name=f"Heist Payouts:",
+									value=f"**[⏣ {heist_amount:,}]({highest_fined_link})**", inline=True)
+					embed.add_field(name=f"Payouts:",
+										value=f"```diff\n+ utki007 {random.choice(payouts_list)}\n```", inline=False)
+					embed.set_footer(text=f"Developed by utki007 & Jay",
+									icon_url=ctx.guild.icon_url)
+
+					gk = self.bot.get_guild(785839283847954433)
+					ace_feed = self.bot.get_guild(947525009247707157)
+
+					pressf = await ace_feed.fetch_emoji(951574174957195364)
+
+					buttons = [
+						create_button(style=ButtonStyle.blurple, emoji=pressf,
+									label=" Let's pay respects to the fined!", disabled=False, custom_id="setup:pressf")
+					]
+					self.bot.respect_list = []
+
+					msg = await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)])
+
 		# for partner heists 806988762299105330
 		if message.channel.id == 1012434586866827376:
 			word_list = ['discord.gg']
