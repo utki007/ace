@@ -169,8 +169,8 @@ class heistroles(commands.Cog):
 					)
 					lock_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/801343188945207297.gif?v=1")
 					
-					await ctx.channel.edit(sync_permissions=True)
-					await ctx.channel.send(embed=lock_embed)
+					await message.channel.edit(sync_permissions=True)
+					await message.channel.send(embed=lock_embed)
 
 					desc = message.embeds[0].to_dict()['description']
 					pattern = "⏣\s[0-9,]*"
@@ -224,7 +224,7 @@ class heistroles(commands.Cog):
 					]
 					self.bot.respect_list = []
 
-					msg = await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)])
+					msg = await message.channel.send(embed=embed, components=[create_actionrow(*buttons)])
 
 		# for partner heists 806988762299105330
 		if message.channel.id == 1012434586866827376:
