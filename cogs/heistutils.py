@@ -263,7 +263,7 @@ class heistutils(commands.Cog):
 		
 		try:
 			heist_message = await self.bot.wait_for("message", check=lambda m: (m.author.id == 270904126974590976 and ("you're not popular enough and didn't get enough people to rob the bank" in m.embeds[0].to_dict()['description'] or "for an unsuccessful robbery" in m.embeds[0].to_dict()['description'] or "Amazing job everybody, we racked up a total of" in m.embeds[0].to_dict()['description'])) or (m.author.id == ctx.author.id and "cancel" in m.content.lower()), timeout=600)
-			if heist_message.content.lower() == "cancel":
+			if heist_message.content != None and heist_message.content.lower() == "cancel":
 				cancel_embed = discord.Embed(
 					description =  	f"> Heist has been cancelled due to unforeseen circumstances.\n"
 									f"> Trying again <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=300)))}:R>!",
