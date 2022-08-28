@@ -160,7 +160,7 @@ class heistroles(commands.Cog):
 							await heistersFeed.send(embed = memberNotFound)
 			
 			if len(message.embeds)>0 and "description" in message.embeds[0].to_dict().keys():
-				if "amazing job everybody, we racked up a total of" in message.embeds[0].title.lower():
+				if "amazing job everybody, we racked up a total of" in message.embeds[0].description.lower():
 					lock_embed = discord.Embed(
 						title=f"{'Channel has been reset!'}",
 						description=f"> Thank you for joining! \n> Stay for more heists!\n",
