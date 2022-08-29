@@ -211,7 +211,7 @@ class heistroles(commands.Cog):
 					embed.add_field(name=f"Payouts:",
 										value=f"```diff\n+ utki007 {random.choice(payouts_list)}\n```", inline=False)
 					embed.set_footer(text=f"Developed by utki007 & Jay",
-									icon_url=ctx.guild.icon_url)
+									icon_url=self.bot.user.avatar_url)
 
 					gk = self.bot.get_guild(785839283847954433)
 					ace_feed = self.bot.get_guild(947525009247707157)
