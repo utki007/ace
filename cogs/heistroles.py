@@ -174,15 +174,16 @@ class heistroles(commands.Cog):
 
 					desc = message.embeds[0].to_dict()['description']
 					pattern = "⏣\s[0-9,]*"
-					heist_amount = int(re.findall(pattern,desc)[0].replace("⏣ ","",1).replace(",","",5))
+					total_amount = int(re.findall(pattern,desc)[0].replace("⏣ ","",1).replace(",","",5))
 					pattern = "`[0-9]*`"
 					stats_list = re.findall(pattern,desc)
 					stats_list = [int(stats.replace("`","",2)) for stats in stats_list]
 					count_success = stats_list[0]
 					count_fined = stats_list[-1]
 					count_died = stats_list[1]
-					count_robbers = count_success + count_fined + count_died
-					
+					count_robbers = count_success + count_fined + count_died + stats_list[-2]
+					heist_amount = total_amount/count_success
+
 					embed = discord.Embed(
 						title=f"<a:celebrateyay:821698856202141696>  **Heist Stats**  <a:celebrateyay:821698856202141696>",
 						description=f"**{count_robbers} robbers** teamed up to rack up a total of **⏣ {heist_amount:,}**!\n",
@@ -225,6 +226,14 @@ class heistroles(commands.Cog):
 					self.bot.respect_list = []
 
 					msg = await message.channel.send(embed=embed, components=[create_actionrow(*buttons)])
+
+					await asyncio.sleep(15)
+					buttonsexpire = [
+						create_button(style=ButtonStyle.blurple, emoji=pressf,
+									label=" Let's pay respects to the fined!", disabled=True, custom_id="setup:pressf")
+					]
+					await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpire)])
+					await ctx.channel.send(f"**{len(self.bot.respect_list)}** people have paid their **respects to the fined!**")
 
 		# for partner heists 806988762299105330
 		if message.channel.id == 1012434586866827376:
