@@ -247,7 +247,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		pings = f'{" ".join(map(str,pp))}'
 
 		if text == '':
-			text = "**Checkout ou partner-server**!"
+			text = "**Checkout our partner-server**!"
 
 		role_mentions = re.findall("\<\@\&(.*?)\>", text)
 		for roles in role_mentions:

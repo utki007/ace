@@ -246,7 +246,7 @@ class heistroles(commands.Cog):
 									label=" Let's pay respects to the fined!", disabled=True, custom_id="setup:pressf")
 					]
 					await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpire)])
-					await ctx.channel.send(f"**{len(self.bot.respect_list)}** people have paid their **respects to the fined!**")
+					await message.channel.send(f"**{len(self.bot.respect_list)}** people have paid their **respects to the fined!**")
 
 					await message.channel.edit(sync_permissions=True)
 					await message.channel.send(embed=lock_embed)
