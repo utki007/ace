@@ -168,9 +168,22 @@ class heistroles(commands.Cog):
 						timestamp=datetime.datetime.utcnow()
 					)
 					lock_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/801343188945207297.gif?v=1")
+
 					
-					await message.channel.edit(sync_permissions=True)
-					await message.channel.send(embed=lock_embed)
+					fl = discord.Embed(
+						title=f'{self.bot.emojis_list["banHammer"]} Freeloader Perks {self.bot.emojis_list["banHammer"]}',
+						description=f'{self.bot.emojis_list["rightArrow"]} 14 Days temporary ban.\n'
+						f'{self.bot.emojis_list["rightArrow"]} Miss daily heists, events and giveaways.\n'
+						f'{self.bot.emojis_list["rightArrow"]} Multiple freeloads, Permanent ban.\n'
+						f'{self.bot.emojis_list["rightArrow"]} Lament why you left such a POG server.\n',
+						color=self.bot.colors["RED"],
+						timestamp=datetime.datetime.utcnow()
+					)
+		# fl.set_author(name=ctx.guild.name, icon_url="https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024")
+					fl.set_footer(text=f"Developed by utki007 & Jay",
+								icon_url=self.bot.user.avatar_url)
+					fl.set_thumbnail(
+						url=f'https://cdn.discordapp.com/emojis/831301479691845632.gif?v=1')
 
 					desc = message.embeds[0].to_dict()['description']
 					pattern = "⏣\s[0-9,]*"
@@ -182,11 +195,11 @@ class heistroles(commands.Cog):
 					count_fined = stats_list[-1]
 					count_died = stats_list[1]
 					count_robbers = count_success + count_fined + count_died + stats_list[-2]
-					heist_amount = total_amount/count_success
+					heist_amount = round(total_amount/count_success)
 
 					embed = discord.Embed(
 						title=f"<a:celebrateyay:821698856202141696>  **Heist Stats**  <a:celebrateyay:821698856202141696>",
-						description=f"**{count_robbers} robbers** teamed up to rack up a total of **⏣ {heist_amount:,}**!\n",
+						description=f"**{count_robbers} robbers** teamed up to rack up a total of **⏣ {total_amount:,}**!\n",
 						color=0x9e3bff,
 						timestamp=datetime.datetime.utcnow()
 					)
@@ -234,6 +247,12 @@ class heistroles(commands.Cog):
 					]
 					await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpire)])
 					await ctx.channel.send(f"**{len(self.bot.respect_list)}** people have paid their **respects to the fined!**")
+
+					await message.channel.edit(sync_permissions=True)
+					await message.channel.send(embed=lock_embed)
+
+					await message.channel.send(embed=fl)
+					await message.channel.send(f'https://media.discordapp.net/attachments/840291742859001876/943806099537162250/0E67BE40-2287-4A6F-9520-C6FD5E548227.gif')
 
 		# for partner heists 806988762299105330
 		if message.channel.id == 1012434586866827376:
