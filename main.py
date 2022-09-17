@@ -18,6 +18,7 @@ from discord_slash import SlashCommand
 from discord_slash.model import SlashCommandPermissionType
 from discord_slash.utils.manage_commands import create_permission
 from utils.mongo import Document
+from amari import AmariClient
 
 description = '''This is what I have been programmed to do'''
 bot = commands.Bot(
@@ -136,6 +137,7 @@ else:
 	bot.connection_url = os.environ['MongoConnectionUrl']
 	bot.connection_url2 = os.environ["mongoBanDB"]
 	bot.amari = os.environ["amari"]
+bot.amari_client = AmariClient(bot.amari)
 
 @bot.command(hidden=True)
 @commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
@@ -271,6 +273,7 @@ if __name__ == "__main__":
 	bot.donorBank = Document(bot.db, "donorBank")
 	bot.settings = Document(bot.db, "settings")
 	bot.items = Document(bot.db, "itemTracker")
+	bot.freeloaders = Document(bot.db, "freeloaders")
 
 	for file in os.listdir('./cogs'):
 		if file.endswith(".py") and not file.startswith("_") and not file.startswith('test'):

@@ -14,6 +14,7 @@ import TagScriptEngine
 import datetime
 from TagScriptEngine import Interpreter, adapter, block
 from utils.Checks import checks
+from amari import AmariClient
 
 # import convertor
 from utils.convertor import *
@@ -51,70 +52,142 @@ class dankutils(commands.Cog, description="Dank Utility"):
 		except:
 			await freeloadersFeed.send(f"[ @everyone ] \n> Channel not found in guild {guild.name} (`{guild.id}`)")
 
-		heistdata = await self.bot.heisters.find(member.id)
-
-		if heistdata == None:
-			return
+		freeloader_data = await self.bot.freeloaders.find(member.id)
+		if freeloader_data == None:
+			freeloader_data = {
+				"_id" : member.id,
+				"name" : member.name,
+				"no_of_freeloads" : {}
+			}
+		if f"{guild.id}" in data["no_of_freeloads"].keys():
+			data["no_of_freeloads"][f"{guild.id}"] += 1
 		else:
-			if "time" in heistdata.keys() and str(guild.id) in heistdata["time"].keys():
-				time = heistdata["time"][str(guild.id)]
-				last_heist_joined = ((datetime.datetime.now()-time).total_seconds())
-				if last_heist_joined < 1209600:
-					flCount = heistdata["freeloaded"][str(guild.id)]
-					if flCount == None:
-						flCount = 0
-					await self.bot.db.heisters.update_one(
-						{"_id": member.id},
-						{"$set": {"freeloaded." + str(guild.id): flCount + 1}},
-						upsert=True
-					)
-					if flCount > 9:
-						flCount = 9
-					banDuration = (flCount + 5) * 86400
-					data = {
-						'_id': member.id,
-						'BannedAt': datetime.datetime.now(),
-						'BanDuration': banDuration,
-						'BanedBy': self.bot.user.id,
-						'guildId': guild.id,
-					}
-					myquery = {"_id": member.id}
-					info = self.mycol.find(myquery)
-					flag = 0
-					dict = {}
-					for x in info:
-						dict = x
-						flag = 1
+			data["no_of_freeloads"][f"{guild.id}"] = 1
 
-					try:
-						if flag == 0:
-							self.mycol.insert_one(data)
-						else:
-							newvalues = {"$set": {"BanDuration": banDuration}}
-							dict["BanDuration"] = datetime.timedelta(seconds=banDuration)
-							self.mycol.update_one(myquery, newvalues)
-					except:
-						await freeloadersFeed.send(f"Error while updating data to octane!\n> {member.mention} `{member.id}` has left {guild.name}")
-						await channel.send(f"Error while updating data to octane!\n> {member.mention} `{member.id}` has left {guild.name}")
-						pass
+		try:
+			user_amari = await self.bot.amari_client.fetch_user(guild.id, member.id)
+			if user_amari.weeklyexp == None or user_amari.weeklyexp < 3:
+				
+				# add to db
+				await self.bot.db.freeloaders.update_one(
+					{"_id": member.id},
+					{"$set": {"no_of_freeloads." + str(guild.id): data["no_of_freeloads"][f"{guild.id}"]}},
+					upsert=True
+				)
 
-					await guild.ban(member, reason="Freeloaded after joining heist!")
-					desc = ''
-					desc += f"> **Member:** __**{member}**__ \n"
-					desc += f"> **ID:** __**`{member.id}`**__ \n"
-					desc += f"> **Last Joined Heist:** <t:{int(time.timestamp())}:D>\n"
-					desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
-					desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=banDuration)))}:D> ({flCount+5} days)\n"
-					embed = discord.Embed(
-						title=f"<a:Siren:999394017005543464> Freeloader Spotted! <a:Siren:999394017005543464>",
-						description=desc,
-						color=discord.Color.random()
-					)
-					embed.set_thumbnail(url=member.avatar_url)
-					embed.set_footer(text=f"{guild.name}", icon_url=guild.icon_url)
-					await freeloadersFeed.send(embed=embed)
-					if channel.id != freeloadersFeed.id:
-						await channel.send(embed=embed)
+				# broadcast to channel set in settings
+				flCount = int(data["no_of_freeloads"][f"{guild.id}"])
+				if flCount == None:
+					flCount = 0
+				
+				if flCount > 9:
+					flCount = 9
+				banDuration = (flCount + 5) * 86400
+				data = {
+					'_id': member.id,
+					'BannedAt': datetime.datetime.now(),
+					'BanDuration': banDuration,
+					'BanedBy': self.bot.user.id,
+					'guildId': guild.id,
+				}
+				myquery = {"_id": member.id}
+				info = self.mycol.find(myquery)
+				flag = 0
+				dict = {}
+				for x in info:
+					dict = x
+					flag = 1
+
+				try:
+					if flag == 0:
+						self.mycol.insert_one(data)
+					else:
+						newvalues = {"$set": {"BanDuration": banDuration}}
+						dict["BanDuration"] = datetime.timedelta(seconds=banDuration)
+						self.mycol.update_one(myquery, newvalues)
+				except:
+					await freeloadersFeed.send(f"Error while updating data to octane!\n> {member.mention} `{member.id}` has left {guild.name}")
+					await channel.send(f"Error while updating data to octane!\n> {member.mention} `{member.id}` has left {guild.name}")
+					pass
+
+				await guild.ban(member, reason="Freeloaded after joining heist!")
+				desc = ''
+				desc += f"> **Member:** __**{member}**__ \n"
+				desc += f"> **ID:** __**`{member.id}`**__ \n"
+				desc += f"> **Last Joined Heist:** <t:{int(time.timestamp())}:D>\n"
+				desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
+				desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=banDuration)))}:D> ({flCount+5} days)\n"
+				embed = discord.Embed(
+					title=f"<a:Siren:999394017005543464> Freeloader Spotted! <a:Siren:999394017005543464>",
+					description=desc,
+					color=discord.Color.random()
+				)
+				embed.set_thumbnail(url=member.avatar_url)
+				embed.set_footer(text=f"{guild.name}", icon_url=guild.icon_url)
+				await freeloadersFeed.send(embed=embed)
+				if channel.id != freeloadersFeed.id:
+					await channel.send(embed=embed)
+			
+
+		except:
+			await self.bot.db.freeloaders.update_one(
+				{"_id": member.id},
+				{"$set": {"no_of_freeloads." + str(guild.id): data["no_of_freeloads"][f"{guild.id}"]}},
+				upsert=True
+			)
+
+			# broadcast to channel set in settings
+			flCount = int(data["no_of_freeloads"][f"{guild.id}"])
+			if flCount == None:
+				flCount = 0
+			
+			if flCount > 9:
+				flCount = 9
+			banDuration = (flCount + 5) * 86400
+			data = {
+				'_id': member.id,
+				'BannedAt': datetime.datetime.now(),
+				'BanDuration': banDuration,
+				'BanedBy': self.bot.user.id,
+				'guildId': guild.id,
+			}
+			myquery = {"_id": member.id}
+			info = self.mycol.find(myquery)
+			flag = 0
+			dict = {}
+			for x in info:
+				dict = x
+				flag = 1
+
+			try:
+				if flag == 0:
+					self.mycol.insert_one(data)
+				else:
+					newvalues = {"$set": {"BanDuration": banDuration}}
+					dict["BanDuration"] = datetime.timedelta(seconds=banDuration)
+					self.mycol.update_one(myquery, newvalues)
+			except:
+				await freeloadersFeed.send(f"Error while updating data to octane!\n> {member.mention} `{member.id}` has left {guild.name}")
+				await channel.send(f"Error while updating data to octane!\n> {member.mention} `{member.id}` has left {guild.name}")
+				pass
+
+			await guild.ban(member, reason="Freeloaded after joining heist!")
+			desc = ''
+			desc += f"> **Member:** __**{member}**__ \n"
+			desc += f"> **ID:** __**`{member.id}`**__ \n"
+			desc += f"> **Last Joined Heist:** <t:{int(time.timestamp())}:D>\n"
+			desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
+			desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=banDuration)))}:D> ({flCount+5} days)\n"
+			embed = discord.Embed(
+				title=f"<a:Siren:999394017005543464> Freeloader Spotted! <a:Siren:999394017005543464>",
+				description=desc,
+				color=discord.Color.random()
+			)
+			embed.set_thumbnail(url=member.avatar_url)
+			embed.set_footer(text=f"{guild.name}", icon_url=guild.icon_url)
+			await freeloadersFeed.send(embed=embed)
+			if channel.id != freeloadersFeed.id:
+				await channel.send(embed=embed)
 
 	@commands.command(name="calculate", aliases=["calc", "c", "cal"])
 	async def calculate(self, ctx, *, query):
