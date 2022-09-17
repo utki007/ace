@@ -59,10 +59,10 @@ class dankutils(commands.Cog, description="Dank Utility"):
 				"name" : member.name,
 				"no_of_freeloads" : {}
 			}
-		if f"{guild.id}" in data["no_of_freeloads"].keys():
-			data["no_of_freeloads"][f"{guild.id}"] += 1
+		if f"{guild.id}" in freeloader_data["no_of_freeloads"].keys():
+			freeloader_data["no_of_freeloads"][f"{guild.id}"] += 1
 		else:
-			data["no_of_freeloads"][f"{guild.id}"] = 1
+			freeloader_data["no_of_freeloads"][f"{guild.id}"] = 1
 
 		try:
 			user_amari = await self.bot.amari_client.fetch_user(guild.id, member.id)
@@ -71,12 +71,12 @@ class dankutils(commands.Cog, description="Dank Utility"):
 				# add to db
 				await self.bot.db.freeloaders.update_one(
 					{"_id": member.id},
-					{"$set": {"no_of_freeloads." + str(guild.id): data["no_of_freeloads"][f"{guild.id}"]}},
+					{"$set": {"no_of_freeloads." + str(guild.id): freeloader_data["no_of_freeloads"][f"{guild.id}"]}},
 					upsert=True
 				)
 
 				# broadcast to channel set in settings
-				flCount = int(data["no_of_freeloads"][f"{guild.id}"])
+				flCount = int(freeloader_data["no_of_freeloads"][f"{guild.id}"])
 				if flCount == None:
 					flCount = 0
 				
@@ -87,7 +87,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 					'_id': member.id,
 					'BannedAt': datetime.datetime.now(),
 					'BanDuration': banDuration,
-					'BanedBy': self.bot.user.id,
+					'BannedBy': self.bot.user.id,
 					'guildId': guild.id,
 				}
 				myquery = {"_id": member.id}
@@ -132,12 +132,12 @@ class dankutils(commands.Cog, description="Dank Utility"):
 		except:
 			await self.bot.db.freeloaders.update_one(
 				{"_id": member.id},
-				{"$set": {"no_of_freeloads." + str(guild.id): data["no_of_freeloads"][f"{guild.id}"]}},
+				{"$set": {"no_of_freeloads." + str(guild.id): freeloader_data["no_of_freeloads"][f"{guild.id}"]}},
 				upsert=True
 			)
 
 			# broadcast to channel set in settings
-			flCount = int(data["no_of_freeloads"][f"{guild.id}"])
+			flCount = int(freeloader_data["no_of_freeloads"][f"{guild.id}"])
 			if flCount == None:
 				flCount = 0
 			
