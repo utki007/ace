@@ -114,7 +114,6 @@ class dankutils(commands.Cog, description="Dank Utility"):
 				desc = ''
 				desc += f"> **Member:** __**{member}**__ \n"
 				desc += f"> **ID:** __**`{member.id}`**__ \n"
-				desc += f"> **Last Joined Heist:** <t:{int(time.timestamp())}:D>\n"
 				desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
 				desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=banDuration)))}:D> ({flCount+5} days)\n"
 				embed = discord.Embed(
@@ -175,7 +174,6 @@ class dankutils(commands.Cog, description="Dank Utility"):
 			desc = ''
 			desc += f"> **Member:** __**{member}**__ \n"
 			desc += f"> **ID:** __**`{member.id}`**__ \n"
-			desc += f"> **Last Joined Heist:** <t:{int(time.timestamp())}:D>\n"
 			desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
 			desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=banDuration)))}:D> ({flCount+5} days)\n"
 			embed = discord.Embed(
@@ -365,7 +363,6 @@ class dankutils(commands.Cog, description="Dank Utility"):
 				desc = ''
 				desc += f"> **Member:** __**{user}**__ \n"
 				desc += f"> **ID:** __**`{user.id}`**__ \n"
-				desc += f"> **Last Joined Heist:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
 				desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
 				desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=duration)))}:D> (14 days)\n"
 				embed = discord.Embed(
