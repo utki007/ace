@@ -1220,7 +1220,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             bal = 0
 
         logg = discord.Embed(
-            title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s 6k Celeb Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+            title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s 7k Celeb Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
             description=f"**Logged Items:**\n{logged_items}",
             colour=0x78AB46,
             timestamp=datetime.datetime.utcnow()
