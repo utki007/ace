@@ -48,7 +48,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         dict["name"] = user.name[0:15]
         dict["bal"] = 0
         dict["event"] = [{"name": "750", "bal": 0}, {"name": "1.5k", "bal": 0}, {
-            "name": "3k", "bal": 0}, {"name": "6k", "bal": 0}]
+            "name": "3k", "bal": 0}, {"name": "7k", "bal": 0}]
         self.mycol.insert_one(dict)
 
     @commands.group(name="donation", aliases=['dono'])
@@ -1211,7 +1211,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             
         donor = await self.bot.donorBank.find_by_custom({'_id': member.id})
         if donor != None:
-            bal = next((item for item in donor['event'] if item["name"] == "6k"), None)
+            bal = next((item for item in donor['event'] if item["name"] == "7k"), None)
             if bal!= None:
                 bal = bal['bal']
             else:
@@ -1235,7 +1235,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
 
         await ctx.send(embed=logg)
-        await ctx.invoke(self.bot.get_command("celeb a"), name="6k", member=member, amount=str(amount), sendMessage=False)
+        await ctx.invoke(self.bot.get_command("celeb a"), name="7k", member=member, amount=str(amount), sendMessage=False)
 
     @commands.command(name="gupdate", aliases=['gu', 'gadd', 'ga'])
     @commands.check_any(checks.can_use(), checks.is_me())
