@@ -144,14 +144,14 @@ class selfroles(commands.Cog):
 
 		gawemoji = await gk.fetch_emoji(806631994770849843)
 		flashemoji = await gk.fetch_emoji(817302382630273054)
-		otheremoji = await gk.fetch_emoji(820323551520358440)
+		otheremoji = await gk.fetch_emoji(1024206931373608961)
 		eventemoji = await gk.fetch_emoji(854663256420909066)
 
 		buttons = [
 			create_button(style=ButtonStyle.grey,emoji=eventemoji, label="Event's Ping", disabled=False, custom_id="reaction:event"),
 			create_button(style=ButtonStyle.grey,emoji=gawemoji, label="Giveaways", disabled=False, custom_id="reaction:giveaways"),
 			create_button(style=ButtonStyle.grey,emoji=flashemoji, label="Flash Giveaways", disabled=False, custom_id="reaction:flash"),
-			create_button(style=ButtonStyle.grey,emoji=otheremoji, label="Other Giveaways", disabled=False, custom_id="reaction:other")
+			create_button(style=ButtonStyle.grey,emoji=otheremoji, label="Raffle Ping", disabled=False, custom_id="reaction:other")
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
