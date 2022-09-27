@@ -169,6 +169,16 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
     async def adono(self, ctx, member: discord.Member, amount, sendMessage: bool = True):
 
         try:
+            if member.id == ctx.author.id and not (member.guild_permissions.manage_guild):
+                warning = discord.Embed(
+                    color=self.bot.colors["RED"],
+                    description=f"{self.bot.emojis_list['Warrning']} | Self-adding is prohibited!"
+                )
+                return await ctx.send(embed=warning)
+        except:
+            pass
+
+        try:
             amount = await convert_to_numeral(amount)
             amount = await calculate(amount)
         except:
@@ -732,7 +742,16 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
     @celeb.command(name="add", description="Add donation to a special event", usage="<event-name> <member> <amount>", aliases=["a"])
     @commands.check_any(checks.can_use(), checks.is_me())
     async def add(self, ctx, name: str, member: discord.Member, amount, sendMessage: bool = True):
-
+        try:
+            if member.id == ctx.author.id and not (member.guild_permissions.manage_guild):
+                warning = discord.Embed(
+                    color=self.bot.colors["RED"],
+                    description=f"{self.bot.emojis_list['Warrning']} | Self-adding is prohibited!"
+                )
+                return await ctx.send(embed=warning)
+        except:
+            pass
+        
         try:
             amount = await convert_to_numeral(amount)
             amount = await calculate(amount)
