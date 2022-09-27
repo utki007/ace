@@ -1090,7 +1090,7 @@ class heistroles(commands.Cog):
 				title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
 				description=f"<a:tadaa:806631994770849843> {self.bot.emojis_list['right']} {giveaways.mention}\n"
 							f"<a:celebrate:817302382630273054>  {self.bot.emojis_list['right']} {flash.mention}\n"
-							f"<a:tgk_gift:820323551520358440> {self.bot.emojis_list['right']} {other.mention}\n"
+							f"<:tgk_raffle:1024206931373608961> {self.bot.emojis_list['right']} {other.mention}\n"
 							f"<a:calendar:854663256420909066>  {self.bot.emojis_list['right']} {event.mention}\n"                            
 							f"<a:gk_chatrevive:944667909702185010> {self.bot.emojis_list['right']} {chat.mention}\n",
 				color=0x9e3bff,
