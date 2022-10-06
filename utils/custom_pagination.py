@@ -4,7 +4,7 @@ async def addPages(client,ctx,message,pages):
     await message.add_reaction(client.emojis_list["left"])
     await message.add_reaction(client.emojis_list["stop"])
     await message.add_reaction(client.emojis_list["right"])
-    await message.add_reaction(client.emojis_list["rightArrow"])
+    await message.add_reaction("<a:tgk_arrow:832387973281480746>")
 
     def check(reaction, user):
         return user == ctx.author
@@ -20,17 +20,11 @@ async def addPages(client,ctx,message,pages):
             if i > 0:
                 i -= 1
                 await message.edit(embed = pages[i])
-            else:
-                await message.edit(embed = pages[0])
-                i = 0
         elif str(reaction) == client.emojis_list["right"]:
-            if i < len(pages):
+            if i < len(pages)-1:
                 i += 1
                 await message.edit(embed = pages[i])
-            else:
-                await message.edit(embed = pages[len(pages)-1])
-                i = len(pages)-1
-        elif  str(reaction) == client.emojis_list["rightArrow"]:
+        elif  str(reaction) == "<a:tgk_arrow:832387973281480746>":
             await message.edit(embed = pages[len(pages)-1])
             i = len(pages)-1
         elif  str(reaction) == client.emojis_list["stop"]:
