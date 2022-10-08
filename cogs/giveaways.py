@@ -538,9 +538,9 @@ class giveaway(commands.Cog):
 		message = await channel.send("**\n**",delete_after=0)
 		# await message.add_reaction("<a:Girl7_Celebrate:941800075271733350>")
 		url = message.jump_url
-		emojig = self.bot.get_guild(815849745327194153)
-		emoji = await emojig.fetch_emoji(941790535151144990)
-		buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url=url)]
+		gk = self.bot.get_guild(785839283847954433)
+		eventemoji = await gk.fetch_emoji(854663256420909066)
+		buttons = [create_button(style=ButtonStyle.URL, label="Head to event channel!", emoji=eventemoji, disabled=False, url=url)]
 		msg = await ctx.channel.send(content=f"{event.mention}",embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Success!", components=[create_actionrow(*buttons)])
 		# await ctx.send(content=f"`{event.mention}`",embed = event_embed)
