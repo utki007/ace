@@ -169,16 +169,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
     async def adono(self, ctx, member: discord.Member, amount, sendMessage: bool = True):
 
         try:
-            if member.id == ctx.author.id and not (member.guild_permissions.manage_guild):
-                warning = discord.Embed(
-                    color=self.bot.colors["RED"],
-                    description=f"{self.bot.emojis_list['Warrning']} | Self-adding is prohibited!"
-                )
-                return await ctx.send(embed=warning)
-        except:
-            pass
-
-        try:
             amount = await convert_to_numeral(amount)
             amount = await calculate(amount)
         except:
