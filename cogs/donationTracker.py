@@ -745,7 +745,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         try:
             amount = await convert_to_numeral(amount)
             amount = await calculate(amount)
-            amount = int(float(multiplier) * amount)
+            multi_amount = int(float(multiplier) * amount)
         except:
             await ctx.send(":warning: Invalid amount provided!! Try Again!! :warning:")
             return
@@ -773,10 +773,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         # getting the particular event and changing it.
         spldono = f"\n**EVENT DONATIONS** \n"
         res = []
-        event_bal = amount
+        event_bal = multi_amount
         for req in dict[event]:
             if req["name"] == name:
-                req["bal"] = req["bal"]+amount
+                req["bal"] = req["bal"]+multi_amount
                 dict["bal"] = dict["bal"]+amount
                 event_bal = req["bal"]
                 flag = 1
@@ -805,7 +805,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         # showing donor balance
         display = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-            description=f"\n**Amount Credited to {name} Spl.: ** ⏣ {amount:,}\n"
+            description=f"\n**Amount Credited to {name} Spl.: ** ⏣ {multi_amount:,}\n"
                         f"**Total Donation: ** ⏣ {dict[self.bal]:,} \n"
                         f"{spldono}\n"
                         f"**_Sanctioned By: _** {ctx.author.mention}\n"
@@ -820,7 +820,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
         dmMessage = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK Donation Bank__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-            description=f"\n**Amount Credited to {name} Spl.: ** ⏣ {amount:,}\n"
+            description=f"\n**Amount Credited to {name} Spl.: ** ⏣ {multi_amount:,}\n"
                         # f"**By: ** {ctx.author.mention}\n"
                         f"**Total Donation: ** ⏣ {dict[self.bal]:,} \n\n"
                         f"{spldono}\n"
