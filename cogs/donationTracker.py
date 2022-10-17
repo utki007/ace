@@ -48,7 +48,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         dict["name"] = user.name[0:15]
         dict["bal"] = 0
         dict["event"] = [{"name": "750", "bal": 0}, {"name": "1.5k", "bal": 0}, {
-            "name": "3k", "bal": 0}, {"name": "7k", "bal": 0}]
+            "name": "3k", "bal": 0}, {"name": "7k", "bal": 0}, {"name": "diwali", "bal": 0}]
         self.mycol.insert_one(dict)
 
     @commands.group(name="donation", aliases=['dono'])
@@ -712,7 +712,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             help.add_field(
                 name="<a:TGK_sparkles:838838345316040744> __Special Donation__",
                 value=f"**1.** Add donation to a special event\n"
-                f"ex = `gk.celeb add <event-name> <member> <amount>`\n"
+                f"ex = `gk.celeb add <event-name> <member> <amount> <multiplier>`\n"
                 f"**2.** Remove donation from a special event\n"
                 f"ex = `gk.celeb remove <event-name> <member> <amount>`\n"
                 f"**3.** Automatic donation logging for special event\n"
@@ -731,7 +731,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
     @celeb.command(name="add", description="Add donation to a special event", usage="<event-name> <member> <amount>", aliases=["a"])
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def add(self, ctx, name: str, member: discord.Member, amount, sendMessage: bool = True):
+    async def add(self, ctx, name: str, member: discord.Member, amount, multiplier: float = 1.0, sendMessage: bool = True):
         try:
             if member.id == ctx.author.id and not (member.guild_permissions.manage_guild):
                 warning = discord.Embed(
@@ -745,6 +745,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         try:
             amount = await convert_to_numeral(amount)
             amount = await calculate(amount)
+            amount = int(float(multiplier) * amount)
         except:
             await ctx.send(":warning: Invalid amount provided!! Try Again!! :warning:")
             return
@@ -1136,7 +1137,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         id = "name"
         bal = "bal"
         embed = discord.Embed(
-            title=f"<a:TGK_Pandaswag:830525027341565982> **`{name.upper()} Specials Top 10`** <a:TGK_Pandaswag:830525027341565982>",
+            title=f"<a:TGK_Pandaswag:830525027341565982> **`{name.upper()} Bonanza Top 10`** <a:TGK_Pandaswag:830525027341565982>",
             description=f"```|{'🏆': ^3}| {'Name': <13}|{'Amount':>6} |\n"
             f"{desc}```\n\n",
             colour=member.colour,
