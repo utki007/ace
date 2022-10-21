@@ -67,6 +67,12 @@ async def on_ready():
 		"1000": guild.get_role(940581297145905212)
 	}
 
+	bot.event_diwali = {
+		"10": guild.get_role(1032875244966383617),
+		"100": guild.get_role(1032969117692608552),
+		"500": guild.get_role(1032969966217076746)
+	}
+
 	bot.premium_colour_users = [
 		guild.get_role(810128257491795979),
 		guild.get_role(836228842397106176),
