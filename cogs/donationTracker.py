@@ -1103,7 +1103,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         sum_df = df[[nameofevent]]
         totaldono = f"{int((sum_df[sum_df[nameofevent]>5000000.0].sum())/2):,}"
         # totaldono = f'{int(df["event_"+name].sum()):,}'
-        df = df.head(10)
+        df = df.head(5)
 
         desc = ""
         spl = 'event_'+name
@@ -1137,7 +1137,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         id = "name"
         bal = "bal"
         embed = discord.Embed(
-            title=f"<a:TGK_Pandaswag:830525027341565982> **`{name.upper()} Bonanza Top 10`** <a:TGK_Pandaswag:830525027341565982>",
+            title=f"<a:TGK_Pandaswag:830525027341565982> **`{name.upper()} Bonanza Top 5`** <a:TGK_Pandaswag:830525027341565982>",
             description=f"```|{'🏆': ^3}| {'Name': <13}|{'Amount':>6} |\n"
             f"{desc}```\n\n",
             colour=member.colour,
