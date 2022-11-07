@@ -268,7 +268,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		text = text.replace("<>","",100)
 		text = text.replace("<a>","",100)
 
-		text = f"{pings} \n{text}"
+		text = f"{text} \n[ {pings} ]"
 
 		if ctx.channel.id == self.partnerheist or ctx.channel.category.id == 817049348977983506:
 			await ctx.send(text)
