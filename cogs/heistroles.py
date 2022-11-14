@@ -54,6 +54,9 @@ class heistroles(commands.Cog):
 		if self.bot.user.id == 859107514082394142:
 			return
 
+		if message.author.id == 646937666251915264 and message.content != None and "server is currenty" in message.content:
+			await message.channel.send(f"> <@&1034072149247397938> form up for _server drop_!")  
+
 		if message.author.id == 270904126974590976:
 			
 			if len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():

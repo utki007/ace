@@ -28,32 +28,32 @@ class sticky(commands.Cog, description="Sticky Utility"):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-    @commands.Cog.listener()
-    async def on_message(self, message: discord.Message):
-        """Event which checks for sticky messages to resend."""
-        # if message.author.bot:
-        #     return
-        channel = message.channel
-        myquery = {"_id": channel.id}
-        info = self.mycol.find(myquery)
-        dict = {}
-        last = None
-        for x in info:
-            dict = x
-            last = dict["last_message_id"]
+    # @commands.Cog.listener()
+    # async def on_message(self, message: discord.Message):
+    #     """Event which checks for sticky messages to resend."""
+    #     # if message.author.bot:
+    #     #     return
+    #     channel = message.channel
+    #     myquery = {"_id": channel.id}
+    #     info = self.mycol.find(myquery)
+    #     dict = {}
+    #     last = None
+    #     for x in info:
+    #         dict = x
+    #         last = dict["last_message_id"]
 
-        if last is None or message.id == last:
-            return
-        try:
-            last = await channel.fetch_message(last)
-        except discord.HTTPException:
-            pass
-        else:
-            try:
-                await asyncio.sleep(20)
-                await last.delete()
-            except discord.NotFound:
-                pass
+    #     if last is None or message.id == last:
+    #         return
+    #     try:
+    #         last = await channel.fetch_message(last)
+    #     except discord.HTTPException:
+    #         pass
+    #     else:
+    #         try:
+    #             await asyncio.sleep(20)
+    #             await last.delete()
+    #         except discord.NotFound:
+    #             pass
 
     @commands.group(name="sticky",description="Help for sticky message")
     @commands.check_any(checks.can_use(), checks.is_me())
@@ -141,27 +141,27 @@ class sticky(commands.Cog, description="Sticky Utility"):
         )
         return await channel.send(content, allowed_mentions=am)
 
-    @commands.Cog.listener()
-    async def on_raw_message_delete(self, payload: discord.raw_models.RawMessageDeleteEvent):
-        """If the stickied message was deleted, re-post it."""
-        channel = self.bot.get_channel(payload.channel_id)
-        myquery = {"_id": channel.id}
-        info = self.mycol.find(myquery)
-        flag = 0
-        dict = {}
-        last = None
-        for x in info:
-            dict = x
-            flag = 1
-            last = dict["last_message_id"]
+    # @commands.Cog.listener()
+    # async def on_raw_message_delete(self, payload: discord.raw_models.RawMessageDeleteEvent):
+    #     """If the stickied message was deleted, re-post it."""
+    #     channel = self.bot.get_channel(payload.channel_id)
+    #     myquery = {"_id": channel.id}
+    #     info = self.mycol.find(myquery)
+    #     flag = 0
+    #     dict = {}
+    #     last = None
+    #     for x in info:
+    #         dict = x
+    #         flag = 1
+    #         last = dict["last_message_id"]
 
-        if payload.message_id != last:
-            return
-        content = dict["content"]
-        # await asyncio.sleep(30)
-        msg = await self.send_stickied(channel, content)
-        newvalues = {"$set": {"last_message_id": msg.id}}
-        self.mycol.update_one(myquery, newvalues)
+    #     if payload.message_id != last:
+    #         return
+    #     content = dict["content"]
+    #     # await asyncio.sleep(30)
+    #     msg = await self.send_stickied(channel, content)
+    #     newvalues = {"$set": {"last_message_id": msg.id}}
+    #     self.mycol.update_one(myquery, newvalues)
 
 def setup(bot):
     bot.add_cog(sticky(bot))
