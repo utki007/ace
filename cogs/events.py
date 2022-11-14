@@ -30,37 +30,37 @@ class Events(commands.Cog):
         
 
     
-    # @commands.Cog.listener()
-    # async def on_command_error(self, ctx, error):
-    #     # Ignore these errors
-    #     if isinstance(error, commands.CommandOnCooldown):
-    #         # If the command is currently on cooldown trip this
-    #         m, s = divmod(error.retry_after, 60)
-    #         h, m = divmod(m, 60)
-    #         if int(h) == 0 and int(m) == 0:
-    #             await ctx.send(f"The command is under a cooldown of **{int(s)} seconds** to prevent abuse!")
-    #         elif int(h) == 0 and int(m) != 0:
-    #             await ctx.send(
-    #                 f"The command is under a cooldown of **{int(m)} minutes and {int(s)} seconds** to prevent abuse!"
-    #             )
-    #         else:
-    #             await ctx.send(
-    #                 f"The command is under a cooldown of **{int(h)} hours, {int(m)} minutes and {int(s)} seconds** to prevent abuse!"
-    #             )
-    #     elif isinstance(error, commands.CheckFailure):
-    #         # If the command has failed a check, trip this
-    #         await ctx.send("Hey! You lack permission to use this command.")
-    #     elif isinstance(error, CommandDisableByDev):
-    #         await ctx.send('This command is currently disabled by developers.')
-    #     elif isinstance(error, commands.CommandInvokeError):
-    #         return
-    #     elif isinstance(error, commands.CommandNotFound):
-    #         return
-    #     else:
-    #         #raise error
-    #         embed = discord.Embed(color=0xE74C3C, 
-    #             description=f"<:tgk_warning:840638147838738432> | Error: `{error}`")
-    #         await ctx.send(embed=embed)
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        # Ignore these errors
+        if isinstance(error, commands.CommandOnCooldown):
+            # If the command is currently on cooldown trip this
+            m, s = divmod(error.retry_after, 60)
+            h, m = divmod(m, 60)
+            if int(h) == 0 and int(m) == 0:
+                await ctx.send(f"The command is under a cooldown of **{int(s)} seconds** to prevent abuse!")
+            elif int(h) == 0 and int(m) != 0:
+                await ctx.send(
+                    f"The command is under a cooldown of **{int(m)} minutes and {int(s)} seconds** to prevent abuse!"
+                )
+            else:
+                await ctx.send(
+                    f"The command is under a cooldown of **{int(h)} hours, {int(m)} minutes and {int(s)} seconds** to prevent abuse!"
+                )
+        elif isinstance(error, commands.CheckFailure):
+            # If the command has failed a check, trip this
+            await ctx.send("Hey! You lack permission to use this command.")
+        elif isinstance(error, CommandDisableByDev):
+            await ctx.send('This command is currently disabled by developers.')
+        elif isinstance(error, commands.CommandInvokeError):
+            return
+        elif isinstance(error, commands.CommandNotFound):
+            return
+        else:
+            #raise error
+            embed = discord.Embed(color=0xE74C3C, 
+                description=f"<:tgk_warning:840638147838738432> | Error: `{error}`")
+            await ctx.send(embed=embed)
     
     @tasks.loop(seconds=300)
     async def change_status(self):      
@@ -73,7 +73,7 @@ class Events(commands.Cog):
         
         member = guild.member_count - count
         activity = str(member) + " members!" 
-        await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=activity),status= discord.Status.invisible)
+        await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=activity),status= discord.Status.dnd)
 
     @tasks.loop(seconds=28800)
     async def randomrole(self):

@@ -22,7 +22,7 @@ from amari import AmariClient
 
 description = '''This is what I have been programmed to do'''
 bot = commands.Bot(
-    command_prefix=["tgk "],
+    command_prefix=["? ", "?", "gk.", "Gk."],
     description=description,
     case_insensitive=True,
     intents=discord.Intents.all(),
