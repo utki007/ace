@@ -378,14 +378,13 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		else:
 			pings = f"[ <@&1048602415047389224> <@&1048602378858922086> ]"
 
-		if ctx.channel.id == 846766444695650345:
+		if ctx.channel.id == 1048587172523016252 or ctx.author.id == 301657045248114690:
 			await channel1.send(f"{heist_ad}\n[  ]", allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
 			await channel2.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
 			await channel3.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
-			await channel3.send("<@&836228842397106176> @here", delete_after=1)
 			await user.send(f"\n<#{channel}> {link} ")
 		elif ctx.guild.id in guilds:
 			await channel2.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)]
