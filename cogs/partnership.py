@@ -341,16 +341,16 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			except:
 				return await ctx.send(f"{ctx.author.mention} Invalid Invite")
 			buttons = [
-				create_button(style=ButtonStyle.URL, label="Server Link!", emoji=server_emoji, disabled=False, url=server_link),
-				create_button(style=ButtonStyle.URL, label="Heist Link!", emoji=heistemoji, disabled=False, url=link)
+				create_button(style=ButtonStyle.URL, label="Join Heist!", emoji=heistemoji, disabled=False, url=link),
+				create_button(style=ButtonStyle.URL, label="Join Server!", emoji=server_emoji, disabled=False, url=server_link)
 			]
 		elif link_type == "Server":
 			buttons = [
-				create_button(style=ButtonStyle.URL, label="Server Link!", emoji=server_emoji, disabled=False, url=link)
+				create_button(style=ButtonStyle.URL, label="Join Server!", emoji=server_emoji, disabled=False, url=link)
 			]
 		else:
 			buttons = [
-				create_button(style=ButtonStyle.URL, label="Heist Link!", emoji=heistemoji, disabled=False, url=link)
+				create_button(style=ButtonStyle.URL, label="Join Heist!", emoji=heistemoji, disabled=False, url=link)
 			]
 
 		am = discord.AllowedMentions(
