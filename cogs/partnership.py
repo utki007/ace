@@ -385,7 +385,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			)
 			await channel3.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
-			await user.send(f"\n<#{channel}> {link} ")
+			await user.send(f"\n<#{channel}> ", components=[create_actionrow(*buttons)])
 		elif ctx.guild.id in guilds:
 			await channel2.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
