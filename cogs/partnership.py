@@ -373,7 +373,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Channel:** <#{channel}>\n\n"
 		heist_ad += f" ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
 
-		if heist_type == "small":
+		if heist_type == "mini":
 			pings = f"[ <@&1048602378858922086> ]"
 		else:
 			pings = f"[ <@&1048602415047389224> <@&1048602378858922086> ]"
