@@ -379,7 +379,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			pings = f"[ <@&1048602415047389224> <@&1048602378858922086> ]"
 
 		if ctx.channel.id == 1048587172523016252 or ctx.author.id == 301657045248114690:
-			await channel1.send(f"{heist_ad}\n[  ]", allowed_mentions=am, components=[create_actionrow(*buttons)]
+			await channel1.send(f"{heist_ad}\n{pings}", allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
 			await channel2.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
