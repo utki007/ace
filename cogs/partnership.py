@@ -12,6 +12,13 @@ from utils.Checks import checks
 # helper functions
 from utils.custom_pagination import *
 
+from discord_slash import cog_ext, cog_ext
+from discord_slash.utils.manage_commands import create_option, create_permission
+from discord_slash.model import SlashCommandPermissionType
+from discord_slash.utils.manage_components import create_button, create_actionrow
+from discord_slash.model import ButtonStyle
+from discord_slash.context import ComponentContext
+
 
 def commonPing(role1, role2):
 	ping1 = set(role1)
@@ -282,8 +289,10 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
 	@commands.command(name="Grinders", description="Ping Grinders Heist", aliases=['grind', 'hg'])
 	@commands.check_any(checks.can_use(), checks.is_me(), commands.bot_has_any_role(842485323329568769, 933605749400166451))
-	async def grind(self, ctx, channel: int, link: str):
+	async def grind(self, ctx, channel: int, link: str, server_link: str=""):
 		await ctx.message.delete()
+
+				
 		if "://" not in link:
 			link = "https://discord.gg/" + link
 
@@ -291,6 +300,22 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		if "channels" in link:
 			channel = int(link.split("/")[-2])
 			link_type = "Channel Link"
+
+		if link_type == "Channel Link" and server_link != "":
+			buttons = [
+				create_button(style=ButtonStyle.URL, label="Server Link!", disabled=False, url=server_link),
+				create_button(style=ButtonStyle.URL, label="Heist Link!", disabled=False, url=link)
+			]
+		elif link_type == "Server":
+			buttons = [
+				create_button(style=ButtonStyle.URL, label="Server Link!", disabled=False, url=link)
+			]
+		else:
+			buttons = [
+				create_button(style=ButtonStyle.URL, label="Heist Link!", disabled=False, url=link)
+			]
+
+		
 
 		am = discord.AllowedMentions(
 			users=False,  # Whether to ping individual user @mentions
@@ -314,23 +339,23 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			await channel1.send(
 				f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
 				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
-				f":small_blue_diamond: | **{link_type}:** {link} \n"
+				# f":small_blue_diamond: | **{link_type}:** {link} \n"
 				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
-				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
+				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
 			await channel2.send(
 				f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
 				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
-				f":small_blue_diamond: | **{link_type}:** {link} \n"
+				# f":small_blue_diamond: | **{link_type}:** {link} \n"
 				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
-				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
+				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
 			await channel3.send(
 				f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
 				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
-				f":small_blue_diamond: | **{link_type}:** {link} \n"
+				# f":small_blue_diamond: | **{link_type}:** {link} \n"
 				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
-				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
+				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
 			await channel3.send("<@&836228842397106176> @here", delete_after=1)
 			await user.send(f"\n<#{channel}> {link} ")
@@ -338,23 +363,23 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			await channel2.send(
 				f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
 				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
-				f":small_blue_diamond: | **{link_type}:** {link} \n"
+				# f":small_blue_diamond: | **{link_type}:** {link} \n"
 				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
-				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
+				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
 			await channel3.send(
 				f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
 				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
-				f":small_blue_diamond: | **{link_type}:** {link} \n"
+				# f":small_blue_diamond: | **{link_type}:** {link} \n"
 				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
-				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am
+				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
-			await user.send(f"\n<#{channel}> {link} ")
+			await user.send(f"\n<#{channel}> ", components=[create_actionrow(*buttons)])
 		else:
 			message = await ctx.send(
 				f"To be used only in Heist channels. Let me report this!"
 			)
-			await user.send(f"<#{channel}> {link} \n used here {message.jump_url}")
+			await user.send(f"<#{channel}> \n used here {message.jump_url}", components=[create_actionrow(*buttons)])
 
 	@commands.command(name="pings", description="Check Partner Pings")
 	@commands.check_any(checks.can_use(), checks.is_me())
