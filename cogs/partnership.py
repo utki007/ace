@@ -9,6 +9,7 @@ import datetime
 import itertools
 import re
 from utils.Checks import checks
+from utils.convertor import calculate, convert_to_numeral, convert_to_time
 # helper functions
 from utils.custom_pagination import *
 
@@ -289,10 +290,33 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
 	@commands.command(name="Grinders", description="Ping Grinders Heist", aliases=['grind', 'hg'])
 	@commands.check_any(checks.can_use(), checks.is_me(), commands.bot_has_any_role(842485323329568769, 933605749400166451))
-	async def grind(self, ctx, channel: int, link: str, server_link: str=""):
+	async def grind(self, ctx, channel: int, link: str, amount: str = "50m", timer: str = "5m", server_link: str=""):
 		await ctx.message.delete()
 
-				
+		try:
+			amount = await convert_to_numeral(amount)
+			amount = await calculate(amount)
+			amount = int(amount)
+		except:
+			warning = discord.Embed(
+				color=self.bot.colors["RED"],
+				description=f"{self.bot.emojis_list['Warrning']} | Error with Heist Amount!!")
+			await ctx.send(embed = warning,hidden=True)
+			return
+		
+		try:
+			timer = await convert_to_time(timer)
+			timer = await calculate(timer)
+			timer = datetime.datetime.utcnow() + datetime.timedelta(seconds=timer)
+		except:
+			warning = discord.Embed(
+				color=self.bot.colors["RED"],
+				description=f"{self.bot.emojis_list['Warrning']} | Error with Heist Timer!!")
+			await ctx.send(embed = warning,hidden=True)
+			return
+		
+		heist_ad = f"★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
+		
 		if "://" not in link:
 			link = "https://discord.gg/" + link
 
@@ -304,6 +328,11 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		if link_type == "Channel Link" and server_link != "":
 			if "://" not in server_link:
 				server_link = "https://discord.gg/" + server_link
+			try:
+				invite = await self.bot.fetch_invite(server_link)
+				heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Server Name:** {invite.guild}\n"
+			except:
+				return await ctx.send(f"{ctx.author.mention} Invalid Invite")
 			buttons = [
 				create_button(style=ButtonStyle.URL, label="Server Link!", disabled=False, url=server_link),
 				create_button(style=ButtonStyle.URL, label="Heist Link!", disabled=False, url=link)
@@ -317,18 +346,12 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 				create_button(style=ButtonStyle.URL, label="Heist Link!", disabled=False, url=link)
 			]
 
-		
-
 		am = discord.AllowedMentions(
 			users=False,  # Whether to ping individual user @mentions
 			everyone=False,  # Whether to ping @everyone or @here mentions
 			roles=False,  # Whether to ping role @mentions
 			replied_user=False,  # Whether to ping on replies to messages
 		)
-
-		# guild1 = self.bot.get_guild(785839283847954433)
-		# guild2 = self.bot.get_guild(838646783785697290)
-		# guild3 = self.bot.get_guild(927399549063004270)
 
 		guilds = [838646783785697290, 927399549063004270]
 
@@ -337,44 +360,24 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		channel3 = self.bot.get_channel(933605919055568898)
 
 		user = self.bot.get_user(301657045248114690)
+
+		heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Amount:** **⏣ {int(amount):,}**\n"
+		heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Time:** <t:{int(datetime.datetime.timestamp(timer))}:t> (<t:{int(datetime.datetime.timestamp(timer))}:R>)\n"
+		heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Channel:** <#{channel}>\n\n"
+
 		if ctx.channel.id == 846766444695650345:
-			await channel1.send(
-				f"** ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
-				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
-				# f":small_blue_diamond: | **{link_type}:** {link} \n"
-				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
-				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am, components=[create_actionrow(*buttons)]
+			await channel1.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
-			await channel2.send(
-				f"** ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
-				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
-				# f":small_blue_diamond: | **{link_type}:** {link} \n"
-				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
-				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am, components=[create_actionrow(*buttons)]
+			await channel2.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
-			await channel3.send(
-				f"** ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
-				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
-				# f":small_blue_diamond: | **{link_type}:** {link} \n"
-				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
-				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am, components=[create_actionrow(*buttons)]
+			await channel3.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
 			await channel3.send("<@&836228842397106176> @here", delete_after=1)
 			await user.send(f"\n<#{channel}> {link} ")
 		elif ctx.guild.id in guilds:
-			await channel2.send(
-				f"** ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
-				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
-				# f":small_blue_diamond: | **{link_type}:** {link} \n"
-				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
-				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am, components=[create_actionrow(*buttons)]
+			await channel2.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
-			await channel3.send(
-				f"** ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
-				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
-				# f":small_blue_diamond: | **{link_type}:** {link} \n"
-				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
-				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am, components=[create_actionrow(*buttons)]
+			await channel3.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
 			await user.send(f"\n<#{channel}> ", components=[create_actionrow(*buttons)])
 		else:
