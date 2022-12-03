@@ -302,6 +302,8 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			link_type = "Channel Link"
 
 		if link_type == "Channel Link" and server_link != "":
+			if "://" not in server_link:
+				server_link = "https://discord.gg/" + server_link
 			buttons = [
 				create_button(style=ButtonStyle.URL, label="Server Link!", disabled=False, url=server_link),
 				create_button(style=ButtonStyle.URL, label="Heist Link!", disabled=False, url=link)
