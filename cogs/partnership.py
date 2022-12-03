@@ -314,6 +314,13 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 				description=f"{self.bot.emojis_list['Warrning']} | Error with Heist Timer!!")
 			await ctx.send(embed = warning,hidden=True)
 			return
+
+		gk = self.bot.get_guild(785839283847954433)
+		dmop = self.bot.get_guild(838646783785697290)
+		dev_server = self.bot.get_guild(999551299286732871)
+		
+		server_emoji = await dev_server.fetch_emoji(1048598237612867584)
+		heistemoji = await dmop.fetch_emoji(925617827447177247)
 		
 		heist_ad = f"★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
 		
@@ -334,16 +341,16 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			except:
 				return await ctx.send(f"{ctx.author.mention} Invalid Invite")
 			buttons = [
-				create_button(style=ButtonStyle.URL, label="Server Link!", disabled=False, url=server_link),
-				create_button(style=ButtonStyle.URL, label="Heist Link!", disabled=False, url=link)
+				create_button(style=ButtonStyle.URL, label="Server Link!", emoji=server_emoji, disabled=False, url=server_link),
+				create_button(style=ButtonStyle.URL, label="Heist Link!", emoji=heistemoji, disabled=False, url=link)
 			]
 		elif link_type == "Server":
 			buttons = [
-				create_button(style=ButtonStyle.URL, label="Server Link!", disabled=False, url=link)
+				create_button(style=ButtonStyle.URL, label="Server Link!", emoji=server_emoji, disabled=False, url=link)
 			]
 		else:
 			buttons = [
-				create_button(style=ButtonStyle.URL, label="Heist Link!", disabled=False, url=link)
+				create_button(style=ButtonStyle.URL, label="Heist Link!", emoji=heistemoji, disabled=False, url=link)
 			]
 
 		am = discord.AllowedMentions(
@@ -364,6 +371,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Amount:** **⏣ {int(amount):,}**\n"
 		heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Time:** <t:{int(datetime.datetime.timestamp(timer))}:t> (<t:{int(datetime.datetime.timestamp(timer))}:R>)\n"
 		heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Channel:** <#{channel}>\n\n"
+		heist_ad += f" ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
 
 		if ctx.channel.id == 846766444695650345:
 			await channel1.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)]
