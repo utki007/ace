@@ -290,7 +290,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
 	@commands.command(name="Grinders", description="Ping Grinders Heist", aliases=['grind', 'hg'])
 	@commands.check_any(checks.can_use(), checks.is_me(), commands.bot_has_any_role(842485323329568769, 933605749400166451))
-	async def grind(self, ctx, channel: int, link: str, amount: str = "50m", timer: str = "5m", server_link: str=""):
+	async def grind(self, ctx, channel: int, link: str, amount: str = "50m", timer: str = "5m", server_link: str="", heist_type: str="mini"):
 		await ctx.message.delete()
 
 		try:
@@ -320,7 +320,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		dev_server = self.bot.get_guild(999551299286732871)
 		
 		server_emoji = await dev_server.fetch_emoji(1048598237612867584)
-		heistemoji = await dmop.fetch_emoji(925617827447177247)
+		heistemoji = await gk.fetch_emoji(932911351154741308)
 		
 		heist_ad = f"★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
 		
@@ -362,7 +362,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
 		guilds = [838646783785697290, 927399549063004270]
 
-		channel1 = self.bot.get_channel(846766444695650345)
+		channel1 = self.bot.get_channel(1048587172523016252)
 		channel2 = self.bot.get_channel(840231915100569650)
 		channel3 = self.bot.get_channel(933605919055568898)
 
@@ -373,8 +373,13 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Channel:** <#{channel}>\n\n"
 		heist_ad += f" ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
 
+		if heist_type == "small":
+			pings = f"[ <@&1048602378858922086> ]"
+		else:
+			pings = f"[ <@&1048602415047389224> <@&1048602378858922086> ]"
+
 		if ctx.channel.id == 846766444695650345:
-			await channel1.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)]
+			await channel1.send(f"{heist_ad}\n[  ]", allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
 			await channel2.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
