@@ -339,21 +339,21 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		user = self.bot.get_user(301657045248114690)
 		if ctx.channel.id == 846766444695650345:
 			await channel1.send(
-				f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
+				f"** ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
 				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
 				# f":small_blue_diamond: | **{link_type}:** {link} \n"
 				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
 				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
 			await channel2.send(
-				f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
+				f"** ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
 				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
 				# f":small_blue_diamond: | **{link_type}:** {link} \n"
 				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
 				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
 			await channel3.send(
-				f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
+				f"** ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
 				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
 				# f":small_blue_diamond: | **{link_type}:** {link} \n"
 				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
@@ -363,14 +363,14 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			await user.send(f"\n<#{channel}> {link} ")
 		elif ctx.guild.id in guilds:
 			await channel2.send(
-				f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
+				f"** ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
 				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
 				# f":small_blue_diamond: | **{link_type}:** {link} \n"
 				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
 				f"ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ", allowed_mentions=am, components=[create_actionrow(*buttons)]
 			)
 			await channel3.send(
-				f"**\n**\n**\n**\n**\n**\n ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
+				f"** ★｡ﾟ☆ﾟ__**Heist Time Grinders!!!**__☆ﾟ｡★\n\n"
 				# f":small_orange_diamond: | **Time:** 15 mins (1630 IST)"
 				# f":small_blue_diamond: | **{link_type}:** {link} \n"
 				f":small_orange_diamond: | **Channel:** <#{channel}>\n\n "
