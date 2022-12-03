@@ -356,7 +356,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		am = discord.AllowedMentions(
 			users=False,  # Whether to ping individual user @mentions
 			everyone=False,  # Whether to ping @everyone or @here mentions
-			roles=False,  # Whether to ping role @mentions
+			roles=True,  # Whether to ping role @mentions
 			replied_user=False,  # Whether to ping on replies to messages
 		)
 
