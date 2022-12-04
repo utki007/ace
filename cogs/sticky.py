@@ -111,7 +111,7 @@ class sticky(commands.Cog, description="Sticky Utility"):
         except:
             await ctx.send(f"⚠  {ctx.author.mention} , I am unable add sticky message to the database. Try again later!!. ⚠")
             return
-        await ctx.send(f"New Sticky message in {channel.mention} has been set",delete_after=10)
+        await ctx.send(f"New Sticky message in {channel.mention} has been set")
 
     @sticky.command(name="unset",description="Help for sticky message", aliases=['remove'])
     @commands.check_any(checks.can_use(), checks.is_me())
