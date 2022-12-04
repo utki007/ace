@@ -251,6 +251,8 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
 		if flag == 0:
 			return await ctx.send(embed=unauthorized, delete_after=30)
+		if int(dict["user"]) != ctx.author.id:
+			return await ctx.send(embed=unauthorized, delete_after=30)
 		pings = dict["pings"]
 
 		if text == '':
