@@ -337,7 +337,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 				server_link = "https://discord.gg/" + server_link
 			try:
 				invite = await self.bot.fetch_invite(server_link)
-				heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Server Name:** {invite.guild}\n"
+				heist_ad = f"★｡ﾟ☆ﾟ__**{invite.guild}'s Heist!**__☆ﾟ｡★\n\n"
 			except:
 				return await ctx.send(f"{ctx.author.mention} Invalid Invite")
 			buttons = [
@@ -369,8 +369,8 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		user = self.bot.get_user(301657045248114690)
 
 		heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Amount:** **⏣ {int(amount):,}**\n"
-		heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Time:** <t:{int(datetime.datetime.timestamp(timer))}:t> (<t:{int(datetime.datetime.timestamp(timer))}:R>)\n"
 		heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Channel:** <#{channel}>\n\n"
+		heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Time:** <t:{int(datetime.datetime.timestamp(timer))}:t> (<t:{int(datetime.datetime.timestamp(timer))}:R>)\n"
 		heist_ad += f" ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
 
 		if heist_type == "mini":
