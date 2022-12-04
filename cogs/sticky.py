@@ -129,6 +129,12 @@ class sticky(commands.Cog, description="Sticky Utility"):
             return
         else:
             self.mycol.delete_one(myquery)
+            last = dict["last_message_id"]
+            try:
+                last = await channel.fetch_message(last)
+                await last.delete()
+            except:
+                pass
         await ctx.send(f"Sticky message removed from {channel.mention}")
 
     async def send_stickied(self, channel: discord.TextChannel, content: str):
