@@ -408,7 +408,7 @@ class heistroles(commands.Cog):
 					url="https://top.gg/servers/785839283847954433/vote"
 				)
 				try:
-					await message.reply(embed=embed, components=[create_actionrow(*buttons)], mention_author=False)
+					await message.reply(embed=embed, components=[create_actionrow(*buttons)], mention_author=False , delete_after = 30)
 				except:
 					pass
 			elif "heist" in messageContent:

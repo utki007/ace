@@ -58,7 +58,6 @@ async def on_ready():
 
 	bot.event_7k = {
 		"1": guild.get_role(943535266143039500),
-		"2": guild.get_role(940581716312084530),
 		"11": guild.get_role(940581045038899230),
 		"69": guild.get_role(940581256301772820),
 		"111": guild.get_role(940581347267866625),
