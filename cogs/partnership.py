@@ -280,6 +280,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		if ctx.channel.id == self.partnerheist or ctx.channel.category.id == 817049348977983506:
 			await ctx.send(text)
 			await ctx.invoke(self.bot.get_command("psh r"), channel=ctx.channel, silent=True)
+			await ctx.invoke(self.bot.get_command("sticky unset"), channel=ctx.channel, silent=True)
 		else:
 			warning = discord.Embed(
 				color=self.bot.colors["RED"],
@@ -874,7 +875,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		msg = await ctx.send(f"{user.mention}, {channel.mention} has been created with required permissions!", embed=embed)
 		
 		ctx1 = await self.bot.get_context(msg)
-		await ctx1.invoke(self.bot.get_command("sticky set"), channel=channel, content = " ||`gk.ph <message>` to ping||")
+		await ctx1.invoke(self.bot.get_command("sticky set"), channel=channel, content = " ||`gk.ph <message>` to ping||", silent = True)
 		
 def setup(bot):
 	bot.add_cog(partnership(bot))

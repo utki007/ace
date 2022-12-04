@@ -82,7 +82,7 @@ class sticky(commands.Cog, description="Sticky Utility"):
 
     @sticky.command(name="set",description="Help for sticky message", aliases=['add'])
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def add(self,ctx,channel: discord.TextChannel,*,content: str):
+    async def add(self,ctx,channel: discord.TextChannel,*,content: str,silent: bool = False):
         myquery = {"_id": channel.id}
         info = self.mycol.find(myquery)
         flag = 0
@@ -109,13 +109,15 @@ class sticky(commands.Cog, description="Sticky Utility"):
             newvalues = {"$set": {"last_message_id": msg.id}}
             self.mycol.update_one(myquery, newvalues)
         except:
-            await ctx.send(f"⚠  {ctx.author.mention} , I am unable add sticky message to the database. Try again later!!. ⚠")
-            return
-        await ctx.send(f"New Sticky message in {channel.mention} has been set",delete_after=5)
+            if silent == False:
+                return await ctx.send(f"⚠  {ctx.author.mention} , I am unable add sticky message to the database. Try again later!!. ⚠")
+            
+        if silent == False:
+            await ctx.send(f"New Sticky message in {channel.mention} has been set",delete_after=5)
 
     @sticky.command(name="unset",description="Help for sticky message", aliases=['remove'])
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def remove(self,ctx,channel: discord.TextChannel):
+    async def remove(self,ctx,channel: discord.TextChannel, silent: bool = False):
         myquery = {"_id": channel.id}
         info = self.mycol.find(myquery)
         flag = 0
@@ -124,9 +126,8 @@ class sticky(commands.Cog, description="Sticky Utility"):
             dict = x
             flag = 1
 
-        if flag == 0:
-            await ctx.send(f"Sticky message not set in that channel!")
-            return
+        if flag == 0 and silent == False:
+            return await ctx.send(f"Sticky message not set in that channel!")
         else:
             self.mycol.delete_one(myquery)
             last = dict["last_message_id"]
@@ -135,7 +136,8 @@ class sticky(commands.Cog, description="Sticky Utility"):
                 await last.delete()
             except:
                 pass
-        await ctx.send(f"Sticky message removed from {channel.mention}")
+        if silent == False:
+            return await ctx.send(f"Sticky message removed from {channel.mention}")
 
     async def send_stickied(self, channel: discord.TextChannel, content: str):
         """Send the content as a stickied message."""
