@@ -46,13 +46,14 @@ class sticky(commands.Cog, description="Sticky Utility"):
             return
         try:
             last = await channel.fetch_message(last)
-            await asyncio.sleep(20)
-            await last.delete()
-        except:
-            msg = await self.send_stickied(channel, dict["content"])
-            newvalues = {"$set": {"last_message_id": msg.id}}
-            self.mycol.update_one(myquery, newvalues)
+        except discord.HTTPException:
             pass
+        else:
+            try:
+                await asyncio.sleep(20)
+                await last.delete()
+            except discord.NotFound:
+                pass
 
     @commands.group(name="sticky",description="Help for sticky message")
     @commands.check_any(checks.can_use(), checks.is_me())
@@ -127,12 +128,6 @@ class sticky(commands.Cog, description="Sticky Utility"):
             await ctx.send(f"Sticky message not set in that channel!")
             return
         else:
-            last = dict["last_message_id"]
-            try:
-                last = await channel.fetch_message(last)
-                await last.delete()
-            except:
-                pass
             self.mycol.delete_one(myquery)
         await ctx.send(f"Sticky message removed from {channel.mention}")
 
