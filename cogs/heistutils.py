@@ -216,12 +216,12 @@ class heistutils(commands.Cog):
 		await ctx1.invoke(self.bot.get_command("t"), time=og_timer, name =f"<a:TGK_paisa_hi_paisa_hoga:849509579565301780> **{int(amount/1000000)} Mil** Heist Timer! <a:TGK_paisa_hi_paisa_hoga:849509579565301780>")
 		# expire buttons
 		
-		await asyncio.sleep(900)
-		buttonsexpireall = [
-			create_button(style=ButtonStyle.grey,emoji=heistemoji,label="Check if you can join heist!", disabled=True, custom_id="setup:heist"),
-			create_button(style=ButtonStyle.URL, label="Heist Channel!", emoji=emoji, disabled=True, url=url)
-		]
-		await msg.edit(content="Heist Over!", components=[create_actionrow(*buttonsexpireall)])
+		# await asyncio.sleep(900)
+		# buttonsexpireall = [
+		# 	create_button(style=ButtonStyle.grey,emoji=heistemoji,label="Check if you can join heist!", disabled=True, custom_id="setup:heist"),
+		# 	create_button(style=ButtonStyle.URL, label="Heist Channel!", emoji=emoji, disabled=True, url=url)
+		# ]
+		# await msg.edit(content="Heist Over!", components=[create_actionrow(*buttonsexpireall)])
 
 	@commands.command(name="Thanks", description="ty to grinders",aliases = ["ty"], hidden=True)
 	@commands.check_any(checks.can_use(), checks.is_me())
