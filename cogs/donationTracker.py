@@ -48,7 +48,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         dict["name"] = user.name[0:15]
         dict["bal"] = 0
         dict["event"] = [{"name": "750", "bal": 0}, {"name": "1.5k", "bal": 0}, {
-            "name": "3k", "bal": 0}, {"name": "7k", "bal": 0}, {"name": "diwali", "bal": 0}]
+            "name": "3k", "bal": 0}, {"name": "7k", "bal": 0}, {"name": "diwali", "bal": 0}, {"name": "2y", "bal": 0}]
         self.mycol.insert_one(dict)
 
     @commands.group(name="donation", aliases=['dono'])
@@ -911,7 +911,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
     @celeb.command(name="remove", description="Remove donation from a special", usage="<event-name> <member> <amount>", aliases=["r"])
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def remove(self, ctx, name: str, member: discord.Member, amount):
+    async def remove(self, ctx, name: str, member: discord.Member, amount, multiplier: float = 1.0):
 
         try:
             amount = await convert_to_numeral(amount)
@@ -947,7 +947,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                     await ctx.message.add_reaction("❌")
                     return
                 else:
-                    req["bal"] = req["bal"]-amount
+                    req["bal"] = req["bal"]-int(amount*multiplier)
                     dict["bal"] = dict["bal"]-amount
                     flag = 1
             res.append(req)
