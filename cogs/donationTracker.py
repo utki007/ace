@@ -979,7 +979,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         self.bal = "bal"
         display = discord.Embed(
             title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-            description=f"\n**Amount Debited from {name} Spl.: ** ⏣ {amount:,}\n"
+            description=f"\n**Amount Debited from {name} Spl.: ** ⏣ {int(amount*multiplier):,}\n"
                         # f"**By: ** {ctx.author.mention}\n"
                         f"**Total Donation: ** ⏣ {dict[self.bal]:,} \n\n"
                         f"{spldono}\n"
