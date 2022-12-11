@@ -25,8 +25,8 @@ async def donor_roles(client,query,user):
     return roles_added
 
 async def event_roles(client,query,user,event_name):
-    role_dict = client.event_diwali
-    if event_name == "diwali":     
+    role_dict = client.event_2y
+    if event_name == "2y":     
         roles_added = []
         for roles in role_dict.keys():
             actual_value = int(roles) * 1000000

@@ -56,20 +56,14 @@ async def on_ready():
 		"3000": guild.get_role(810129641473703956)
 	}
 
-	bot.event_7k = {
-		"1": guild.get_role(943535266143039500),
-		"11": guild.get_role(940581045038899230),
-		"69": guild.get_role(940581256301772820),
-		"111": guild.get_role(940581347267866625),
-		"250": guild.get_role(942719030752583680),
-		"690": guild.get_role(940580910913450044),
-		"1000": guild.get_role(940581297145905212)
-	}
-
-	bot.event_diwali = {
-		"10": guild.get_role(1032875244966383617),
-		"100": guild.get_role(1032969117692608552),
-		"500": guild.get_role(1032969966217076746)
+	bot.event_2y = {
+		"110": guild.get_role(943535266143039500),
+		"111": guild.get_role(940581045038899230),
+		"250": guild.get_role(940581256301772820),
+		"500": guild.get_role(940581347267866625),
+		"690": guild.get_role(942719030752583680),
+		"1000": guild.get_role(940580910913450044),
+		"3000": guild.get_role(940581297145905212)
 	}
 
 	bot.premium_colour_users = [
