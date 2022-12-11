@@ -1019,7 +1019,7 @@ class heistroles(commands.Cog):
 
 		giveaways = discord.utils.get(guild.roles, id=800685251276963861)
 		flash = discord.utils.get(guild.roles, id=822021066548969482)
-		other = discord.utils.get(guild.roles, id=848809346972516363)
+		other = discord.utils.get(guild.roles, id=1024206931373608961)
 		event = discord.utils.get(guild.roles, id=836925033506275399)
 		chat = discord.utils.get(guild.roles, id=942704600883023872)
 
