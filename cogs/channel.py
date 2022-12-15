@@ -110,7 +110,6 @@ class channel(commands.Cog, description="Channel utils"):
         create_option(name="state", description="Enter Stats of lock", required=False, option_type=5)
     ])
     async def unlock(self, ctx, state: bool = True, *,role: discord.Role = None):
-        await ctx.defer(hidden=False)
         channel = ctx.channel        
         if role == int:
             role = discord.utils.get(ctx.guild.roles, id=role)
