@@ -258,7 +258,7 @@ class heistutils(commands.Cog):
 		
 		# for logging
 		logg = discord.Embed(
-			title="__Ghost Ping Loggs__",
+			title="__Ghost Ping__",
 			description=f'` - `   **User:** {ctx.author.mention}(`{ctx.author.id}`)\n'
 			f"` - `   **Target:** {target.mention}(`{target.id}`)\n"
 			f"` - `   **Channel:** {ctx.channel.mention}\n"
