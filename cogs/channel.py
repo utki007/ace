@@ -45,7 +45,7 @@ class channel(commands.Cog, description="Channel utils"):
     @cog_ext.cog_slash(name="slowmode", description="Set Slowmode In Current Channel", guild_ids=[785839283847954433], default_permission=False, permissions=staff_perm,
         options=[create_option(name="timer", description="Enter slowmod time", required=False, option_type=3)])
     async def slowmode(self, ctx, timer: str = '0'):
-
+        await ctx.defer(hidden=False)
         timer = await convert_to_time(timer)
         cd = await calculate(timer)
         
@@ -61,20 +61,29 @@ class channel(commands.Cog, description="Channel utils"):
             cd = int(cd)
             desc = f''
             if timer.hour>0:
-                desc = desc + f' {timer.hour} hours '
+                if timer.hour == 1:
+                    desc = desc + f'{timer.hour} hour '
+                else:
+                    desc = desc + f'{timer.hour} hours '
             if timer.minute>0:
-                desc = desc + f' {timer.minute} minutes '
+                if timer.minute == 1:
+                    desc = desc + f'{timer.hour} minute '
+                else:
+                    desc = desc + f'{timer.hour} minutes '
             if timer.second>0:
-                desc = desc + f' {timer.second} seconds '
+                if timer.second == 1:
+                    desc = desc + f'{timer.hour} second '
+                else:
+                    desc = desc + f'{timer.hour} seconds '
                 
-            await ctx.send(f'Slowmode interval is now **{desc}**.')
+            await ctx.send(f'Slowmode for {ctx.channel.mention} has been set to **{desc}**.')
 
     @cog_ext.cog_slash(name="lock", description="Lock the channel", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm,
         options=[
             create_option(name="role", description="Enter role to lock channel for it", required=False, option_type=8)
         ])
     async def lock(self, ctx,*, role: discord.Role = None):
-
+        await ctx.defer(hidden=False)
         channel = ctx.channel        
         if role == int:
             role = discord.utils.get(ctx.guild.roles, id=role)
@@ -90,7 +99,7 @@ class channel(commands.Cog, description="Channel utils"):
         await ctx.send(f"Locked {channel.mention} for {role.mention}", hidden=True)
         embed = discord.Embed(
             color=0x78AB46, description=f':white_check_mark: | Locked **{channel}** for {role.mention}')
-        await channel.send(embed=embed)
+        await ctx.send(embed=embed)
 
     @cog_ext.cog_slash(name="unlock", description="unlock the channel", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm,
     options=[
@@ -98,7 +107,7 @@ class channel(commands.Cog, description="Channel utils"):
         create_option(name="state", description="Enter Stats of lock", required=False, option_type=5)
     ])
     async def unlock(self, ctx, state: bool = True, *,role: discord.Role = None):
-
+        await ctx.defer(hidden=False)
         channel = ctx.channel        
         if role == int:
             role = discord.utils.get(ctx.guild.roles, id=role)
@@ -126,14 +135,14 @@ class channel(commands.Cog, description="Channel utils"):
 
         embed = discord.Embed(
             color=0x78AB46, description=f'{msg}')
-        await channel.send(embed=embed)
+        await ctx.send(embed=embed)
 
     @cog_ext.cog_slash(name="hide", description="Hide the channel", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm,
         options=[
             create_option(name="role", description="Enter role to hide channel for it", required=False, option_type=8)
         ])
     async def hide(self, ctx,*, role: discord.Role = None):
-
+        await ctx.defer(hidden=False)
         channel = ctx.channel        
         if role == int:
             role = discord.utils.get(ctx.guild.roles, id=role)
@@ -150,7 +159,7 @@ class channel(commands.Cog, description="Channel utils"):
         await ctx.send(f"Hidden {channel.mention} for {role.mention}", hidden=True)
         embed = discord.Embed(
             color=0x78AB46, description=f':white_check_mark: | Hidden **{channel}** for {role.mention}')
-        await channel.send(embed=embed)
+        await ctx.send(embed=embed)
 
     @cog_ext.cog_slash(name="unhide", description="Unhide the channel", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm,
     options=[
@@ -160,7 +169,7 @@ class channel(commands.Cog, description="Channel utils"):
         create_option(name="role3", description="Enter role to Unlock channel for it", required=False, option_type=8)
     ])
     async def unhide(self, ctx, state: bool = True, *,role1: discord.Role = None,role2: discord.Role = None,role3: discord.Role = None):
-
+        await ctx.defer(hidden=False)
         channel = ctx.channel        
         role = discord.utils.get(ctx.guild.roles, id=self.default_role)
 
@@ -204,7 +213,7 @@ class channel(commands.Cog, description="Channel utils"):
         await ctx.send(f"{embedMention} can view **{channel}** now", hidden=True)
         embed = discord.Embed(
             color=0x78AB46, description=f'{msg}')
-        await channel.send(embed=embed)
+        await ctx.send(embed=embed)
     
     @commands.command(
         name="dankdown",
@@ -415,13 +424,13 @@ class channel(commands.Cog, description="Channel utils"):
    
     @cog_ext.cog_slash(name="sync", description="Sync the channel with channel category", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm)
     async def sync(self, ctx):
-
+        await ctx.defer(hidden=False)
         channel = ctx.channel
         await ctx.send(f" **{channel}** synced with **{channel.category.name}**", hidden=True)
         embed = discord.Embed(
-            color=0x78AB46, description=f':white_check_mark: | **{channel}** synced with **{channel.category.name}**')
+            color=0x78AB46, description=f':white_check_mark: | **{channel.mention}** is now synced with channel category.')
         await ctx.channel.edit(sync_permissions=True)
-        await channel.send(embed=embed)
+        await ctx.send(embed=embed)
 
 def setup(bot):
    bot.add_cog(channel(bot))
