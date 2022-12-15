@@ -235,6 +235,49 @@ class heistutils(commands.Cog):
 		await ctx.message.delete()
 		ty = await ctx.send(f"Make sure to Thank our Amazing <@&836228842397106176>'s  for the heist in <#785847439579676672>", allowed_mentions=am)
 		await ty.add_reaction(f'<:thankyou:930419246792601640>')
+
+	@cog_ext.cog_slash(name="ghost-ping", description="🦹 Ghost ping someone", guild_ids=[785839283847954433],default_permission=False,permissions=heist_perm,
+		options=[
+			create_option(name="target", description="Whom do you want to ghost ping?", required=True, option_type=6),
+			create_option(name="message", description="Enter ping message", option_type=3, required=False)
+		])
+	async def hideping(self, ctx, *, target, message=""):
+		await ctx.defer(hidden=True)
+
+		webhooks = await ctx.channel.webhooks()
+		webhook = discord.utils.get(webhooks, name=self.bot.user.name)
+
+		orig_message = message
+		message += f" _ _ \n ||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| \n "
+		message += f"{target.mention}"
+
+		if webhook is None:
+			webhook = await ctx.channel.create_webhook(name=self.bot.user.name, reason="For Ghost Pings", avatar=await self.bot.user.avatar_url.read())
+		webhook = DiscordWebhook(url=webhook.url, username="Ghost Ping",
+			                         avatar_url=f'https://cdn.discordapp.com/attachments/999555672733663285/1052977647468171364/141-1415218_incognito-logo-incognito-mode-icon-removebg-preview.png', content=message)
+		
+		# for logging
+		logg = discord.Embed(
+			title="__Ghost Ping Loggs__",
+			description=f'` - `   **User:** {ctx.author.mention}(`{ctx.author.id}`)\n'
+			f"` - `   **Target:** {target.mention}(`{target.id}`)\n"
+			f"` - `   **Channel:** {ctx.channel.mention}\n"
+			f"` - `   **Message:** {orig_message}",
+			colour=discord.Color.random(),
+			timestamp=datetime.datetime.utcnow()
+		)
+
+		logg.set_footer(
+			text=f"Sanctioned by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
+
+		log_channel = self.bot.get_channel(1052996419063128144)
+		try:
+			await log_channel.send(embed=logg)
+		except:
+			return await ctx.send(f"<a:nat_warning:1010618708688912466> Ran into an issue, will be resolved soon! <a:nat_warning:1010618708688912466>", delete_after=30)
+		
+		await ctx.send(f"<:TGK_evil:931124259718332437>", hidden=True)
+		webhook.execute()
 		
 def setup(bot):
 	bot.add_cog(heistutils(bot))
