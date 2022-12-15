@@ -98,7 +98,11 @@ class channel(commands.Cog, description="Channel utils"):
         await channel.set_permissions(role, overwrite=overwrite)
         embed = discord.Embed(
             color=0x78AB46, description=f':white_check_mark: | Locked **{channel.mention}** for {role.mention}')
-        await ctx.send(embed=embed, hidden=False)
+        if ctx.author.id == 685705841264820247:
+            await ctx.send(f"Jann pro fr", hidden= True)
+            await channel.send(embed=embed)
+        else:
+            await ctx.send(embed=embed, hidden=False)
 
     @cog_ext.cog_slash(name="unlock", description="unlock the channel", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm,
     options=[
@@ -133,7 +137,12 @@ class channel(commands.Cog, description="Channel utils"):
 
         embed = discord.Embed(
             color=0x78AB46, description=f'{msg}')
-        await ctx.send(embed=embed, hidden=False)
+        
+        if ctx.author.id == 685705841264820247:
+            await ctx.send(f"Jann pro fr", hidden= True)
+            await channel.send(embed=embed)
+        else:
+            await ctx.send(embed=embed, hidden=False)
 
     @cog_ext.cog_slash(name="hide", description="Hide the channel", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm,
         options=[
