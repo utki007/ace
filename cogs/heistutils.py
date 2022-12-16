@@ -253,7 +253,7 @@ class heistutils(commands.Cog):
 
 		if webhook is None:
 			webhook = await ctx.channel.create_webhook(name=self.bot.user.name, reason="For Ghost Pings", avatar=await self.bot.user.avatar_url.read())
-		webhook = DiscordWebhook(url=webhook.url, username="Ghost Ping",
+		webhook = DiscordWebhook(url=webhook.url, username="Mr. Incognito",
 			                         avatar_url=f'https://cdn.discordapp.com/attachments/999555672733663285/1052977647468171364/141-1415218_incognito-logo-incognito-mode-icon-removebg-preview.png', content=message)
 		
 		# for logging
