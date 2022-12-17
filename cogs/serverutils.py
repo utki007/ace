@@ -403,26 +403,6 @@ class serverutils(commands.Cog, description="Server Utility"):
 		await message.add_reaction(self.bot.emojis_list['Check'])
 		await ctx.message.delete()
 
-	# @cog_ext.cog_slash(name="template", description="Get Heist Ad", guild_ids=[785839283847954433],default_permission=False,
-	# 	options=[
-	# 		create_option(name="title", description="Enter embed title", required=True, option_type=3),
-	# 		create_option(name="content", description="Enter embed description", option_type=3, required=True),
-	# 		create_option(name="for",description="WHich template do you wish to use?" , choices=  [
-    #             {
-    #                 "name": "Dog",
-    #                 "value": "animal_dog"
-    #             },
-    #             {
-    #                 "name": "Cat",
-    #                 "value": "animal_cat"
-    #             },
-    #             {
-    #                 "name": "Penguin",
-    #                 "value": "animal_penguin"
-    #             }
-    #         ] , required=False, option_type= 3)
-	# 	])
-
 	@cog_ext.cog_slash(name="template", description="Get Heist Ad", guild_ids=[785839283847954433],default_permission=False,
 		options=[
 			create_option(name="title", description="Enter embed title", required=True, option_type=3),

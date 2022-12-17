@@ -214,14 +214,85 @@ class heistutils(commands.Cog):
 		ctx1 = await self.bot.get_context(m2)
 		await ctx1.invoke(self.bot.get_command("settings heist-ar"),channel=ctx1.channel,amount=str(amount),timer=og_timer,role = required_role)
 		await ctx1.invoke(self.bot.get_command("t"), time=og_timer, name =f"<a:TGK_paisa_hi_paisa_hoga:849509579565301780> **{int(amount/1000000)} Mil** Heist Timer! <a:TGK_paisa_hi_paisa_hoga:849509579565301780>")
-		# expire buttons
 		
-		# await asyncio.sleep(900)
-		# buttonsexpireall = [
-		# 	create_button(style=ButtonStyle.grey,emoji=heistemoji,label="Check if you can join heist!", disabled=True, custom_id="setup:heist"),
-		# 	create_button(style=ButtonStyle.URL, label="Heist Channel!", emoji=emoji, disabled=True, url=url)
-		# ]
-		# await msg.edit(content="Heist Over!", components=[create_actionrow(*buttonsexpireall)])
+	@cog_ext.cog_subcommand(base="Heist", name="Ad Template", description="Get Heist Ad", guild_ids=[785839283847954433], default_permission=False,
+						 options=[
+			create_option(name="amount", description="Enter heist amount",
+						  required=True, option_type=3),
+			create_option(name="channel", description="Enter heist channel",
+						  required=True, option_type=7),
+			create_option(name="timer", description="Set heist time",
+						  required=True, option_type=3),
+			create_option(name="platform", description="Which device do you use?", choices=[
+				{
+					"name": "Mobile",
+					"value": "mobile"
+				},
+				{
+					"name": "PC",
+					"value": "desktop"
+				}
+			], required=True, option_type=3),
+			create_option(name="extrainfo", description="Extra Info",
+						  option_type=3, required=False),
+			create_option(name="requirement", description="What are the heist requirements?",
+						  option_type=3, required=False),
+		])
+	async def heistsetup(self, ctx, amount, channel, timer, platform, extrainfo: str = "" , requirement: str = ""):
+		await ctx.defer(hidden=False)
+		
+		og_timer = timer		# save original timer
+
+		try:
+			amount = await convert_to_numeral(amount)
+			amount = await calculate(amount)
+			amount = int(amount)
+		except:
+			warning = discord.Embed(
+				color=self.bot.colors["RED"],
+				description=f"{self.bot.emojis_list['Warrning']} | Error with Heist Amount!!")
+			await ctx.send(embed = warning,hidden=True)
+			return
+		
+		try:
+			timer = await convert_to_time(timer)
+			timer = await calculate(timer)
+			# timer += 19800 
+		
+			timer = datetime.datetime.utcnow() + datetime.timedelta(seconds=timer)
+		except:
+			warning = discord.Embed(
+				color=self.bot.colors["RED"],
+				description=f"{self.bot.emojis_list['Warrning']} | Error with Heist Timer!!")
+			await ctx.send(embed = warning,hidden=True)
+			return
+		
+		content = f"Dadvertise heist \n"
+		content += f" ╔════════ ≪ ◍❈◍ ≫ ════════╗ \n"
+		content += f"<:tgk_redcrown_static:1005475832128618558>      𝕋ℍ𝔼 𝔾𝔸𝕄𝔹𝕃𝔼ℝ'𝕊 𝕂𝕀ℕ𝔾𝔻𝕆𝕄      <:tgk_redcrown_static:1005475832128618558> \n"
+		content += f" ╚════════ ≪ ◍❈◍ ≫ ════════╝ \n"
+		content += f"  ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\n"
+
+		content += f"<:tgk_redarrow:1005361235715424296>  **| Time:**  <t:{int(datetime.datetime.timestamp(timer))}:t> (<t:{int(datetime.datetime.timestamp(timer))}:R>) \n"
+		content += f"<:tgk_redarrow:1005361235715424296>  **| Amount:** **⏣ {int(amount):,}** \n"
+		content += f"<:tgk_redarrow:1005361235715424296>  **| Channel:** <#{channel.id}>\n"
+		
+		if requirement != "":
+			content += f"<:tgk_redarrow:1005361235715424296>  **| Requirement:** _{requirement}_ \n"
+		else:
+			content += f"<:tgk_redarrow:1005361235715424296>  **| Requirement:** _No request!_ \n"
+		if extrainfo != "":
+			content += f"<:tgk_redarrow:1005361235715424296>  **| Extra Info:** {extrainfo}\n"
+		
+		content += f"||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| \n"
+		content += f"<:tgk_redarrow:1005361235715424296>  **| Server:** https://discord.gg/bvzjsekB3u \n"
+		content += f"<:tgk_redarrow:1005361235715424296>  **| Ban Appeal:** https://discord.gg/MF5su2JnBC \n"
+		content += f"<:tgk_redarrow:1005361235715424296>  **| Banner:** https://imgur.com/a/PsR8Oqc \n"
+
+		if platform == "mobile":
+			await ctx.send(content)
+		else:
+			await ctx.send(f"```{content}```")
 
 	@commands.command(name="Thanks", description="ty to grinders",aliases = ["ty"], hidden=True)
 	@commands.check_any(checks.can_use(), checks.is_me())
@@ -254,7 +325,7 @@ class heistutils(commands.Cog):
 		if webhook is None:
 			webhook = await ctx.channel.create_webhook(name=self.bot.user.name, reason="For Ghost Pings", avatar=await self.bot.user.avatar_url.read())
 		webhook = DiscordWebhook(url=webhook.url, username="Mr. Incognito",
-			                         avatar_url=f'https://cdn.discordapp.com/attachments/999555672733663285/1052977647468171364/141-1415218_incognito-logo-incognito-mode-icon-removebg-preview.png', content=message)
+									 avatar_url=f'https://cdn.discordapp.com/attachments/999555672733663285/1052977647468171364/141-1415218_incognito-logo-incognito-mode-icon-removebg-preview.png', content=message)
 		
 		# for logging
 		logg = discord.Embed(
