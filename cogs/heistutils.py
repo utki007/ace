@@ -268,9 +268,9 @@ class heistutils(commands.Cog):
 			return
 		
 		content = f"Dadvertise heist \n"
-		content += f" ╔════════ ≪ ◍❈◍ ≫ ════════╗ \n"
+		content += f"╔════════ ≪ ◍❈◍ ≫ ════════╗ \n"
 		content += f"<:tgk_redcrown_static:1005475832128618558>      𝕋ℍ𝔼 𝔾𝔸𝕄𝔹𝕃𝔼ℝ'𝕊 𝕂𝕀ℕ𝔾𝔻𝕆𝕄      <:tgk_redcrown_static:1005475832128618558> \n"
-		content += f" ╚════════ ≪ ◍❈◍ ≫ ════════╝ \n"
+		content += f"╚════════ ≪ ◍❈◍ ≫ ════════╝ \n"
 		content += f"  ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\n"
 
 		content += f"<:tgk_redarrow:1005361235715424296>  **| Time:**  <t:{int(datetime.datetime.timestamp(timer))}:t> (<t:{int(datetime.datetime.timestamp(timer))}:R>) \n"
