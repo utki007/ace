@@ -403,5 +403,47 @@ class serverutils(commands.Cog, description="Server Utility"):
 		await message.add_reaction(self.bot.emojis_list['Check'])
 		await ctx.message.delete()
 
+	# @cog_ext.cog_slash(name="template", description="Get Heist Ad", guild_ids=[785839283847954433],default_permission=False,
+	# 	options=[
+	# 		create_option(name="title", description="Enter embed title", required=True, option_type=3),
+	# 		create_option(name="content", description="Enter embed description", option_type=3, required=True),
+	# 		create_option(name="for",description="WHich template do you wish to use?" , choices=  [
+    #             {
+    #                 "name": "Dog",
+    #                 "value": "animal_dog"
+    #             },
+    #             {
+    #                 "name": "Cat",
+    #                 "value": "animal_cat"
+    #             },
+    #             {
+    #                 "name": "Penguin",
+    #                 "value": "animal_penguin"
+    #             }
+    #         ] , required=False, option_type= 3)
+	# 	])
+
+	@cog_ext.cog_slash(name="template", description="Get Heist Ad", guild_ids=[785839283847954433],default_permission=False,
+		options=[
+			create_option(name="title", description="Enter embed title", required=True, option_type=3),
+			create_option(name="content", description="Enter embed description", option_type=3, required=True)])
+	async def template(self, ctx, title, content):
+		await ctx.defer(hidden=True)
+
+		embed = discord.Embed(
+			title=f"<a:tgk_redcrown:1005473874693079071> {title.title()}",
+			color=0x417505,
+			description = "",
+			url="https://www.youtube.com/@utki007"
+		)
+		content = content.replace("nobullet","\n")
+		content = content.split("endl")
+		for line in content:
+			embed.description += f"<:tgk_redarrow:1005361235715424296> {line}\n"
+
+		await ctx.channel.send(embed = embed)
+		await ctx.send(f"<a:okie:932576089618931772>", hidden=True)
+		
+
 def setup(bot):
 	bot.add_cog(serverutils(bot))
