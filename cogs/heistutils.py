@@ -215,7 +215,7 @@ class heistutils(commands.Cog):
 		await ctx1.invoke(self.bot.get_command("settings heist-ar"),channel=ctx1.channel,amount=str(amount),timer=og_timer,role = required_role)
 		await ctx1.invoke(self.bot.get_command("t"), time=og_timer, name =f"<a:TGK_paisa_hi_paisa_hoga:849509579565301780> **{int(amount/1000000)} Mil** Heist Timer! <a:TGK_paisa_hi_paisa_hoga:849509579565301780>")
 		
-	@cog_ext.cog_subcommand(base="Heist", name="Ad Template", description="Get Heist Ad", guild_ids=[785839283847954433], default_permission=False,
+	@cog_ext.cog_subcommand(base="Heist", name="Ad-Template", description="Get Heist Ad", guild_ids=[785839283847954433], default_permission=False,
 						 options=[
 			create_option(name="amount", description="Enter heist amount",
 						  required=True, option_type=3),
