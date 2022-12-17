@@ -817,6 +817,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		if "here" in role_ids:
 			pings = "@here "+pings
 
+		channel_name = channel_name.replace("-"," ",100)
 		category = ctx.guild.get_channel(817049348977983506)
 		overwrites = category.overwrites
 		overwrites[user] = discord.PermissionOverwrite(view_channel=True,send_messages=True,embed_links=True,attach_files=True,add_reactions=True,external_emojis=True,manage_messages=True)
