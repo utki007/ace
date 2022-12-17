@@ -811,7 +811,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		roleIds = [i for i in roleIds if i != None]
 		if len(roleIds) == 0 and "everyone" not in role_ids and "here" not in role_ids:
 			return await ctx.send(f"Invalid Role IDs!")
-		pings = " ".join([i.mention for i in roleIds])
+		pings = " | ".join([i.mention for i in roleIds])
 		if "everyone" in role_ids:
 			pings = "@everyone"
 		if "here" in role_ids:
