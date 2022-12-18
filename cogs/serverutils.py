@@ -243,7 +243,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 			await ctx.send(embed=embed)
 
 	@commands.command(name="eventping", description="Event ping", aliases=["se", "event"])
-	@commands.cooldown(1, 3000, commands.BucketType.guild)
+	@commands.cooldown(1, 300, commands.BucketType.guild)
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def eventping(self, ctx, *, message: str = "Form up for some events!"):
 		await ctx.message.delete()
