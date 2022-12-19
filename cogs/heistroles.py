@@ -1041,7 +1041,7 @@ class heistroles(commands.Cog):
 
 		gawemoji = await gk.fetch_emoji(806631994770849843)
 		flashemoji = await gk.fetch_emoji(817302382630273054)
-		otheremoji = await gk.fetch_emoji(820323551520358440)
+		otheremoji = await gk.fetch_emoji(1024206931373608961)
 		eventemoji = await gk.fetch_emoji(854663256420909066)
 		chatemoji = await playzone.fetch_emoji(944667909702185010)
 
