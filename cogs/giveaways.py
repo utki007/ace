@@ -499,19 +499,19 @@ class giveaway(commands.Cog):
 	# 		self.bot.giveaway.pop(message.id)
 	# 	except KeyError:
 	# 		pass
-
-	@cog_ext.cog_slash(name="event",description="Host an Event", guild_ids=guild_ids,
-		default_permission=False,permissions=staff_perm,
+	@cog_ext.cog_subcommand(base="event", name="host",description="Host an Event", guild_ids=guild_ids,
+		base_default_permission=False, base_permissions=staff_perm,
 		options=[
-	  			create_option(name="name", description="Name of the event", option_type=3, required=True),
-				create_option(name="sponsor", description="Can be host too", required=True, option_type=6),
-				create_option(name="message", description="Note from Sponsor", option_type=3, required=True),
-	   			create_option(name="prize", description="Prize of the giveaway", option_type=3, required=True),
-				create_option(name="channel", description="Event channel", required=True, option_type=7),
-				create_option(name="winners", description="Number of the winners.", option_type=4, required=False)
+			create_option(name="name", description="Name of the event", option_type=3, required=True),
+			create_option(name="sponsor", description="Can be host too", required=True, option_type=6),
+			create_option(name="message", description="Note from Sponsor", option_type=3, required=True),
+			create_option(name="prize", description="Prize of the giveaway", option_type=3, required=True),
+			create_option(name="channel", description="Event channel", required=True, option_type=7),
+			create_option(name="winners", description="Number of the winners.", option_type=4, required=False),
+			create_option(name="ping", description="Want to ping heist?", required=False, option_type=5),
 		]
 	)
-	async def event(self, ctx, name, sponsor: discord.Member, message, prize, channel, winners: int = 1):
+	async def event(self, ctx, name, sponsor: discord.Member, message, prize, channel, winners: int = 1, ping = True):
 		await ctx.defer(hidden=True)
 		host = ctx.author
 		event = discord.utils.get(ctx.guild.roles, id=836925033506275399)
@@ -532,19 +532,54 @@ class giveaway(commands.Cog):
 		event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
 		event_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/940143383609999392.gif?size=128&quality=lossless")
 
-		# channel = self.bot.get_channel(channel.id)
-		# url = channel.last_message.jump_url
-		# message = await channel.send("**𝓛𝓮𝓽 𝓽𝓱𝓮 𝓰𝓪𝓶𝓮𝓼 𝓫𝓮𝓰𝓲𝓷!**".title())
 		message = await channel.send("**\n**",delete_after=0)
-		# await message.add_reaction("<a:Girl7_Celebrate:941800075271733350>")
 		url = message.jump_url
 		gk = self.bot.get_guild(785839283847954433)
 		eventemoji = await gk.fetch_emoji(854663256420909066)
 		buttons = [create_button(style=ButtonStyle.URL, label="Head to event channel!", emoji=eventemoji, disabled=False, url=url)]
-		msg = await ctx.channel.send(content=f"{event.mention}",embed=event_embed, components=[create_actionrow(*buttons)])
+		if ping:
+			msg = await ctx.channel.send(content=f"{event.mention}",embed=event_embed, components=[create_actionrow(*buttons)])
+		else:
+			msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Success!", components=[create_actionrow(*buttons)])
-		# await ctx.send(content=f"`{event.mention}`",embed = event_embed)
 
+
+	@cog_ext.cog_subcommand(base="event", name="unlock",description="Unlock for a particular user!", guild_ids=guild_ids,
+		base_default_permission=False, base_permissions=staff_perm,
+		options=[
+			create_option(name="user", description="Whom to unlock channel for", required=True, option_type=6)
+		])
+	async def evenUnlock(self, ctx,*, user: discord.Member):
+		# await ctx.defer(hidden=False)
+		channel = ctx.channel
+
+		overwrite = channel.overwrites_for(user)
+		overwrite.send_messages = True
+
+		await channel.set_permissions(user, overwrite=overwrite)
+		embed = discord.Embed(
+			color=0x78AB46, description=f':white_check_mark: | Unlocked **{channel.mention}** for {user.mention}')
+		if ctx.author.id == 685705841264820247:
+			await ctx.send(f"Jann pro fr", hidden= True)
+			await channel.send(embed=embed)
+		else:
+			await ctx.send(embed=embed, hidden=False)
+	
+	@cog_ext.cog_subcommand(base="event", name="end",description="Send event footer", guild_ids=guild_ids,
+		base_default_permission=False, base_permissions=staff_perm)
+	async def eventEnd(self, ctx,*, user: discord.Member):
+		# await ctx.defer(hidden=False)
+		
+		content = f"` - `   **Want us to host more pog events?**\n\n"
+		content += f"<:tgk_redarrow:1005361235715424296>   Use <#992646623639384154> to sponsor \n"
+		content += f"<:tgk_redarrow:1005361235715424296>   Refer to <#949699739081920593> to check events we can host\n"
+		content += f"<:tgk_redarrow:1005361235715424296>   Add <#1019832387615596544> if you got more ideas  \n "
+		content += f"||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| "
+		content += f"\n https://media.discordapp.net/attachments/840291742859001876/943806099537162250/0E67BE40-2287-4A6F-9520-C6FD5E548227.gif"
+
+		await ctx.channel.send(content = content)
+		await ctx.send(f"<:TGK_thankyou:930419246792601640>", hidden= True)
+		
 	@cog_ext.cog_slash(name="goal",description="Our member goal embed", guild_ids=guild_ids,
 		default_permission=False,permissions=staff_perm,
 		options=[
