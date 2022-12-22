@@ -565,6 +565,28 @@ class giveaway(commands.Cog):
 		else:
 			await ctx.send(embed=embed, hidden=False)
 	
+	
+	@cog_ext.cog_subcommand(base="event", name="lock",description="Unlock for a particular user!", guild_ids=guild_ids,
+		base_default_permission=False, base_permissions=staff_perm,
+		options=[
+			create_option(name="user", description="Whom to lock channel for", required=True, option_type=6)
+		])
+	async def eventlock(self, ctx,*, user: discord.Member):
+		# await ctx.defer(hidden=False)
+		channel = ctx.channel
+
+		overwrite = channel.overwrites_for(user)
+		overwrite.send_messages = None
+
+		await channel.set_permissions(user, overwrite=overwrite)
+		embed = discord.Embed(
+			color=0x78AB46, description=f':white_check_mark: | Locked **{channel.mention}** for {user.mention}')
+		if ctx.author.id == 685705841264820247:
+			await ctx.send(f"Jann pro fr", hidden= True)
+			await channel.send(embed=embed)
+		else:
+			await ctx.send(embed=embed, hidden=False)
+
 	@cog_ext.cog_subcommand(base="event", name="end",description="Send event footer", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=staff_perm)
 	async def eventEnd(self, ctx):
