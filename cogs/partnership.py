@@ -122,7 +122,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		n = 0
 		msg = await ctx.send(f"{self.bot.emojis_list['loading']} | Fetching data...")
 		list = []
-		myquery = self.mycol.find({}, {})
+		myquery = self.mycol.find({})
 		for x in myquery:
 			dict = x
 			list.append(dict)
@@ -707,7 +707,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		await ctx.invoke(self.bot.get_command("reach"), channel=channel, roleIds=dict[maxkey])
 		await calculate.delete()
 	
-	@cog_ext.cog_subcommand(base="Partner", name="Add",description="Claim partnership deal!", guild_ids=guild_ids,
+	@cog_ext.cog_subcommand(base="Partner", name="Add",description="Create event-partner channel!", guild_ids=guild_ids,
 		base_default_permission=False,
 		options = [
 			create_option(name="user", description="Who will claim the deal?", required=True, option_type=6),
