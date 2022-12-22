@@ -567,7 +567,7 @@ class giveaway(commands.Cog):
 	
 	@cog_ext.cog_subcommand(base="event", name="end",description="Send event footer", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=staff_perm)
-	async def eventEnd(self, ctx,*, user: discord.Member):
+	async def eventEnd(self, ctx):
 		# await ctx.defer(hidden=False)
 		
 		content = f"` - `   **Want us to host more pog events?**\n\n"
