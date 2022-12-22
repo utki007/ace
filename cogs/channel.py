@@ -80,24 +80,39 @@ class channel(commands.Cog, description="Channel utils"):
 
     @cog_ext.cog_slash(name="lock", description="Lock the channel", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm,
         options=[
-            create_option(name="role", description="Enter role to lock channel for it", required=False, option_type=8)
+            create_option(name="role", description="Enter role to lock channel for it", required=False, option_type=8),
+            create_option(name="user", description="Whom to lock channel for", required=False, option_type=6)
         ])
-    async def lock(self, ctx,*, role: discord.Role = None):
+    async def lock(self, ctx,*, role: discord.Role = None, user: discord.Member = None):
         # await ctx.defer(hidden=False)
+        unlockFor = ""
         channel = ctx.channel        
-        if role == int:
-            role = discord.utils.get(ctx.guild.roles, id=role)
-        elif role == None:
-            role = discord.utils.get(ctx.guild.roles, id=self.default_role)
+        if role == None:
+            if user == None:
+                role = discord.utils.get(ctx.guild.roles, id=self.default_role)
+                unlockFor = "role"
+            else:
+                unlockFor = "user"
         else:
-            role = discord.utils.get(ctx.guild.roles, name=f"{role}")
+            unlockFor = "role"
 
-        overwrite = channel.overwrites_for(role)
-        overwrite.send_messages = False
+        if unlockFor == "role":
+            overwrite = channel.overwrites_for(role)
+            overwrite.send_messages = False
 
-        await channel.set_permissions(role, overwrite=overwrite)
-        embed = discord.Embed(
+            await channel.set_permissions(role, overwrite=overwrite)
+            embed = discord.Embed(
             color=0x78AB46, description=f':white_check_mark: | Locked **{channel.mention}** for {role.mention}')
+        elif unlockFor == "user":
+            overwrite = channel.overwrites_for(user)
+            overwrite.send_messages = False
+
+            await channel.set_permissions(user, overwrite=overwrite)
+            embed = discord.Embed(
+            color=0x78AB46, description=f':white_check_mark: | Locked **{channel.mention}** for {user.mention}')
+        else:
+            return await ctx.send(f"Ran into some problem ...", hidden= True)
+
         if ctx.author.id == 685705841264820247:
             await ctx.send(f"Jann pro fr", hidden= True)
             await channel.send(embed=embed)
@@ -107,35 +122,61 @@ class channel(commands.Cog, description="Channel utils"):
     @cog_ext.cog_slash(name="unlock", description="unlock the channel", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm,
     options=[
         create_option(name="role", description="Enter role to Unlock channel for it", required=False, option_type=8),
-        create_option(name="state", description="Enter Stats of lock", required=False, option_type=5)
+        create_option(name="state", description="Enter Stats of lock", required=False, option_type=5),
+        create_option(name="user", description="Whom to lock channel for", required=False, option_type=6)
     ])
-    async def unlock(self, ctx, state: bool = True, *,role: discord.Role = None):
+    async def unlock(self, ctx, state: bool = True, role: discord.Role = None, user : discord.Member = None):
+        unlockFor = ""
         channel = ctx.channel        
-        if role == int:
-            role = discord.utils.get(ctx.guild.roles, id=role)
-        elif role == None:
-            role = discord.utils.get(ctx.guild.roles, id=self.default_role)
+        if role == None:
+            if user == None:
+                role = discord.utils.get(ctx.guild.roles, id=self.default_role)
+                unlockFor = "role"
+            else:
+                unlockFor = "user"
         else:
-            role = discord.utils.get(ctx.guild.roles, name=f"{role}")
+            unlockFor = "role"
 
-        overwrite = channel.overwrites_for(role)
-        
-        if state == True:
-            overwrite.send_messages = True
-        elif state == False:
-            overwrite.send_messages = None
+        if unlockFor == "role":
+            overwrite = channel.overwrites_for(role)
+            
+            if state == True:
+                overwrite.send_messages = True
+            elif state == False:
+                overwrite.send_messages = None
 
-        msg = ''
+            msg = ''
+            
+            if state:
+                msg = f':white_check_mark: | Unlocked **{channel}** for {role.mention} with state `True`'
+            else:
+                msg = f':white_check_mark: | Unlocked **{channel}** for {role.mention}'
         
-        if state:
-            msg = f':white_check_mark: | Unlocked **{channel}** for {role.mention} with state `True`'
+            await channel.set_permissions(role, overwrite=overwrite)
+
+            embed = discord.Embed(
+                color=0x78AB46, description=f'{msg}')
+        elif unlockFor == "user":
+            overwrite = channel.overwrites_for(user)
+            
+            if state == True:
+                overwrite.send_messages = True
+            elif state == False:
+                overwrite.send_messages = None
+
+            msg = ''
+            
+            if state:
+                msg = f':white_check_mark: | Unlocked **{channel}** for {user.mention} with state `True`'
+            else:
+                msg = f':white_check_mark: | Unlocked **{channel}** for {user.mention}'
+        
+            await channel.set_permissions(user, overwrite=overwrite)
+
+            embed = discord.Embed(
+                color=0x78AB46, description=f'{msg}')
         else:
-            msg = f':white_check_mark: | Unlocked **{channel}** for {role.mention}'
-        
-        await channel.set_permissions(role, overwrite=overwrite)
-
-        embed = discord.Embed(
-            color=0x78AB46, description=f'{msg}')
+            return await ctx.send(f"Ran into some problem ...", hidden= True)
         
         if ctx.author.id == 685705841264820247:
             await ctx.send(f"Jann pro fr", hidden= True)
