@@ -566,7 +566,7 @@ class giveaway(commands.Cog):
 			await ctx.send(embed=embed, hidden=False)
 	
 	
-	@cog_ext.cog_subcommand(base="event", name="lock",description="Unlock for a particular user!", guild_ids=guild_ids,
+	@cog_ext.cog_subcommand(base="event", name="lock",description="lock for a particular user!", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=staff_perm,
 		options=[
 			create_option(name="user", description="Whom to lock channel for", required=True, option_type=6)
