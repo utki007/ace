@@ -62,91 +62,6 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		if ctx.invoked_subcommand is None:
 			await ctx.send(f"use `help partnership` or `help psh` to know more!!!")
 
-	@partnership.command(name="add", description="Add a Partner with Pings", aliases=['a'])
-	@commands.check_any(checks.can_use(), checks.is_me())
-	async def addpartner(self, ctx, member: discord.Member, *, pings: str):
-		try:
-			await ctx.message.delete()
-		except:
-			pass
-
-		pp = []
-
-		embed = discord.Embed(
-			color=self.bot.colors["RED"],
-			description=f'{self.bot.emojis_list["Warrning"]} | Invalid Role ID provided. Action Terminated!!!')
-
-		for i in pings.split(" "):
-			if i.isnumeric():
-				# await ctx.send(f"Numeric : `{i}`")
-				role = "<@&" + i + ">"
-				pp.append(role)
-			elif i.lower() == "everyone":
-				# await ctx.send(f"Everyone : `{i}`")
-				pp.append("@everyone")
-			elif i.lower() == "here":
-				# await ctx.send(f"Here : `{i}`")
-				pp.append("@here")
-			else:
-				# await ctx.send(f"else : `{i}`")
-				await ctx.send(embed=embed)
-				return
-
-		myquery = {"_id": member.id}
-		info = self.mycol.find(myquery)
-		flag = 0
-		dict = {}
-		for x in info:
-			dict = x
-			flag = 1
-
-		if flag == 0:
-			try:
-				# await self.create_partner(ctx, member.id, pp)
-				embed = discord.Embed(
-					color=self.bot.colors["Success"],
-					description=f'{self.bot.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!')
-				await ctx.send(embed=embed)
-				return
-			except:
-				embed = discord.Embed(
-					color=self.bot.colors["RED"],
-					description=f'{self.bot.emojis_list["Warrning"]} | Unable to add them. Contact Jay or utki.')
-				await ctx.channel.send(embed=embed)
-				return
-
-		try:
-			newvalues = {"$set": {"pings": pp}}
-			self.mycol.update_one(myquery, newvalues)
-			embed = discord.Embed(
-				color=self.bot.colors["Success"],
-				description=f'{self.bot.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!')
-			await ctx.send(embed=embed)
-		except:
-			embed = discord.Embed(
-				color=self.bot.colors["RED"],
-				description=f'{self.bot.emojis_list["BrokenStatus"]} | Unable to add them. Contact Jay or utki.')
-			await ctx.channel.send(embed=embed)
-			return
-
-		# for logging
-		logg = discord.Embed(
-			title="__Partner Logging__",
-			description=f'{self.bot.emojis_list["SuccessTick"]} |{member.mention} can now ping {" ".join(map(str,pp))}!!!',
-			colour=self.bot.colors["Success"],
-			timestamp=datetime.datetime.utcnow()
-		)
-
-		logg.set_footer(
-			text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
-
-		channel = self.bot.get_channel(self.logChannel)
-		try:
-			await channel.send(embed=logg)
-		except:
-			await ctx.send(f"⚠  {ctx.author.mention} , I am unable to log this event in {channel.mention}!!. ⚠", delete_after=30)
-			pass
-
 	@partnership.command(name="remove", description="Remove a Partner", aliases=['r'])
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def rpartner(self, ctx, channel: discord.TextChannel, silent: bool = False):
@@ -227,7 +142,6 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			return
 
 	@commands.command(name="ping_heist", description="Ping your Heist", aliases=['ph'])
-	# @commands.cooldown(1, 3600, commands.BucketType.user)
 	async def pingheist(self, ctx, *, text: str = ''):
 		try:
 			await ctx.message.delete()
@@ -799,10 +713,19 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			create_option(name="user", description="Who will claim the deal?", required=True, option_type=6),
 			create_option(name="channel_name", description="What is the channnel name?", required=True, option_type=3),
 			create_option(name="role_ids", description="What roles can they ping?", required=True, option_type=3),
-			create_option(name="unhidden", description="Channel is unhidden or not?", required=False, option_type=5)
+			create_option(name="deal_type", description="Partner deal is for hidden channel or unhidden?", choices=[
+				{
+					"name": "Hidden Channel (Recommended)",
+					"value": "hidden"
+				},
+				{
+					"name": "Unhidden Channel",
+					"value": "unhidden"
+				}
+			], required=True, option_type=3),
 		]
 	)
-	async def partneradd(self, ctx, user: discord.Member, channel_name, role_ids , unhidden = False):
+	async def partneradd(self, ctx, user: discord.Member, channel_name, role_ids , deal_type):
 		await ctx.defer(hidden=False)
 
 		# get pings
@@ -822,7 +745,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		overwrites = category.overwrites
 		overwrites[user] = discord.PermissionOverwrite(view_channel=True,send_messages=True,embed_links=True,attach_files=True,add_reactions=True,external_emojis=True,manage_messages=True)
 		channel = await ctx.guild.create_text_channel(channel_name, category=category, overwrites=overwrites)
-		if unhidden:
+		if deal_type == "unhidden":
 			nopartner = discord.utils.get(ctx.guild.roles, id=810593886720098304)
 			overwrite = channel.overwrites_for(nopartner )
 			overwrite.view_channel= None
