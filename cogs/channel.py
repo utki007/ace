@@ -123,7 +123,7 @@ class channel(commands.Cog, description="Channel utils"):
     options=[
         create_option(name="role", description="Enter role to Unlock channel for it", required=False, option_type=8),
         create_option(name="state", description="Enter Stats of lock", required=False, option_type=5),
-        create_option(name="user", description="Whom to lock channel for", required=False, option_type=6)
+        create_option(name="user", description="Whom to unlock channel for", required=False, option_type=6)
     ])
     async def unlock(self, ctx, state: bool = True, role: discord.Role = None, user : discord.Member = None):
         unlockFor = ""
