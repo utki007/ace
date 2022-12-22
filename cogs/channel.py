@@ -428,12 +428,20 @@ class channel(commands.Cog, description="Channel utils"):
    
     @cog_ext.cog_slash(name="sync", description="Sync the channel with channel category", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm)
     async def sync(self, ctx):
-        await ctx.defer(hidden=False)
+        if ctx.author.id == 685705841264820247:
+            await ctx.defer(hidden=True)
+        else:
+            await ctx.defer(hidden=False)
         channel = ctx.channel
         embed = discord.Embed(
             color=0x78AB46, description=f':white_check_mark: | **{channel.mention}** is now synced with channel category.')
         await ctx.channel.edit(sync_permissions=True)
-        await ctx.send(embed=embed, hidden=False)
+        # await ctx.send(embed=embed, hidden=False)
+        if ctx.author.id == 685705841264820247:
+            await ctx.send(f"Jann pro fr", hidden= True)
+            await channel.send(embed=embed)
+        else:
+            await ctx.send(embed=embed, hidden=False)
 
 def setup(bot):
    bot.add_cog(channel(bot))
