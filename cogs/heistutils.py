@@ -214,7 +214,7 @@ class heistutils(commands.Cog):
 		ctx1 = await self.bot.get_context(m2)
 		await ctx1.invoke(self.bot.get_command("settings heist-ar"),channel=ctx1.channel,amount=str(amount),timer=og_timer,role = required_role)
 		if amount > 999000000:
-			await ctx1.invoke(self.bot.get_command("t"), time=og_timer, name =f"<a:TGK_paisa_hi_paisa_hoga:849509579565301780> **{int(amount/10000000)} Bil** Heist Timer! <a:TGK_paisa_hi_paisa_hoga:849509579565301780>")
+			await ctx1.invoke(self.bot.get_command("t"), time=og_timer, name =f"<a:TGK_paisa_hi_paisa_hoga:849509579565301780> **{int(amount/1000000000)} Bil** Heist Timer! <a:TGK_paisa_hi_paisa_hoga:849509579565301780>")
 		else:
 			await ctx1.invoke(self.bot.get_command("t"), time=og_timer, name =f"<a:TGK_paisa_hi_paisa_hoga:849509579565301780> **{int(amount/1000000)} Mil** Heist Timer! <a:TGK_paisa_hi_paisa_hoga:849509579565301780>")
 		
