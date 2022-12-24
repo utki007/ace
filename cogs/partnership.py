@@ -19,6 +19,7 @@ from discord_slash.model import SlashCommandPermissionType
 from discord_slash.utils.manage_components import create_button, create_actionrow
 from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
+import typing
 
 
 def commonPing(role1, role2):
@@ -64,13 +65,16 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
 	@partnership.command(name="remove", description="Remove a Partner", aliases=['r'])
 	@commands.check_any(checks.can_use(), checks.is_me())
-	async def rpartner(self, ctx, channel: discord.TextChannel, silent: bool = False):
+	async def rpartner(self, ctx, channel: typing.Union[discord.TextChannel, int], silent: bool = False):
 		try:
 			await ctx.message.delete()
 		except:
 			pass
-
-		myquery = {"_id": (channel.id)}
+		
+		if isinstance(channel, discord.TextChannel):
+			myquery = {"_id": (channel.id)}
+		else:
+			myquery = {"_id": (channel)}
 		info = self.mycol.find(myquery)
 		flag = 0
 		dict = {}
