@@ -129,7 +129,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		desc = ""
 		for i in list:
 			member = await self.bot.fetch_user(int(i['user']))
-			desc += f"{member.mention}  \n> **Pings:** _{i['pings']}_\n> **Channel ID:** `{i['_id']}`\n\n"
+			desc += f"{member.mention}  \n> **Pings:** {i['pings']}\n> **Channel:** _<#{i['_id']}>_\n> **Channel ID:** `{i['_id']}`\n\n"
 
 		embed = discord.Embed(
 			color=discord.Color.random(),
@@ -707,7 +707,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		await ctx.invoke(self.bot.get_command("reach"), channel=channel, roleIds=dict[maxkey])
 		await calculate.delete()
 	
-	@cog_ext.cog_subcommand(base="Partner", name="Add",description="Create event-partner channel!", guild_ids=guild_ids,
+	@cog_ext.cog_subcommand(base="Partner", name="create-channel",description="Create event-partner channel!", guild_ids=guild_ids,
 		base_default_permission=False,
 		options = [
 			create_option(name="user", description="Who will claim the deal?", required=True, option_type=6),
