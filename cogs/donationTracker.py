@@ -1069,7 +1069,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             await ctx.send(f"{ctx.author.mention}, Unable to add donor roles!")
             pass
 
-    @celeb.command(name="lb", description="Remove donation from a special", usage="<event-name>")
+    @celeb.command(name="lb", description="Celeb lb", usage="<event-name>")
     @commands.check_any(checks.can_use(), checks.is_me())
     async def _leaderboard(self, ctx, name: str, number: int = 1):
         myquery = self.mycol.find(
@@ -1101,7 +1101,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         totalmembers = f"{df['event_'+name][df['event_'+name]>0].size}"
 
         sum_df = df[[nameofevent]]
-        totaldono = f"{int((sum_df[sum_df[nameofevent]>5000000.0].sum())/2):,}"
+        totaldono = f"{int((sum_df[sum_df[nameofevent]>5000000.0].sum())/1.7):,}"
         # totaldono = f'{int(df["event_"+name].sum()):,}'
         df = df.head(5)
 
@@ -1145,9 +1145,9 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         )
 
         embed.add_field(
-            name="Total Donors: ", value=totalmembers, inline=False)
+            name="Total Donors: ", value=totalmembers, inline=True)
         embed.add_field(
-            name="Total Donations: ", value=f"⏣ {totaldono}", inline=False)
+            name="Total Donations: ", value=f"⏣ {totaldono}", inline=True)
         # embed.add_field(
         #     name="Donation Status: ", value=f"Accepting", inline=True)
 
