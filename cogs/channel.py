@@ -89,7 +89,7 @@ class channel(commands.Cog, description="Channel utils"):
         channel = ctx.channel        
         if role == None:
             if user == None:
-                role = discord.utils.get(ctx.guild.roles, id=self.default_role)
+                role = ctx.guild.default_role
                 unlockFor = "role"
             else:
                 unlockFor = "user"
@@ -101,8 +101,12 @@ class channel(commands.Cog, description="Channel utils"):
             overwrite.send_messages = False
 
             await channel.set_permissions(role, overwrite=overwrite)
-            embed = discord.Embed(
-            color=0x78AB46, description=f':white_check_mark: | Locked **{channel.mention}** for {role.mention}')
+            if role == ctx.guild.default_role:
+                embed = discord.Embed(
+                color=0x78AB46, description=f':white_check_mark: | Locked **{channel.mention}** for {role}')
+            else:
+                embed = discord.Embed(
+                color=0x78AB46, description=f':white_check_mark: | Locked **{channel.mention}** for {role.mention}')
         elif unlockFor == "user":
             overwrite = channel.overwrites_for(user)
             overwrite.send_messages = False
@@ -130,7 +134,7 @@ class channel(commands.Cog, description="Channel utils"):
         channel = ctx.channel        
         if role == None:
             if user == None:
-                role = discord.utils.get(ctx.guild.roles, id=self.default_role)
+                role = ctx.guild.default_role
                 unlockFor = "role"
             else:
                 unlockFor = "user"
@@ -147,10 +151,16 @@ class channel(commands.Cog, description="Channel utils"):
 
             msg = ''
             
-            if state:
-                msg = f':white_check_mark: | Unlocked **{channel}** for {role.mention} with state `True`'
+            if role == ctx.guild.default_role :
+                if state:
+                    msg = f':white_check_mark: | Unlocked **{channel}** for {role} with state `True`'
+                else:
+                    msg = f':white_check_mark: | Unlocked **{channel}** for {role}'
             else:
-                msg = f':white_check_mark: | Unlocked **{channel}** for {role.mention}'
+                if state:
+                    msg = f':white_check_mark: | Unlocked **{channel}** for {role.mention} with state `True`'
+                else:
+                    msg = f':white_check_mark: | Unlocked **{channel}** for {role.mention}'
         
             await channel.set_permissions(role, overwrite=overwrite)
 
@@ -191,12 +201,11 @@ class channel(commands.Cog, description="Channel utils"):
     async def hide(self, ctx,*, role: discord.Role = None):
         await ctx.defer(hidden=False)
         channel = ctx.channel        
-        if role == int:
-            role = discord.utils.get(ctx.guild.roles, id=role)
-        elif role == None:
-            role = discord.utils.get(ctx.guild.roles, id=self.default_role)
+        if role == None:
+            role = ctx.guild.default_role
+            rolemention = role
         else:
-            role = discord.utils.get(ctx.guild.roles, name=f"{role}")
+            rolemention = role.mention
 
         overwrite = channel.overwrites_for(role)
         # overwrite.send_messages = False
@@ -204,7 +213,7 @@ class channel(commands.Cog, description="Channel utils"):
 
         await channel.set_permissions(role, overwrite=overwrite)
         embed = discord.Embed(
-            color=0x78AB46, description=f':white_check_mark: | Hidden **{channel}** for {role.mention}')
+            color=0x78AB46, description=f':white_check_mark: | Hidden **{channel}** for {rolemention}')
         await ctx.send(embed=embed, hidden=False)
 
     @cog_ext.cog_slash(name="unhide", description="Unhide the channel", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm,
@@ -217,7 +226,7 @@ class channel(commands.Cog, description="Channel utils"):
     async def unhide(self, ctx, state: bool = True, *,role1: discord.Role = None,role2: discord.Role = None,role3: discord.Role = None):
         await ctx.defer(hidden=False)
         channel = ctx.channel        
-        role = discord.utils.get(ctx.guild.roles, id=self.default_role)
+        role = ctx.guild.default_role
 
         embedMention = ""
         if role1 != None:
@@ -246,7 +255,7 @@ class channel(commands.Cog, description="Channel utils"):
             embedMention = embedMention + role3.mention + " "
 
         if embedMention == "":
-            embedMention = role.mention
+            embedMention = role
             overwrite = channel.overwrites_for(role)
             if state == True:
                 overwrite.view_channel = True
