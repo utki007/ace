@@ -57,6 +57,19 @@ class heistroles(commands.Cog):
 		if message.author.id == 646937666251915264 and message.content != None and "server is currently" in message.content:
 			await message.channel.send(f"> <@&1034072149247397938> form up for _server drop_!")  
 
+		if message.author.id in [693167035068317736, 675996677366218774] and message.channel.category.id != 1049228870886359050 and len(message.embeds) > 0 :
+			embed = message.embeds[0]
+			if "WINNER!" in embed.title.lower()  and len(message.mentions) == 1:
+				if message.channel.category.id in [825581377592098837, 935537766576582716]:
+					await message.channel.edit(sync_permissions=True)
+				content = f"` - `   **Want us to host more pog events?**\n\n"
+				content += f"<:tgk_redarrow:1005361235715424296>   Use <#992646623639384154> to sponsor \n"
+				content += f"<:tgk_redarrow:1005361235715424296>   Refer to <#949699739081920593> to check events we can host\n"
+				content += f"<:tgk_redarrow:1005361235715424296>   Add <#1019832387615596544> if you got more ideas  \n "
+				content += f"||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| "
+				content += f"\n https://media.discordapp.net/attachments/840291742859001876/943806099537162250/0E67BE40-2287-4A6F-9520-C6FD5E548227.gif"
+				await message.channel.send(content = content)
+
 		if message.author.id == 270904126974590976:
 			
 			if len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
