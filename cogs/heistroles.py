@@ -92,23 +92,6 @@ class heistroles(commands.Cog):
 						await ctx.invoke(self.bot.get_command("ty"))
 					
 					return
-
-				# elif "fields" in message.embeds[0].to_dict().keys() and "thumbnail" in message.embeds[0].to_dict().keys():
-				# 	data = {}
-				# 	embed_dict = message.embeds[0].to_dict()
-				# 	if (len(message.embeds[0].to_dict()['fields'])>2 and message.embeds[0].to_dict()['fields'][2]['value'] != None):
-				# 		data["_id"] = embed_dict['fields'][2]['value'].replace('`','',2)
-				# 	data["image_link"] = embed_dict['thumbnail']['url']
-				# 	data["trade_value"] = int(re.findall("\⏣\s(.*)", embed_dict['description'])[-1].split(" ")[0].replace(",","",5))
-				# 	data['item_name'] = []
-				# 	data['item_name'].append(data['_id'].lower())
-				# 	data['item_name'].append(embed_dict['title'].split("**")[1].lower())
-
-				# 	try:
-				# 		await self.bot.items.upsert(data)
-				# 	except:
-				# 		await errorFeed.send(f"{message.embeds[0].to_dict()}")
-				# 	return
 			
 			if len(message.embeds)>0 and "description" in message.embeds[0].to_dict().keys():
 				if "amazing job everybody, we racked up a total of" in message.embeds[0].description.lower():
