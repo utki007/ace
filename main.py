@@ -274,6 +274,7 @@ if __name__ == "__main__":
 	bot.settings = Document(bot.db, "settings")
 	bot.items = Document(bot.db, "itemTracker")
 	bot.freeloaders = Document(bot.db, "freeloaders")
+	bot.sticky = Document(bot.db, "sticky")
 
 	for file in os.listdir('./cogs'):
 		if file.endswith(".py") and not file.startswith("_") and not file.startswith('test'):
