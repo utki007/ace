@@ -159,7 +159,7 @@ class sticky(commands.Cog, description="Sticky Utility"):
 			description = f"""
 					<a:tgk_redcrown:1005473874693079071>   **Channel:** <#{sticky['_id']}>
 					<:tgk_redarrow:1005361235715424296>   **Channel ID:** `{sticky['_id']}`
-					<:tgk_redarrow:1005361235715424296>   **Content:** Use `gk.sticky list <channel_id>`
+					<:tgk_redarrow:1005361235715424296>   **Content:** `gk.sticky content {sticky['_id']}`
 					"""
 			page.append(description)
 
