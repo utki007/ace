@@ -516,6 +516,7 @@ class giveaway(commands.Cog):
 		host = ctx.author
 		event = discord.utils.get(ctx.guild.roles, id=836925033506275399)
 		
+		event_summary = f"{name.title()} for {prize.title()} starting soon!"
 		desc = f"{host.mention} is hosting an event!\n"
 		if (winners > 1):
 			desc = desc + f"> <a:winner:805380293757370369>  <a:yellowrightarrow:801446308778344468> {winners} winners\n"
@@ -538,9 +539,9 @@ class giveaway(commands.Cog):
 		eventemoji = await gk.fetch_emoji(854663256420909066)
 		buttons = [create_button(style=ButtonStyle.URL, label="Head to event channel!", emoji=eventemoji, disabled=False, url=url)]
 		if ping:
-			msg = await ctx.channel.send(content=f"{event.mention}",embed=event_embed, components=[create_actionrow(*buttons)])
+			msg = await ctx.channel.send(content=f"{event_summary}\n[ {event.mention} ]",embed=event_embed, components=[create_actionrow(*buttons)])
 		else:
-			msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
+			msg = await ctx.channel.send(content = event_summary ,embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Success!", components=[create_actionrow(*buttons)])
 
 	@cog_ext.cog_subcommand(base="event", name="end",description="Send event footer", guild_ids=guild_ids,
