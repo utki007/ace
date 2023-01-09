@@ -17,4 +17,4 @@ colour==0.1.5
 webcolors==1.11.1
 discord-webhook==0.13.0
 humanfriendly==9.2
-chat-exporter==2.5.1
+chat-exporter==1.7.3
