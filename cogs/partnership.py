@@ -20,8 +20,7 @@ from discord_slash.utils.manage_components import create_button, create_actionro
 from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
 import typing
-import chat_exporter
-import io
+
 
 def commonPing(role1, role2):
 	ping1 = set(role1)
@@ -808,56 +807,6 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		ctx1 = await self.bot.get_context(msg)
 		ctx1.author = ctx.author
 		await ctx1.invoke(self.bot.get_command("sticky set"), channel=channel, content = " ||`gk.ph <message>` to ping||", silent = True)
-
-	@cog_ext.cog_subcommand(base="Partner", name="react-log",description="Log Event Partner Reacts", guild_ids=guild_ids,
-			base_default_permission=False,
-			options = [
-				create_option(name="channel", description="Event partner channel", required=True, option_type=7),
-				create_option(name="giveaway_message_id", description="Giveaway message id", required=False, option_type=3),
-				create_option(name="ping_message_id", description="The message which pinged users", required=False, option_type=3),
-			]
-	)
-	async def partnerlogreact(self, ctx, channel, giveaway_message_id = None, ping_message_id = None):
-		await ctx.defer(hidden=False)
-
-		log_channel = self.bot.get_channel(1061875082504458340)
-		messages = [message async for message in channel.history(limit=None)]
-
-		# get role names which were pinged
-		if ping_message_id == None:
-			ping_message_id = channel.last_message_id
-		message = await channel.fetch_message(ping_message_id)
-		if message == None:
-			return await ctx.send(f"Incorrect ping_message_id provided.")
-		role_mentions = re.findall("\<\@\&(.*?)\>", message.content)
-		gk = self.bot.get_guild(785839283847954433)
-		roles = [gk.get_role(int(role_id)) for role_id in role_mentions]
-		role_names = " + ".join([role.mention for role in roles])
-		role_ids = " + ".join([f"`{role.id}`" for role in roles])
-
-		# get react count
-		if giveaway_message_id == None:
-			for message in messages:
-				if len(message.embeds) > 0:
-					reaction_count = message.reactions[0].count
-		else:
-			message = await channel.fetch_message(giveaway_message_id)
-			if message == None:
-				return await ctx.send(f"Incorrect giveaway_message_id provided.")
-			reaction_count = message.reactions[0].count
-
-		# print transcript file
-		transcript_file = await chat_exporter.raw_export(channel, messages=messages, tz_info="Asia/Kolkata", guild=ctx.guild, bot=self.bot, fancy_times=True, support_dev=False )
-		transcript_file = discord.File(io.BytesIO(transcript_file.encode()), filename=f"{role_names }.html")
-		link_msg  = await log_channel.send(content = f"**Partner Proof** \n> **Roles:** {role_names}\n> **Role IDs:** {role_ids}\n> **Reaction Count:** {reaction_count}", file=transcript_file, allowed_mentions=discord.AllowedMentions(users=False, roles=False, everyone=False))
-		link_view = [
-			create_button(style=ButtonStyle.URL, label="Partnership Evidence", emoji="<a:Partner:1000335814481416202>", disabled=False, url=f"https://codebeautify.org/htmlviewer?url={link_msg.attachments[0].url}")
-		]
-		await link_msg.edit(components=[create_actionrow(*link_view)])
-		log_view = [
-			create_button(style=ButtonStyle.URL, label="Logged here", disabled=False, url=link_msg.jump_url)
-		]
-		await ctx.send("Logged Successfully",components=[create_actionrow(*log_view)])
-			
+		
 def setup(bot):
 	bot.add_cog(partnership(bot))
