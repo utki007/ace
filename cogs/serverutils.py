@@ -109,11 +109,11 @@ class serverutils(commands.Cog, description="Server Utility"):
 	async def bar(self, ctx):
 		await ctx.message.delete()
 		l = [
-			"https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif",
+			"https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif",
 			"https://media.discordapp.net/attachments/840291742859001876/943806099537162250/0E67BE40-2287-4A6F-9520-C6FD5E548227.gif"
 		]
 		# await ctx.send(random.choice(l))
-		await ctx.send(l[1])
+		await ctx.send(l[0])
 
 	@commands.command(name="celebrate", description="To be used in public channels after completing a gaw")
 	@commands.check_any(checks.can_use(), checks.is_me())

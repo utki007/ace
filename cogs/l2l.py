@@ -202,7 +202,7 @@ class lasttoleave(commands.Cog, description="Last to Leave Manager"):
         for i in users:
             member_react.append(i.mention)
         
-        await ctx.author.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif") 
+        await ctx.author.send("https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif") 
         await ctx.author.send(f"Members present: {', '.join(user for user in members_in_vc)}", allowed_mentions=am)
         await ctx.author.send(f"Members who reacted: {', '.join(user for user in member_react)}", allowed_mentions=am)
 
@@ -233,7 +233,7 @@ class lasttoleave(commands.Cog, description="Last to Leave Manager"):
         for member in channel.members:
             if member.bot != True:
                 count+=1
-        await ctx.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif")  
+        await ctx.send("https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif")  
         final_msg = await ctx.send(f"**{count}** more members to go!")
         await final_msg.add_reaction("<a:pandaswag:801013818896941066>")
 
@@ -248,7 +248,7 @@ class lasttoleave(commands.Cog, description="Last to Leave Manager"):
                 except:
                     await ctx.author.send(f"Failed to remove {l2l.mention} role from {i.mention}", allowed_mentions=am)
         
-        await ctx.author.send("https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif") 
+        await ctx.author.send("https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif") 
 
 
     @lasttoleave.command(name="start", description="Gives everyone in channel l2l role", aliases=['setup'])
