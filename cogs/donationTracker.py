@@ -1571,11 +1571,11 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			create_option(name="amount", description='Use negative number like "-2k" to remove donation!', required=True, option_type=3),
 			create_option(name="donation_type", description="DMC donation or Item donation?", choices=[
 				{
-					"name": "DMC Donation",
+					"name": "DMC Donation (Calculates 2x automatically)",
 					"value": "dmc"
 				},
 				{
-					"name": "Item Donation (Calculates 1.2x automatically)",
+					"name": "Item Donation (Calculates 1.5x automatically)",
 					"value": "item"
 				}
 			], required=False, option_type=3)
