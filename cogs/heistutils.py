@@ -150,7 +150,7 @@ class heistutils(commands.Cog):
 		)
 		event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
 		event_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/932911351154741308.gif?size=128&quality=lossless")
-		event_embed.set_image(url="https://media.discordapp.net/attachments/840291742859001876/943806099537162250/0E67BE40-2287-4A6F-9520-C6FD5E548227.gif")
+		event_embed.set_image(url="https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif")
 
 		message = title
 		if message == None:
