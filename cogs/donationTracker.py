@@ -1503,7 +1503,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				payment_pending.set_footer(text=f"Developed by utki007 & Jay",
 										   icon_url=ctx.guild.icon_url)
 				await member.send(content=f"Hello {member.name}! I have a message for you:", embed=payment_pending)
-				await ctx.send(content=f"Sent {member.mention} the following message:", embed=payment_pending, delete_after=600)
+				await ctx.send(content=f"Sent {member.mention} the following message:", embed=payment_pending, delete_after=600, allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
 				await asyncio.sleep(0.5)
 		if desc != "":
 			grinders_not_found = discord.Embed(
