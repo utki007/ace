@@ -508,7 +508,7 @@ class giveaway(commands.Cog):
 			create_option(name="prize", description="Prize of the giveaway", option_type=3, required=True),
 			create_option(name="channel", description="Event channel", required=True, option_type=7),
 			create_option(name="winners", description="Number of the winners.", option_type=4, required=False),
-			create_option(name="ping", description="Want to ping heist?", required=False, option_type=5),
+			create_option(name="ping", description="Want to ping event role?", required=False, option_type=5),
 		]
 	)
 	async def event(self, ctx, name, sponsor: discord.Member, message, prize, channel, winners: int = 1, ping = True):
