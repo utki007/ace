@@ -1537,7 +1537,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 					"name": "Item Donation (Calculates 1.2x automatically)",
 					"value": "item"
 				}
-			], required=False, option_type=3)
+			], required=True, option_type=3)
 		]
 	)
 	async def donationAdd(self, ctx, user: discord.Member, amount, donation_type = "dmc"):
@@ -1578,7 +1578,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 					"name": "Item Donation (Calculates 1.5x automatically)",
 					"value": "item"
 				}
-			], required=False, option_type=3)
+			], required=True, option_type=3)
 		]
 	)
 	async def celeblogg(self, ctx, user: discord.Member, amount, donation_type = "dmc"):
