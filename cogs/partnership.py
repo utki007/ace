@@ -198,7 +198,12 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		text = f"{text} \n[ {pings} ]"
 
 		if ctx.channel.id == self.partnerheist or ctx.channel.category.id == 817049348977983506:
+			messages = [message async for message in ctx.channel.history(limit=None)]
 			await ctx.send(text)
+			for message in messages:
+				if len(message.embeds) > 0 and message.author.id == 700743797977514004:
+					await message.reply(f"**Giveaway here ^^**")
+					break
 			await ctx.invoke(self.bot.get_command("psh r"), channel=ctx.channel, silent=True)
 			await ctx.invoke(self.bot.get_command("sticky unset"), channel=ctx.channel, silent=True)
 		else:
