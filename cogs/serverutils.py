@@ -129,10 +129,10 @@ class serverutils(commands.Cog, description="Server Utility"):
 		await ctx.message.delete()
 		l = ["https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif"]
 		# await ctx.send(random.choice(l))
-		await ctx.send(f"Want to dm {member} with message: {message} \n`(Yes/No)`")
+		question = await ctx.send(f"Want to dm {member} with message: {message} \n`(Yes/No)`")
 		try:
 			msg = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id and m.content.lower() in ["yes", "y", "no", "n"], timeout=10)
-
+			await question.delete()
 			if msg.content.lower() in ["y", "yes"]:
 				try:
 					await member.send(message)
