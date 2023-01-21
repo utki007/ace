@@ -222,14 +222,6 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
 								f"**Proof:** {i['proof']} \n")
 				embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/859665223388233748.gif?size=128&quality=lossless")
 				await ctx.channel.send(embed=embed)
-
-				# await ctx.send(
-				#     f"**\n**\n**{i['serverName']}**\n"
-				#     f"```ini\n"
-				#     f"[ Server ID : {i['_id']}]\n"
-				#     f"[ Reason : {i['reason']}]\n"
-				#     f"```\n**\n**"
-				# )
 			except:
 				await ctx.send(f"Unable to send for {i}")
 		await ctx.message.delete()
