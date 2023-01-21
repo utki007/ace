@@ -38,11 +38,16 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 	@commands.command(name = "timer",aliases=["t","tstart"],usage = "<time> [name]")
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def timer(self, ctx,time ,*,name : str= "Timer"):
-		
-		await ctx.message.delete()    
+		  
 		time = await convert_to_time(time)
 		cd = await calculate(time)
-
+		if cd >= 86400:
+			warning = discord.Embed(
+					color=0xffd300,
+					description=f"<a:nat_warning:1062998119899484190> | Timer can't be set for more than one day!"
+			)
+			return await ctx.reply(embed=warning, mention_author=False)
+		await ctx.message.delete()  
 		end = datetime.datetime.utcnow() + datetime.timedelta(seconds=cd)
 		# cd = str(cd)
 		# datetime.strptime(datetime_str, '%m/%d/%y %H:%M:%S')
