@@ -208,7 +208,6 @@ class channel(commands.Cog, description="Channel utils"):
             rolemention = role.mention
 
         overwrite = channel.overwrites_for(role)
-        # overwrite.send_messages = False
         overwrite.view_channel = False
 
         await channel.set_permissions(role, overwrite=overwrite)
@@ -315,9 +314,6 @@ class channel(commands.Cog, description="Channel utils"):
             
             override_grinder_donation = grinder_donation.overwrites_for(default_role)
             override_grinder_donation.send_messages = False
-            
-            # overide_trade_zone = trade_zone.overwrites_for(default_role)
-            # overide_trade_zone.send_messages = False
 
             await dank_1.set_permissions(default_role, overwrite=override_dank_1)
             await dank_2.set_permissions(default_role, overwrite=override_dank_2)
@@ -327,7 +323,6 @@ class channel(commands.Cog, description="Channel utils"):
             await dank_grind.set_permissions(default_role, overwrite=override_dank_grind)
             await donate_here.set_permissions(default_role, overwrite=overide_donate_here)
             await grinder_donation.set_permissions(default_role, overwrite=override_grinder_donation)
-            # await trade_zone.set_permissions(default_role, overwrite=overide_trade_zone)
             
             dlock = discord.Embed(
                 title=f"    **{'Why are Dank Memer channels Locked ?'}**   ",
