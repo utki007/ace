@@ -238,7 +238,7 @@ bot.emojis_list = {
 	"Timer": "<a:tgk_timer:841624339169935390>",
 	"60sec": "<a:tgk_cd:841625640880570369>",
 	"banHammer": "<a:tgk_banhammer:849699763065585734>",
-	"rightArrow": "<a:yellowrightarrow:801446308778344468>",
+	"rightArrow": "<:tgk_redarrow:1005361235715424296> ",
 	"leftArrow": "<a:tgk_leftarrow:858674346477617172>",
 	"left": "<a:tgk_left:858729283588587521>",
 	"right": "<a:tgk_right:858729390065057803>",

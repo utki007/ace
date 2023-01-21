@@ -110,7 +110,7 @@ class heistroles(commands.Cog):
 						f'{self.bot.emojis_list["rightArrow"]} Miss daily heists, events and giveaways.\n'
 						f'{self.bot.emojis_list["rightArrow"]} Multiple freeloads, Permanent ban.\n'
 						f'{self.bot.emojis_list["rightArrow"]} Lament why you left such a POG server.\n',
-						color=self.bot.colors["RED"],
+						color=0xDA2A2A ,
 						timestamp=datetime.datetime.utcnow()
 					)
 		# fl.set_author(name=ctx.guild.name, icon_url="https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024")
