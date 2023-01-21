@@ -157,7 +157,7 @@ class heistroles(commands.Cog):
 					embed.add_field(name=f"Heist Payouts:",
 									value=f"**[⏣ {heist_amount:,}]({highest_fined_link})**", inline=True)
 					embed.add_field(name=f"Payouts:",
-										value=f"```diff\n+ {random.choice(guild.members).name} {random.choice(payouts_list)}\n```", inline=False)
+										value=f"```ansi\n[0;32m+ {random.choice(guild.members).name} {random.choice(payouts_list)}[0;0m\n```", inline=False)
 					embed.set_footer(text=f"Developed by utki007 & Jay",
 									icon_url=self.bot.user.avatar_url)
 
