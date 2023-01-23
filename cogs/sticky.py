@@ -37,6 +37,8 @@ class sticky(commands.Cog, description="Sticky Utility"):
 		#     return
 		if self.bot.user.id == 859107514082394142:
 			return
+		if message.channel.category.id == 1049228870886359050:
+			return
 		channel = message.channel
 		myquery = {"_id": channel.id}
 		info = self.mycol.find(myquery)
@@ -202,6 +204,8 @@ class sticky(commands.Cog, description="Sticky Utility"):
 	async def on_raw_message_delete(self, payload: discord.raw_models.RawMessageDeleteEvent):
 		"""If the stickied message was deleted, re-post it."""
 		channel = self.bot.get_channel(payload.channel_id)
+		if channel.category.id == 1049228870886359050:
+			return
 		myquery = {"_id": channel.id}
 		info = self.mycol.find(myquery)
 		flag = 0
