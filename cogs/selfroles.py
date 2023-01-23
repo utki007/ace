@@ -235,10 +235,10 @@ class selfroles(commands.Cog):
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
-	@cog_ext.cog_subcommand(base="Selfrole", name="Bots",description="Gamer related self-roles", guild_ids=guild_ids,
+	@cog_ext.cog_subcommand(base="Selfrole", name="Gamer",description="Gamer related self-roles", guild_ids=guild_ids,
 		base_default_permission=True
 	)
-	async def selfbotrr(self, ctx):
+	async def selfgamerr(self, ctx):
 		await ctx.defer(hidden=True)
 
 		event_embed = discord.Embed(
