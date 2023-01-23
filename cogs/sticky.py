@@ -187,7 +187,7 @@ class sticky(commands.Cog, description="Sticky Utility"):
 				color=self.bot.colors["RED"],
 				description=f"{self.bot.emojis_list['Warrning']} | No such channel found!")
 			return await msg.edit(embed=embed, content = "")
-		return await msg.edit(content = f"{sticky['content']}\n\n```{sticky['content']}```")
+		return await msg.edit(content = f"{sticky['content']}\n\n```{sticky['content']}```", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
 
 
 	async def send_stickied(self, channel: discord.TextChannel, content: str):
