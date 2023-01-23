@@ -71,8 +71,13 @@ class heistroles(commands.Cog):
 				await message.channel.send(content = content)
 
 		elif message.author.id == 693167035068317736 and message.channel.category.id == 1049228870886359050 and len(message.embeds) > 0:
+			sticky = await self.bot.sticky.find(message.channel.id)
+			if sticky is None:
+				return
+			content = sticky['content']
+
 			def check(msg):
-				return msg.author.id == self.bot.user.id
+				return msg.author.id == self.bot.user.id and content in msg.content
 
 			dev = self.bot.get_guild(999551299286732871)
 			rumble_emoji = await dev.fetch_emoji(1067137623384141926)
@@ -84,7 +89,7 @@ class heistroles(commands.Cog):
 			]
 			await message.channel.purge(limit=10, check=check, before=None)
 			await message.channel.send(
-				content=f"Do you want to get rich?",
+				content=content,
 				components=[create_actionrow(*buttons)], allowed_mentions=am
 			)
 
