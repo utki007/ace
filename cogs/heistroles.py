@@ -70,6 +70,24 @@ class heistroles(commands.Cog):
 				content += f"\n https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif"
 				await message.channel.send(content = content)
 
+		elif message.author.id == 693167035068317736 and message.channel.category.id == 1049228870886359050 and len(message.embeds) > 0:
+			def check(msg):
+				return msg.author.id == self.bot.user.id
+
+			dev = self.bot.get_guild(999551299286732871)
+			rumble_emoji = await dev.fetch_emoji(1067137623384141926)
+
+			am = discord.AllowedMentions(users=False, everyone=False, roles=False, replied_user=False)
+
+			buttons = [
+				create_button(style=ButtonStyle.green,emoji=rumble_emoji, label="Get pinged for future rumbles!", disabled=False, custom_id="heist:rumble")
+			]
+			await message.channel.purge(limit=10, check=check, before=None)
+			await message.channel.send(
+				content=f"Do you want to get rich?",
+				components=[create_actionrow(*buttons)], allowed_mentions=am
+			)
+
 		if message.author.id == 270904126974590976:
 			
 			if len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
@@ -498,6 +516,26 @@ class heistroles(commands.Cog):
 				else:
 					await ctx.author.add_roles(danker)
 					await ctx.send(f"The role {danker.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "reaction:rumble":
+				await ctx.defer(hidden=True)
+				rumble = discord.utils.get(ctx.guild.roles, id=1067135771473100960)
+				if rumble in ctx.author.roles:
+					await ctx.author.remove_roles(rumble)
+					await ctx.send(f"The role {rumble.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(rumble)
+					await ctx.send(f"The role {rumble.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "reaction:karutadrops":
+				await ctx.defer(hidden=True)
+				karuta = discord.utils.get(ctx.guild.roles, id=1034072149247397938)
+				if karuta in ctx.author.roles:
+					await ctx.author.remove_roles(karuta)
+					await ctx.send(f"The role {karuta.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(karuta)
+					await ctx.send(f"The role {karuta.mention} has been added to you.", hidden=True)
 					
 			elif ctx.custom_id == "reaction:gambler":
 				await ctx.defer(hidden=True)
@@ -922,6 +960,16 @@ class heistroles(commands.Cog):
 				else:
 					await ctx.author.add_roles(chat)
 					await ctx.send(f"The role {chat.mention} has been added to you.", hidden=True)
+
+			elif ctx.custom_id == "heist:rumble":
+				await ctx.defer(hidden=True)
+				rumble = discord.utils.get(ctx.guild.roles, id=1067135771473100960)
+				if rumble in ctx.author.roles:
+					await ctx.send(f"You already have the {rumble.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
+				else:
+					await ctx.author.add_roles(rumble)
+					await ctx.send(f"The role {rumble.mention} has been added to you.", hidden=True)
+
 
 			elif ctx.custom_id == "heist:voted":
 				await ctx.defer(hidden=True)
