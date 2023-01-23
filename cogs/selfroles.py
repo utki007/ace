@@ -235,32 +235,5 @@ class selfroles(commands.Cog):
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
-	@cog_ext.cog_subcommand(base="Selfrole", name="Gamer",description="Gamer related self-roles", guild_ids=guild_ids,
-		base_default_permission=True
-	)
-	async def selfgamerr(self, ctx):
-		await ctx.defer(hidden=True)
-
-		event_embed = discord.Embed(
-				title=f"<a:gk_rainbow:944635677490970644>   **{'Game Roles': ^15}**   <a:gk_rainbow:944635677490970644>",
-				color=0xffe5b4
-		)
-		
-		playzone = self.bot.get_guild(815849745327194153)
-		gk = self.bot.get_guild(785839283847954433)
-
-		valo = await gk.fetch_emoji(881176745200476170)
-		bgmi = await gk.fetch_emoji(842665232831873034)
-		pro = await playzone.fetch_emoji(944689630106775612)
-
-		buttons = [
-			create_button(style=ButtonStyle.grey,emoji=valo, label="Valorant", disabled=False, custom_id="reaction:valo"),
-			create_button(style=ButtonStyle.grey,emoji=bgmi, label="B.G.M.I", disabled=False, custom_id="reaction:bgmi"),
-			create_button(style=ButtonStyle.grey,emoji=pro, label="Pro Gamers", disabled=False, custom_id="reaction:pro")
-		]
-		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
-		await ctx.send(content=f"Reaction roles created!",hidden=True)
-
-
 def setup(bot):
 	bot.add_cog(selfroles(bot))
