@@ -85,13 +85,16 @@ class heistroles(commands.Cog):
 			am = discord.AllowedMentions(users=False, everyone=False, roles=False, replied_user=False)
 
 			buttons = [
-				create_button(style=ButtonStyle.green,emoji=rumble_emoji, label="Get pinged for future rumbles!", disabled=False, custom_id="heist:rumble")
+				create_button(style=ButtonStyle.green,emoji=rumble_emoji, label="Get reminded for future rumbles!", disabled=False, custom_id="heist:rumble")
 			]
 			await message.channel.purge(limit=10, check=check, before=None)
-			await message.channel.send(
-				content=content,
-				components=[create_actionrow(*buttons)], allowed_mentions=am
-			)
+			if message.channel.id != 1049233574622146560:
+				await message.channel.send(content=content,
+					components=[create_actionrow(*buttons)], allowed_mentions=am
+				)
+			else:
+				await message.channel.send(content=content, allowed_mentions=am)
+
 
 		if message.author.id == 270904126974590976:
 			
