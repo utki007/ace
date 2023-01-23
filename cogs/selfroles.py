@@ -117,19 +117,14 @@ class selfroles(commands.Cog):
 				color=0xffe5b4
 		)
 		gk = self.bot.get_guild(785839283847954433)
-		dev = self.bot.get_guild(999551299286732871)
 		danker = await gk.fetch_emoji(801693036911263744)
 		gambler = await gk.fetch_emoji(842628623571091457)
-		mudae = await dev.fetch_emoji(1067143842077360168)
-		rumble = await dev.fetch_emoji(1067137623384141926)
-		karuta = await dev.fetch_emoji(1067144222806904983)
+		mudae = await gk.fetch_emoji(842809462708240384)
 
 		buttons = [
 			create_button(style=ButtonStyle.grey,emoji=danker, label="Danker's", disabled=False, custom_id="reaction:danker"),
-			create_button(style=ButtonStyle.grey,emoji=gambler, label="Casino", disabled=False, custom_id="reaction:gambler"),
-			create_button(style=ButtonStyle.grey,emoji=mudae, label="Mudae", disabled=False, custom_id="reaction:mudae"),
-			create_button(style=ButtonStyle.grey,emoji=rumble, label="Rumble Royale", disabled=False, custom_id="reaction:rumble"),
-			create_button(style=ButtonStyle.grey,emoji=karuta, label="Karuta Drops", disabled=False, custom_id="reaction:karutadrops")
+			create_button(style=ButtonStyle.grey,emoji=gambler, label="Gambler's", disabled=False, custom_id="reaction:gambler"),
+			create_button(style=ButtonStyle.grey,emoji=mudae, label="Mudae", disabled=False, custom_id="reaction:mudae")
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
@@ -234,33 +229,6 @@ class selfroles(commands.Cog):
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
-
-	@cog_ext.cog_subcommand(base="Selfrole", name="Bots",description="Gamer related self-roles", guild_ids=guild_ids,
-		base_default_permission=True
-	)
-	async def selfbotrr(self, ctx):
-		await ctx.defer(hidden=True)
-
-		event_embed = discord.Embed(
-				title=f"<a:gk_rainbow:944635677490970644>   **{'Game Roles': ^15}**   <a:gk_rainbow:944635677490970644>",
-				color=0xffe5b4
-		)
-		
-		playzone = self.bot.get_guild(815849745327194153)
-		gk = self.bot.get_guild(785839283847954433)
-
-		valo = await gk.fetch_emoji(881176745200476170)
-		bgmi = await gk.fetch_emoji(842665232831873034)
-		pro = await playzone.fetch_emoji(944689630106775612)
-
-		buttons = [
-			create_button(style=ButtonStyle.grey,emoji=valo, label="Valorant", disabled=False, custom_id="reaction:valo"),
-			create_button(style=ButtonStyle.grey,emoji=bgmi, label="B.G.M.I", disabled=False, custom_id="reaction:bgmi"),
-			create_button(style=ButtonStyle.grey,emoji=pro, label="Pro Gamers", disabled=False, custom_id="reaction:pro")
-		]
-		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
-		await ctx.send(content=f"Reaction roles created!",hidden=True)
-
 
 def setup(bot):
 	bot.add_cog(selfroles(bot))
