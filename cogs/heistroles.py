@@ -85,7 +85,7 @@ class heistroles(commands.Cog):
 			am = discord.AllowedMentions(users=False, everyone=False, roles=False, replied_user=False)
 
 			buttons = [
-				create_button(style=ButtonStyle.gray,emoji=rumble_emoji, label="Get reminded for future rumbles!", disabled=False, custom_id="heist:rumble")
+				create_button(style=ButtonStyle.green,emoji=rumble_emoji, label="Remind me!", disabled=False, custom_id="heist:rumble")
 			]
 			await message.channel.purge(limit=10, check=check, before=None)
 			if message.channel.id != 1049233574622146560:
