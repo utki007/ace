@@ -284,7 +284,7 @@ class heistutils(commands.Cog):
 		if requirement != "":
 			content += f"<:tgk_redarrow:1005361235715424296>  **| Requirement:** _{requirement}_ \n"
 		else:
-			content += f"<:tgk_redarrow:1005361235715424296>  **| Requirement:** _No request!_ \n"
+			content += f"<:tgk_redarrow:1005361235715424296>  **| Requirement:** _No-req!_ \n"
 		if extrainfo != "":
 			content += f"<:tgk_redarrow:1005361235715424296>  **| Extra Info:** {extrainfo}\n"
 		
