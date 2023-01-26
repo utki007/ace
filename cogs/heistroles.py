@@ -170,6 +170,10 @@ class heistroles(commands.Cog):
 						f"feared nothing and took ⏣ {heist_amount:,}.",
 						f"snuck out with ⏣ {heist_amount:,}.",
 						f"extracted ⏣ {heist_amount:,}.",
+						f"stole a clean ⏣ {heist_amount:,}.",
+						f"ended up with ⏣ {heist_amount:,} without a scratch.",
+						f"ran away with ⏣ {heist_amount:,}.",
+						f"snuck out with ⏣ {heist_amount:,}.",
 						f"came out with ⏣ {heist_amount:,} despite getting tackled by police."
 					]
 					highest_fined_link = "https://www.youtube.com/channel/UCA_-mknv10nj-E1rP34zfeQ"
@@ -183,7 +187,7 @@ class heistroles(commands.Cog):
 					embed.add_field(name=f"Heist Payouts:",
 									value=f"**[⏣ {heist_amount:,}]({highest_fined_link})**", inline=True)
 					embed.add_field(name=f"Payouts:",
-										value=f"```ansi\n[0;32m+ {random.choice(guild.members).name} {random.choice(payouts_list)}[0;0m\n```", inline=False)
+										value=f"```ansi\n[0;32m+ {random.choice([member for member in message.channel.members if member.bot == False]).name} {random.choice(payouts_list)}[0;0m\n```", inline=False)
 					embed.set_footer(text=f"Developed by utki007 & Jay",
 									icon_url=self.bot.user.avatar_url)
 
