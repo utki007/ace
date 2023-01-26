@@ -57,7 +57,7 @@ class heistroles(commands.Cog):
 		if message.author.id == 646937666251915264 and message.content != None and "server is currently" in message.content:
 			await message.channel.send(f"> <@&1034072149247397938> form up for _server drop_!")  
 
-		if message.author.id in [693167035068317736, 675996677366218774] and message.channel.category.id != 1049228870886359050 and len(message.embeds) > 0 :
+		if message.author.id in [693167035068317736, 675996677366218774] and message.channel.category.id in [946994017210621972,935537766576582716,825581377592098837] and len(message.embeds) > 0 :
 			embed = message.embeds[0]
 			if "WINNER!".lower() in embed.title.lower()  and len(message.mentions) == 1:
 				if message.channel.category.id in [946994017210621972, 825581377592098837, 935537766576582716]:
