@@ -199,11 +199,18 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
 		if ctx.channel.id == self.partnerheist or ctx.channel.category.id == 817049348977983506:
 			messages = [message async for message in ctx.channel.history(limit=None)]
-			await ctx.send(text)
+			
 			for message in messages:
 				if len(message.embeds) > 0 and message.author.id == 700743797977514004:
-					await message.reply(f"**Giveaway here ^^**")
+					gk = self.bot.get_guild(785839283847954433)
+					gawemoji = await gk.fetch_emoji(806631994770849843)
+					buttons = [create_button(style=ButtonStyle.URL, label=f"{message.embeds[0].to_dict()['title']} here ^^", emoji=gawemoji, disabled=False, url=message.jump_url)]
+					# await message.reply(components=[create_actionrow(*buttons)])
 					break
+			if buttons == None:
+				await ctx.send(text)
+			else:
+				await ctx.send(text, components=[create_actionrow(*buttons)])
 			await ctx.invoke(self.bot.get_command("psh r"), channel=ctx.channel, silent=True)
 			await ctx.invoke(self.bot.get_command("sticky unset"), channel=ctx.channel, silent=True)
 		else:
