@@ -1082,7 +1082,7 @@ class heistroles(commands.Cog):
 		event_embed = discord.Embed(
 				title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
 				description=f"<a:tadaa:806631994770849843> {self.bot.emojis_list['right']} {giveaways.mention}\n"
-							f"<a:celebrate:817302382630273054>  {self.bot.emojis_list['right']} {flash.mention}\n"
+							f"<a:tgk_redboost:1068482459014017034>  {self.bot.emojis_list['right']} {flash.mention}\n"
 							f"<:tgk_raffle:1024206931373608961> {self.bot.emojis_list['right']} {other.mention}\n"
 							f"<a:calendar:854663256420909066>  {self.bot.emojis_list['right']} {event.mention}\n"                            
 							f"<a:gk_chatrevive:944667909702185010> {self.bot.emojis_list['right']} {chat.mention}\n",
@@ -1096,7 +1096,7 @@ class heistroles(commands.Cog):
 		playzone = self.bot.get_guild(815849745327194153)
 
 		gawemoji = await gk.fetch_emoji(806631994770849843)
-		flashemoji = await gk.fetch_emoji(817302382630273054)
+		flashemoji = await gk.fetch_emoji(1068482459014017034)
 		otheremoji = await gk.fetch_emoji(1024206931373608961)
 		eventemoji = await gk.fetch_emoji(854663256420909066)
 		chatemoji = await playzone.fetch_emoji(944667909702185010)
