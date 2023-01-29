@@ -199,7 +199,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 
 		if ctx.channel.id == self.partnerheist or ctx.channel.category.id == 817049348977983506:
 			messages = [message async for message in ctx.channel.history(limit=None)]
-			
+			buttons = []
 			for message in messages:
 				if len(message.embeds) > 0 and message.author.id == 700743797977514004:
 					gk = self.bot.get_guild(785839283847954433)
@@ -207,7 +207,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 					buttons = [create_button(style=ButtonStyle.URL, label=f"Giveaway for ping here ^^", emoji=gawemoji, disabled=False, url=message.jump_url)]
 					# await message.reply(components=[create_actionrow(*buttons)])
 					break
-			if buttons == None:
+			if buttons == []:
 				await ctx.send(text)
 			else:
 				await ctx.send(text, components=[create_actionrow(*buttons)])
