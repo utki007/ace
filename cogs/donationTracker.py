@@ -615,7 +615,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 	@commands.command(name="bal", description="Check your donation balance", usage="<member>", aliases=['balance'])
 	async def _bal(self, ctx, member: discord.Member = None):
 
-		if ctx.author.guild_permissions.administrator:
+		if ctx.author.guild_permissions.administrator or ctx.author.id in [761834680395497484, 806016046841462804]:
 			member = member or ctx.author
 		else:
 			member = ctx.author
