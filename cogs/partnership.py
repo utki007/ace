@@ -201,7 +201,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			messages = [message async for message in ctx.channel.history(limit=None)]
 			buttons = []
 			for message in messages:
-				if len(message.embeds) > 0 and message.author.id == 700743797977514004:
+				if len(message.embeds) > 0 and message.author.id in [700743797977514004, 294882584201003009]:
 					gk = self.bot.get_guild(785839283847954433)
 					gawemoji = await gk.fetch_emoji(806631994770849843)
 					buttons = [create_button(style=ButtonStyle.URL, label=f"Giveaway for ping here ^^", emoji=gawemoji, disabled=False, url=message.jump_url)]
