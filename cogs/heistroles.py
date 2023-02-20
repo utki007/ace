@@ -70,6 +70,11 @@ class heistroles(commands.Cog):
 				content += f"\n https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif"
 				await message.channel.send(content = content)
 
+		if message.author.id in [693167035068317736] and message.channel.category.id in [1049228870886359050] and len(message.embeds) > 0 :
+			embed = message.embeds[0]
+			if "WINNER!".lower() in embed.title.lower()  and len(message.mentions) == 1:
+				await message.channel.send(content = f"` - ` <@&852125566802198528>, please queue this rumble, our automatic payout logger is down at the moment. Thank you!")
+
 		elif message.author.id == 693167035068317736 and message.channel.category.id == 1049228870886359050 and len(message.embeds) > 0:
 			sticky = await self.bot.sticky.find(message.channel.id)
 			if sticky is None:
