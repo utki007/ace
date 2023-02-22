@@ -49,7 +49,6 @@ class heistroles(commands.Cog):
 
 		gk = self.bot.get_guild(785839283847954433)
 		guild = message.guild
-		errorFeed = self.bot.get_channel(1002668942277492868)
 
 		if self.bot.user.id == 859107514082394142:
 			return
