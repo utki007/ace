@@ -381,6 +381,23 @@ class serverutils(commands.Cog, description="Server Utility"):
 		await ctx.channel.send(embed = embed)
 		await ctx.send(f"<a:okie:932576089618931772>", hidden=True)
 		
+	@commands.command(name="hbd", description="Wish Happy Birthday")
+	async def hbd(self, ctx, *, message: str = None):
+		await ctx.message.delete()
+		gk = self.bot.get_guild(785839283847954433)
+		role = discord.utils.get(gk.roles, id=803160016899014736)
+		birthdayMsg = f'<a:happybirthday:1078296433037414470> _Happy Birthday <@416600678073630731>_ <a:happybirthday:1078296433037414470>\n'
+		birthdayMsg += f'from: {ctx.author.mention}'
+
+		if message == None:
+			message = birthdayMsg
+		else:
+			message = f'{birthdayMsg}\n\n{message}'
+
+		if role not in ctx.author.roles:
+			await ctx.author.add_roles(role, reason=f'Wished Happy Birthday')
+
+		await ctx.send(message, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
 
 def setup(bot):
 	bot.add_cog(serverutils(bot))
