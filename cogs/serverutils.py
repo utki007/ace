@@ -394,7 +394,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 		if message == None:
 			message = birthdayMsg
 		else:
-			message = f'{birthdayMsg}\n\n{message}'
+			message = f'**{message}**\n\n{birthdayMsg}'
 
 		if role not in ctx.author.roles:
 			await ctx.author.add_roles(role, reason=f'Wished Happy Birthday')
