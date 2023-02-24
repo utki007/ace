@@ -355,7 +355,7 @@ class heistroles(commands.Cog):
 						data = data["bday_event"]
 						user_id = data['user_id']
 						user = message.guild.get_member(user_id)
-						if user.mention in message.mentions:
+						if user in message.mentions:
 							bday_role = discord.utils.get(gk.roles, id=803160016899014736)
 							await message.author.add_roles(bday_role)
 							await message.add_reaction(random.choice(self.bday_emojis))
