@@ -79,9 +79,13 @@ class Events(commands.Cog):
     async def randomrole(self):
         gk = self.bot.get_guild(785839283847954433)
         random_colour = gk.get_role(954448411191554088)
-        color= discord.Color.random()
-
+        robot = gk.get_role(810153515610537994)
+        
+        color = discord.Color.random()
         await random_colour.edit(colour=color)
+
+        color = discord.Color.random()
+        await robot.edit(colour=color)
 
 
 def setup(bot):
