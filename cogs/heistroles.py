@@ -43,6 +43,7 @@ class heistroles(commands.Cog):
 	@commands.Cog.listener()
 	async def on_ready(self):
 		print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+		self.bday_emojis = ['<a:birthdaycake:1078363053210476656>', '<:birthdaycake1:1078394965224337458>', '<a:partytime:1078578817767067679>', '<a:partydog:1078395133516591244>']
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
@@ -343,6 +344,22 @@ class heistroles(commands.Cog):
 
 			await message.clear_reactions()
 			await message.add_reaction(self.bot.emojis_list['Check'])
+
+		elif message.channel.id == 945280894296555520:
+			messageContent = message.content.lower()
+			bday_list = ['happy birthday', 'hbd', 'happy']
+			for bday in bday_list:
+				if bday in messageContent:
+					data = await self.bot.settings.find(message.guild.id)
+					if "bday_event" in data:
+						data = data["bday_event"]
+						user_id = data['user_id']
+						user = message.guild.get_member(user_id)
+						if user.mention in message.mentions:
+							bday_role = discord.utils.get(gk.roles, id=803160016899014736)
+							await message.author.add_roles(bday_role)
+							await message.add_reaction(random.choice(self.bday_emojis))
+							break
 
 		word_list = ['vote link','how to get vote role', 'how to vote', 'pls vote', 'how to vote for server', 'link to vote']
 		if message.author.bot:
