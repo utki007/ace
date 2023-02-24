@@ -159,9 +159,9 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 		gk = self.bot.get_guild(785839283847954433)
 		role = discord.utils.get(gk.roles, id=803160016899014736)
 		if colour!=None:
-			role.edit(name=name, colour = colour, reason = f"Setting up birthday event for {member.name}.")
+			await role.edit(name=name, colour = colour, reason = f"Setting up birthday event for {member.name}.")
 		else:
-			role.edit(name=name, reason = f"Setting up birthday event for {member.name}.")
+			await role.edit(name=name, reason = f"Setting up birthday event for {member.name}.")
 		
 		await self.bot.db.settings.update_one(
 			{"_id": ctx.guild.id},
