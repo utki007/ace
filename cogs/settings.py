@@ -147,7 +147,7 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 		)
 		await ctx.send(f"**Freeloader ban channel set to:** {channel.mention}", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
 
-	@settings.command(name="configure_react_roles", aliases=['bday','hbd','bday_event'])
+	@settings.command(name="configure_bday_event", aliases=['bday','hbd','bday_event'])
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def configure_bday_Event(self, ctx, member:discord.Member, name: str = None,  colour: discord.Color = None):
 		await ctx.message.delete()
