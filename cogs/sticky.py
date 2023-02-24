@@ -37,8 +37,11 @@ class sticky(commands.Cog, description="Sticky Utility"):
 		#     return
 		if self.bot.user.id == 859107514082394142:
 			return
-		if message.channel.category.id == 1049228870886359050:
-			return
+		try:
+			if message.channel.category.id == 1049228870886359050:
+				return
+		except:
+			pass
 		channel = message.channel
 		myquery = {"_id": channel.id}
 		info = self.mycol.find(myquery)
