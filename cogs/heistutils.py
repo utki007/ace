@@ -348,9 +348,11 @@ class heistutils(commands.Cog):
 		webhook.execute()
 		log_channel = self.bot.get_channel(1052996419063128144)
 		log_channel2 = self.bot.get_channel(1078943764741095504)
+		log_channel3 = self.bot.get_channel(1078954056363552828)
 		try:
 			await log_channel.send(embed=logg)
 			await log_channel2.send(embed=logg)
+			await log_channel3.send(embed=logg)
 		except:
 			return await ctx.send(f"<a:nat_warning:1010618708688912466> Ran into an issue, will be resolved soon! <a:nat_warning:1010618708688912466>", delete_after=30, hidden= True)
 		
