@@ -317,7 +317,6 @@ class heistutils(commands.Cog):
 			create_option(name="message", description="Enter ping message", option_type=3, required=False)
 		])
 	async def hideping(self, ctx, *, target, message=""):
-		await ctx.defer(hidden=True)
 
 		webhooks = await ctx.channel.webhooks()
 		webhook = discord.utils.get(webhooks, name=self.bot.user.name)
@@ -345,14 +344,16 @@ class heistutils(commands.Cog):
 		logg.set_footer(
 			text=f"Sanctioned by: {ctx.author.name}", icon_url=ctx.author.avatar_url)
 
-		log_channel = self.bot.get_channel(1052996419063128144)
-		try:
-			await log_channel.send(embed=logg)
-		except:
-			return await ctx.send(f"<a:nat_warning:1010618708688912466> Ran into an issue, will be resolved soon! <a:nat_warning:1010618708688912466>", delete_after=30)
-		
 		await ctx.send(f"<:TGK_evil:931124259718332437>", hidden=True)
 		webhook.execute()
+		log_channel = self.bot.get_channel(1052996419063128144)
+		log_channel2 = self.bot.get_channel(1078943764741095504)
+		try:
+			await log_channel.send(embed=logg)
+			await log_channel2.send(embed=logg)
+		except:
+			return await ctx.send(f"<a:nat_warning:1010618708688912466> Ran into an issue, will be resolved soon! <a:nat_warning:1010618708688912466>", delete_after=30, hidden= True)
+		
 		
 def setup(bot):
 	bot.add_cog(heistutils(bot))
