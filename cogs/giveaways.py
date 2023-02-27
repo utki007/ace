@@ -637,8 +637,8 @@ class giveaway(commands.Cog):
 				color=0x2f3136,
 				timestamp=datetime.datetime.utcnow()
 		)
-		embed.set_footer(icon_url=ctx.guild.icon_url)
-		embed.add_field(name="**<:tgk_member:1064253964842975232> Members:** ",value=f"> **__{members}__**",inline=True)
+		embed.set_footer(text=f'_ _' ,icon_url=ctx.guild.icon_url)
+		embed.add_field(name="**Members:** ",value=f"<:tgk_member:1064253964842975232> {members}",inline=True)
 
 		msg = await ctx.send(embed=embed)
 
