@@ -629,8 +629,8 @@ class giveaway(commands.Cog):
 
 	@cog_ext.cog_slash(name="membercount",description="Total members in server", guild_ids=guild_ids,
 		default_permission=False,permissions=staff_perm)
-	async def goal(self, ctx):
-
+	async def membercount(self, ctx):
+		await ctx.defer(hidden=False)
 		members = ctx.guild.member_count
 
 		embed = discord.Embed(
@@ -640,7 +640,7 @@ class giveaway(commands.Cog):
 		embed.set_footer(icon_url=ctx.guild.icon_url)
 		embed.add_field(name="**<:tgk_member:1064253964842975232> Members:** ",value=f"> **__{members}__**",inline=True)
 
-		msg = await ctx.channel.send(embed=embed)
+		msg = await ctx.send(embed=embed)
 
 def setup(bot):
 	bot.add_cog(giveaway(bot))
