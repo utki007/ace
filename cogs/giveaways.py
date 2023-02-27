@@ -633,10 +633,9 @@ class giveaway(commands.Cog):
 		members = ctx.guild.member_count
 
 		embed = discord.Embed(
-				color=0x2f3136,
+				color=0x020202,
 				timestamp=datetime.datetime.utcnow()
 		)
-		embed.set_footer(text=f'_ _' ,icon_url=ctx.guild.icon_url)
 		embed.add_field(name="**Members:** ",value=f"<:tgk_member:1064253964842975232> {members}",inline=True)
 
 		await ctx.send(embed=embed)
