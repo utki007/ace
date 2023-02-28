@@ -1023,10 +1023,11 @@ class heistroles(commands.Cog):
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Heist",description="Heist related reaction roles", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=staff_perm,
 		options=[
-	  			create_option(name="name", description="Heading for embed", option_type=3, required=False)
+	  		create_option(name="name", description="Heading for embed", option_type=3, required=False),
+			create_option(name="expire", description="Do the react-buttons expire?", required=False, option_type=5)
 		]
 	)
-	async def heistrr(self, ctx, name: str = "Heist Roles"): #, message, prize, channel, winners: int = 1):
+	async def heistrr(self, ctx, name: str = "Heist Roles", expire = True):
 		await ctx.defer(hidden=True)
 
 		guild = self.bot.get_guild(785839283847954433)
@@ -1035,14 +1036,15 @@ class heistroles(commands.Cog):
 		partnerHeist = discord.utils.get(guild.roles, id=804069957528584212)
 		outside = discord.utils.get(guild.roles, id=806795854475165736)
 		partnership = discord.utils.get(guild.roles, id=797448080223109120)
+		chat = discord.utils.get(guild.roles, id=942704600883023872)
 
 		event_embed = discord.Embed(
 				title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
 				description= f"<a:heist:925617827447177247> {self.bot.emojis_list['right']} {heist.mention}\n"
 							f"<a:heisttime:932911351154741308> {self.bot.emojis_list['right']} {partnerHeist.mention}\n"
 							f"<a:peperobber:925618641112813598> {self.bot.emojis_list['right']} {outside.mention}\n"
-							f"<a:Partner:925618902673817700> {self.bot.emojis_list['right']} {partnership.mention}\n"   ,                         
-							# f"<a:nopartnership:929440715539374171> {self.bot.emojis_list['right']} {nopartnership.mention}\n",
+							f"<a:Partner:925618902673817700> {self.bot.emojis_list['right']} {partnership.mention}\n"                            
+							f"<a:gk_chatrevive:944667909702185010> {self.bot.emojis_list['right']} {chat.mention}\n",
 				color=0x9e3bff,
 				timestamp=datetime.datetime.utcnow()
 		)
@@ -1051,40 +1053,43 @@ class heistroles(commands.Cog):
 
 		gk = self.bot.get_guild(785839283847954433)
 		dmop = self.bot.get_guild(838646783785697290)
+		playzone = self.bot.get_guild(815849745327194153)
 
 		partnerheistemoji = await gk.fetch_emoji(932911351154741308)
 		heistemoji = await dmop.fetch_emoji(925617827447177247)
 		outsideheistemoji = await dmop.fetch_emoji(925618641112813598)
 		partnershipemoji = await dmop.fetch_emoji(925618902673817700)
-		nopartneremoji = await dmop.fetch_emoji(929440715539374171)
+		chatemoji = await playzone.fetch_emoji(944667909702185010)
 
 		buttons = [
 			create_button(style=ButtonStyle.blurple,emoji=heistemoji, disabled=False, custom_id="heist:heist"),
 			create_button(style=ButtonStyle.blurple,emoji=partnerheistemoji, disabled=False, custom_id="heist:partnerHeist"),
 			create_button(style=ButtonStyle.blurple,emoji=outsideheistemoji, disabled=False, custom_id="heist:outside"),
-			create_button(style=ButtonStyle.blurple,emoji=partnershipemoji, disabled=False, custom_id="heist:partnership")#,
-			# create_button(style=ButtonStyle.primary,emoji=nopartneremoji, disabled=False, custom_id="heist:nopartnership")
+			create_button(style=ButtonStyle.blurple,emoji=partnershipemoji, disabled=False, custom_id="heist:partnership"),
+			create_button(style=ButtonStyle.blurple,emoji=chatemoji, disabled=False, custom_id="heist:chat")
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
-		await asyncio.sleep(3600)
-		buttonsexpireall = [
-			create_button(style=ButtonStyle.blurple,emoji=heistemoji, disabled=True, custom_id="heist:heist"),
-			create_button(style=ButtonStyle.blurple,emoji=partnerheistemoji, disabled=True, custom_id="heist:partnerHeist"),
-			create_button(style=ButtonStyle.blurple,emoji=outsideheistemoji, disabled=True, custom_id="heist:outside"),
-			create_button(style=ButtonStyle.blurple,emoji=partnershipemoji, disabled=True, custom_id="heist:partnership")#,
-			# create_button(style=ButtonStyle.primary,emoji=nopartneremoji, disabled=False, custom_id="heist:nopartnership")
-		]
-		await msg.edit(embed=event_embed, components=[create_actionrow(*buttonsexpireall)])
+		if expire:
+			await asyncio.sleep(3600)
+			buttonsexpireall = [
+				create_button(style=ButtonStyle.blurple,emoji=heistemoji, disabled=True, custom_id="heist:heist"),
+				create_button(style=ButtonStyle.blurple,emoji=partnerheistemoji, disabled=True, custom_id="heist:partnerHeist"),
+				create_button(style=ButtonStyle.blurple,emoji=outsideheistemoji, disabled=True, custom_id="heist:outside"),
+				create_button(style=ButtonStyle.blurple,emoji=partnershipemoji, disabled=True, custom_id="heist:partnership"),
+				create_button(style=ButtonStyle.blurple,emoji=chatemoji, disabled=True, custom_id="heist:chat")
+			]
+			await msg.edit(embed=event_embed, components=[create_actionrow(*buttonsexpireall)])
 
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Other",description="Non-heist related reaction roles", guild_ids=guild_ids,
 		base_default_permission=True,
 		options=[
-	  			create_option(name="name", description="Heading for embed", option_type=3, required=False)
+	  		create_option(name="name", description="Heading for embed", option_type=3, required=False),
+			create_option(name="expire", description="Do the react-buttons expire?", required=False, option_type=5)
 		]
 	)
-	async def otherrr(self, ctx, name: str = "Other Self Roles"): #, message, prize, channel, winners: int = 1):
+	async def otherrr(self, ctx, name: str = "Other Self Roles", expire: bool = True):
 		await ctx.defer(hidden=True)
 
 		guild = self.bot.get_guild(785839283847954433)
@@ -1093,7 +1098,7 @@ class heistroles(commands.Cog):
 		flash = discord.utils.get(guild.roles, id=822021066548969482)
 		other = discord.utils.get(guild.roles, id=848809346972516363)
 		event = discord.utils.get(guild.roles, id=836925033506275399)
-		chat = discord.utils.get(guild.roles, id=942704600883023872)
+		rumble = discord.utils.get(guild.roles, id=1067135771473100960)
 
 		event_embed = discord.Embed(
 				title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
@@ -1101,7 +1106,7 @@ class heistroles(commands.Cog):
 							f"<a:tgk_redboost:1068482459014017034>  {self.bot.emojis_list['right']} {flash.mention}\n"
 							f"<:tgk_raffle:1024206931373608961> {self.bot.emojis_list['right']} {other.mention}\n"
 							f"<a:calendar:854663256420909066>  {self.bot.emojis_list['right']} {event.mention}\n"                            
-							f"<a:gk_chatrevive:944667909702185010> {self.bot.emojis_list['right']} {chat.mention}\n",
+							f"<:rumble_ping:1080023828505301003> {self.bot.emojis_list['right']} {rumble.mention}\n",
 				color=0x9e3bff,
 				timestamp=datetime.datetime.utcnow()
 		)
@@ -1115,27 +1120,28 @@ class heistroles(commands.Cog):
 		flashemoji = await gk.fetch_emoji(1068482459014017034)
 		otheremoji = await gk.fetch_emoji(1024206931373608961)
 		eventemoji = await gk.fetch_emoji(854663256420909066)
-		chatemoji = await playzone.fetch_emoji(944667909702185010)
+		rumbleemoji = await playzone.fetch_emoji(1080023828505301003)
 
 		buttons = [
 			create_button(style=ButtonStyle.blurple,emoji=gawemoji, disabled=False, custom_id="heist:giveaways"),
 			create_button(style=ButtonStyle.blurple,emoji=flashemoji, disabled=False, custom_id="heist:flash"),
 			create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=False, custom_id="heist:other"),
 			create_button(style=ButtonStyle.blurple,emoji=eventemoji, disabled=False, custom_id="heist:event"),
-			create_button(style=ButtonStyle.primary,emoji=chatemoji, disabled=False, custom_id="heist:chat")
+			create_button(style=ButtonStyle.primary,emoji=rumbleemoji, disabled=False, custom_id="heist:rumble")
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
-		await asyncio.sleep(3600)
-		buttonsexpireall = [
-			create_button(style=ButtonStyle.blurple,emoji=gawemoji, disabled=True, custom_id="heist:giveaways"),
-			create_button(style=ButtonStyle.blurple,emoji=flashemoji, disabled=True, custom_id="heist:flash"),
-			create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=True, custom_id="heist:other"),
-			create_button(style=ButtonStyle.blurple,emoji=eventemoji, disabled=True, custom_id="heist:event"),
-			create_button(style=ButtonStyle.primary,emoji=chatemoji, disabled=True, custom_id="heist:chat")
-		]
-		await msg.edit(embed=event_embed, components=[create_actionrow(*buttonsexpireall)])
+		if expire:
+			await asyncio.sleep(3600)
+			buttonsexpireall = [
+				create_button(style=ButtonStyle.blurple,emoji=gawemoji, disabled=True, custom_id="heist:giveaways"),
+				create_button(style=ButtonStyle.blurple,emoji=flashemoji, disabled=True, custom_id="heist:flash"),
+				create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=True, custom_id="heist:other"),
+				create_button(style=ButtonStyle.blurple,emoji=eventemoji, disabled=True, custom_id="heist:event"),
+				create_button(style=ButtonStyle.primary,emoji=rumbleemoji, disabled=True, custom_id="heist:rumble")
+			]
+			await msg.edit(embed=event_embed, components=[create_actionrow(*buttonsexpireall)])
 
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Nopartner",description="No partnership related reaction roles", guild_ids=guild_ids,
 		base_default_permission=True,
