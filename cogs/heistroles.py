@@ -367,11 +367,24 @@ class heistroles(commands.Cog):
 			user = message.guild.get_member(int(donor_id))
 			prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0].split(" ")[1]
 
+			logg = discord.Embed(
+				title="__Invalid Amount!__",
+				description=
+				f'` - `   **Donor:** {user.mention}(`{user.id}`)\n'
+				f'` - `   **Amount:** **{prize}**\n'
+				f"` - `   **Used at:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow()))}>\n",
+				colour=discord.Color.random()
+			)
+
+			logg.set_footer(
+				text=f"Reach out to grinder managers to fix this!", icon_url=user.avatar_url)
+
 			try:
 				amount = await convert_to_numeral(prize)
 				amount = await calculate(amount)
 			except:
-				return await message.reply(f"{user.mention}, please reach out to <@&963096665600978984> to note this donation. The amount is not in multiple of your base role.", allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
+				await message.delete()
+				return await message.reply(content= f"{user.mention}", embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
 			
 			
 			legendary = gk.get_role(806804472700600400)
@@ -390,7 +403,8 @@ class heistroles(commands.Cog):
 				amount_per_grind = 1e6
 
 			if amount % amount_per_grind != 0:
-				return await message.reply(f"{user.mention}, please reach out to <@&963096665600978984> to note this donation. The amount is not in multiple of your base role.", allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
+				await message.delete()
+				return await message.reply(content= f"{user.mention}", embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
 			else:
 				number = int(amount/amount_per_grind)
 			
