@@ -371,7 +371,7 @@ class heistroles(commands.Cog):
 				amount = await convert_to_numeral(prize)
 				amount = await calculate(amount)
 			except:
-				return await message.channel.send(f"Please reach out to <@&963096665600978984> to note this donation. The amount is not in multiple of your base role.", allowed_mentions=discord.AllowedMentions.none())
+				return await message.reply(f"{user.mention}, please reach out to <@&963096665600978984> to note this donation. The amount is not in multiple of your base role.", allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
 			
 			
 			legendary = gk.get_role(806804472700600400)
@@ -390,7 +390,7 @@ class heistroles(commands.Cog):
 				amount_per_grind = 1e6
 
 			if amount % amount_per_grind != 0:
-				return await message.channel.send(f"Please reach out to <@&963096665600978984> to note this donation. The amount is not in multiple of your base role.", allowed_mentions=discord.AllowedMentions.none())
+				return await message.reply(f"{user.mention}, please reach out to <@&963096665600978984> to note this donation. The amount is not in multiple of your base role.", allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
 			else:
 				number = int(amount/amount_per_grind)
 			
