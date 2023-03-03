@@ -15,6 +15,7 @@ from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
 import numpy as np
 import datetime
+from utils.convertor import *
 
 guild_ids=[785839283847954433]
 
@@ -59,7 +60,7 @@ class heistroles(commands.Cog):
 
 		if message.author.id in [693167035068317736, 675996677366218774] and message.channel.category.id in [946994017210621972,935537766576582716,825581377592098837] and len(message.embeds) > 0 :
 			embed = message.embeds[0]
-			if "WINNER!".lower() in embed.title.lower()  and len(message.mentions) == 1:
+			if embed.title is not None and "WINNER!".lower() in embed.title.lower()  and len(message.mentions) == 1:
 				if message.channel.category.id in [946994017210621972, 825581377592098837, 935537766576582716]:
 					await message.channel.edit(sync_permissions=True)
 				content = f"` - `   **Want us to host more pog events?**\n\n"
@@ -360,6 +361,44 @@ class heistroles(commands.Cog):
 							await message.author.add_roles(bday_role)
 							await message.add_reaction(random.choice(self.bday_emojis))
 							break
+		
+		elif message.channel.id == 851663580620521472 and message.author.id == 816699167824281621:
+			donor_id = re.findall("\<\@(.*?)\>", message.content)[0]
+			donor = message.guild.get_member(int(donor_id))
+			prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0].split(" ")[1]
+
+			try:
+				amount = await convert_to_numeral(prize)
+				amount = await calculate(amount)
+			except:
+				await message.delete()
+				return await message.channel.send(f"Please reach out to <@&963096665600978984> to note this donation. The amount is not in multiple of your base role.")
+			
+			
+			legendary = gk.get_role(806804472700600400)
+			epic = gk.get_role(835866393458901033)
+			ordinary = gk.get_role(835866409992716289)
+			lazy = gk.get_role(835889385390997545)
+
+			amount_per_grind = 0
+			if legendary in user.roles:
+				amount_per_grind = 4e6
+			elif epic in user.roles:
+				amount_per_grind = 3e6
+			elif ordinary in user.roles:
+				amount_per_grind = 2e6
+			elif lazy in user.roles:
+				amount_per_grind = 1e6
+
+			if amount % amount_per_grind != 0:
+				await message.delete()
+				return await message.channel.send(f"Please reach out to <@&963096665600978984> to note this donation. The amount is not in multiple of your base role.")
+			else:
+				number = int(amount/amount_per_grind)
+			
+			ctx = await self.bot.get_context(message)
+			await ctx.invoke(self.bot.get_command("gu"), member=donor, number=number)
+
 
 		word_list = ['vote link','how to get vote role', 'how to vote', 'pls vote', 'how to vote for server', 'link to vote']
 		if message.author.bot:
