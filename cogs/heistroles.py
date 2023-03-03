@@ -372,7 +372,7 @@ class heistroles(commands.Cog):
 				amount = await calculate(amount)
 			except:
 				await message.delete()
-				return await message.channel.send(f"Please reach out to <@&963096665600978984> to note this donation. The amount is not in multiple of your base role.")
+				return await message.channel.send(f"Please reach out to <@&963096665600978984> to note this donation. The amount is not in multiple of your base role.", allowed_mentions=discord.AllowedMentions.none())
 			
 			
 			legendary = gk.get_role(806804472700600400)
@@ -392,7 +392,7 @@ class heistroles(commands.Cog):
 
 			if amount % amount_per_grind != 0:
 				await message.delete()
-				return await message.channel.send(f"Please reach out to <@&963096665600978984> to note this donation. The amount is not in multiple of your base role.")
+				return await message.channel.send(f"Please reach out to <@&963096665600978984> to note this donation. The amount is not in multiple of your base role.", allowed_mentions=discord.AllowedMentions.none())
 			else:
 				number = int(amount/amount_per_grind)
 			
