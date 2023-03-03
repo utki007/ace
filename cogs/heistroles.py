@@ -364,7 +364,7 @@ class heistroles(commands.Cog):
 		
 		elif message.channel.id == 851663580620521472 and message.author.id == 816699167824281621:
 			donor_id = re.findall("\<\@(.*?)\>", message.content)[0]
-			donor = message.guild.get_member(int(donor_id))
+			user = message.guild.get_member(int(donor_id))
 			prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0].split(" ")[1]
 
 			try:
@@ -397,7 +397,7 @@ class heistroles(commands.Cog):
 				number = int(amount/amount_per_grind)
 			
 			ctx = await self.bot.get_context(message)
-			await ctx.invoke(self.bot.get_command("gu"), member=donor, number=number)
+			await ctx.invoke(self.bot.get_command("gu"), member=user, number=number)
 
 
 		word_list = ['vote link','how to get vote role', 'how to vote', 'pls vote', 'how to vote for server', 'link to vote']
