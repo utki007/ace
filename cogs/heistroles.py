@@ -383,8 +383,9 @@ class heistroles(commands.Cog):
 				amount = await convert_to_numeral(prize)
 				amount = await calculate(amount)
 			except:
+				msg = await message.channel.fetch_message(message.reference.message_id)
 				await message.delete()
-				return await message.reply(content= f"{user.mention}", embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
+				return await msg.reply(content= f"{user.mention}", embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
 			
 			
 			legendary = gk.get_role(806804472700600400)
@@ -403,8 +404,9 @@ class heistroles(commands.Cog):
 				amount_per_grind = 1e6
 
 			if amount % amount_per_grind != 0:
+				msg = await message.channel.fetch_message(message.reference.message_id)
 				await message.delete()
-				return await message.reply(content= f"{user.mention}", embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
+				return await msg.reply(content= f"{user.mention}", embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
 			else:
 				number = int(amount/amount_per_grind)
 			
