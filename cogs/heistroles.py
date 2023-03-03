@@ -365,14 +365,15 @@ class heistroles(commands.Cog):
 		elif message.channel.id == 851663580620521472 and message.author.id == 816699167824281621:
 			donor_id = re.findall("\<\@(.*?)\>", message.content)[0]
 			user = message.guild.get_member(int(donor_id))
+			og_prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0]
 			prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0].split(" ")[1]
 
 			logg = discord.Embed(
 				title="__Invalid Amount!__",
 				description=
-				f'` - `   **Donor:** {user.mention}(`{user.id}`)\n'
-				f'` - `   **Amount:** **{prize}**\n'
-				f"` - `   **Used at:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow()))}>\n",
+				f'` - `   **Donated:** **{og_prize}**\n'
+				f"` - `   **Donated on:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow()))}>\n"
+				f'` - `   **Donated by:** {user.mention}(`{user.id}`)\n',
 				colour=discord.Color.random()
 			)
 
