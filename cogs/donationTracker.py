@@ -252,7 +252,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		except:
 			pass
 		try:
-			await member.send(embed=dmMessage)
+			if sendMessage:
+				await member.send(embed=dmMessage)
 		except:
 			am = discord.AllowedMentions(
 				users=False,  # Whether to ping individual user @mentions
@@ -862,7 +863,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		except:
 			pass
 		try:
-			await member.send(embed=dmMessage)
+			if sendMessage:
+				await member.send(embed=dmMessage)
 		except:
 			am = discord.AllowedMentions(
 				users=False,  # Whether to ping individual user @mentions
@@ -1325,28 +1327,38 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			await ctx.send(f"{self.bot.emojis_list['Warrning']} | Error updating donor data")
 			return
 			# showing donor balance
+		if number == 1:
+			days = "1 Day"
+		else:
+			days = f"{number} Days"
+		teir = int(data['grinder_record']['amount_per_grind'])
+		if teir == 3e6:
+			teir = "TIER 𝕀𝕀𝕀"
+		elif teir == 4e6:
+			teir = "TIER 𝕀𝕍"
+		else:
+			teir = "DEPRECIATED"
 		display = discord.Embed(
-			title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s Grinder Record__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-			description=f"\n**Number of days paid: ** {number} days\n"
-						f"**Amount Credited to Grinder Bank: ** ⏣ `{amount:,}`\n"
-						f"**Next donation due on: ** <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D> <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> \n\n"
-						f"**Grinder Bank: ** ⏣ `{data['grinder_record']['amount']:,}` \n"
-						f"**Total Donation: ** ⏣ `{data['bal']+amount:,}` \n"
-						f"**_Sanctioned By: _** {ctx.author.mention}\n\n"
-						f"**_𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧_** \n",
-			colour=0x78AB46,
+			title=f"{member.name}#{member.discriminator}'s Grinder Stats",
+			colour=member.color,
 			timestamp=datetime.datetime.utcnow()
 		)
-		display.set_footer(text=f"Developed by utki007 & Jay",
-						   icon_url=ctx.guild.icon_url)
-		display.set_thumbnail(
-			url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
+		display.add_field(name="Rank:",value=f'**`{teir}`**',inline=True)
+		display.add_field(name="Paid For:",value=f'{days}',inline=True)
+		display.add_field(name="Amount Credited:",value=f'⏣ {amount:,}',inline=True)
+		display.add_field(name="Sanctioned By:",value=f"{ctx.author.mention}",inline=True)
+		display.add_field(name="Due On:",value=f"<t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D>",inline=True)
+		display.add_field(name="Grinder Bank:",value=f"⏣ {round(data['grinder_record']['amount']):,}",inline=True)
+		display.add_field(name="Grinder For:",value=f"{data['grinder_record']['frequency']} Days",inline=True)
+		display.add_field(name="Total Donation:",value=f"⏣ {round(data['bal']):,}",inline=True)
+		display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+		display.set_thumbnail(url=member.avatar_url)
 		await ctx.send(embed=display)
 		await ctx.invoke(self.bot.get_command("dono a"), member=member, amount=str(amount), sendMessage=False)
 		try:
 			await member.send(
 				f"{self.bot.emojis_list['SuccessTick']} | You have completed your **Grinder Requirements** till <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D>."
-				f" I will notify you <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> to submit your next `⏣ {int(amount_per_grind):,}` again."
+				f" I will notify you <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> to submit your next **⏣ {int(amount_per_grind):,}** again."
 			)
 		except:
 			await ctx.send(
@@ -1357,26 +1369,33 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
 	@commands.command(name="gcheck", aliases=['gc'])
 	@commands.check_any(checks.can_use(), checks.is_me())
-	async def gcheck(self, ctx):
-		# await ctx.message.delete()
-		data = await self.bot.donorBank.find(ctx.author.id)
+	async def gcheck(self, ctx, member: discord.Member = None):
+		await ctx.message.delete()
+		if not ctx.author.guild_permissions.administrator or member is None:
+			member = ctx.author
+		data = await self.bot.donorBank.find(member.id)
 		if "grinder_record" not in data.keys():
 			await ctx.send(f"{ctx.author.mention} You are not a grinder yet!")
 		else:
+			teir = int(data['grinder_record']['amount_per_grind'])
+			if teir == 3e6:
+				teir = "TIER 𝕀𝕀𝕀"
+			elif teir == 4e6:
+				teir = "TIER 𝕀𝕍"
+			else:
+				teir = "DEPRECIATED"
 			display = discord.Embed(
-				title=f"<a:TGK_Pandaswag:830525027341565982>  __{ctx.author.name.upper()}'s Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-				description=f"**Next donation due on: ** <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D> <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> \n\n"
-							f"**Grinded for:** `{data['grinder_record']['frequency']} days` !\n"
-							f"**Grinder Bank: ** ⏣ `{data['grinder_record']['amount']:,}`\n"
-							f"**Total Donation: ** ⏣ `{data['bal']:,}` \n\n"
-							f"**_𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧_** \n",
-				colour=0x78AB46,
+				title=f"{member.name}#{member.discriminator}'s Grinder Stats",
+				colour= member.color,
 				timestamp=datetime.datetime.utcnow()
 			)
-			display.set_footer(text=f"Developed by utki007 & Jay",
-							   icon_url=ctx.guild.icon_url)
-			display.set_thumbnail(
-				url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
+			display.add_field(name="Rank:",value=f'**`{teir}`**',inline=True)
+			display.add_field(name="Due On:",value=f"<t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D>",inline=True)
+			display.add_field(name="Grinder For:",value=f"{data['grinder_record']['frequency']} Days",inline=True)
+			display.add_field(name="Grinder Bank:",value=f"⏣ {round(data['grinder_record']['amount']):,}",inline=True)
+			display.add_field(name="Total Donation:",value=f"⏣ {round(data['bal']):,}",inline=True)
+			display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+			display.set_thumbnail(url=member.avatar_url)
 			await ctx.send(embed=display)
 
 	@commands.command(name="glist", aliases=['gl', 'gstatus', 'gs'])
