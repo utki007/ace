@@ -1,3 +1,4 @@
 properties/tokens.json
 *.pyc
 .venv
+cogs/__pycache__/*.pyc
