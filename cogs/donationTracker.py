@@ -1258,17 +1258,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		await ctx.send(embed=logg)
 		await ctx.invoke(self.bot.get_command("celeb a"), name="7k", member=member, amount=str(amount), sendMessage=False)
 
-	@commands.command(name="gupdate", aliases=['gu', 'gadd', 'ga'])
+	@commands.command(name="gupdate", aliases=['gu', 'gadd'])
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def gupdate(self, ctx, member: discord.Member, number: int = 1):
 		await ctx.message.delete()
-		# if number < 0:
-		# 	warning = discord.Embed(
-		# 		color=self.bot.colors["RED"],
-		# 		description=f"{self.bot.emojis_list['Warrning']} | Can't pay in backdate!!"
-		# 	)
-		# 	await ctx.send(embed=warning)
-		# 	return
 		data = await self.bot.donorBank.find(member.id)
 		if data == None:
 			await self.create_donor(member)
@@ -1299,8 +1292,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		if number == 0:
 			time = datetime.datetime(date.year, date.month, date.day)
 		else:
-			time = datetime.datetime(
-				date.year, date.month, date.day) + datetime.timedelta(days=number)
+			time = datetime.datetime(date.year, date.month, date.day) + datetime.timedelta(days=number)
 
 		grinder_record = {
 			"amount": amount,
@@ -1368,11 +1360,23 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def gcheck(self, ctx, member: discord.Member = None):
 		await ctx.message.delete()
-		if not ctx.author.guild_permissions.administrator or member is None:
+		if not ctx.author.guild_permissions.manage_guild or member is None:
 			member = ctx.author
+		if member.bot:
+			display = discord.Embed(
+				title=f"{member.name}#{member.discriminator}'s Grinder Stats",
+				colour= member.color,
+				description=f"` - `   Bot's are not allowed to be grinders."
+			)
+			return await ctx.send(embed=display)
 		data = await self.bot.donorBank.find(member.id)
-		if "grinder_record" not in data.keys():
-			await ctx.send(f"{ctx.author.mention} You are not a grinder yet!")
+		if data is None or "grinder_record" not in data.keys():
+			display = discord.Embed(
+				title=f"{member.name}#{member.discriminator}'s Grinder Stats",
+				colour= member.color,
+				description=f"` - `   You are not a grinder yet! Apply when?"
+			)
+			return await ctx.send(embed=display)
 		else:
 			teir = int(data['grinder_record']['amount_per_grind'])
 			if teir == 3e6:
@@ -1393,7 +1397,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			display.add_field(name="Total Donation:",value=f"⏣ {round(data['bal']):,}",inline=True)
 			display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
 			display.set_thumbnail(url=member.avatar_url)
-			await ctx.send(embed=display)
+			return await ctx.send(embed=display)
 
 	@commands.command(name="glist", aliases=['gl', 'gstatus', 'gs'])
 	@commands.check_any(checks.can_use(), checks.is_me())
@@ -1538,6 +1542,101 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			description=f"{self.bot.emojis_list['SuccessTick']} | Sent Grinder Reminders Successfully!"
 		)
 		await msg.edit(embed=waiting, delete_after=900)
+
+	@commands.command(name="gappoint", aliases=['ga'])
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def gappoint(self, ctx, member: discord.Member, tier: int):
+		await ctx.message.delete()
+		
+		if member.bot:
+			display = discord.Embed(
+				title=f"{member.name}#{member.discriminator}'s Grinder Stats",
+				colour= member.color,
+				description=f"` - `   Bot's are not allowed to be grinders."
+			)
+			return await ctx.send(embed=display)
+		if tier not in [3,4]:
+			display = discord.Embed(
+				title=f"{member.name}#{member.discriminator}'s Grinder Stats",
+				colour= member.color,
+				description=f"` - `   Invalid tier. Only tiers III and IV are available."
+			)
+			return await ctx.send(embed=display)
+		
+		data = await self.bot.donorBank.find(member.id)
+		if data == None:
+			await self.create_donor(member)
+			data = await self.bot.donorBank.find(member.id)
+		
+		gk = self.bot.get_guild(785839283847954433)
+		legendary = gk.get_role(806804472700600400)
+		epic = gk.get_role(835866393458901033)
+		trial = gk.get_role(932149422719107102)
+		grinder = gk.get_role(806804472700600400)
+		role = []
+		if tier == 3:
+			grinder_tier = "𝕀𝕀𝕀"
+			amount_per_grind = 3e6
+			await member.add_roles(epic)
+			if legendary in member.roles:
+				await member.remove_roles(legendary)
+			role.append(epic)
+		elif tier == 4:
+			grinder_tier = "𝕀𝕍"
+			amount_per_grind = 4e6
+			await member.add_roles(legendary)
+			if epic in member.roles:
+				await member.remove_roles(epic)
+			role.append(legendary)
+
+		date = datetime.date.today()
+		time = datetime.datetime(date.year, date.month, date.day)
+		
+		
+		grinder_record = {
+			"amount": 0,
+			"amount_per_grind": amount_per_grind,
+			"time": time,
+			"frequency": 0
+		}
+		
+		desc = None
+		if "grinder_record" in data.keys():
+			if int(data["grinder_record"]["frequency"]) > 10:
+				await member.add_roles(grinder)
+				role.append(grinder)
+			else:
+				await member.add_roles(trial)
+				role.append(trial)
+				if int(data["grinder_record"]["frequency"]) < 7:
+					desc = f"<a:nat_warning:1062998119899484190> **They are a blacklisted grinder.**"
+			paid_till = data["grinder_record"]["time"]
+			if paid_till < time:
+				data["grinder_record"]["time"] = time
+		else:
+			data["grinder_record"] = grinder_record
+			await member.add_roles(trial)
+			role.append(trial)
+		
+		try:
+			await self.bot.donorBank.upsert(data)
+		except:
+			return await ctx.send(f"{self.bot.emojis_list['Warrning']} | Error updating donor data")
+		
+		role.reverse()
+		display = discord.Embed(
+			title=f"{member.name}#{member.discriminator}'s Grinder Appointment",
+			colour= member.color,
+			timestamp=datetime.datetime.utcnow()
+		)
+		if desc is not None:
+			display.description = desc
+		display.add_field(name="Rank:", value=f"`TIER {grinder_tier}`", inline=True)
+		display.add_field(name="Roles Added:", value=f"\n".join([role.mention for role in role]), inline=True)
+		display.add_field(name="Appointed By:", value=ctx.author.mention, inline=True)
+		display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+		display.set_thumbnail(url=member.avatar_url)
+		await ctx.send(embed=display)
 
 	@cog_ext.cog_subcommand(base="Donation", name="log",description="Add/Remove normal server donation!", guild_ids=guild_ids,
 		base_default_permission=False,
