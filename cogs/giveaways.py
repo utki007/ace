@@ -750,6 +750,10 @@ class giveaway(commands.Cog):
 		logg.set_footer(text=f"Blacklisted id: {user.id}", icon_url=ctx.guild.icon_url)
 		logg.set_thumbnail(url=user.avatar_url)
 		await log1.send(embed=logg)
+		logg.remove_field(-1)
+		logg.remove_field(-1)
+		logg.add_field(name="Roles Removed:", value=f"\n".join([role.mention for role in roles]), inline=True)
+		logg.add_field(name="Reason:", value=reason, inline=False)
 		await log2.send(embed=logg)
 
 	@cog_ext.cog_subcommand(base="tgk", name="unblacklist",description="Unblacklist a member 🤍", guild_ids=guild_ids,
@@ -835,6 +839,10 @@ class giveaway(commands.Cog):
 		logg.set_footer(text=f"Unblacklisted id: {user.id}", icon_url=ctx.guild.icon_url)
 		logg.set_thumbnail(url=user.avatar_url)
 		await log1.send(embed=logg)
+		logg.remove_field(-1)
+		logg.remove_field(-1)
+		logg.add_field(name="Roles Removed:", value=f"\n".join([role.mention for role in roles]), inline=True)
+		logg.add_field(name="Reason:", value=reason, inline=False)
 		await log2.send(embed=logg)
 
 	@cog_ext.cog_subcommand(base="tgk", name="blacklist-view",description="View A blacklisted member", guild_ids=guild_ids,
