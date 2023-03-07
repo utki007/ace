@@ -21,6 +21,7 @@ class Events(commands.Cog):
 		print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 		self.change_status.start()
 		self.randomrole.start()
+		self.category_roles.start()
 		
 		# work channel
 		self.work = 848470871307190273
