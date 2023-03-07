@@ -640,5 +640,261 @@ class giveaway(commands.Cog):
 
 		await ctx.send(embed=embed)
 
+	@cog_ext.cog_subcommand(base="tgk", name="blacklist",description="Blacklist a member 🖤", guild_ids=guild_ids,
+		base_default_permission=False, base_permissions=staff_perm,
+		options=[
+			create_option(name="user", description="Whom to blacklist?", required=True, option_type=6),
+			create_option(name="blacklist_type", description="DMC donation or Item donation?", choices=[
+				{
+					"name": "Giveaway Ban",
+					"value": "gaw"
+				},
+				{
+					"name": "Event Ban",
+					"value": "event"
+				},
+				{
+					"name": "Blacklisted Grinder",
+					"value": "grinder"
+				},
+				{
+					"name": "All of the bans",
+					"value": "all"
+				}
+			], required=True, option_type=3),
+			create_option(name="reason", description="Why are we blacklisting them?", option_type=3, required=True),
+			create_option(name="proof", description="Message/Image links separated by spaces", option_type=3, required=True)
+		]
+	)
+	async def blacklist_user(self, ctx, user, blacklist_type, reason, proof):
+		await ctx.defer(hidden=False)
+		links = [url.strip() for url in proof.split(" ") if url != "" ]
+
+		for url in links:
+			if "https://" not in url:
+				warning = discord.Embed(
+					color= 0xfcce00,
+					description=f"{self.bot.emojis_list['Warrning']} | Incorrect proof links, please recheck them.")
+				return await ctx.send(embed = warning)
+		
+		if len(reason.split(" ")) < 3:
+			warning = discord.Embed(
+					color= 0xfcce00,
+					description=f"{self.bot.emojis_list['Warrning']} | Please provide proper detailed reason for blacklisting.")
+			return await ctx.send(embed = warning)
+		
+		gk = self.bot.get_guild(785839283847954433)
+		gaw = gk.get_role(796456989134684190)
+		event = gk.get_role(948276283018719233)
+		grinder = gk.get_role(1066685416796864612)
+		bot = gk.get_role(785977682944851968)
+		roles = []
+
+		if blacklist_type == 'gaw':
+			await user.add_roles(gaw)
+			roles.append(gaw)
+		elif blacklist_type == 'event':
+			await user.add_roles(event)
+			roles.append(event)
+		elif blacklist_type == 'grinder':
+			await user.add_roles(grinder)
+			roles.append(grinder)
+		elif blacklist_type == 'all':
+			roles = [gaw, event, grinder, bot]
+			await user.add_roles(*roles)
+		else:
+			warning = discord.Embed(
+					color= 0xfcce00,
+					description=f"{self.bot.emojis_list['Warrning']} | Invalid blacklist_type, please recheck them.")
+			return await ctx.send(embed = warning)
+		
+		data = {}
+		data["_id"] = user.id
+		data["reason"] = reason
+		data["sanctioned_by"] = ctx.author.id
+		data["proof"] = links
+		data["blacklisted"] = True
+		
+		await self.bot.blacklistUser.upsert(data)
+
+		display = discord.Embed(
+			title=f"{user.name}#{user.discriminator} is now Blacklisted!",
+			colour= user.color,
+			timestamp=datetime.datetime.utcnow()
+		)
+		display.add_field(name="Authorized by:", value=f"{ctx.author.mention}", inline=True)
+		display.add_field(name="Roles Added:", value=f"\n".join([role.mention for role in roles]), inline=True)
+		display.add_field(name="Proof:", value=f"\n".join([f'[Proof {index+1}]({link})' for index , link in enumerate(links)]), inline=True)
+		display.add_field(name="Reason:", value=reason.title(), inline=False)
+		display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+		display.set_thumbnail(url=user.avatar_url)
+		msg = await ctx.send(embed=display)
+		
+		log = self.bot.get_channel(1082384554360320010)
+		logg = discord.Embed(
+			title=f"Blacklist logging",
+			colour= discord.Color.random(),
+			timestamp=datetime.datetime.utcnow()
+		)
+		logg.add_field(name="Blacklisted:", value=f"{user.mention}", inline=True)
+		logg.add_field(name="Authorized by:", value=f"{ctx.author.mention}", inline=True)
+		logg.add_field(name="Message Link:", value=f"[Click Here]({msg.jump_url})", inline=True)
+		logg.add_field(name="Roles Added:", value=f"\n".join([role.mention for role in roles]), inline=True)
+		logg.add_field(name="Proof:", value=f"\n".join([f'[Proof {index+1}]({link})' for index , link in enumerate(links)]), inline=True)
+		logg.add_field(name="Reason:", value=reason.title(), inline=False)
+		logg.set_footer(text=f"Blacklisted id: {user.id}", icon_url=ctx.guild.icon_url)
+		logg.set_thumbnail(url=user.avatar_url)
+		await log.send(embed=logg)
+
+	@cog_ext.cog_subcommand(base="tgk", name="unblacklist",description="Unblacklist a member 🤍", guild_ids=guild_ids,
+		base_default_permission=False, base_permissions=staff_perm,
+		options=[
+			create_option(name="user", description="Whom to blacklist?", required=True, option_type=6),
+			create_option(name="reason", description="Why are we blacklisting them?", option_type=3, required=True)
+		]
+	)
+	async def unblacklist_user(self, ctx, user, reason):
+		await ctx.defer(hidden=False)
+
+		if len(reason.split(" ")) < 3:
+			warning = discord.Embed(
+					color= 0xfcce00,
+					description=f"{self.bot.emojis_list['Warrning']} | Please provide proper detailed reason for unblacklisting.")
+			return await ctx.send(embed = warning)
+		
+		gk = self.bot.get_guild(785839283847954433)
+		gaw = gk.get_role(796456989134684190)
+		event = gk.get_role(948276283018719233)
+		grinder = gk.get_role(1066685416796864612)
+		bot = gk.get_role(785977682944851968)
+		roles = []
+
+		if gaw in user.roles:
+			roles.append(gaw)
+		if event in user.roles:
+			roles.append(event)
+		if grinder in user.roles:
+			roles.append(grinder)
+		if bot in user.roles:
+			roles.append(bot)
+
+		data = await self.bot.blacklistUser.find(user.id)
+
+		if roles == []:
+			if data is not None:
+				await self.bot.blacklistUser.delete(user.id)
+			warning = discord.Embed(
+					color= 0xfcce00,
+					description=f"{self.bot.emojis_list['Warrning']} | Not a previously blacklisted user!")
+			return await ctx.send(embed = warning)
+		
+		await user.remove_roles(*roles)
+
+		data = {}		
+		data["_id"] = user.id
+		data["reason"] = reason
+		data["sanctioned_by"] = ctx.author.id
+		data["proof"] = None
+		data["blacklisted"] = False
+		await self.bot.blacklistUser.upsert(data)
+
+		display = discord.Embed(
+			title=f"{user.name}#{user.discriminator} is now Unblacklisted!",
+			colour= user.color,
+			timestamp=datetime.datetime.utcnow()
+		)
+		display.add_field(name="Authorized by:", value=f"{ctx.author.mention}", inline=True)
+		display.add_field(name="Roles Removed:", value=f"\n".join([role.mention for role in roles]), inline=True)
+		display.add_field(name="Reason:", value=reason.title(), inline=False)
+		display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+		display.set_thumbnail(url=user.avatar_url)
+		msg = await ctx.send(embed=display)
+		
+		log = self.bot.get_channel(1082384554360320010)
+		logg = discord.Embed(
+			title=f"Blacklist logging",
+			colour= discord.Color.random(),
+			timestamp=datetime.datetime.utcnow()
+		)
+		logg.add_field(name="Blacklisted:", value=f"{user.mention}", inline=True)
+		logg.add_field(name="Authorized by:", value=f"{ctx.author.mention}", inline=True)
+		logg.add_field(name="Message Link:", value=f"[Click Here]({msg.jump_url})", inline=True)
+		logg.add_field(name="Roles Removed:", value=f"\n".join([role.mention for role in roles]), inline=True)
+		logg.add_field(name="Reason:", value=reason.title(), inline=False)
+		logg.set_footer(text=f"Unblacklisted id: {user.id}", icon_url=ctx.guild.icon_url)
+		logg.set_thumbnail(url=user.avatar_url)
+		await log.send(embed=logg)
+
+	@cog_ext.cog_subcommand(base="tgk", name="blacklist-view",description="View A blacklisted member", guild_ids=guild_ids,
+		base_default_permission=False, base_permissions=staff_perm,
+		options=[
+			create_option(name="user", description="Whom to check?", required=True, option_type=6)
+		]
+	)
+	async def view_blacklist_user(self, ctx, user):
+		await ctx.defer(hidden=False)
+
+		gk = self.bot.get_guild(785839283847954433)
+		gaw = gk.get_role(796456989134684190)
+		event = gk.get_role(948276283018719233)
+		grinder = gk.get_role(1066685416796864612)
+		bot = gk.get_role(785977682944851968)
+		roles = []
+
+		if gaw in user.roles:
+			roles.append(gaw)
+		if event in user.roles:
+			roles.append(event)
+		if grinder in user.roles:
+			roles.append(grinder)
+		if bot in user.roles:
+			roles.append(bot)
+
+		data = await self.bot.blacklistUser.find(user.id)
+
+		if roles == []:
+			if data is not None:
+				if data["blacklisted"]:
+					await self.bot.blacklistUser.delete(user.id)
+				else:
+					display = discord.Embed(
+						title=f"{user.name}#{user.discriminator} is not blacklisted!",
+						colour= user.color,
+						timestamp=datetime.datetime.utcnow()
+					)
+					display.add_field(name="Authorized by:", value=f"<@{data['sanctioned_by']}>", inline=True)
+					display.add_field(name="Reason:", value=data['reason'].title(), inline=False)
+					display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+					display.set_thumbnail(url=user.avatar_url)
+					return await ctx.send(embed=display)
+			warning = discord.Embed(
+					color= 0xfcce00,
+					description=f"{self.bot.emojis_list['Warrning']} | Not a previously blacklisted user!")
+			return await ctx.send(embed = warning)
+		
+		if data is None:
+			data = {}
+			data["_id"] = user.id
+			data["reason"] = '**Legacy blacklist:** Was blacklisted prior to blacklist system being implemented.'
+			data["sanctioned_by"] = self.bot.user.id
+			data["proof"] = ['https://discord.com/channels/785839283847954433/785841560918163501/837926455836147743']
+			data["blacklisted"] = True
+			await self.bot.blacklistUser.upsert(data)
+
+		display = discord.Embed(
+			title=f"{user.name}#{user.discriminator} Blacklisted Stats!",
+			colour= user.color,
+			timestamp=datetime.datetime.utcnow()
+		)
+		display.add_field(name="Authorized by:", value=f"<@{data['sanctioned_by']}>", inline=True)
+		display.add_field(name="Blacklisted Roles:", value=f"\n".join([role.mention for role in roles]), inline=True)
+		if data['proof'] is not None:
+			display.add_field(name="Proof:", value=f"\n".join([f'[Proof {index+1}]({link})' for index , link in enumerate(data['proof'])]), inline=True)
+		display.add_field(name="Reason:", value=data['reason'].title(), inline=False)
+		display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+		
+		display.set_thumbnail(url=user.avatar_url)
+		await ctx.send(embed=display)
+
 def setup(bot):
 	bot.add_cog(giveaway(bot))
