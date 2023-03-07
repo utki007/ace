@@ -688,6 +688,7 @@ class giveaway(commands.Cog):
 		event = gk.get_role(948276283018719233)
 		grinder = gk.get_role(1066685416796864612)
 		bot = gk.get_role(785977682944851968)
+		ban_divider = gk.get_role(990128728250155019)
 		roles = []
 
 		if blacklist_type == 'gaw':
@@ -707,6 +708,9 @@ class giveaway(commands.Cog):
 					color= 0xfcce00,
 					description=f"{self.bot.emojis_list['Warrning']} | Invalid blacklist_type, please recheck them.")
 			return await ctx.send(embed = warning)
+		
+		if ban_divider not in user.roles:
+			await user.add_roles(ban_divider)
 		
 		data = {}
 		data["_id"] = user.id
@@ -767,6 +771,7 @@ class giveaway(commands.Cog):
 		event = gk.get_role(948276283018719233)
 		grinder = gk.get_role(1066685416796864612)
 		bot = gk.get_role(785977682944851968)
+		ban_divider = gk.get_role(990128728250155019)
 		roles = []
 
 		if gaw in user.roles:
@@ -789,6 +794,9 @@ class giveaway(commands.Cog):
 			return await ctx.send(embed = warning)
 		
 		await user.remove_roles(*roles)
+
+		if ban_divider in user.roles:
+			await user.remove_roles(ban_divider)
 
 		data = {}		
 		data["_id"] = user.id
@@ -839,6 +847,7 @@ class giveaway(commands.Cog):
 		event = gk.get_role(948276283018719233)
 		grinder = gk.get_role(1066685416796864612)
 		bot = gk.get_role(785977682944851968)
+		ban_divider = gk.get_role(990128728250155019)
 		roles = []
 
 		if gaw in user.roles:
@@ -853,6 +862,8 @@ class giveaway(commands.Cog):
 		data = await self.bot.blacklistUser.find(user.id)
 
 		if roles == []:
+			if ban_divider in user.roles:
+				await user.remove_roles(ban_divider)
 			if data is not None:
 				if data["blacklisted"]:
 					await self.bot.blacklistUser.delete(user.id)
