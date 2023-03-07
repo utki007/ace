@@ -229,7 +229,7 @@ bot.emojis_list = {
 	"Freeloader": "<a:TGK_freeloader:840517161386377226>",
 	"Cross": "<a:tgk_cross:840637370038353940>",
 	"Check": "<a:tgk_check:840637950806458440>",
-	"Warrning": "<a:animatedwarning:967044024429068329>",
+	"Warrning": "<a:nat_warning:1062998119899484190>",
 	"SuccessTick": "<a:success_tick:840639358834180107>",
 	"SuccessStatus": "<:tgk_success_status:840639832681480202>",
 	"BrokenStatus": "<:tgk_broken_status:840640567103848459>",
@@ -275,6 +275,7 @@ if __name__ == "__main__":
 	bot.items = Document(bot.db, "itemTracker")
 	bot.freeloaders = Document(bot.db, "freeloaders")
 	bot.sticky = Document(bot.db, "sticky")
+	bot.blacklistUser = Document(bot.db, "blacklistUser")
 
 	for file in os.listdir('./cogs'):
 		if file.endswith(".py") and not file.startswith("_") and not file.startswith('test'):
