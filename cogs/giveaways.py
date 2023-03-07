@@ -693,16 +693,16 @@ class giveaway(commands.Cog):
 
 		if blacklist_type == 'gaw':
 			await user.add_roles(gaw)
-			roles.append(gaw)
+			roles.append(gaw, reason= f'Blacklisted by {ctx.author.name}!')
 		elif blacklist_type == 'event':
 			await user.add_roles(event)
-			roles.append(event)
+			roles.append(event, reason= f'Blacklisted by {ctx.author.name}!')
 		elif blacklist_type == 'grinder':
 			await user.add_roles(grinder)
-			roles.append(grinder)
+			roles.append(grinder, reason= f'Blacklisted by {ctx.author.name}!')
 		elif blacklist_type == 'all':
 			roles = [gaw, event, grinder, bot]
-			await user.add_roles(*roles)
+			await user.add_roles(*roles, reason= f'Blacklisted by {ctx.author.name}!')
 		else:
 			warning = discord.Embed(
 					color= 0xfcce00,
@@ -743,7 +743,7 @@ class giveaway(commands.Cog):
 		logg.add_field(name="Blacklisted:", value=f"{user.mention}", inline=True)
 		logg.add_field(name="Authorized by:", value=f"{ctx.author.mention}", inline=True)
 		logg.add_field(name="Message Link:", value=f"[Click Here]({msg.jump_url})", inline=True)
-		logg.add_field(name="Roles Added:", value=f"\n".join([role.mention for role in roles]), inline=True)
+		logg.add_field(name="Roles Added:", value=f"\n".join([role.name for role in roles]), inline=True)
 		logg.add_field(name="Proof:", value=f"\n".join([f'[Proof {index+1}]({link})' for index , link in enumerate(links)]), inline=True)
 		logg.add_field(name="Reason:", value=reason.title(), inline=False)
 		logg.set_footer(text=f"Blacklisted id: {user.id}", icon_url=ctx.guild.icon_url)
@@ -793,7 +793,7 @@ class giveaway(commands.Cog):
 					description=f"{self.bot.emojis_list['Warrning']} | Not a previously blacklisted user!")
 			return await ctx.send(embed = warning)
 		
-		await user.remove_roles(*roles)
+		await user.remove_roles(*roles, reason= f'Unblacklisted by {ctx.author.name}!')
 
 		if ban_divider in user.roles:
 			await user.remove_roles(ban_divider)
@@ -827,7 +827,7 @@ class giveaway(commands.Cog):
 		logg.add_field(name="Blacklisted:", value=f"{user.mention}", inline=True)
 		logg.add_field(name="Authorized by:", value=f"{ctx.author.mention}", inline=True)
 		logg.add_field(name="Message Link:", value=f"[Click Here]({msg.jump_url})", inline=True)
-		logg.add_field(name="Roles Removed:", value=f"\n".join([role.mention for role in roles]), inline=True)
+		logg.add_field(name="Roles Removed:", value=f"\n".join([role.name for role in roles]), inline=True)
 		logg.add_field(name="Reason:", value=reason.title(), inline=False)
 		logg.set_footer(text=f"Unblacklisted id: {user.id}", icon_url=ctx.guild.icon_url)
 		logg.set_thumbnail(url=user.avatar_url)
