@@ -734,7 +734,8 @@ class giveaway(commands.Cog):
 		display.set_thumbnail(url=user.avatar_url)
 		msg = await ctx.send(embed=display)
 		
-		log = self.bot.get_channel(1082384554360320010)
+		log1 = self.bot.get_channel(1082384554360320010)
+		log2 = self.bot.get_channel(858233010860326962)
 		logg = discord.Embed(
 			title=f"Blacklist logging",
 			colour= discord.Color.random(),
@@ -748,7 +749,8 @@ class giveaway(commands.Cog):
 		logg.add_field(name="Reason:", value=reason.title(), inline=False)
 		logg.set_footer(text=f"Blacklisted id: {user.id}", icon_url=ctx.guild.icon_url)
 		logg.set_thumbnail(url=user.avatar_url)
-		await log.send(embed=logg)
+		await log1.send(embed=logg)
+		await log2.send(embed=logg)
 
 	@cog_ext.cog_subcommand(base="tgk", name="unblacklist",description="Unblacklist a member 🤍", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=staff_perm,
@@ -818,9 +820,10 @@ class giveaway(commands.Cog):
 		display.set_thumbnail(url=user.avatar_url)
 		msg = await ctx.send(embed=display)
 		
-		log = self.bot.get_channel(1082384554360320010)
+		log1 = self.bot.get_channel(1082384554360320010)
+		log2 = self.bot.get_channel(858233010860326962)
 		logg = discord.Embed(
-			title=f"Blacklist logging",
+			title=f"Unblacklist logging",
 			colour= discord.Color.random(),
 			timestamp=datetime.datetime.utcnow()
 		)
@@ -831,7 +834,8 @@ class giveaway(commands.Cog):
 		logg.add_field(name="Reason:", value=reason.title(), inline=False)
 		logg.set_footer(text=f"Unblacklisted id: {user.id}", icon_url=ctx.guild.icon_url)
 		logg.set_thumbnail(url=user.avatar_url)
-		await log.send(embed=logg)
+		await log1.send(embed=logg)
+		await log2.send(embed=logg)
 
 	@cog_ext.cog_subcommand(base="tgk", name="blacklist-view",description="View A blacklisted member", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=staff_perm,
