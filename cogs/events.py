@@ -19,8 +19,11 @@ class Events(commands.Cog):
 	@commands.Cog.listener()
 	async def on_ready(self):
 		print(f"{self.__class__.__name__} Cog has been loaded\n-----")
+		await asyncio.sleep(3)
 		self.change_status.start()
+		await asyncio.sleep(300)
 		self.randomrole.start()
+		await asyncio.sleep(300)
 		self.category_roles.start()
 		
 		# work channel
@@ -103,10 +106,12 @@ class Events(commands.Cog):
 			roles = member.roles
 			if ban_divider in roles:
 				if (gaw or event or grinder or bot) not in roles:
-					return await member.remove_roles(ban_divider)
+					await member.remove_roles(ban_divider)
+					continue
 			else:
 				if (gaw or event or grinder or bot) in roles:
-					return await member.add_roles(ban_divider)
+					await member.add_roles(ban_divider)
+					continue
 
 def setup(bot):
 	bot.add_cog(Events(bot)) 
