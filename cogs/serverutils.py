@@ -119,16 +119,14 @@ class serverutils(commands.Cog, description="Server Utility"):
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def celebrate(self, ctx):
 		await ctx.message.delete()
-		l = ["https://cdn.discordapp.com/attachments/999555672733663285/999583176504651827/celebrate.gif"]
+		l = ["https://cdn.discordapp.com/attachments/999555672733663285/999583176504651827/celebrate.gif", "https://cdn.discordapp.com/attachments/810050662686523394/1082913768176095232/band.gif"]
 		# await ctx.send(random.choice(l))
-		await ctx.send(l[0])
+		await ctx.send(l[1])
 
 	@commands.command(name="dm", description="Dm a user!")
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def dm(self, ctx, member: discord.Member, *, message: str):
 		await ctx.message.delete()
-		l = ["https://cdn.discordapp.com/attachments/782701143222386718/809423966862311424/1JOZT-rbar.gif"]
-		# await ctx.send(random.choice(l))
 		question = await ctx.send(f"Want to dm {member} with message: {message} \n`(Yes/No)`")
 		try:
 			msg = await self.bot.wait_for("message", check=lambda m: m.author.id == ctx.author.id and m.content.lower() in ["yes", "y", "no", "n"], timeout=10)
