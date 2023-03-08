@@ -18,6 +18,8 @@ from amari import AmariClient
 import datetime
 from datetime import date
 
+from utils.convertor import calculate, convert_to_numeral
+
 time_regex = re.compile("(?:(\d{1,5})(h|s|m|d))+?")
 
 time_dict = {"h": 3600, "s": 1, "m": 60, "d": 86400}
@@ -499,50 +501,86 @@ class giveaway(commands.Cog):
 	# 		self.bot.giveaway.pop(message.id)
 	# 	except KeyError:
 	# 		pass
+
 	@cog_ext.cog_subcommand(base="event", name="host",description="Host an Event", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=staff_perm,
 		options=[
-			create_option(name="name", description="Name of the event", option_type=3, required=True),
-			create_option(name="sponsor", description="Can be host too", required=True, option_type=6),
-			create_option(name="message", description="Note from Sponsor", option_type=3, required=True),
-			create_option(name="prize", description="Prize of the giveaway", option_type=3, required=True),
-			create_option(name="channel", description="Event channel", required=True, option_type=7),
-			create_option(name="winners", description="Number of the winners.", option_type=4, required=False),
+			create_option(name="event_name", description="Name of the event", option_type=3, required=True),
+			create_option(name="channel", description="Event channel where event is being hosted.", required=True, option_type=7),
+			create_option(name="quantity", description="A constant number like '123' or a shorthand like '2k'", option_type=3, required=True),
+			create_option(name="item", description="What item do you want to host?", option_type=3, required=False),
+			create_option(name="sponsor", description="Can be host too!", required=False, option_type=6),
+			create_option(name="sponsor_message", description="Note from Sponsor", option_type=3, required=False),
 			create_option(name="ping", description="Want to ping event role?", required=False, option_type=5),
+			create_option(name="rumble", description="Want to ping rumble role?", required=False, option_type=5),
 		]
 	)
-	async def event(self, ctx, name, sponsor: discord.Member, message, prize, channel, winners: int = 1, ping = True):
+	async def event(self, ctx, event_name, channel, quantity, item = None,sponsor = None,sponsor_message = '', ping = True, rumble = False):
+		
 		await ctx.defer(hidden=True)
 		host = ctx.author
-		event = discord.utils.get(ctx.guild.roles, id=836925033506275399)
-		
-		event_summary = f"{name.title()} for {prize.title()} starting soon!"
-		desc = f"{host.mention} is hosting an event!\n"
-		if (winners > 1):
-			desc = desc + f"> <a:winner:805380293757370369>  <a:yellowrightarrow:801446308778344468> {winners} winners\n"
-		desc = desc + f"> <a:tgk_gift:820323551520358440>  <a:yellowrightarrow:801446308778344468> {prize.title()}\n"
-		desc = desc + f"> <a:pandaswag:801013818896941066>  <a:yellowrightarrow:801446308778344468> {sponsor.mention}\n"
-		desc = desc + f"> <a:donormessage:941782118491635802>  <a:yellowrightarrow:801446308778344468> {message.title()}\n"
-		desc = desc + f"Thank our event sponsor in <#785847439579676672> \n**\n**\n"
-		event_embed = discord.Embed(
-				title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
-				description = desc,
-				color=0x9e3bff,
-				timestamp=datetime.datetime.utcnow()
-		)
-		event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
-		event_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/940143383609999392.gif?size=128&quality=lossless")
+		name = event_name.title()
 
-		message = await channel.send("**\n**",delete_after=0)
+		if rumble:
+			event = discord.utils.get(ctx.guild.roles, id=1067135771473100960)
+		else:
+			event = discord.utils.get(ctx.guild.roles, id=836925033506275399)
+		
+		if sponsor is None:
+			sponsor = host
+
+		try:
+			amount = await convert_to_numeral(quantity)
+			amount = await calculate(amount)
+			amount = int(amount)
+		except:
+			warning = discord.Embed(
+					color= 0xfcce00,
+					description=f"{self.bot.emojis_list['Warrning']} | Incorrect quantity provided. Please provide a constant number like '123' or a shorthand like '2k'.")
+			return await ctx.send(embed = warning, hidden= True)
+		
+		prize = ''
+		if item is None:
+			prize = f'⏣ {amount:,}'
+		else:
+			prize = f'{amount:,}x {item.title()}'
+		
+
+		
+		title = f"<a:celebrateyay:821698856202141696> {name} <a:celebrateyay:821698856202141696>"
+		if 'rumble' in name.lower():
+			title = f"<:rumble_ping:1080023828505301003> {name} <:rumble_ping:1080023828505301003>"
+		elif 'tea' in name.lower():
+			title = f":tea: {name} :tea:"
+
+		event_summary = f'<a:tgk_yellowrightarrow:801446308778344468>   **{prize} {name.title()}** sponsored by {sponsor.mention}!\n<a:tgk_yellowrightarrow:801446308778344468>   Make sure to thank them in <#785847439579676672>.'
+		event_embed = discord.Embed(
+			title=title,
+			color=0xfedb01,
+			timestamp=datetime.datetime.utcnow()
+		)
+		event_embed.add_field(name="Prize:", value=prize, inline=True)
+		event_embed.add_field(name="Sponsor:", value=sponsor.mention, inline=True)
+		if sponsor.id != host.id:
+			event_embed.add_field(name="Host:", value=host.mention, inline=True)
+		if sponsor_message != '':
+			event_embed.add_field(name="Message from sponsor:", value=sponsor_message, inline=False)
+		event_embed.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+		event_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/948078759058210846.webp?size=128&quality=lossless")
+
+		message = await channel.send(content = event_summary, allowed_mentions=discord.AllowedMentions.none())
+		await message.add_reaction("<:tgk_thankyou:930419246792601640>")
 		url = message.jump_url
 		gk = self.bot.get_guild(785839283847954433)
 		eventemoji = await gk.fetch_emoji(854663256420909066)
 		buttons = [create_button(style=ButtonStyle.URL, label="Head to event channel!", emoji=eventemoji, disabled=False, url=url)]
+		
 		if ping:
-			msg = await ctx.channel.send(content=f"{event_summary}\n[ {event.mention} ]",embed=event_embed, components=[create_actionrow(*buttons)])
+			event_summary += f"||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| "
+			await ctx.channel.send(content=f"{event_summary}\n [ {event.mention} ]",embed=event_embed, components=[create_actionrow(*buttons)])
 		else:
-			msg = await ctx.channel.send(content = event_summary ,embed=event_embed, components=[create_actionrow(*buttons)])
-		await ctx.send(content=f"Success!", components=[create_actionrow(*buttons)])
+			await ctx.channel.send(content = event_summary ,embed=event_embed, components=[create_actionrow(*buttons)])
+		await ctx.send(content=f"Good luck with the event!", components=[create_actionrow(*buttons)], hidden=True)
 
 	@cog_ext.cog_subcommand(base="event", name="end",description="Send event footer", guild_ids=guild_ids,
 		base_default_permission=False, base_permissions=staff_perm)
