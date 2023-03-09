@@ -32,7 +32,10 @@ class Events(commands.Cog):
 		self.heist_scout = 846766444695650345
 		self.heist_ad = 840231915100569650
 		
-
+	def cog_unload(self):
+		self.change_status.cancel()
+		self.randomrole.cancel()
+		self.category_roles.cancel()
 	
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
