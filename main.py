@@ -129,13 +129,13 @@ if os.path.exists(os.getcwd()+"./properties/tokens.json"):
 		configData = json.load(f)
 	bot.botToken = configData["token"]
 	bot.connection_url = configData["mongo"]
-	bot.connection_url2 = configData["mongoBanDB"]
+	bot.connection_url2 = configData["dankHelper"]
 	bot.amari = configData["amari"]
 else:
 	# for heroku
 	bot.botToken = os.environ['BOT_TOKEN']
 	bot.connection_url = os.environ['MongoConnectionUrl']
-	bot.connection_url2 = os.environ["mongoBanDB"]
+	bot.connection_url2 = os.environ["dankHelper"]
 	bot.amari = os.environ["amari"]
 bot.amari_client = AmariClient(bot.amari)
 
@@ -264,6 +264,8 @@ bot.number_emojis = {
 }
 
 if __name__ == "__main__":
+
+	# for ACE DB
 	bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
 	bot.db = bot.mongo["TGK"]
 	bot.give = Document(bot.db, "giveaway")
@@ -276,6 +278,11 @@ if __name__ == "__main__":
 	bot.freeloaders = Document(bot.db, "freeloaders")
 	bot.sticky = Document(bot.db, "sticky")
 	bot.blacklistUser = Document(bot.db, "blacklistUser")
+
+	# for OCTANE DB
+	bot.octane = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url2))
+	bot.db2 = bot.octane["Dank_Data"]
+	bot.dankItems = Document(bot.db2, "Item prices")
 
 	for file in os.listdir('./cogs'):
 		if file.endswith(".py") and not file.startswith("_") and not file.startswith('test'):
