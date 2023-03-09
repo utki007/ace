@@ -1399,7 +1399,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			display.set_thumbnail(url=member.avatar_url)
 			return await ctx.send(embed=display)
 
-	@commands.command(name="glist", aliases=['gl', 'gstatus', 'gs'])
+	@commands.command(name="gstatus", aliases=['gs'])
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def glist(self, ctx):
 		await ctx.message.delete()
