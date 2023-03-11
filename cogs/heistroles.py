@@ -431,35 +431,10 @@ class heistroles(commands.Cog):
 					item_prize = int((await self.bot.dankItems.find(item_name))['price'])
 					amount = round(number_of_items * item_prize * 1.2)
 
-				data = await self.bot.donorBank.find(user.id)
-				if data is None:
-					data = {}
-					data["_id"] = user.id
-					data["name"] = user.name[0:15]
-					data["bal"] = 0
-					data["event"] = [{"name": "750", "bal": 0}, {"name": "1.5k", "bal": 0}, {
-						"name": "3k", "bal": 0}, {"name": "7k", "bal": 0}, {"name": "diwali", "bal": 0}, {"name": "2y", "bal": 0}]
-					await self.bot.donorBank.upsert(data)
-				
-				ctx = await self.bot.get_context(message)
-				display = discord.Embed(
-					title=f"{user.name}#{user.discriminator}'s Donation Stats",
-					colour=user.color,
-					timestamp=datetime.datetime.utcnow()
-				)
-				display.add_field(name="Amount Credited:",value=f'⏣ {round(amount):,}',inline=True)
-				display.add_field(name="Total Donation:",value=f'⏣ {round(data["bal"] + amount):,}',inline=True)
-				display.add_field(name="_ _",value=f"𝐓𝐡𝐚𝐧𝐤 𝐲𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧!",inline=False)
-				display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
-				display.set_thumbnail(url=user.avatar_url)
-
 				try:
-					await message.delete()
-					
-					msg = await ctx.message.channel.fetch_message(ctx.message.reference.message_id)
-				
-					await ctx.invoke(self.bot.get_command("dono a"), member=user, amount=str(amount), sendMessage=False)
-					await msg.reply(embed=display)
+					ctx = await self.bot.get_context(message)
+					await ctx.invoke(self.bot.get_command("dono a"), member=user, amount=str(amount), sendMessage=True)
+					msg = await message.channel.fetch_message(message.reference.message_id)
 					await msg.add_reaction("<a:nat_check:1010969401379536958>")
 				except:
 					await msg.add_reaction("<a:nat_cross:1010969491347357717>")
