@@ -81,6 +81,7 @@ class Permission(commands.Cog):
         roles,users = [], []
 
         roles = [ctx.guild.get_role(role) for role in cmd_data['allowed_roles'] if ctx.guild.get_role(role) != None]
+        role_mention = [role.mention for role in roles]
         
         if len(roles) != len(cmd_data['allowed_roles']):
             cmd_data['allowed_roles'] = [role.id for role in roles]
@@ -89,7 +90,7 @@ class Permission(commands.Cog):
         if len(roles) == 0: 
             embed.add_field(name="Allowed roles", value="None")
         else: 
-            embed.add_field(name="Allowed roles", value=", ".join(roles))
+            embed.add_field(name="Allowed roles", value=", ".join(role_mention))
 
         embed.add_field(name="Disabed?:", value=cmd_data['disable'], inline=False)
         await ctx.send(embed=embed)
