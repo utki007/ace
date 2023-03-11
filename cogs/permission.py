@@ -21,7 +21,6 @@ class Permission(commands.Cog):
         await ctx.send("Looks Like you forget to add sub-command")
 
     @permission.command(name="add")
-    #@commands.check_any(checks.can_use(),commands.has_any_role(785842380565774368, 803635405638991902,799037944735727636))
     @is_me()
     async def add(self, ctx, command, *targets: discord.Role):
 
@@ -51,7 +50,6 @@ class Permission(commands.Cog):
         await ctx.send(f"permission of {command.name} is Updated", allowed_mentions=discord.AllowedMentions(everyone=False, roles=False))
     
     @permission.command(name="remove")
-    #@commands.check_any(checks.can_use(),commands.has_any_role(785842380565774368, 803635405638991902,799037944735727636))
     @is_me()
     async def remove(self, ctx, command, *targets: discord.Role):
         targets = [int(target.id) for target in targets]
@@ -71,7 +69,6 @@ class Permission(commands.Cog):
         await ctx.send(f"permission of {command.name} is Updated", allowed_mentions=discord.AllowedMentions(everyone=False, roles=False))
     
     @permission.command()
-    #@commands.check_any(commands.has_any_role(785842380565774368, 803635405638991902,799037944735727636, 488614633670967307), checks.is_me())
     @is_me()
     async def check(self, ctx, command):
         command = self.bot.get_command(command)
@@ -83,8 +80,12 @@ class Permission(commands.Cog):
         embed = discord.Embed(title=f"permission {command.name}",color=ctx.author.color)
         roles,users = [], []
 
-        for role in cmd_data['allowed_roles']: 
-            roles.append(f"<@&{role}>")
+        roles = [ctx.guild.get_role(role) for role in cmd_data['allowed_roles'] if ctx.guild.get_role(role) != None]
+        
+        if len(roles) != len(cmd_data['allowed_roles']):
+            cmd_data['allowed_roles'] = [role.id for role in roles]
+            await self.bot.active_cmd.upsert(cmd_data)
+
         if len(roles) == 0: 
             embed.add_field(name="Allowed roles", value="None")
         else: 
@@ -94,7 +95,6 @@ class Permission(commands.Cog):
         await ctx.send(embed=embed)
     
     @commands.command(name="toggle", description="Enable or disable a command!")
-    #@commands.check_any(checks.can_use(), commands.has_any_role(799037944735727636, 803635405638991902))
     @is_me()
     async def toggle(self, ctx, *, command):
         command = self.bot.get_command(command)
