@@ -430,10 +430,10 @@ class heistroles(commands.Cog):
 					amount = round(number_of_items * item_prize * 1.2)
 
 				try:
-					ctx = await self.bot.get_context(message)
-					await ctx.invoke(self.bot.get_command("dono a"), member=user, amount=str(amount), sendMessage=True)
 					msg = await message.channel.fetch_message(message.reference.message_id)
 					await msg.add_reaction("<a:nat_check:1010969401379536958>")
+					ctx = await self.bot.get_context(message)
+					await ctx.invoke(self.bot.get_command("dono a"), member=user, amount=str(amount), sendMessage=True)
 				except:
 					msg = await message.channel.fetch_message(message.reference.message_id)
 					await msg.add_reaction("<a:nat_cross:1010969491347357717>")
