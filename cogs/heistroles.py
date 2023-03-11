@@ -422,12 +422,6 @@ class heistroles(commands.Cog):
 				og_prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0]
 				prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0].split(" ")[1]
 
-				ctx = await self.bot.get_context(message)
-				await message.delete()
-				
-				msg = await ctx.message.channel.fetch_message(ctx.message.reference.message_id)
-				display_msg = await msg.reply(f"<a:gk_loading:1003950094598549525> **|** Calculating your donation <a:loading:1004658436778229791>")
-				
 				try:
 					amount = await convert_to_numeral(prize)
 					amount = await calculate(amount)
@@ -459,8 +453,13 @@ class heistroles(commands.Cog):
 				display.set_thumbnail(url=user.avatar_url)
 
 				try:
+					ctx = await self.bot.get_context(message)
+					await message.delete()
+					
+					msg = await ctx.message.channel.fetch_message(ctx.message.reference.message_id)
+				
 					await ctx.invoke(self.bot.get_command("dono a"), member=user, amount=str(amount), sendMessage=False)
-					await display_msg.edit(content=None, embed=display)
+					await msg.reply(embed=display)
 					await msg.add_reaction("<a:nat_check:1010969401379536958>")
 				except:
 					await msg.add_reaction("<a:nat_cross:1010969491347357717>")
