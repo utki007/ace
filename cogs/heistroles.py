@@ -414,11 +414,20 @@ class heistroles(commands.Cog):
 				
 				ctx = await self.bot.get_context(message)
 				await ctx.invoke(self.bot.get_command("gu"), member=user, number=number)
+
 			elif message.channel.id == 812711254790897714:
+				
+				msg = await message.channel.fetch_message(message.reference.message_id)
+				display_msg = await msg.reply(f"<a:gk_loading:1003950094598549525> **|** Calculating your donation <a:loading:1004658436778229791>")
+					
 				donor_id = re.findall("\<\@(.*?)\>", message.content)[0]
 				user = message.guild.get_member(int(donor_id))
 				og_prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0]
 				prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0].split(" ")[1]
+
+				
+				ctx = await self.bot.get_context(message)
+				await message.delete()
 
 				try:
 					amount = await convert_to_numeral(prize)
@@ -429,13 +438,32 @@ class heistroles(commands.Cog):
 					item_prize = int((await self.bot.dankItems.find(item_name))['price'])
 					amount = round(number_of_items * item_prize * 1.2)
 
+				data = await self.bot.donorBank.find(user.id)
+				if data is None:
+					data = {}
+					data["_id"] = user.id
+					data["name"] = user.name[0:15]
+					data["bal"] = 0
+					data["event"] = [{"name": "750", "bal": 0}, {"name": "1.5k", "bal": 0}, {
+						"name": "3k", "bal": 0}, {"name": "7k", "bal": 0}, {"name": "diwali", "bal": 0}, {"name": "2y", "bal": 0}]
+					await self.bot.donorBank.upsert(data)
+
+				display = discord.Embed(
+					title=f"{user.name}#{user.discriminator}'s Donation Stats",
+					colour=user.color,
+					timestamp=datetime.datetime.utcnow()
+				)
+				display.add_field(name="Amount Credited:",value=f'⏣ {round(amount):,}',inline=True)
+				display.add_field(name="Total Donation:",value=f'⏣ {round(data["bal"] + amount):,}',inline=True)
+				display.add_field(name="_ _",value=f"𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧!",inline=False)
+				display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+				display.set_thumbnail(url=user.avatar_url)
+
 				try:
-					ctx = await self.bot.get_context(message)
-					await ctx.invoke(self.bot.get_command("dono a"), member=user, amount=str(amount), sendMessage=True)
-					msg = await message.channel.fetch_message(message.reference.message_id)
+					await ctx.invoke(self.bot.get_command("dono a"), member=user, amount=str(amount), sendMessage=False)
+					await display_msg.edit(content=None, embed=display)
 					await msg.add_reaction("<a:nat_check:1010969401379536958>")
 				except:
-					msg = await message.channel.fetch_message(message.reference.message_id)
 					await msg.add_reaction("<a:nat_cross:1010969491347357717>")
 
 		word_list = ['vote link','how to get vote role', 'how to vote', 'pls vote', 'how to vote for server', 'link to vote']
