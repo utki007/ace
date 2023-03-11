@@ -416,19 +416,18 @@ class heistroles(commands.Cog):
 				await ctx.invoke(self.bot.get_command("gu"), member=user, number=number)
 
 			elif message.channel.id == 812711254790897714:
-				
-				msg = await message.channel.fetch_message(message.reference.message_id)
-				display_msg = await msg.reply(f"<a:gk_loading:1003950094598549525> **|** Calculating your donation <a:loading:1004658436778229791>")
 					
 				donor_id = re.findall("\<\@(.*?)\>", message.content)[0]
 				user = message.guild.get_member(int(donor_id))
 				og_prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0]
 				prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0].split(" ")[1]
 
-				
 				ctx = await self.bot.get_context(message)
 				await message.delete()
-
+				
+				msg = await ctx.message.channel.fetch_message(ctx.message.reference.message_id)
+				display_msg = await msg.reply(f"<a:gk_loading:1003950094598549525> **|** Calculating your donation <a:loading:1004658436778229791>")
+				
 				try:
 					amount = await convert_to_numeral(prize)
 					amount = await calculate(amount)
@@ -455,7 +454,7 @@ class heistroles(commands.Cog):
 				)
 				display.add_field(name="Amount Credited:",value=f'⏣ {round(amount):,}',inline=True)
 				display.add_field(name="Total Donation:",value=f'⏣ {round(data["bal"] + amount):,}',inline=True)
-				display.add_field(name="_ _",value=f"𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧!",inline=False)
+				display.add_field(name="_ _",value=f"𝐓𝐡𝐚𝐧𝐤 𝐲𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧!",inline=False)
 				display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
 				display.set_thumbnail(url=user.avatar_url)
 
