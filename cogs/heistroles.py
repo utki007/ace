@@ -440,7 +440,8 @@ class heistroles(commands.Cog):
 					data["event"] = [{"name": "750", "bal": 0}, {"name": "1.5k", "bal": 0}, {
 						"name": "3k", "bal": 0}, {"name": "7k", "bal": 0}, {"name": "diwali", "bal": 0}, {"name": "2y", "bal": 0}]
 					await self.bot.donorBank.upsert(data)
-
+				
+				ctx = await self.bot.get_context(message)
 				display = discord.Embed(
 					title=f"{user.name}#{user.discriminator}'s Donation Stats",
 					colour=user.color,
@@ -453,7 +454,6 @@ class heistroles(commands.Cog):
 				display.set_thumbnail(url=user.avatar_url)
 
 				try:
-					ctx = await self.bot.get_context(message)
 					await message.delete()
 					
 					msg = await ctx.message.channel.fetch_message(ctx.message.reference.message_id)
