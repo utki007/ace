@@ -362,58 +362,81 @@ class heistroles(commands.Cog):
 							await message.add_reaction(random.choice(self.bday_emojis))
 							break
 		
-		elif message.channel.id == 851663580620521472 and message.author.id == 816699167824281621:
-			donor_id = re.findall("\<\@(.*?)\>", message.content)[0]
-			user = message.guild.get_member(int(donor_id))
-			og_prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0]
-			prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0].split(" ")[1]
+		elif message.author.id == 816699167824281621:
+			if message.channel.id == 851663580620521472:
+				donor_id = re.findall("\<\@(.*?)\>", message.content)[0]
+				user = message.guild.get_member(int(donor_id))
+				og_prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0]
+				prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0].split(" ")[1]
 
-			logg = discord.Embed(
-				title="__Invalid Amount!__",
-				description=
-				f'` - `   **Donated:** **{og_prize}**\n'
-				f"` - `   **Donated on:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow()))}>\n"
-				f'` - `   **Donated by:** {user.mention}(`{user.id}`)\n',
-				colour=discord.Color.random()
-			)
+				logg = discord.Embed(
+					title="__Invalid Amount!__",
+					description=
+					f'` - `   **Donated:** **{og_prize}**\n'
+					f"` - `   **Donated on:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow()))}>\n"
+					f'` - `   **Donated by:** {user.mention}(`{user.id}`)\n',
+					colour=discord.Color.random()
+				)
 
-			logg.set_footer(
-				text=f"Reach out to grinder managers to fix this!", icon_url=user.avatar_url)
+				logg.set_footer(
+					text=f"Reach out to grinder managers to fix this!", icon_url=user.avatar_url)
 
-			try:
-				amount = await convert_to_numeral(prize)
-				amount = await calculate(amount)
-			except:
-				msg = await message.channel.fetch_message(message.reference.message_id)
-				await message.delete()
-				return await msg.reply(content= f"{user.mention}", embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
-			
-			
-			legendary = gk.get_role(806804472700600400)
-			epic = gk.get_role(835866393458901033)
-			ordinary = gk.get_role(835866409992716289)
-			lazy = gk.get_role(835889385390997545)
+				try:
+					amount = await convert_to_numeral(prize)
+					amount = await calculate(amount)
+				except:
+					msg = await message.channel.fetch_message(message.reference.message_id)
+					await message.delete()
+					return await msg.reply(content= f"{user.mention}", embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
+				
+				
+				legendary = gk.get_role(806804472700600400)
+				epic = gk.get_role(835866393458901033)
+				ordinary = gk.get_role(835866409992716289)
+				lazy = gk.get_role(835889385390997545)
 
-			amount_per_grind = 0
-			if legendary in user.roles:
-				amount_per_grind = 4e6
-			elif epic in user.roles:
-				amount_per_grind = 3e6
-			elif ordinary in user.roles:
-				amount_per_grind = 2e6
-			elif lazy in user.roles:
-				amount_per_grind = 1e6
+				amount_per_grind = 0
+				if legendary in user.roles:
+					amount_per_grind = 4e6
+				elif epic in user.roles:
+					amount_per_grind = 3e6
+				elif ordinary in user.roles:
+					amount_per_grind = 2e6
+				elif lazy in user.roles:
+					amount_per_grind = 1e6
 
-			if amount % amount_per_grind != 0:
-				msg = await message.channel.fetch_message(message.reference.message_id)
-				await message.delete()
-				return await msg.reply(content= f"{user.mention}", embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
-			else:
-				number = int(amount/amount_per_grind)
-			
-			ctx = await self.bot.get_context(message)
-			await ctx.invoke(self.bot.get_command("gu"), member=user, number=number)
+				if amount % amount_per_grind != 0:
+					msg = await message.channel.fetch_message(message.reference.message_id)
+					await message.delete()
+					return await msg.reply(content= f"{user.mention}", embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
+				else:
+					number = int(amount/amount_per_grind)
+				
+				ctx = await self.bot.get_context(message)
+				await ctx.invoke(self.bot.get_command("gu"), member=user, number=number)
+			elif message.channel.id == 812711254790897714:
+				donor_id = re.findall("\<\@(.*?)\>", message.content)[0]
+				user = message.guild.get_member(int(donor_id))
+				og_prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0]
+				prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0].split(" ")[1]
 
+				try:
+					amount = await convert_to_numeral(prize)
+					amount = await calculate(amount)
+				except:
+					number_of_items = int(og_prize.split(" ")[0][:-1])
+					item_name = " ".join(og_prize.split(" ")[1:])
+					item_prize = int((await self.bot.dankItems.find(item_name))['price'])
+					amount = round(number_of_items * item_prize * 1.2)
+
+				try:
+					ctx = await self.bot.get_context(message)
+					await ctx.invoke(self.bot.get_command("dono a"), member=user, amount=str(amount), sendMessage=True)
+					msg = await message.channel.fetch_message(message.reference.message_id)
+					await msg.add_reaction("<a:nat_check:1010969401379536958>")
+				except:
+					msg = await message.channel.fetch_message(message.reference.message_id)
+					await msg.add_reaction("<a:nat_cross:1010969491347357717>")
 
 		word_list = ['vote link','how to get vote role', 'how to vote', 'pls vote', 'how to vote for server', 'link to vote']
 		if message.author.bot:
