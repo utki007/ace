@@ -39,6 +39,8 @@ class Events(commands.Cog):
 	
 	@commands.Cog.listener()
 	async def on_raw_reaction_add(self, payload):
+		if self.bot.user.id == 859107514082394142:
+			return
 		member = payload.member
 		if member is None:
 			member = await self.bot.fetch_user(payload.user_id)
@@ -87,6 +89,8 @@ class Events(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_raw_reaction_remove(self, payload):
+		if self.bot.user.id == 859107514082394142:
+			return
 		member = payload.member
 		guild = self.bot.get_guild(payload.guild_id)
 		channel = guild.get_channel(payload.channel_id)
@@ -158,7 +162,9 @@ class Events(commands.Cog):
 			await ctx.send(embed=embed)
 	
 	@tasks.loop(seconds=300)
-	async def change_status(self):      
+	async def change_status(self):
+		if self.bot.user.id == 859107514082394142:
+			return   
 		guild = self.bot.get_guild(785839283847954433)
 		members = guild.members
 		count = 0
@@ -172,6 +178,8 @@ class Events(commands.Cog):
 
 	@tasks.loop(seconds=28800)
 	async def randomrole(self):
+		if self.bot.user.id == 859107514082394142:
+			return
 		gk = self.bot.get_guild(785839283847954433)
 		random_colour = gk.get_role(954448411191554088)
 		robot = gk.get_role(810153515610537994)
@@ -184,6 +192,8 @@ class Events(commands.Cog):
 	
 	@tasks.loop(seconds=43200)
 	async def category_roles(self):
+		if self.bot.user.id == 859107514082394142:
+			return
 		gk = self.bot.get_guild(785839283847954433)
 		gaw = gk.get_role(796456989134684190)
 		event = gk.get_role(948276283018719233)
