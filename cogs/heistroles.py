@@ -275,8 +275,8 @@ class heistroles(commands.Cog):
 				content = content.replace(emoji,"",100)
 			content = content.replace("<>","",100)
 			content = content.replace("<a>","",100)
-			await aceFeed.send(content = content)
-			await user.send(content = content)
+			await aceFeed.send(content = content, allowed_mentions=discord.AllowedMentions.none())
+			await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
 
 		#for acefeed
 		elif message.channel.id == 947525898100412417:
@@ -292,8 +292,8 @@ class heistroles(commands.Cog):
 				await aceFeed.send(content=message.content,embed = embed.from_dict(dict))
 				await user.send(content=message.content,embed = embed.from_dict(dict))
 			else:
-				await aceFeed.send(content = message.content)
-				await user.send(content = message.content)
+				await aceFeed.send(content = message.content, allowed_mentions=discord.AllowedMentions.none())
+				await user.send(content = message.content, allowed_mentions=discord.AllowedMentions.none())
 
 		# for banner
 		elif message.channel.id == 1004666846894624778:
