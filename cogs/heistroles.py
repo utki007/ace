@@ -61,7 +61,7 @@ class heistroles(commands.Cog):
 		if message.author.id in [693167035068317736, 675996677366218774] and message.channel.category.id in [946994017210621972,935537766576582716,825581377592098837] and len(message.embeds) > 0 :
 			embed = message.embeds[0]
 			if embed.title is not None and "WINNER!".lower() in embed.title.lower()  and len(message.mentions) == 1:
-				if message.channel.category.id in [946994017210621972, 825581377592098837, 935537766576582716]:
+				if message.channel.category.id in [946994017210621972, 825581377592098837, 935537766576582716, 821747325818372146]:
 					await message.channel.edit(sync_permissions=True)
 				content = f"` - `   **Want us to host more pog events?**\n\n"
 				content += f"<:tgk_redarrow:1005361235715424296>   Use <#992646623639384154> to sponsor \n"
@@ -667,11 +667,9 @@ class heistroles(commands.Cog):
 				await ctx.defer(hidden=True)
 				valo = discord.utils.get(ctx.guild.roles, id=795711130378829835)
 				if valo in ctx.author.roles:
-					await ctx.author.remove_roles(valo)
-					await ctx.send(f"The role {valo.mention} has been removed from you.", hidden=True)
+					await ctx.send(f"Take your **valorant role** from `server settings > linked roles > choose valorant`!", hidden=True)
 				else:
-					await ctx.author.add_roles(valo)
-					await ctx.send(f"The role {valo.mention} has been added to you.", hidden=True)
+					await ctx.send(f"Take your **valorant role** from `server settings > linked roles > choose valorant`!", hidden=True)
 					
 			elif ctx.custom_id == "reaction:bgmi":
 				await ctx.defer(hidden=True)
