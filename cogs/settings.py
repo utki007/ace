@@ -175,7 +175,7 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 			color = ctx.author.color
 		)
 		embed.set_thumbnail(url=member.avatar_url)
-		embed.set_footer(text=f'Wish {member.name} a happy birthday with a ping to get role. Aliases: hbd, happy birthday. Bot reaction verifes that role has been added.')
+		embed.set_footer(text=f'Wish {member.name} a happy birthday with a ping to get role. Bot reaction verifes that role has been added.')
 		wish_embed = await wish_here.send(embed=embed, allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
 		await ctx.send(f"**Birthday event configured for {member.name}: {role.mention} in {wish_here.mention}**", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
 		
