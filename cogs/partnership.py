@@ -105,7 +105,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		# for logging
 		logg = discord.Embed(
 			title="__Partner Logging__",
-			description=f'{self.bot.emojis_list["SuccessTick"]} |<@{member}>\'s (`{member}`) is now removed!!!',
+			description=f'{self.bot.emojis_list["SuccessTick"]} | Removed partnership data for <@{member}>\'s (`{member}`)!',
 			colour=self.bot.colors["Success"],
 			timestamp=datetime.datetime.utcnow()
 		)
