@@ -714,14 +714,14 @@ class giveaway(commands.Cog):
 		roles = []
 
 		if blacklist_type == 'gaw':
-			await user.add_roles(gaw)
-			roles.append(gaw, reason= f'Blacklisted by {ctx.author.name}!')
+			await user.add_roles(gaw, reason= f'Blacklisted by {ctx.author.name}!')
+			roles.append(gaw)
 		elif blacklist_type == 'event':
-			await user.add_roles(event)
-			roles.append(event, reason= f'Blacklisted by {ctx.author.name}!')
+			await user.add_roles(event, reason= f'Blacklisted by {ctx.author.name}!')
+			roles.append(event)
 		elif blacklist_type == 'grinder':
-			await user.add_roles(grinder)
-			roles.append(grinder, reason= f'Blacklisted by {ctx.author.name}!')
+			await user.add_roles(grinder, reason= f'Blacklisted by {ctx.author.name}!')
+			roles.append(grinder)
 		elif blacklist_type == 'all':
 			roles = [gaw, event, grinder, bot]
 			await user.add_roles(*roles, reason= f'Blacklisted by {ctx.author.name}!')
