@@ -127,8 +127,8 @@ async def on_ready():
 if os.path.exists(os.getcwd()+"./properties/tokens.json"):
 	with open("./properties/tokens.json") as f:
 		configData = json.load(f)
-	bot.botToken = configData["token"]
-	bot.connection_url = configData["mongo"]
+	bot.botToken = configData["BOT_TOKEN_JACKY"]
+	bot.connection_url = configData["MongoConnectionUrl"]
 	bot.connection_url2 = configData["dankHelper"]
 	bot.amari = configData["amari"]
 else:
