@@ -278,11 +278,14 @@ if __name__ == "__main__":
 	bot.freeloaders = Document(bot.db, "freeloaders")
 	bot.sticky = Document(bot.db, "sticky")
 	bot.blacklistUser = Document(bot.db, "blacklistUser")
+	bot.tempban = Document(bot.db, "tempban")
 
 	# for OCTANE DB
 	bot.octane = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url2))
 	bot.db2 = bot.octane["Dank_Data"]
+	bot.db3 = bot.octane["Database"]
 	bot.dankItems = Document(bot.db2, "Item prices")
+	bot.ranks = Document(bot.db2, "ranks")
 
 	for file in os.listdir('./cogs'):
 		if file.endswith(".py") and not file.startswith("_") and not file.startswith('test'):
