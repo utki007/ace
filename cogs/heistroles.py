@@ -257,9 +257,11 @@ class heistroles(commands.Cog):
 				except:
 					print("Error in partner heist channel")
 
+			if 'to not get pinged here!' in message.content:
+				return
 			aceFeed = gk.get_channel(944490857111896064)
 			user = self.bot.get_user(301657045248114690)
-			content = message.content
+			content = f"\n".join(message.content.split("\n")[:-1])
 			emojis = list(set(re.findall(":\w*:\d*", content )))
 			emoji_only = []
 			for emoji in emojis:
