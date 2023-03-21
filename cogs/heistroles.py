@@ -256,11 +256,7 @@ class heistroles(commands.Cog):
 					)
 				except:
 					print("Error in partner heist channel")
-		
-		# for acefeed
-		elif message.channel.id == 947525172049621023:
-			
-			gk = self.bot.get_guild(785839283847954433)
+
 			aceFeed = gk.get_channel(944490857111896064)
 			user = self.bot.get_user(301657045248114690)
 			content = message.content
@@ -275,8 +271,36 @@ class heistroles(commands.Cog):
 				content = content.replace(emoji,"",100)
 			content = content.replace("<>","",100)
 			content = content.replace("<a>","",100)
-			await aceFeed.send(content = content, allowed_mentions=discord.AllowedMentions.none())
-			await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
+			
+			content_to_check = (message.content.split("\n")[0])
+			messages = [message async for message in aceFeed.history(limit=20) if content_to_check in message.content]
+			if len(messages) == 0:
+				await aceFeed.send(content = content, allowed_mentions=discord.AllowedMentions.none())
+				await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
+
+		# for acefeed
+		elif message.channel.id == 947525172049621023:
+			
+			aceFeed = gk.get_channel(944490857111896064)
+			user = self.bot.get_user(301657045248114690)
+			content = message.content
+			emojis = list(set(re.findall(":\w*:\d*", content )))
+			emoji_only = []
+			for emoji in emojis:
+				k = emoji.replace(":","",2)
+				if k.isdigit() == False:
+					if k.lower() != "https":
+						emoji_only.append(emoji)
+			for emoji in emoji_only:
+				content = content.replace(emoji,"",100)
+			content = content.replace("<>","",100)
+			content = content.replace("<a>","",100)
+			
+			content_to_check = (message.content.split("\n")[0])
+			messages = [message async for message in aceFeed.history(limit=20) if content_to_check in message.content]
+			if len(messages) == 0:
+				await aceFeed.send(content = content, allowed_mentions=discord.AllowedMentions.none())
+				await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
 
 		#for acefeed
 		elif message.channel.id == 947525898100412417:
