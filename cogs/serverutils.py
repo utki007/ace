@@ -378,7 +378,26 @@ class serverutils(commands.Cog, description="Server Utility"):
 
 		await ctx.channel.send(embed = embed)
 		await ctx.send(f"<a:okie:932576089618931772>", hidden=True)
-		
+
+	@commands.command(name="kaiji", description="Verify Kaiji Members")
+	async def kaij(self, ctx, member: discord.Member):
+		gk = self.bot.get_guild(785839283847954433)
+		role = discord.utils.get(gk.roles, id=1069540530154897438)
+
+		if role not in member.roles:
+			await member.add_roles(role, reason=f'Approved by {ctx.author} ({ctx.author.id})')
+			success_embed = discord.Embed(
+				color=0x43b581,
+				description=f'<a:nat_check:1010969401379536958> **|** {member.mention} has been given the {role.mention} role!'
+			)
+			return await ctx.send(embed=success_embed)
+		else:
+			error_embed = discord.Embed(
+				color=0xDA2A2A,
+				description=f"<a:nat_cross:1010969491347357717> **|** {member.mention} already has the {role.mention} role!"
+			)
+			return await ctx.send(embed=error_embed)
+
 	# @commands.command(name="hbd", description="Wish Happy Birthday")
 	# async def hbd(self, ctx, *, message: str = None):
 	# 	await ctx.message.delete()
