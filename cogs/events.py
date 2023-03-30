@@ -37,97 +37,97 @@ class Events(commands.Cog):
 		self.randomrole.cancel()
 		self.category_roles.cancel()
 	
-	@commands.Cog.listener()
-	async def on_raw_reaction_add(self, payload):
-		if self.bot.user.id == 859107514082394142:
-			return
-		member = payload.member
-		if member is None:
-			member = await self.bot.fetch_user(payload.user_id)
-		if member.bot:
-			return
-		guild = self.bot.get_guild(payload.guild_id)
-		channel = guild.get_channel(payload.channel_id)
-		message = await channel.fetch_message(payload.message_id)
-		event_type = payload.event_type
-		emoji = payload.emoji
-		if emoji.is_unicode_emoji():
-			emoj_desc = emoji.name
+	# @commands.Cog.listener()
+	# async def on_raw_reaction_add(self, payload):
+	# 	if self.bot.user.id == 859107514082394142:
+	# 		return
+	# 	member = payload.member
+	# 	if member is None:
+	# 		member = await self.bot.fetch_user(payload.user_id)
+	# 	if member.bot:
+	# 		return
+	# 	guild = self.bot.get_guild(payload.guild_id)
+	# 	channel = guild.get_channel(payload.channel_id)
+	# 	message = await channel.fetch_message(payload.message_id)
+	# 	event_type = payload.event_type
+	# 	emoji = payload.emoji
+	# 	if emoji.is_unicode_emoji():
+	# 		emoj_desc = emoji.name
 
-			# get url for unicode emoji
-			emojiUnicode = emoji.name.encode('unicode-escape').decode('ascii')
-			emojiNumber = emojiUnicode.lower().replace('\\u', '').lstrip('0')
-			emoji_url = f'https://twitter.github.io/twemoji/v/13.1.0/72x72/{emojiNumber}.png'
-		else:
-			emoj_desc = f'{emoji.name}'
-			emoji_url = emoji.url
+	# 		# get url for unicode emoji
+	# 		emojiUnicode = emoji.name.encode('unicode-escape').decode('ascii')
+	# 		emojiNumber = emojiUnicode.lower().replace('\\u', '').lstrip('0')
+	# 		emoji_url = f'https://twitter.github.io/twemoji/v/13.1.0/72x72/{emojiNumber}.png'
+	# 	else:
+	# 		emoj_desc = f'{emoji.name}'
+	# 		emoji_url = emoji.url
 		
-		reacts = 0
-		for reaction in message.reactions:
-			reacts += reaction.count
+	# 	reacts = 0
+	# 	for reaction in message.reactions:
+	# 		reacts += reaction.count
 
-		display = discord.Embed(
-			colour = discord.Colour.random(),
-			timestamp = datetime.datetime.utcnow()
-		)
-		display.set_author(name=f'{member.name}#{member.discriminator} ({member.id})', icon_url=member.avatar_url)
-		display.add_field(name="Channel:",value=f'{channel.mention} (`#{channel.name}`)',inline=True)
-		display.add_field(name="Emoji:",value=f'{emoji.name}',inline=True)
-		if reacts > 10:
-			display.add_field(name="Total Reacts:",value=f'{reacts}',inline=True)
-		display.set_footer(text=f"Message ID: {message.id} • {event_type}", icon_url=guild.icon_url)
-		display.set_thumbnail(url=emoji_url)
+	# 	display = discord.Embed(
+	# 		colour = discord.Colour.random(),
+	# 		timestamp = datetime.datetime.utcnow()
+	# 	)
+	# 	display.set_author(name=f'{member.name}#{member.discriminator} ({member.id})', icon_url=member.avatar_url)
+	# 	display.add_field(name="Channel:",value=f'{channel.mention} (`#{channel.name}`)',inline=True)
+	# 	display.add_field(name="Emoji:",value=f'{emoji.name}',inline=True)
+	# 	if reacts > 10:
+	# 		display.add_field(name="Total Reacts:",value=f'{reacts}',inline=True)
+	# 	display.set_footer(text=f"Message ID: {message.id} • {event_type}", icon_url=guild.icon_url)
+	# 	display.set_thumbnail(url=emoji_url)
 
-		dev_server = self.bot.get_guild(999551299286732871)
-		server_emoji = await dev_server.fetch_emoji(1048598237612867584)
-		buttons = [
-			create_button(style=ButtonStyle.URL, label="Jump to Message!", emoji=server_emoji, disabled=False, url=message.jump_url)
-		]
+	# 	dev_server = self.bot.get_guild(999551299286732871)
+	# 	server_emoji = await dev_server.fetch_emoji(1048598237612867584)
+	# 	buttons = [
+	# 		create_button(style=ButtonStyle.URL, label="Jump to Message!", emoji=server_emoji, disabled=False, url=message.jump_url)
+	# 	]
 
-		logs_channel = self.bot.get_channel(1084370271944835132)
-		await logs_channel.send(embed=display, components=[create_actionrow(*buttons)])
+	# 	logs_channel = self.bot.get_channel(1084370271944835132)
+	# 	await logs_channel.send(embed=display, components=[create_actionrow(*buttons)])
 
-	@commands.Cog.listener()
-	async def on_raw_reaction_remove(self, payload):
-		if self.bot.user.id == 859107514082394142:
-			return
-		member = payload.member
-		guild = self.bot.get_guild(payload.guild_id)
-		channel = guild.get_channel(payload.channel_id)
-		if member is None:
-			member = await guild.fetch_member(payload.user_id)
-		message = await channel.fetch_message(payload.message_id)
-		event_type = payload.event_type
-		emoji = payload.emoji
-		if emoji.is_unicode_emoji():
-			emoj_desc = emoji.name
+	# @commands.Cog.listener()
+	# async def on_raw_reaction_remove(self, payload):
+	# 	if self.bot.user.id == 859107514082394142:
+	# 		return
+	# 	member = payload.member
+	# 	guild = self.bot.get_guild(payload.guild_id)
+	# 	channel = guild.get_channel(payload.channel_id)
+	# 	if member is None:
+	# 		member = await guild.fetch_member(payload.user_id)
+	# 	message = await channel.fetch_message(payload.message_id)
+	# 	event_type = payload.event_type
+	# 	emoji = payload.emoji
+	# 	if emoji.is_unicode_emoji():
+	# 		emoj_desc = emoji.name
 
-			# get url for unicode emoji
-			emojiUnicode = emoji.name.encode('unicode-escape').decode('ascii')
-			emojiNumber = emojiUnicode.lower().replace('\\u', '').lstrip('0')
-			emoji_url = f'https://twitter.github.io/twemoji/v/13.1.0/72x72/{emojiNumber}.png'
-		else:
-			emoj_desc = f'{emoji.name} (`{emoji.id}`)'
-			emoji_url = emoji.url
+	# 		# get url for unicode emoji
+	# 		emojiUnicode = emoji.name.encode('unicode-escape').decode('ascii')
+	# 		emojiNumber = emojiUnicode.lower().replace('\\u', '').lstrip('0')
+	# 		emoji_url = f'https://twitter.github.io/twemoji/v/13.1.0/72x72/{emojiNumber}.png'
+	# 	else:
+	# 		emoj_desc = f'{emoji.name} (`{emoji.id}`)'
+	# 		emoji_url = emoji.url
 
-		display = discord.Embed(
-			colour = discord.Colour.random(),
-			timestamp = datetime.datetime.utcnow()
-		)
-		display.set_author(name=f'{member.name}#{member.discriminator} ({member.id})', icon_url=member.avatar_url)
-		display.add_field(name="Channel:",value=f'{channel.mention} (`#{channel.name}`)',inline=True)
-		display.add_field(name="Emoji:",value=f'{emoji.name}',inline=True)
-		display.set_footer(text=f"Message ID: {message.id} • {event_type}", icon_url=guild.icon_url)
-		display.set_thumbnail(url=emoji_url)
+	# 	display = discord.Embed(
+	# 		colour = discord.Colour.random(),
+	# 		timestamp = datetime.datetime.utcnow()
+	# 	)
+	# 	display.set_author(name=f'{member.name}#{member.discriminator} ({member.id})', icon_url=member.avatar_url)
+	# 	display.add_field(name="Channel:",value=f'{channel.mention} (`#{channel.name}`)',inline=True)
+	# 	display.add_field(name="Emoji:",value=f'{emoji.name}',inline=True)
+	# 	display.set_footer(text=f"Message ID: {message.id} • {event_type}", icon_url=guild.icon_url)
+	# 	display.set_thumbnail(url=emoji_url)
 
-		dev_server = self.bot.get_guild(999551299286732871)
-		server_emoji = await dev_server.fetch_emoji(1048598237612867584)
-		buttons = [
-			create_button(style=ButtonStyle.URL, label="Jump to Message!", emoji=server_emoji, disabled=False, url=message.jump_url)
-		]
+	# 	dev_server = self.bot.get_guild(999551299286732871)
+	# 	server_emoji = await dev_server.fetch_emoji(1048598237612867584)
+	# 	buttons = [
+	# 		create_button(style=ButtonStyle.URL, label="Jump to Message!", emoji=server_emoji, disabled=False, url=message.jump_url)
+	# 	]
 
-		logs_channel = self.bot.get_channel(1084370271944835132)
-		await logs_channel.send(embed=display, components=[create_actionrow(*buttons)])
+	# 	logs_channel = self.bot.get_channel(1084370271944835132)
+	# 	await logs_channel.send(embed=display, components=[create_actionrow(*buttons)])
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
