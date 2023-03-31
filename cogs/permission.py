@@ -95,7 +95,7 @@ class Permission(commands.Cog):
         embed.add_field(name="Disabed?:", value=cmd_data['disable'], inline=False)
         await ctx.send(embed=embed)
     
-    @commands.command(name="toggle", description="Enable or disable a command!")
+    @permission.command(name="toggle", description="Enable or disable a command!", aliases=['enable', 'disable'])
     @is_me()
     async def toggle(self, ctx, *, command):
         command = self.bot.get_command(command)
