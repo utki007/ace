@@ -211,7 +211,7 @@ class Events(commands.Cog):
 		contributor_category = gk.get_role(810400653490257942)
 
 		members = gk.members
-
+ 
 		for member in members:
 			roles = member.roles
 			flag = False
