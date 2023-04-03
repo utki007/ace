@@ -11,6 +11,10 @@ from utils.Checks import CommandDisableByDev
 from pytz import timezone 
 import datetime
 
+utc = datetime.timezone.utc
+daily_time =  datetime.time(hour=0, tzinfo=utc)
+grinder_time =  datetime.time(hour=5, tzinfo=utc)
+
 class Events(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
@@ -21,16 +25,9 @@ class Events(commands.Cog):
 		print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 		await asyncio.sleep(3)
 		self.change_status.start()
+		self.category_roles.start()
 		await asyncio.sleep(300)
 		self.randomrole.start()
-		await asyncio.sleep(300)
-		self.category_roles.start()
-		
-		# work channel
-		self.work = 848470871307190273
-		self.heist_grinders = 846699725705314345
-		self.heist_scout = 846766444695650345
-		self.heist_ad = 840231915100569650
 		
 	def cog_unload(self):
 		self.change_status.cancel()
@@ -161,7 +158,7 @@ class Events(commands.Cog):
 				description=f"<:tgk_warning:840638147838738432> | Error: `{error}`")
 			await ctx.send(embed=embed)
 	
-	@tasks.loop(seconds=300)
+	@tasks.loop(seconds=600)
 	async def change_status(self):
 		if self.bot.user.id == 859107514082394142:
 			return   
@@ -172,7 +169,7 @@ class Events(commands.Cog):
 			if i.bot:
 				count = count + 1
 		
-		member = guild.member_count - count
+		member = guild.member_count  
 		activity = str(member) + " members!" 
 		await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=activity),status= discord.Status.dnd)
 
@@ -190,29 +187,53 @@ class Events(commands.Cog):
 		color = discord.Color.random()
 		await robot.edit(colour=color)
 	
-	@tasks.loop(seconds=43200)
+	@tasks.loop(time=daily_time)
 	async def category_roles(self):
+		
 		if self.bot.user.id == 859107514082394142:
 			return
+		
 		gk = self.bot.get_guild(785839283847954433)
-		gaw = gk.get_role(796456989134684190)
-		event = gk.get_role(948276283018719233)
-		grinder = gk.get_role(1066685416796864612)
-		bot = gk.get_role(785977682944851968)
+		gaw_ban = gk.get_role(796456989134684190)
+		event_ban = gk.get_role(948276283018719233)
+		grinder_ban = gk.get_role(1066685416796864612)
+		bot_ban = gk.get_role(785977682944851968)
 		ban_divider = gk.get_role(990128728250155019)
+
+		double_booster = gk.get_role(803614652989702194)
+		booster = gk.get_role(786477872029892639)
+		investor = gk.get_role(836551065733431348)
+		grinder = gk.get_role(836228842397106176)
+		trial_grinder = gk.get_role(932149422719107102)
+		contributor_category = gk.get_role(810400653490257942)
 
 		members = gk.members
 
 		for member in members:
 			roles = member.roles
+			flag = False
+			# for giving ban category role
 			if ban_divider in roles:
-				if (gaw or event or grinder or bot) not in roles:
-					await member.remove_roles(ban_divider)
-					continue
+				if (gaw_ban or event_ban or grinder_ban or bot_ban) not in roles:
+					await member.remove_roles(ban_divider, reason="Removing ban category role")
+					flag = True
 			else:
-				if (gaw or event or grinder or bot) in roles:
-					await member.add_roles(ban_divider)
-					continue
+				if (gaw_ban or event_ban or grinder_ban or bot_ban) in roles:
+					await member.add_roles(ban_divider, reason="Adding ban category role")
+					flag = True
+			
+			# for giving contributor category role
+			if contributor_category in roles:
+				if (double_booster or booster or investor or grinder or trial_grinder) not in roles:
+					await member.remove_roles(contributor_category, reason="Removing contributor category role")
+					flag = True
+			else:
+				if (double_booster or booster or investor or grinder or trial_grinder) in roles:
+					await member.add_roles(contributor_category, reason="Adding contributor category role")
+					flag = True
+			
+			if flag:
+				await asyncio.sleep(0.5)
 
 def setup(bot):
 	bot.add_cog(Events(bot)) 
