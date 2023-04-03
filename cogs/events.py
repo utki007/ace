@@ -213,23 +213,23 @@ class Events(commands.Cog):
 			roles = member.roles
 			flag = False
 			# for giving ban category role
-			if ban_divider in roles:
-				if (gaw_ban or event_ban or grinder_ban or bot_ban) not in roles:
-					await member.remove_roles(ban_divider, reason="Removing ban category role")
-					flag = True
-			else:
+			if ban_divider not in roles:
 				if (gaw_ban or event_ban or grinder_ban or bot_ban) in roles:
 					await member.add_roles(ban_divider, reason="Adding ban category role")
 					flag = True
+			else:
+				if (gaw_ban or event_ban or grinder_ban or bot_ban) not in roles:
+					await member.remove_roles(ban_divider, reason="Removing ban category role")
+					flag = True
 			
 			# for giving contributor category role
-			if contributor_category in roles:
-				if (double_booster or booster or investor or grinder or trial_grinder) not in roles:
-					await member.remove_roles(contributor_category, reason="Removing contributor category role")
-					flag = True
-			else:
+			if contributor_category not in roles:
 				if (double_booster or booster or investor or grinder or trial_grinder) in roles:
 					await member.add_roles(contributor_category, reason="Adding contributor category role")
+					flag = True
+			else:
+				if (double_booster or booster or investor or grinder or trial_grinder) not in roles:
+					await member.remove_roles(contributor_category, reason="Removing contributor category role")
 					flag = True
 			
 			if flag:
