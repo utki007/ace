@@ -11,10 +11,6 @@ from utils.Checks import CommandDisableByDev
 from pytz import timezone 
 import datetime
 
-utc = datetime.timezone.utc
-daily_time =  datetime.time(hour=0, tzinfo=utc)
-grinder_time =  datetime.time(hour=5, tzinfo=utc)
-
 class Events(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
@@ -25,9 +21,16 @@ class Events(commands.Cog):
 		print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 		await asyncio.sleep(3)
 		self.change_status.start()
-		self.category_roles.start()
 		await asyncio.sleep(300)
 		self.randomrole.start()
+		await asyncio.sleep(300)
+		self.category_roles.start()
+		
+		# work channel
+		self.work = 848470871307190273
+		self.heist_grinders = 846699725705314345
+		self.heist_scout = 846766444695650345
+		self.heist_ad = 840231915100569650
 		
 	def cog_unload(self):
 		self.change_status.cancel()
@@ -158,7 +161,7 @@ class Events(commands.Cog):
 				description=f"<:tgk_warning:840638147838738432> | Error: `{error}`")
 			await ctx.send(embed=embed)
 	
-	@tasks.loop(seconds=600)
+	@tasks.loop(seconds=300)
 	async def change_status(self):
 		if self.bot.user.id == 859107514082394142:
 			return   
@@ -169,7 +172,7 @@ class Events(commands.Cog):
 			if i.bot:
 				count = count + 1
 		
-		member = guild.member_count  
+		member = guild.member_count - count
 		activity = str(member) + " members!" 
 		await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=activity),status= discord.Status.dnd)
 
@@ -187,7 +190,7 @@ class Events(commands.Cog):
 		color = discord.Color.random()
 		await robot.edit(colour=color)
 	
-	@tasks.loop(time=daily_time)
+	@tasks.loop(seconds=43200)
 	async def category_roles(self):
 		
 		if self.bot.user.id == 859107514082394142:
