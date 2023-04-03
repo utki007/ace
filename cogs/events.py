@@ -187,7 +187,7 @@ class Events(commands.Cog):
 		color = discord.Color.random()
 		await robot.edit(colour=color)
 	
-	@tasks.loop(seconds=300)
+	@tasks.loop(seconds=28800)
 	async def category_roles(self):
 		
 		if self.bot.user.id == 859107514082394142:
@@ -214,24 +214,23 @@ class Events(commands.Cog):
 			flag = False
 			# for giving ban category role
 			if ban_divider not in roles:
-				if (gaw_ban or event_ban or grinder_ban or bot_ban) in roles:
+				if gaw_ban in roles or event_ban in roles or grinder_ban in roles or bot_ban in roles:
 					await member.add_roles(ban_divider, reason="Adding ban category role")
 					flag = True
 			else:
-				if (gaw_ban or event_ban or grinder_ban or bot_ban) not in roles:
+				if gaw_ban not in roles and event_ban not in roles and grinder_ban not in roles and bot_ban not in roles:
 					await member.remove_roles(ban_divider, reason="Removing ban category role")
 					flag = True
 			
 			# for giving contributor category role
 			if contributor_category not in roles:
-				if (double_booster or booster or investor or grinder or trial_grinder) in roles:
+				if double_booster in roles or booster in roles or investor in roles or grinder in roles or trial_grinder in roles:
 					await member.add_roles(contributor_category, reason="Adding contributor category role")
 					flag = True
 			else:
-				if (double_booster or booster or investor or grinder or trial_grinder) not in roles:
+				if double_booster not in roles and booster not in roles and investor not in roles and grinder not in roles and trial_grinder not in roles:
 					await member.remove_roles(contributor_category, reason="Removing contributor category role")
 					flag = True
-			
 			if flag:
 				await asyncio.sleep(0.5)
 
