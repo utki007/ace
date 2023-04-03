@@ -19,11 +19,8 @@ class Events(commands.Cog):
 	@commands.Cog.listener()
 	async def on_ready(self):
 		print(f"{self.__class__.__name__} Cog has been loaded\n-----")
-		await asyncio.sleep(3)
 		self.change_status.start()
-		await asyncio.sleep(300)
 		self.randomrole.start()
-		await asyncio.sleep(300)
 		self.category_roles.start()
 		
 		# work channel
@@ -190,7 +187,7 @@ class Events(commands.Cog):
 		color = discord.Color.random()
 		await robot.edit(colour=color)
 	
-	@tasks.loop(seconds=43200)
+	@tasks.loop(seconds=300)
 	async def category_roles(self):
 		
 		if self.bot.user.id == 859107514082394142:
