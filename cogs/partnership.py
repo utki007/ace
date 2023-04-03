@@ -728,7 +728,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		options = [
 			create_option(name="user", description="Who will claim the deal?", required=True, option_type=6),
 			create_option(name="channel_name", description="What is the channnel name?", required=True, option_type=3),
-			create_option(name="role_ids", description="What roles can they ping?", required=True, option_type=3),
+			create_option(name="roles", description="What roles can they ping?", required=True, option_type=3),
 			create_option(name="deal_type", description="Partner deal is for hidden channel or unhidden?", choices=[
 				{
 					"name": "Hidden Channel (Recommended)",
@@ -741,20 +741,20 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			], required=True, option_type=3),
 		]
 	)
-	async def partneradd(self, ctx, user: discord.Member, channel_name, role_ids , deal_type):
+	async def partneradd(self, ctx, user: discord.Member, channel_name, roles , deal_type):
 		await ctx.defer(hidden=False)
 
 		# get pings
-		roleIds = [int(i) for i in role_ids.split(" ") if i != '' and i not in ["everyone", "here"]]
+		roleIds = [int(i.replace("<@&","").replace(">","")) for i in roles.split(" ") if i != '' and i not in ["everyone", "here"]]
 		roleIds = [discord.utils.get(ctx.guild.roles, id=i) for i in roleIds]
 		roleIds = [i for i in roleIds if i != None]
-		if len(roleIds) == 0 and "everyone" not in role_ids and "here" not in role_ids:
+		if len(roleIds) == 0 and "everyone" not in roles and "here" not in roles:
 			return await ctx.send(f"Invalid Role IDs!")
 		pings = " | ".join([i.mention for i in roleIds])
-		if "everyone" in role_ids:
+		if "everyone" in roles:
 			pings = "@everyone"
-		if "here" in role_ids:
-			pings = "@here "+pings
+		if "here" in roles:
+			pings = "@here |"+pings
 
 		channel_name = channel_name.replace("-"," ",100)
 		category = ctx.guild.get_channel(817049348977983506)
