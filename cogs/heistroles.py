@@ -71,6 +71,17 @@ class heistroles(commands.Cog):
 				content += f"\n https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif"
 				await message.channel.send(content = content)
 
+		if message.author.id == 808706062013825036 and message.content is not None:
+			content = message.content.lower()
+			if "the game is over" in content or "the game is now over" in content:
+				content = f"` - `   **Want us to host more pog events?**\n\n"
+				content += f"<:tgk_redarrow:1005361235715424296>   Use <#992646623639384154> to sponsor \n"
+				content += f"<:tgk_redarrow:1005361235715424296>   Refer to <#949699739081920593> to check events we can host\n"
+				content += f"<:tgk_redarrow:1005361235715424296>   Add <#1019832387615596544> if you got more ideas  \n "
+				content += f"||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| "
+				content += f"\n https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif"
+				await message.channel.send(content = content)
+
 		elif message.author.id == 693167035068317736 and message.channel.category.id == 1049228870886359050 and len(message.embeds) > 0:
 			sticky = await self.bot.sticky.find(message.channel.id)
 			if sticky is None:
