@@ -74,6 +74,8 @@ class heistroles(commands.Cog):
 		if message.author.id == 808706062013825036 and message.content is not None:
 			content = message.content.lower()
 			if "the game is over" in content or "the game is now over" in content:
+				if message.channel.category.id in [946994017210621972, 825581377592098837, 935537766576582716, 821747325818372146]:
+					await message.channel.edit(sync_permissions=True)
 				content = f"` - `   **Want us to host more pog events?**\n\n"
 				content += f"<:tgk_redarrow:1005361235715424296>   Use <#992646623639384154> to sponsor \n"
 				content += f"<:tgk_redarrow:1005361235715424296>   Refer to <#949699739081920593> to check events we can host\n"
