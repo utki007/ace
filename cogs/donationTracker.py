@@ -752,16 +752,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				next_role = [role for role in role_dict.keys() if int(role)*1e6 > event_bal][0]
 			except:
 				next_role = None
-				all_data = await self.bot.donorBank.get_all({}, {"event" : { "$elemMatch": { "name": name,"bal":{"$gte":0}} }})
-				df = pd.DataFrame(all_data)
-				df['event'] = df.event.apply(lambda x: x[0]['bal'])
-				top_3 = df.sort_values(by="event",ascending= False).head(3)
-				index = top_3.index[-1]
-				amount_to_next = df["event"][index] - event_bal
-				if amount_to_next < 0:
-					amount_to_next = 'Already Completed'
 			if next_role is not None:
-				amount_to_next = round(int(next_role)*1e6 - event_bal)
 				next_role = role_dict[next_role]
 			else:
 				next_role = ctx.guild.get_role(821052747268358184)
@@ -781,12 +772,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				display.add_field(name="Current Role:", value=f'` - `   **`Grind When?`**',inline=False)
 			
 			display.add_field(name="Next Role:", value=f'{next_role.mention}',inline=False)
-			if amount_to_next == 'Already Completed':
-				display.add_field(name="Amount left:", value=f'` - `   **`{amount_to_next}`**',inline=True)
-			elif amount_to_next <=0:
-				display.add_field(name="Amount left:", value=f'` - `   **`Already Completed`**',inline=True)
-			else:
-				display.add_field(name="Amount left:", value=f'⏣ {amount_to_next:,}',inline=True)
 			display.add_field(name="Amount Donated:", value=f"⏣ {round(amount):,}",inline=True)
 			display.add_field(name="Multiplier:", value=f"**{multiplier}x**",inline=True)
 			display.add_field(name="Amount Credited:", value=f"⏣ {round(multi_amount):,}",inline=True)
