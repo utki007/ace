@@ -478,6 +478,32 @@ class heistroles(commands.Cog):
 				except:
 					await msg.add_reaction("<a:nat_cross:1010969491347357717>")
 
+			elif message.channel.id == 1051387593318740009:
+					
+				donor_id = re.findall("\<\@(.*?)\>", message.content)[0]
+				user = message.guild.get_member(int(donor_id))
+				og_prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0]
+				prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0].split(" ")[1]
+
+				try:
+					amount = await convert_to_numeral(prize)
+					amount = await calculate(amount)
+					multiplier = 1.5
+				except:
+					number_of_items = int(og_prize.split(" ")[0][:-1])
+					item_name = " ".join(og_prize.split(" ")[1:])
+					item_prize = int((await self.bot.dankItems.find(item_name))['price'])
+					amount = round(number_of_items * item_prize * 1.2)
+					multiplier = 1.2
+
+				try:
+					ctx = await self.bot.get_context(message)
+					await ctx.invoke(self.bot.get_command('celeb a'), name="8k", member=user, amount=str(amount).replace("-","",1), multiplier = multiplier)
+					msg = await message.channel.fetch_message(message.reference.message_id)
+					await msg.add_reaction("<a:nat_check:1010969401379536958>")
+				except:
+					await msg.add_reaction("<a:nat_cross:1010969491347357717>")
+
 		word_list = ['vote link','how to get vote role', 'how to vote', 'pls vote', 'how to vote for server', 'link to vote']
 		if message.author.bot:
 			return
