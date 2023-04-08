@@ -57,7 +57,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		dict["name"] = user.name[0:15]
 		dict["bal"] = 0
 		dict["event"] = [{"name": "750", "bal": 0}, {"name": "1.5k", "bal": 0}, {
-			"name": "3k", "bal": 0}, {"name": "7k", "bal": 0}, {"name": "diwali", "bal": 0}, {"name": "2y", "bal": 0}]
+			"name": "3k", "bal": 0}, {"name": "7k", "bal": 0}, {"name": "diwali", "bal": 0}, {"name": "2y", "bal": 0}, {"name": "8k", "bal": 0}]
 		self.mycol.insert_one(dict)
 
 	@commands.group(name="donation", aliases=['dono'])
@@ -1527,11 +1527,11 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			create_option(name="amount", description='Use negative number like "-2k" to remove donation!', required=True, option_type=3),
 			create_option(name="donation_type", description="DMC donation or Item donation?", choices=[
 				{
-					"name": "DMC Donation (Calculates 2x automatically)",
+					"name": "DMC Donation (Calculates 1.5x automatically)",
 					"value": "dmc"
 				},
 				{
-					"name": "Item Donation (Calculates 1.5x automatically)",
+					"name": "Item Donation (Calculates 1.2x automatically)",
 					"value": "item"
 				}
 			], required=True, option_type=3)
@@ -1557,12 +1557,12 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			command = "celeb a"
 			action = "added"
 		if donation_type == "dmc":
-			multiplier = 2
-		else:
 			multiplier = 1.5
+		else:
+			multiplier = 1.2
 			
 			
-		await ctx1.invoke(self.bot.get_command(command), name="2y", member=user, amount=str(amount).replace("-","",1), multiplier = multiplier)
+		await ctx1.invoke(self.bot.get_command(command), name="8k", member=user, amount=str(amount).replace("-","",1), multiplier = multiplier)
 		await ctx.send(f"Successfully {action} ** ⏣ `{amount:,}** to {user.mention}'s celeb account with **{multiplier}x** multiplier!",hidden=True)
 
 
