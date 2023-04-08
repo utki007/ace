@@ -716,7 +716,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			res.append(req)
 			if req["bal"] != 0:
 				spldono = spldono + \
-					f'**{req["name"]} Spl.:**  ⏣ `{req["bal"]:,}` \n'
+					f'**{req["name"]} Spl.:**  ⏣ `{round(req["bal"]):,}` \n'
 				event_check = 1
 		spldono = spldono if event_check == 1 else "\n"
 
@@ -736,20 +736,65 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			return
 
 		# showing donor balance
-		display = discord.Embed(
-			title=f"<a:TGK_Pandaswag:830525027341565982>  __{member.name.upper()}'s Donation__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-			description=f"\n**Amount Credited to {name} Spl.: ** ⏣ {multi_amount:,}\n"
-						f"**Total Donation: ** ⏣ {dict[self.bal]:,} \n"
-						f"{spldono}\n"
-						f"**_Sanctioned By: _** {ctx.author.mention}\n"
-						f"**_𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧_** \n",
-			colour=0x78AB46,
-			timestamp=datetime.datetime.utcnow()
-		)
-		display.set_footer(text=f"Developed by utki007 & Jay",
-						   icon_url=ctx.guild.icon_url)
-		display.set_thumbnail(
-			url="https://cdn.discordapp.com/emojis/830519601384128523.gif?v=1")
+		data = await self.bot.donorBank.find(member.id)
+
+		if data is None:
+			display = discord.Embed(
+				title=f"{member.name}#{member.discriminator}'s {name} Stats",
+				colour= member.color,
+				description=f"` - `   You are not a donor yet! Support when?"
+			)
+			return await ctx.send(embed=display)
+		else:
+			event_bal = [event['bal'] for event in data['event'] if event['name'] == name][0]
+			role_dict = self.bot.event_8k
+			try:
+				next_role = [role for role in role_dict.keys() if int(role)*1e6 > event_bal][0]
+			except:
+				next_role = None
+				all_data = await self.bot.donorBank.get_all({}, {"event" : { "$elemMatch": { "name": name,"bal":{"$gte":0}} }})
+				df = pd.DataFrame(all_data)
+				df['event'] = df.event.apply(lambda x: x[0]['bal'])
+				top_3 = df.sort_values(by="event",ascending= False).head(3)
+				index = top_3.index[-1]
+				amount_to_next = df["event"][index] - event_bal
+				if amount_to_next < 0:
+					amount_to_next = 'Already Completed'
+			if next_role is not None:
+				amount_to_next = round(int(next_role)*1e6 - event_bal)
+				next_role = role_dict[next_role]
+			else:
+				next_role = ctx.guild.get_role(821052747268358184)
+			try:
+				current_role = role_dict[[role for role in role_dict.keys() if int(role)*1e6 <= event_bal][-1]]
+			except:
+				current_role = None
+						
+			display = discord.Embed(
+				title=f"{member.name}#{member.discriminator}'s {name} Celeb Stats",
+				colour= member.color,
+				timestamp=datetime.datetime.utcnow()
+			)
+			if current_role is not None:
+				display.add_field(name="Current Role:", value=f'{current_role.mention}',inline=False)
+			else:
+				display.add_field(name="Current Role:", value=f'` - `   **`Grind When?`**',inline=False)
+			
+			display.add_field(name="Next Role:", value=f'{next_role.mention}',inline=False)
+			if amount_to_next == 'Already Completed':
+				display.add_field(name="Amount left:", value=f'` - `   **`{amount_to_next}`**',inline=True)
+			elif amount_to_next <=0:
+				display.add_field(name="Amount left:", value=f'` - `   **`Already Completed`**',inline=True)
+			else:
+				display.add_field(name="Amount left:", value=f'⏣ {amount_to_next:,}',inline=True)
+			display.add_field(name="Amount Donated:", value=f"⏣ {round(amount):,}",inline=True)
+			display.add_field(name="Multiplier:", value=f"**{multiplier}x**",inline=True)
+			display.add_field(name="Amount Credited:", value=f"⏣ {round(multi_amount):,}",inline=True)
+			display.add_field(name=f"{name} Bank:",value=f"⏣ {round(event_bal):,}",inline=True)
+			display.add_field(name="Total Donation:",value=f"⏣ {round(data['bal']):,}",inline=True)
+			display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+			display.set_thumbnail(url=member.avatar_url)
+
 
 		dmMessage = discord.Embed(
 			title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK Donation Bank__  <a:TGK_Pandaswag:830525027341565982>\n\n",
@@ -1236,6 +1281,73 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			display.set_thumbnail(url=member.avatar_url)
 			return await ctx.send(embed=display)
 
+	@commands.command(name="event-check", aliases=['echeck', 'ec','edono'])
+	# @commands.check_any(checks.can_use(), checks.is_me())
+	async def echeck(self, ctx, member: discord.Member = None):
+		await ctx.message.delete()
+
+		event_name = '8k'
+
+		if not ctx.author.guild_permissions.manage_guild or member is None:
+			member = ctx.author
+		data = await self.bot.donorBank.find(member.id)
+
+		if data is None:
+			display = discord.Embed(
+				title=f"{member.name}#{member.discriminator}'s 8k Stats",
+				colour= member.color,
+				description=f"` - `   You are not a donor yet! Support when?"
+			)
+			return await ctx.send(embed=display)
+		else:
+			event_bal = [event['bal'] for event in data['event'] if event['name'] == event_name][0]
+			role_dict = self.bot.event_8k
+			try:
+				next_role = [role for role in role_dict.keys() if int(role)*1e6 > event_bal][0]
+			except:
+				next_role = None
+				all_data = await self.bot.donorBank.get_all({}, {"event" : { "$elemMatch": { "name": event_name,"bal":{"$gte":0}} }})
+				df = pd.DataFrame(all_data)
+				df['event'] = df.event.apply(lambda x: x[0]['bal'])
+				top_3 = df.sort_values(by="event",ascending= False).head(3)
+				index = top_3.index[-1]
+				amount_to_next = df["event"][index] - event_bal
+				if amount_to_next < 0:
+					amount_to_next = 'Already Completed'
+			if next_role is not None:
+				amount_to_next = round(int(next_role)*1e6 - event_bal)
+				next_role = role_dict[next_role]
+			else:
+				next_role = ctx.guild.get_role(821052747268358184)
+			try:
+				current_role = role_dict[[role for role in role_dict.keys() if int(role)*1e6 <= event_bal][-1]]
+			except:
+				current_role = None
+						
+			display = discord.Embed(
+				title=f"{member.name}#{member.discriminator}'s 8k Celeb Stats",
+				colour= member.color,
+				timestamp=datetime.datetime.utcnow()
+			)
+			if current_role is not None:
+				display.add_field(name="Current Role:", value=f'{current_role.mention}',inline=False)
+			else:
+				display.add_field(name="Current Role:", value=f'` - `   **`Grind When?`**',inline=False)
+			
+			display.add_field(name="Next Role:", value=f'{next_role.mention}',inline=False)
+			if amount_to_next == 'Already Completed':
+				display.add_field(name="Amount left:", value=f'` - `   **`{amount_to_next}`**',inline=True)
+			elif amount_to_next <=0:
+				display.add_field(name="Amount left:", value=f'` - `   **`Already Completed`**',inline=True)
+			else:
+				display.add_field(name="Amount left:", value=f'⏣ {amount_to_next:,}',inline=True)
+			display.add_field(name=f"{event_name} Bank:",value=f"⏣ {round(event_bal):,}",inline=True)
+			display.add_field(name="Total Donation:",value=f"⏣ {round(data['bal']):,}",inline=True)
+			display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+			display.set_thumbnail(url=member.avatar_url)
+			return await ctx.send(embed=display)
+
+
 	@commands.command(name="gstatus", aliases=['gs'])
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def glist(self, ctx):
@@ -1564,7 +1676,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			
 		await ctx1.invoke(self.bot.get_command(command), name="8k", member=user, amount=str(amount).replace("-","",1), multiplier = multiplier)
 		await ctx.send(f"Successfully {action} ** ⏣ `{amount:,}** to {user.mention}'s celeb account with **{multiplier}x** multiplier!",hidden=True)
-
 
 	@cog_ext.cog_subcommand(base="Grinder", name="log",description="Add/Remove Grinder donation!", guild_ids=guild_ids,
 		base_default_permission=False,
