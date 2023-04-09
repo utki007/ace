@@ -25,6 +25,8 @@ async def donor_roles(client,query,user):
     return roles_added
 
 async def event_roles(client,query,user,event_name):
+    guild = user.guild
+    celeb_role = guild.get_role(942719030752583680)
     role_dict = client.event_8k
     if event_name == "8k":     
         roles_added = []
@@ -36,6 +38,9 @@ async def event_roles(client,query,user,event_name):
                     roles_added.append(role_dict[roles])
             else:
                 break
+        if celeb_role not in user.roles:
+            # await user.add_roles(celeb_role)
+            roles_added.append(celeb_role)
         return roles_added
     else:
         return []
