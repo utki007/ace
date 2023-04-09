@@ -26,7 +26,7 @@ async def donor_roles(client,query,user):
 
 async def event_roles(client,query,user,event_name):
     guild = user.guild
-    celeb_role = guild.get_role(942719030752583680)
+    celeb_role = guild.get_role(943535266143039500)
     role_dict = client.event_8k
     if event_name == "8k":     
         roles_added = []
