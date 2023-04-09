@@ -814,9 +814,9 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			pass
 		
 		embed = discord.Embed(
-				color=self.bot.colors["Success"],
-				description=f'{self.bot.emojis_list["SuccessTick"]} |{user.mention} can now ping [{pings}]!!!')
-		msg = await ctx.send(f"{user.mention}, {channel.mention} has been created with required permissions!", embed=embed)
+				color=discord.Color.red(),
+				description=f'<:tgk_redarrow:1005361235715424296> **|** You can now ping [{pings}]!\n <:tgk_redarrow:1005361235715424296> **|** {channel.mention} has been created with required permissions.')
+		msg = await ctx.send(f"{user.mention}", embed=embed)
 		
 		ctx1 = await self.bot.get_context(msg)
 		ctx1.author = ctx.author
