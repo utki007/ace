@@ -340,12 +340,13 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		outsideHeist = discord.utils.get(guild.roles, id=806795854475165736)
 		danker = discord.utils.get(guild.roles, id=801392998465404958)
 		partnership = discord.utils.get(guild.roles, id=797448080223109120)
+		miniPartnership = discord.utils.get(guild.roles, id=1084114504771706971)
 		nopartner = discord.utils.get(guild.roles, id=797448080223109120)
 
 		channel = self.bot.get_channel(1012434586866827376)
 		channel_members = channel.members
 
-		l = [heist, partnerHeist, outsideHeist, partnership]
+		l = [heist, partnerHeist, outsideHeist, partnership, miniPartnership]
 
 		spings = {"name": [], "pingCount": [], "id": []}
 		for i in l:
@@ -435,13 +436,14 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		danker = discord.utils.get(guild.roles, id=801392998465404958)
 		partnership = discord.utils.get(guild.roles, id=797448080223109120)
 		giveaway = discord.utils.get(guild.roles, id=800685251276963861)
+		miniPartnership = discord.utils.get(guild.roles, id=1084114504771706971)
 
 		if channel == None:
 			channel = self.bot.get_channel(1012434586866827376)
 
 		channel_members = channel.members
 
-		l = [heist, partnerHeist, outsideHeist, partnership, danker, giveaway]
+		l = [heist, partnerHeist, outsideHeist, partnership, danker, giveaway, miniPartnership]
 
 		spings = {"name": [], "pingCount": [], "id": []}
 
