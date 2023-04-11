@@ -34,7 +34,6 @@ async def event_roles(client,query,user,event_name):
             actual_value = int(roles) * 1000000
             if float(actual_value)<=float(query):
                 if role_dict[roles] not in user.roles:
-                    # await user.add_roles(role_dict[roles])
                     roles_added.append(role_dict[roles])
             else:
                 break

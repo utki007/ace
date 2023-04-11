@@ -491,15 +491,14 @@ class giveaway(commands.Cog):
 		options=[
 			create_option(name="event_name", description="Name of the event", option_type=3, required=True),
 			create_option(name="channel", description="Event channel where event is being hosted.", required=True, option_type=7),
-			create_option(name="quantity", description="A constant number like '123' or a shorthand like '2k'", option_type=3, required=True),
-			create_option(name="item", description="What item do you want to host?", option_type=3, required=False),
+			create_option(name="prize", description="A constant number like '123' or a shorthand like '2k'", option_type=3, required=True),
 			create_option(name="sponsor", description="Can be host too!", required=False, option_type=6),
 			create_option(name="sponsor_message", description="Note from Sponsor", option_type=3, required=False),
 			create_option(name="ping", description="Want to ping event role?", required=False, option_type=5),
 			create_option(name="rumble", description="Want to ping rumble role?", required=False, option_type=5),
 		]
 	)
-	async def event(self, ctx, event_name, channel, quantity, item = None,sponsor = None,sponsor_message = '', ping = True, rumble = False):
+	async def event(self, ctx, event_name, channel, prize, sponsor = None,sponsor_message = '', ping = True, rumble = False):
 		
 		await ctx.defer(hidden=True)
 		host = ctx.author
@@ -512,24 +511,6 @@ class giveaway(commands.Cog):
 		
 		if sponsor is None:
 			sponsor = host
-
-		try:
-			amount = await convert_to_numeral(quantity)
-			amount = await calculate(amount)
-			amount = int(amount)
-		except:
-			warning = discord.Embed(
-					color= 0xfcce00,
-					description=f"{self.bot.emojis_list['Warrning']} | Incorrect quantity provided. Please provide a constant number like '123' or a shorthand like '2k'.")
-			return await ctx.send(embed = warning, hidden= True)
-		
-		prize = ''
-		if item is None:
-			prize = f'⏣ {amount:,}'
-		else:
-			prize = f'{amount:,}x {item.title()}'
-		
-
 		
 		title = f"<a:celebrateyay:821698856202141696> {name} <a:celebrateyay:821698856202141696>"
 		if 'rumble' in name.lower():
