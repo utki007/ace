@@ -1065,7 +1065,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		totalmembers = f"{df['event_'+name][df['event_'+name]>0].size}"
 
 		sum_df = df[[nameofevent]]
-		totaldono = f"{int((sum_df[sum_df[nameofevent]>5000000.0].sum())/1.7):,}"
+		totaldono = f"{int((sum_df[sum_df[nameofevent]>5000000.0].sum())/1.4):,}"
 		# totaldono = f'{int(df["event_"+name].sum()):,}'
 		df = df.head(5)
 
