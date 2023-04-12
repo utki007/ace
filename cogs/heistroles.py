@@ -465,7 +465,7 @@ class heistroles(commands.Cog):
 					amount = await convert_to_numeral(prize)
 					amount = await calculate(amount)
 				except:
-					number_of_items = int(og_prize.split(" ")[0][:-1])
+					number_of_items = int(og_prize.split(" ")[0][:-1].replace(",","",100))
 					item_name = " ".join(og_prize.split(" ")[1:])
 					item_prize = int((await self.bot.dankItems.find(item_name))['price'])
 					amount = round(number_of_items * item_prize * 1.2)
@@ -490,7 +490,7 @@ class heistroles(commands.Cog):
 					amount = await calculate(amount)
 					multiplier = 1.5
 				except:
-					number_of_items = int(og_prize.split(" ")[0][:-1])
+					number_of_items = int(og_prize.split(" ")[0][:-1].replace(",","",100))
 					item_name = " ".join(og_prize.split(" ")[1:])
 					item_prize = int((await self.bot.dankItems.find(item_name))['price'])
 					amount = round(number_of_items * item_prize * 1.2)
