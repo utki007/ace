@@ -39,6 +39,7 @@ founder_perm = {
 
 class heistroles(commands.Cog):
 	def __init__(self, bot):
+		bot.mafia_logs = {}
 		self.bot = bot
 		
 	@commands.Cog.listener()
@@ -60,7 +61,8 @@ class heistroles(commands.Cog):
 
 		if message.author.id in [693167035068317736, 675996677366218774] and message.channel.category.id in [946994017210621972,935537766576582716,825581377592098837] and len(message.embeds) > 0 :
 			embed = message.embeds[0]
-			if embed.title is not None and "WINNER!".lower() in embed.title.lower()  and len(message.mentions) == 1:
+			if embed.title is None : return
+			if "WINNER!".lower() in embed.title.lower()  and len(message.mentions) == 1:
 				if message.channel.category.id in [946994017210621972, 825581377592098837, 935537766576582716, 821747325818372146]:
 					await message.channel.edit(sync_permissions=True)
 				content = f"` - `   **Want us to host more pog events?**\n\n"
@@ -109,8 +111,57 @@ class heistroles(commands.Cog):
 			else:
 				await message.channel.send(content=content, allowed_mentions=am)
 
+		# for mafia
+		elif message.author.id == 511786918783090688:
 
-		if message.author.id == 270904126974590976:
+			# check if embed exists
+			if len(message.embeds)>0:
+				
+				#  check if embed has description
+				if "description" in message.embeds[0].to_dict().keys():
+					desc = message.embeds[0].description.lower()
+					
+					if 'everyone please navigate to' in desc:
+						channel_id = int(re.findall("\<\#(.*?)\>", desc)[0])
+						self.bot.mafia_logs[channel_id] = {}
+				
+				# check if embed has title
+				if "title" in message.embeds[0].to_dict().keys():
+					title = message.embeds[0].title.lower()
+
+					if 'win' in title:
+						#  game has ended , log the game
+						async for message in message.channel.history(limit=1000):
+							if message.author.id == 511786918783090688 and len(message.embeds)>0:
+								if "description" in message.embeds[0].to_dict().keys():
+									desc = message.embeds[0].description.lower()
+									if 'everyone please navigate to' in desc:
+										channel_id = int(re.findall("\<\#(.*?)\>", desc)[0])
+										logg_channel = self.bot.get_channel(999557650364760144)
+										embed = discord.Embed(title="Mafia Logs", description=f"Game ended in {message.channel.mention}\n", color=discord.Color.green())
+										embed.description += f"\n\n**Players**\n"
+										for index, user in enumerate(self.bot.mafia_logs[channel_id].keys()):
+											embed.description += f"{index+1}. <@{user}> ` - ` {self.bot.mafia_logs[channel_id][user]} Messages\n"
+
+										await logg_channel.send(embed=embed)
+										del self.bot.mafia_logs[channel_id]
+										break
+						
+
+			elif len(message.embeds)==0:
+				if message.content is not None:
+					if message.channel.name == "mafia":
+						first_message = await message.channel.history(oldest_first=True,limit=1).flatten()
+						for msg in first_message:
+							first_message = msg
+						users = re.findall("\<\@(.*?)\>", first_message.content)
+						for user in users:
+							if user in self.bot.mafia_logs[message.channel.id].keys():
+								return
+							else:
+								self.bot.mafia_logs[message.channel.id][user] = 0
+
+		elif message.author.id == 270904126974590976:
 			
 			if len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
 				if "starting a bank robbery" in message.embeds[0].title.lower():
@@ -231,6 +282,14 @@ class heistroles(commands.Cog):
 
 					await message.channel.send(embed=fl)
 					await message.channel.send(f'https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif')
+
+		# mafia message count logging
+		if message.channel.name == "mafia":
+			if message.author.bot:
+				return
+			if message.channel.id in self.bot.mafia_log.keys():
+				if message.author.id in self.bot.mafia_log[message.channel.id].keys():
+					self.bot.mafia_log[message.channel.id][message.author.id] += 1
 
 		# for partner heists 806988762299105330
 		if message.channel.id == 1012434586866827376:
