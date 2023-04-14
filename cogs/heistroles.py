@@ -141,14 +141,17 @@ class heistroles(commands.Cog):
 									if 'everyone please navigate to' in desc:
 										channel_id = int(re.findall("\<\#(.*?)\>", desc)[0])
 										logg_channel = self.bot.get_channel(999557650364760144)
-										embed = discord.Embed(title="Mafia Logs", description=f"Game ended in {message.channel.mention}\n", color=discord.Color.green())
-										embed.description += f"\n\n**Players**\n"
-										for index, user in enumerate(self.bot.mafia_logs[channel_id].keys()):
-											embed.description += f"{index+1}. <@{user}> ` - ` {self.bot.mafia_logs[channel_id][user]} Messages\n"
+										if channel_id in self.bot.mafia_logs.keys():
+											embed = discord.Embed(title="Mafia Logs", description=f"Game ended in {message.channel.mention}\n", color=discord.Color.green())
+											embed.description += f"\n\n**Players**\n"
+											for index, user in enumerate(self.bot.mafia_logs[channel_id].keys()):
+												embed.description += f"{index+1}. <@{user}> ` - ` {self.bot.mafia_logs[channel_id][user]} Messages\n"
 
-										await logg_channel.send(embed=embed)
-										del self.bot.mafia_logs[channel_id]
-										break
+											await logg_channel.send(embed=embed)
+											del self.bot.mafia_logs[channel_id]
+											break
+										else:
+											await logg_channel.send(f"Game ended in {message.channel.mention} but no logs found ```\n{self.bot.mafia_logs}```")
 						
 
 			elif len(message.embeds)==0:
