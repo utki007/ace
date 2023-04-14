@@ -50,6 +50,9 @@ class heistroles(commands.Cog):
 	@commands.Cog.listener()
 	async def on_message(self, message):
 
+		if isinstance(message.channel, discord.DMChannel):
+			return
+
 		gk = self.bot.get_guild(785839283847954433)
 		guild = message.guild
 
@@ -287,9 +290,9 @@ class heistroles(commands.Cog):
 		if message.channel.name == "mafia":
 			if message.author.bot:
 				return
-			if message.channel.id in self.bot.mafia_log.keys():
-				if message.author.id in self.bot.mafia_log[message.channel.id].keys():
-					self.bot.mafia_log[message.channel.id][message.author.id] += 1
+			if message.channel.id in self.bot.mafia_logs.keys():
+				if message.author.id in self.bot.mafia_logs[message.channel.id].keys():
+					self.bot.mafia_logs[message.channel.id][message.author.id] += 1
 
 		# for partner heists 806988762299105330
 		if message.channel.id == 1012434586866827376:
