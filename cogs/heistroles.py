@@ -158,7 +158,7 @@ class heistroles(commands.Cog):
 						first_message = await message.channel.history(oldest_first=True,limit=1).flatten()
 						for msg in first_message:
 							first_message = msg
-						users = re.findall("\<\@(.*?)\>", first_message.content)
+						users = int(re.findall("\<\@(.*?)\>", first_message.content))
 						for user in users:
 							self.bot.mafia_logs[message.channel.id][user] = 0
 
