@@ -153,14 +153,15 @@ class heistroles(commands.Cog):
 
 			elif len(message.embeds)==0:
 				if message.content is not None:
-					if message.channel.name == "mafia" and message.channel.id not in self.bot.mafia_logs.keys():
-						self.bot.mafia_logs[message.channel.id] = {}
-						first_message = await message.channel.history(oldest_first=True,limit=1).flatten()
-						for msg in first_message:
-							first_message = msg
-						users = int(re.findall("\<\@(.*?)\>", first_message.content))
-						for user in users:
-							self.bot.mafia_logs[message.channel.id][user] = 0
+					if message.channel.name == "mafia":
+						if message.channel.id not in self.bot.mafia_logs.keys():
+							self.bot.mafia_logs[message.channel.id] = {}
+							first_message = await message.channel.history(oldest_first=True,limit=1).flatten()
+							for msg in first_message:
+								first_message = msg
+							users = int(re.findall("\<\@(.*?)\>", first_message.content))
+							for user in users:
+								self.bot.mafia_logs[message.channel.id][user] = 0
 
 		elif message.author.id == 270904126974590976:
 			
