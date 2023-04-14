@@ -142,9 +142,7 @@ class heistroles(commands.Cog):
 											await logg_channel.send(embed=embed)
 											del self.bot.mafia_logs[channel_id]
 											break
-										else:
-											await logg_channel.send(f"Game ended in {message.channel.mention} but no logs found ```\n{self.bot.mafia_logs}```")
-
+										
 		elif message.author.id == 270904126974590976:
 			
 			if len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
