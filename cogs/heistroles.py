@@ -120,13 +120,13 @@ class heistroles(commands.Cog):
 			# check if embed exists
 			if len(message.embeds)>0:
 				
-				#  check if embed has description
-				if "description" in message.embeds[0].to_dict().keys():
-					desc = message.embeds[0].description.lower()
+				# #  check if embed has description
+				# if "description" in message.embeds[0].to_dict().keys():
+				# 	desc = message.embeds[0].description.lower()
 					
-					if 'everyone please navigate to' in desc:
-						channel_id = int(re.findall("\<\#(.*?)\>", desc)[0])
-						self.bot.mafia_logs[channel_id] = {}
+				# 	if 'everyone please navigate to' in desc:
+				# 		channel_id = int(re.findall("\<\#(.*?)\>", desc)[0])
+				# 		self.bot.mafia_logs[channel_id] = {}
 				
 				# check if embed has title
 				if "title" in message.embeds[0].to_dict().keys():
@@ -153,16 +153,14 @@ class heistroles(commands.Cog):
 
 			elif len(message.embeds)==0:
 				if message.content is not None:
-					if message.channel.name == "mafia":
+					if message.channel.name == "mafia" and message.channel.id not in self.bot.mafia_logs.keys():
+						self.bot.mafia_logs[message.channel.id] = {}
 						first_message = await message.channel.history(oldest_first=True,limit=1).flatten()
 						for msg in first_message:
 							first_message = msg
 						users = re.findall("\<\@(.*?)\>", first_message.content)
 						for user in users:
-							if user in self.bot.mafia_logs[message.channel.id].keys():
-								return
-							else:
-								self.bot.mafia_logs[message.channel.id][user] = 0
+							self.bot.mafia_logs[message.channel.id][user] = 0
 
 		elif message.author.id == 270904126974590976:
 			
