@@ -277,6 +277,7 @@ if __name__ == "__main__":
 	bot.sticky = Document(bot.db, "sticky")
 	bot.blacklistUser = Document(bot.db, "blacklistUser")
 	bot.tempban = Document(bot.db, "tempban")
+	bot.counter = Document(bot.db, "counters")
 
 	# for OCTANE DB
 	bot.octane = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url2))

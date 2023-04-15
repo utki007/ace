@@ -124,7 +124,7 @@ class heistroles(commands.Cog):
 				if "title" in message.embeds[0].to_dict().keys():
 					title = message.embeds[0].title.lower()
 
-					if 'win' in title:
+					if 'win' in title and 'also wins' not in title:
 						#  game has ended , log the game
 						async for message in message.channel.history(limit=1000):
 							if message.author.id == 511786918783090688 and len(message.embeds)>0:
@@ -132,15 +132,21 @@ class heistroles(commands.Cog):
 									desc = message.embeds[0].description.lower()
 									if 'everyone please navigate to' in desc:
 										channel_id = int(re.findall("\<\#(.*?)\>", desc)[0])
-										logg_channel = self.bot.get_channel(999557650364760144)
+										logg_channel = self.bot.get_channel(1096669152447582318)
 										if channel_id in self.bot.mafia_logs.keys():
-											embed = discord.Embed(title="Mafia Logs", description=f"Game ended in {message.channel.mention}\n", color=discord.Color.green())
-											embed.description += f"\n\n**Players**\n"
-											for index, user in enumerate(self.bot.mafia_logs[channel_id].keys()):
-												embed.description += f"{index+1}. <@{user}> ` - ` {self.bot.mafia_logs[channel_id][user]} Messages\n"
+											embed = discord.Embed(title="Mafia Logs", description=f"Game ended [`here`]({message.channel.mention})\n", color=discord.Color.green())
+											embed.description += f"\n**Players**\n"
+
+											dict = self.bot.mafia_logs[channel_id]
+											keys = list(dict.keys())
+											values = list(dict.values())
+											sorted_value_index = np.argsort(values)
+											sorted_dict = {keys[i]: values[i] for i in sorted_value_index}
+											for index, user in enumerate(sorted_dict.keys()):
+												embed.description += f"**{index+1}.** <@{user}> ` - ` {self.bot.mafia_logs[channel_id][user]} Messages\n"
 
 											await logg_channel.send(embed=embed)
-											del self.bot.mafia_logs[channel_id]
+											self.bot.mafia_logs = {}
 											break
 										
 		elif message.author.id == 270904126974590976:
