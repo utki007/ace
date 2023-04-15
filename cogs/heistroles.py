@@ -134,7 +134,7 @@ class heistroles(commands.Cog):
 										channel_id = int(re.findall("\<\#(.*?)\>", desc)[0])
 										logg_channel = self.bot.get_channel(1096669152447582318)
 										if channel_id in self.bot.mafia_logs.keys():
-											embed = discord.Embed(title="Mafia Logs", description=f"Game ended [`here`]({message.channel.mention})\n", color=discord.Color.green())
+											embed = discord.Embed(title="Mafia Logs", description=f"Game ended [`here`]({message.jump_url})\n", color=discord.Color.green())
 											embed.description += f"\n**Players**\n"
 
 											dict = self.bot.mafia_logs[channel_id]
