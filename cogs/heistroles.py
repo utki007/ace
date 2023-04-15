@@ -16,6 +16,11 @@ from discord_slash.context import ComponentContext
 import numpy as np
 import datetime
 from utils.convertor import *
+from itertools import islice
+
+def chunk(it, size):
+	it = iter(it)
+	return iter(lambda: tuple(islice(it, size)), ())
 
 guild_ids=[785839283847954433]
 
@@ -126,26 +131,48 @@ class heistroles(commands.Cog):
 
 					if 'win' in title and 'also wins' not in title:
 						#  game has ended , log the game
-						async for message in message.channel.history(limit=1000):
-							if message.author.id == 511786918783090688 and len(message.embeds)>0:
-								if "description" in message.embeds[0].to_dict().keys():
-									desc = message.embeds[0].description.lower()
+						async for msg in message.channel.history(limit=1000):
+							if msg.author.id == 511786918783090688 and len(msg.embeds)>0:
+								if "description" in msg.embeds[0].to_dict().keys():
+									desc = msg.embeds[0].description.lower()
 									if 'everyone please navigate to' in desc:
 										channel_id = int(re.findall("\<\#(.*?)\>", desc)[0])
 										logg_channel = self.bot.get_channel(1096669152447582318)
 										if channel_id in self.bot.mafia_logs.keys():
-											embed = discord.Embed(title="Mafia Logs", description=f"Game ended [`here`]({message.jump_url})\n", color=discord.Color.green())
-											embed.description += f"\n**Players**\n"
+											data = await self.bot.counter.find('mafiaGameId')
+											if data is None:
+												await self.bot.counter.upsert({'_id': 'mafiaGameId', 'sequence_value': 1})
+												game_id = 100
+											else:
+												game_id = data['sequence_value']
+												await self.bot.counter.upsert({'_id': 'mafiaGameId', 'sequence_value': game_id+1})
+
+											embed = discord.Embed(title=f"Mafia Game #{game_id}", url = f'{message.jump_url}', color=discord.Color.random())
 
 											dict = self.bot.mafia_logs[channel_id]
 											keys = list(dict.keys())
 											values = list(dict.values())
 											sorted_value_index = np.argsort(values)
 											sorted_dict = {keys[i]: values[i] for i in sorted_value_index}
-											for index, user in enumerate(sorted_dict.keys()):
-												embed.description += f"**{index+1}.** <@{user}> ` - ` {self.bot.mafia_logs[channel_id][user]} Messages\n"
 
-											await logg_channel.send(embed=embed)
+											user_group = list(chunk(sorted_dict.keys(), 9))
+											total_pages = len(user_group)
+											for group in user_group:
+												current_page = user_group.index(group)+1
+												embed.set_footer(text=f"{message.guild.name} • Page {current_page}/{total_pages}",icon_url=message.guild.icon_url)
+												for index,user in enumerate(group):
+													embed.add_field(
+														name=f"` {index} ` {user}",
+														value=	f"<:ace_replycont:1082575852061073508> **User:** <@{user}>"
+																f"<:ace_reply:1082575762856620093> **Messages:** {self.bot.mafia_logs[channel_id][user]}",
+														inline=True
+													)
+												ace_Server = self.bot.get_guild(947525009247707157)
+												emoji = await ace_Server.fetch_emoji(1096893380459499551)
+												buttons = [create_button(style=ButtonStyle.URL, label="Winner Message", emoji=emoji, disabled=False, url=msg.jump_url)]
+					
+												await logg_channel.send(embed=embed, components=[create_actionrow(*buttons)])
+											
 											self.bot.mafia_logs = {}
 											break
 										
