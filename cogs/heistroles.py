@@ -153,7 +153,7 @@ class heistroles(commands.Cog):
 											sorted_value_index = np.argsort(values)
 											sorted_dict = {keys[i]: values[i] for i in sorted_value_index}
 
-											user_group = list(chunk(sorted_dict.keys(), 9))
+											user_group = list(chunk(sorted_dict.keys(), 4))
 											total_pages = len(user_group)
 											counter = 0
 											color = discord.Color.random()
@@ -167,10 +167,10 @@ class heistroles(commands.Cog):
 													counter = counter + 1
 													embed.add_field(
 														name=f"` {counter}. ` {user.name}",
-														value=	f"<:ace_replycont:1082575852061073508> **{user.id}**\n"
-																f"<:ace_replycont:1082575852061073508> {user.mention}\n"
+														value=	f"<:ace_replycont:1082575852061073508> **ID:** {user.id}\n"
+																f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
 																f"<:ace_reply:1082575762856620093> **Messages:** {self.bot.mafia_logs[channel_id][user.id]}",
-														inline=True
+														inline=False
 													)
 												ace_Server = self.bot.get_guild(947525009247707157)
 												emoji = await ace_Server.fetch_emoji(1096893380459499551)
@@ -185,7 +185,7 @@ class heistroles(commands.Cog):
 											break
 										
 		elif message.author.id == 270904126974590976:
-			
+
 			if len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
 				if "starting a bank robbery" in message.embeds[0].title.lower():
 					try:
@@ -306,10 +306,6 @@ class heistroles(commands.Cog):
 					await message.channel.send(embed=fl)
 					await message.channel.send(f'https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif')
 
-			if len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
-				if message.guild.id in [838646783785697290,927399549063004270]:
-					if 'Great work' in message.embeds[0].to_dict()["title"] and 'A Plus' in message.embeds[0].to_dict()["description"]:
-						await message.pin()
 		# mafia message count logging
 		if message.channel.name == "mafia":
 			if message.channel.id not in self.bot.mafia_logs.keys():
@@ -646,7 +642,18 @@ class heistroles(commands.Cog):
 						color=0xff0000
 					)
 					await message.reply(content=f"Checkout {heist_channel.mention} for more info!" ,embed=embed, mention_author=False,delete_after=10)
-					
+
+	@commands.Cog.listener()
+	async def on_message_edit(before, after):
+
+		message = after
+
+		if message.guild.id in [838646783785697290,927399549063004270]:
+			if message.author.id == 270904126974590976:
+				if len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
+					if 'Great work' in message.embeds[0].to_dict()["title"] and 'A Plus' in message.embeds[0].to_dict()["description"]:
+						await message.pin()
+
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
 		
