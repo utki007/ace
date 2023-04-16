@@ -644,7 +644,7 @@ class heistroles(commands.Cog):
 					await message.reply(content=f"Checkout {heist_channel.mention} for more info!" ,embed=embed, mention_author=False,delete_after=10)
 
 	@commands.Cog.listener()
-	async def on_message_edit(before, after):
+	async def on_message_edit(self, before, after):
 
 		message = after
 
