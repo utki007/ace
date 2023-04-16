@@ -147,7 +147,7 @@ class heistroles(commands.Cog):
 												game_id = data['sequence_value']
 												await self.bot.counter.upsert({'_id': 'mafiaGameId', 'sequence_value': game_id+1})
 
-											embed = discord.Embed(title=f"Mafia Game #{game_id}", url = f'{message.jump_url}', color=discord.Color.random())
+											embed = discord.Embed(title=f"Mafia Game #{game_id}", url = f'{msg.jump_url}', color=discord.Color.random())
 
 											dict = self.bot.mafia_logs[channel_id]
 											keys = list(dict.keys())
@@ -157,19 +157,23 @@ class heistroles(commands.Cog):
 
 											user_group = list(chunk(sorted_dict.keys(), 9))
 											total_pages = len(user_group)
+											counter = 0
 											for group in user_group:
 												current_page = user_group.index(group)+1
 												embed.set_footer(text=f"{message.guild.name} • Page {current_page}/{total_pages}",icon_url=message.guild.icon_url)
-												for index,user in enumerate(group):
+												for user in group:
+													user = message.guild.get_member(int(user))
+													counter = counter + 1
 													embed.add_field(
-														name=f"` {index} ` {user}",
-														value=	f"<:ace_replycont:1082575852061073508> **User:** <@{user}>"
+														name=f"` {counter}. ` {user.name}",
+														value=	f"<:ace_replycont:1082575852061073508> **ID:** {user.id}\n"
+																f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
 																f"<:ace_reply:1082575762856620093> **Messages:** {self.bot.mafia_logs[channel_id][user]}",
 														inline=True
 													)
 												ace_Server = self.bot.get_guild(947525009247707157)
 												emoji = await ace_Server.fetch_emoji(1096893380459499551)
-												buttons = [create_button(style=ButtonStyle.URL, label="Winner Message", emoji=emoji, disabled=False, url=msg.jump_url)]
+												buttons = [create_button(style=ButtonStyle.URL, label="Winner Message", emoji=emoji, disabled=False, url=message.jump_url)]
 					
 												await logg_channel.send(embed=embed, components=[create_actionrow(*buttons)])
 											
