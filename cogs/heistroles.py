@@ -168,7 +168,7 @@ class heistroles(commands.Cog):
 														name=f"` {counter}. ` {user.name}",
 														value=	f"<:ace_replycont:1082575852061073508> **ID:** {user.id}\n"
 																f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
-																f"<:ace_reply:1082575762856620093> **Messages:** {self.bot.mafia_logs[channel_id][user]}",
+																f"<:ace_reply:1082575762856620093> **Messages:** {self.bot.mafia_logs[channel_id][user.id]}",
 														inline=True
 													)
 												ace_Server = self.bot.get_guild(947525009247707157)
