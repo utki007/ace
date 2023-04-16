@@ -174,8 +174,11 @@ class heistroles(commands.Cog):
 												ace_Server = self.bot.get_guild(947525009247707157)
 												emoji = await ace_Server.fetch_emoji(1096893380459499551)
 												buttons = [create_button(style=ButtonStyle.URL, label="Winner Message", emoji=emoji, disabled=False, url=message.jump_url)]
-					
-												await logg_channel.send(embed=embed, components=[create_actionrow(*buttons)])
+
+												if current_page == total_pages:
+													await logg_channel.send(embed=embed, components=[create_actionrow(*buttons)])
+												else:
+													await logg_channel.send(embed=embed)
 											
 											self.bot.mafia_logs = {}
 											break
