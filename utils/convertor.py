@@ -77,6 +77,39 @@ async def clean_colour_roles(client,user):
         if i in user_roles:
             await user.remove_roles(i)
 
+async def convert_to_human_time(seconds):
+    
+    days, remainder = divmod(seconds, 86400)
+    hours, remainder = divmod(remainder , 3600)
+    minutes, seconds = divmod(remainder, 60)
+        
+    human_timer = []
+    if int(days)>0:
+        if int(days)==1:
+            human_timer.append(f"{int(days)} day")
+        else:
+            human_timer.append(f"{int(days)} days")
+    if int(hours)>0:
+        if int(hours) == 1:
+            human_timer.append(f'{int(hours)} hour')
+        else:
+            human_timer.append(f'{int(hours)} hours')
+    if int(minutes)>0:
+        if int(minutes) == 1:
+            human_timer.append(f'{int(minutes)} minute')
+        else:
+            human_timer.append(f'{int(minutes)} minutes')
+    if int(seconds)>0:
+        if int(seconds) == 1:
+            human_timer.append(f'{int(seconds)} second')
+        else:
+            human_timer.append(f'{int(seconds)} seconds')
+    
+    if len(human_timer)>1:
+        timer = f'{", ".join(i for i in human_timer[:-1])} and {human_timer[-1]}'
+    else:
+        timer = human_timer[-1]
 
+    return timer.strip()
 
 

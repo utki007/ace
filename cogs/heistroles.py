@@ -652,6 +652,10 @@ class heistroles(commands.Cog):
 			if message.author.id == 270904126974590976:
 				if len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
 					if 'Great work' in message.embeds[0].to_dict()["title"] and 'A Plus' in message.embeds[0].to_dict()["description"]:
+						pins = await message.channel.pins()
+						for msg in pins:
+							if round((datetime.datetime.utcnow() - msg.edited_at).total_seconds()) > 172800:
+								await msg.unpin()
 						await message.pin()
 
 	@commands.Cog.listener()
