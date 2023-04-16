@@ -147,8 +147,6 @@ class heistroles(commands.Cog):
 												game_id = data['sequence_value']
 												await self.bot.counter.upsert({'_id': 'mafiaGameId', 'sequence_value': game_id+1})
 
-											embed = discord.Embed(title=f"Mafia Game #{game_id}", url = f'{msg.jump_url}', color=discord.Color.random())
-
 											dict = self.bot.mafia_logs[channel_id]
 											keys = list(dict.keys())
 											values = list(dict.values())
@@ -158,16 +156,19 @@ class heistroles(commands.Cog):
 											user_group = list(chunk(sorted_dict.keys(), 9))
 											total_pages = len(user_group)
 											counter = 0
+											color = discord.Color.random()
+
 											for group in user_group:
 												current_page = user_group.index(group)+1
+												embed = discord.Embed(title=f"Mafia Game #{game_id}", url = f'{msg.jump_url}', color=color)
 												embed.set_footer(text=f"{message.guild.name} • Page {current_page}/{total_pages}",icon_url=message.guild.icon_url)
 												for user in group:
 													user = message.guild.get_member(int(user))
 													counter = counter + 1
 													embed.add_field(
 														name=f"` {counter}. ` {user.name}",
-														value=	f"<:ace_replycont:1082575852061073508> **ID:** {user.id}\n"
-																f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
+														value=	f"<:ace_replycont:1082575852061073508> **{user.id}**\n"
+																f"<:ace_replycont:1082575852061073508> {user.mention}\n"
 																f"<:ace_reply:1082575762856620093> **Messages:** {self.bot.mafia_logs[channel_id][user.id]}",
 														inline=True
 													)
@@ -305,6 +306,10 @@ class heistroles(commands.Cog):
 					await message.channel.send(embed=fl)
 					await message.channel.send(f'https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif')
 
+			if len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
+				if message.guild.id in [838646783785697290,927399549063004270]:
+					if 'Great work' in message.embeds[0].to_dict()["title"] and 'A Plus' in message.embeds[0].to_dict()["description"]:
+						await message.pin()
 		# mafia message count logging
 		if message.channel.name == "mafia":
 			if message.channel.id not in self.bot.mafia_logs.keys():
