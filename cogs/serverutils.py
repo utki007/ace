@@ -155,7 +155,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 		embed = discord.Embed(
 			title=f"<a:tgk_redcrown:1005473874693079071> {gk.name}",
 			description=f"<:tgk_redarrow:1005361235715424296> `+1x` amari guild-wide\n"
-						f"<:tgk_redarrow:1005361235715424296> Access to [**Special Channel**](https://discord.com/channels/785839283847954433/929613393097293874)\n"
+						f"<:tgk_redarrow:1005361235715424296> Access to <#929613393097293874>\n"
 						f"<:tgk_redarrow:1005361235715424296> `+1x` entry in <@700743797977514004>'s gaws\n",
 			color=0xff0000,
 			url="https://top.gg/servers/785839283847954433/vote"

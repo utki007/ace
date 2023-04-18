@@ -273,7 +273,7 @@ class heistroles(commands.Cog):
 					embed.add_field(name=f"RIP Robbers:",
 									value=f"{count_died} ({np.round((count_died*100/count_robbers),2)}%)", inline=True)
 					embed.add_field(name=f"Heist Payouts:",
-									value=f"**[⏣ {heist_amount:,}]({highest_fined_link})**", inline=True)
+									value=f"**⏣ {heist_amount:,}**", inline=True)
 					embed.add_field(name=f"Payouts:",
 										value=f"```ansi\n[0;32m+ {random.choice([member for member in message.channel.members if member.bot == False]).name} {random.choice(payouts_list)}[0;0m\n```", inline=False)
 					embed.set_footer(text=f"Developed by utki007 & Jay",
@@ -611,7 +611,7 @@ class heistroles(commands.Cog):
 				embed = discord.Embed(
 					title=f"<a:tgk_redcrown:1005473874693079071> {gk.name}",
 					description=f"<:tgk_redarrow:1005361235715424296> `+1x` amari guild-wide\n"
-								f"<:tgk_redarrow:1005361235715424296> Access to [**Special Channel**](https://discord.com/channels/785839283847954433/929613393097293874)\n"
+								f"<:tgk_redarrow:1005361235715424296> Access to <#929613393097293874>\n"
 								f"<:tgk_redarrow:1005361235715424296> `+1x` entry in <@700743797977514004>'s gaws\n",
 					color=0xff0000,
 					url="https://top.gg/servers/785839283847954433/vote"
