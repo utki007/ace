@@ -239,7 +239,7 @@ class heistroles(commands.Cog):
 					pattern = "`[0-9]*`"
 					stats_list = re.findall(pattern,desc)
 					stats_list = [int(stats.replace("`","",2)) for stats in stats_list]
-					count_success = stats_list[0]
+					count_success = stats_list[0] + stats_list[2]
 					count_fined = stats_list[-1]
 					count_died = stats_list[1]
 					count_robbers = count_success + count_fined + count_died + stats_list[-2]
