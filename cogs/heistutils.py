@@ -301,14 +301,14 @@ class heistutils(commands.Cog):
 	@commands.command(name="Thanks", description="ty to grinders",aliases = ["ty"], hidden=True)
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def thanks(self, ctx):
-		am = discord.AllowedMentions(
-			users=False,  # Whether to ping individual user @mentions
-			everyone=False,  # Whether to ping @everyone or @here mentions
-			roles=False,  # Whether to ping role @mentions
-			replied_user=False,  # Whether to ping on replies to messages
-		)
 		await ctx.message.delete()
-		ty = await ctx.send(f"Make sure to Thank our Amazing <@&836228842397106176>'s  for the heist in <#785847439579676672>", allowed_mentions=am)
+		if ctx.guild.id != 785839283847954433:
+			return
+		if ctx.channel.category_id == 825581377592098837:
+			role = ctx.guild.get_role(942719030752583680)
+		else:
+			role = ctx.guild.get_role(836228842397106176)
+		ty = await ctx.send(f"Make sure to Thank our Amazing {role.mention}'s  for the heist in <#785847439579676672>", allowed_mentions=discord.AllowedMentions.none())
 		await ty.add_reaction(f'<:thankyou:930419246792601640>')
 
 	# @cog_ext.cog_slash(name="ghost-ping", description="🦹 Ghost ping someone", guild_ids=[785839283847954433],default_permission=False,permissions=heist_perm,
