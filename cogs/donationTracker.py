@@ -22,9 +22,14 @@ from discord_slash.model import SlashCommandPermissionType
 from discord_slash.utils.manage_components import create_button, create_actionrow
 from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
+from itertools import islice
 import typing
 
 guild_ids=[785839283847954433]
+
+def chunk(it, size):
+	it = iter(it)
+	return iter(lambda: tuple(islice(it, size)), ())
 
 class donationTracker(commands.Cog, description="Donation Tracker"):
 
@@ -1341,41 +1346,61 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			color=discord.Color.random(),
 			description=f"> Loading Grinder Data {self.bot.emojis_list['Typing']} "
 		)
-		msg = await ctx.send(embed=waiting)
+		msg = await ctx.send(embed=waiting, delete_after=5)
 
 		gk = self.bot.get_guild(785839283847954433)
 		grinder = gk.get_role(836228842397106176)
 		trial = gk.get_role(932149422719107102)
 
 		grinder_records = []
-		desc = ""
 		desc_not_found = ""
-		for member in ctx.guild.members:
-			if grinder in member.roles or trial in member.roles:
-				data = await self.bot.donorBank.find(member.id)
-				if data != None and "grinder_record" in data.keys():
-					grinder_records.append(
-						[member.id, member.mention, data['grinder_record']['time']])
-				else:
-					desc_not_found += f"{member.mention} `{member.id}`\n"
+		members = grinder.members
+		members.extend(trial.members)
+		for member in members:
+			# if grinder in member.roles or trial in member.roles:
+			data = await self.bot.donorBank.find(member.id)
+			if data != None and "grinder_record" in data.keys():
+				grinder_records.append(
+					[member.id, member.mention, data['grinder_record']['time']])
+			else:
+				desc_not_found += f"{member.mention} `{member.id}`\n"
 
 		df = pd.DataFrame(grinder_records, columns=['ID', 'Mention', 'Time'])
 		df = df.sort_values(by='Time', ascending=True)
+		
+		user_group = list(chunk(df.index, 5))
+		total_pages = len(user_group)
+		counter = 0
+		color = discord.Color.random()
 
-		for ind in df.index:
-			desc += f"> {df['Mention'][ind]} {self.bot.emojis_list['rightArrow']} <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:D> <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R> \n"
+		for group in user_group:
+			current_page = user_group.index(group)+1
+			display = discord.Embed(
+				title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Status__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+				colour=color
+			)
+			display.set_thumbnail(
+				url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
+			display.set_footer(text=f"{ctx.guild.name} • Page {current_page}/{total_pages}",icon_url=ctx.guild.icon_url)
+			for ind in group:
+				user = ctx.guild.get_member(int(df['ID'][ind]))
+				counter = counter + 1
+				display.add_field(
+					name=f"` {counter}. ` {user.name}",
+					value=	f"<:ace_replycont:1082575852061073508> **ID:** {user.id}\n"
+							f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
+							f"<:ace_reply:1082575762856620093> **Due On:** <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:D> <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R>",
+					inline=False
+				)
+			await ctx.send(embed=display)
 
-		display = discord.Embed(
-			title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Status__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-			description=f"{desc}",
-			colour=0x78AB46,
-			timestamp=datetime.datetime.utcnow()
-		)
-		display.set_footer(text=f"Developed by utki007 & Jay",
-						   icon_url=ctx.guild.icon_url)
-		display.set_thumbnail(
-			url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
-		await msg.edit(embed=display)
+		
+
+		# for ind in df.index:
+			# desc += f"> {df['Mention'][ind]} {self.bot.emojis_list['rightArrow']} <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:D> <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R> \n"
+
+
+		# await msg.edit(embed=display)
 		if desc_not_found != "":
 			grinders_not_found = discord.Embed(
 				title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Data Not Found__  <a:TGK_Pandaswag:830525027341565982>\n\n",
