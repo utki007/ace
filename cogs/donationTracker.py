@@ -1364,7 +1364,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			data = await self.bot.donorBank.find(member.id)
 			if data != None and "grinder_record" in data.keys():
 				grinder_records.append(
-					[member.id, member.mention, data['grinder_record']['time']], type)
+					[member.id, member.mention, data['grinder_record']['time'], type])
 			else:
 				desc_not_found += f"{member.mention} `{member.id}`\n"
 
