@@ -651,15 +651,16 @@ class heistroles(commands.Cog):
 		if message.guild.id in [838646783785697290,927399549063004270]:
 			if message.author.id == 270904126974590976:
 				if len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
-					if 'Great work' in message.embeds[0].to_dict()["title"] and 'A Plus' in message.embeds[0].to_dict()["description"]:
-						pins = await message.channel.pins()
-						for msg in pins:
-							try:
-								if round((datetime.datetime.utcnow() - msg.created_at).total_seconds()) > 172800:
-									await msg.unpin()
-							except:
-								pass
-						await message.pin()
+					if 'Great work' in message.embeds[0].to_dict()["title"]: 
+						if 'A Plus' in message.embeds[0].to_dict()["description"] or 'Stolen Amulet' in message.embeds[0].to_dict()["description"]:
+							pins = await message.channel.pins()
+							for msg in pins:
+								try:
+									if round((datetime.datetime.utcnow() - msg.created_at).total_seconds()) > 172800:
+										await msg.unpin()
+								except:
+									pass
+							await message.pin()
 
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):

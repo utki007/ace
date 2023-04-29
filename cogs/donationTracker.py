@@ -1070,7 +1070,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		totalmembers = f"{df['event_'+name][df['event_'+name]>0].size}"
 
 		sum_df = df[[nameofevent]]
-		totaldono = f"{int((sum_df[sum_df[nameofevent]>5000000.0].sum())/1.4):,}"
+		totaldono = f"{int((sum_df[sum_df[nameofevent]>5000000.0].sum())/1.5):,}"
 		# totaldono = f'{int(df["event_"+name].sum()):,}'
 		df = df.head(5)
 
@@ -1346,7 +1346,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			color=discord.Color.random(),
 			description=f"> Loading Grinder Data {self.bot.emojis_list['Typing']} "
 		)
-		msg = await ctx.send(embed=waiting, delete_after=5)
+		msg = await ctx.send(embed=waiting, delete_after=30)
 
 		gk = self.bot.get_guild(785839283847954433)
 		grinder = gk.get_role(836228842397106176)
@@ -1357,15 +1357,18 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		members = grinder.members
 		members.extend(trial.members)
 		for member in members:
-			# if grinder in member.roles or trial in member.roles:
+			if grinder in member.roles:
+				type = "Permanent"
+			else:
+				type = "Probation"
 			data = await self.bot.donorBank.find(member.id)
 			if data != None and "grinder_record" in data.keys():
 				grinder_records.append(
-					[member.id, member.mention, data['grinder_record']['time']])
+					[member.id, member.mention, data['grinder_record']['time']], type)
 			else:
 				desc_not_found += f"{member.mention} `{member.id}`\n"
 
-		df = pd.DataFrame(grinder_records, columns=['ID', 'Mention', 'Time'])
+		df = pd.DataFrame(grinder_records, columns=['ID', 'Mention', 'Time', 'Type'])
 		df = df.sort_values(by='Time', ascending=True)
 		
 		user_group = list(chunk(df.index, 5))
@@ -1379,8 +1382,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Status__  <a:TGK_Pandaswag:830525027341565982>\n\n",
 				colour=color
 			)
-			display.set_thumbnail(
-				url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
+			# display.set_thumbnail(
+			# 	url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
 			display.set_footer(text=f"{ctx.guild.name} • Page {current_page}/{total_pages}",icon_url=ctx.guild.icon_url)
 			for ind in group:
 				user = ctx.guild.get_member(int(df['ID'][ind]))
@@ -1389,16 +1392,12 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 					name=f"` {counter}. ` {user.name}",
 					value=	f"<:ace_replycont:1082575852061073508> **ID:** {user.id}\n"
 							f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
+							f"<:ace_replycont:1082575852061073508> **Status:** {df['Type'][ind]}\n"
 							f"<:ace_reply:1082575762856620093> **Due On:** <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:D> <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R>",
 					inline=False
 				)
 			await ctx.send(embed=display)
-
-		
-
-		# for ind in df.index:
-			# desc += f"> {df['Mention'][ind]} {self.bot.emojis_list['rightArrow']} <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:D> <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R> \n"
-
+			await asyncio.sleep(1)
 
 		# await msg.edit(embed=display)
 		if desc_not_found != "":
