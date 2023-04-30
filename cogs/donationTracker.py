@@ -1372,7 +1372,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		df = pd.DataFrame(grinder_records, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
 		df = df.sort_values(by='Time', ascending=True)
 		
-		user_group = list(chunk(df.index, 20))
+		user_group = list(chunk(df.index, 9))
 		total_pages = len(user_group)
 		counter = 0
 		color = discord.Color.random()
