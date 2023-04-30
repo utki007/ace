@@ -1369,7 +1369,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			if data != None and "grinder_record" in data.keys():
 				expected_grind += data['grinder_record']['amount_per_grind']
 				if datetime.datetime.utcnow() < data['grinder_record']['time']:
-					total_grind += data['grinder_record']['amount_per_grind']
+					actual_grind += data['grinder_record']['amount_per_grind']
 				frequency = int(data['grinder_record']['frequency']) if "frequency" in data['grinder_record'].keys() else 0
 				grinder_records.append(
 					[member.id, member.mention, data['grinder_record']['time'], type, frequency])
