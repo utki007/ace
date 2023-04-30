@@ -1376,7 +1376,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		total_pages = len(user_group)
 		counter = 0
 		color = discord.Color.random()
-
+		
 		for group in user_group:
 			current_page = user_group.index(group)+1
 			display = discord.Embed(
@@ -1394,7 +1394,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 					value=	f"<:ace_replycont:1082575852061073508> **ID:** {user.id}\n"
 							f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
 							f"<:ace_replycont:1082575852061073508> **Status:** {df['Type'][ind]}\n"
-							f"<:ace_replycont:1082575852061073508> **Status:** {df['Frequency'][ind]}\n"
+							f"<:ace_replycont:1082575852061073508> **Paid for:** {df['Frequency'][ind]} days\n"
 							f"<:ace_reply:1082575762856620093> **Due On:** <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:D> (<t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R>)",
 					inline=False
 				)
