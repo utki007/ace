@@ -1364,14 +1364,14 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			data = await self.bot.donorBank.find(member.id)
 			if data != None and "grinder_record" in data.keys():
 				grinder_records.append(
-					[member.id, member.mention, data['grinder_record']['time'], type])
+					[member.id, member.mention, data['grinder_record']['time'], type, data['grinder_record']['frequency']])
 			else:
 				desc_not_found += f"{member.mention} `{member.id}`\n"
 
-		df = pd.DataFrame(grinder_records, columns=['ID', 'Mention', 'Time', 'Type'])
+		df = pd.DataFrame(grinder_records, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
 		df = df.sort_values(by='Time', ascending=True)
 		
-		user_group = list(chunk(df.index, 5))
+		user_group = list(chunk(df.index, 20))
 		total_pages = len(user_group)
 		counter = 0
 		color = discord.Color.random()
@@ -1389,11 +1389,12 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				user = ctx.guild.get_member(int(df['ID'][ind]))
 				counter = counter + 1
 				display.add_field(
-					name=f"` {counter}. ` {user.name}",
+					name=f"`{counter}.` {user.name}",
 					value=	f"<:ace_replycont:1082575852061073508> **ID:** {user.id}\n"
 							f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
 							f"<:ace_replycont:1082575852061073508> **Status:** {df['Type'][ind]}\n"
-							f"<:ace_reply:1082575762856620093> **Due On:** <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:D> <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R>",
+							f"<:ace_replycont:1082575852061073508> **Status:** {df['Frequency'][ind]}\n"
+							f"<:ace_reply:1082575762856620093> **Due On:** <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:D> (<t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R>)",
 					inline=False
 				)
 			await ctx.send(embed=display)
