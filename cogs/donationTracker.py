@@ -1379,7 +1379,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		df = pd.DataFrame(grinder_records, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
 		df = df.sort_values(by='Time', ascending=True)
 		
-		user_group = list(chunk(df.index, 9))
+		user_group = list(chunk(df.index, 8))
 		total_pages = len(user_group)
 		counter = 0
 		color = discord.Color.random()
@@ -1398,19 +1398,20 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				counter = counter + 1
 				display.add_field(
 					name=f"`{counter}.` {user.name}",
-					value=	f"<:ace_replycont:1082575852061073508> **ID:** {user.id}\n"
-							f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
-							f"<:ace_replycont:1082575852061073508> **Status:** `{df['Type'][ind]}`\n"
-							f"<:ace_replycont:1082575852061073508> **Paid for:** {df['Frequency'][ind]} days\n"
-							f"<:ace_reply:1082575762856620093> **Due On:** <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:D> (<t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R>)",
+					value=	f"<:ace_replycont:1082575852061073508>**ID:** {user.id}\n"
+							f"<:ace_replycont:1082575852061073508>**User:** {user.mention}\n"
+							f"<:ace_replycont:1082575852061073508>**Status:** `{df['Type'][ind]}`\n"
+							f"<:ace_replycont:1082575852061073508>**Paid for:** {df['Frequency'][ind]} days\n"
+							f"<:ace_reply:1082575762856620093>**Due On:** <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:D> (<t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R>)",
 					inline=False
 				)
 			if current_page == total_pages:
 				display.add_field(
 					name=f"` - ` TGK Stats",
-					value=	f"<:ace_replycont:1082575852061073508> **Actual Grind:** ⏣ {round(actual_grind):,}\n"
-							f"<:ace_replycont:1082575852061073508> **Expected Grind:** ⏣ {round(expected_grind):,}\n"
-							f"<:ace_reply:1082575762856620093> **Predicted Weekly:** ⏣ {round(expected_grind*7):,}\n",
+					value=	f"<:ace_replycont:1082575852061073508>**Actual Grind:** ⏣ {round(actual_grind):,}\n"
+							f"<:ace_replycont:1082575852061073508>**Expected Grind:** ⏣ {round(expected_grind):,}\n"
+							f"<:ace_replycont:1082575852061073508>**Actual Weekly:** ⏣ {round(actual_grind*7):,}\n"
+							f"<:ace_reply:1082575762856620093>**Predicted Weekly:** ⏣ {round(expected_grind*7):,}\n",
 					inline=False
 				)
 			await ctx.send(embed=display)
