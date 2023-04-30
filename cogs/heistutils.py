@@ -356,6 +356,23 @@ class heistutils(commands.Cog):
 	# 	except:
 	# 		return await ctx.send(f"<a:nat_warning:1010618708688912466> Ran into an issue, will be resolved soon! <a:nat_warning:1010618708688912466>", delete_after=30, hidden= True)
 		
+	@cog_ext.cog_slash(name="webhook", description="💬 Post Important Message", guild_ids=[785839283847954433],default_permission=False,permissions=heist_perm,
+	options=[
+		create_option(name="message", description="Enter message", option_type=3, required=False)
+	])
+	async def hideping(self, ctx, *, target, message=""):
+
+		webhooks = await ctx.channel.webhooks()
+		webhook = discord.utils.get(webhooks, name=self.bot.user.name)
+
+		orig_message = message
+
+		if webhook is None:
+			webhook = await ctx.channel.create_webhook(name=self.bot.user.name, reason="For Ghost Pings", avatar=await self.bot.user.avatar_url.read())
+		webhook = DiscordWebhook(url=webhook.url, username="Mr. Incognito", avatar_url=await ctx.author.avatar_url.read(), content=message)
+									#  avatar_url=f'https://cdn.discordapp.com/attachments/999555672733663285/1052977647468171364/141-1415218_incognito-logo-incognito-mode-icon-removebg-preview.png'
+		await ctx.send(f"<:TGK_evil:931124259718332437>", hidden=True)
+		webhook.execute()
 		
 def setup(bot):
 	bot.add_cog(heistutils(bot))
