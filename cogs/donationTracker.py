@@ -1356,6 +1356,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		desc_not_found = ""
 		members = grinder.members
 		members.extend(trial.members)
+
+		actual_grind = 0
+		expected_grind = 0
+
 		for member in members:
 			if grinder in member.roles:
 				type = "Permanent"
@@ -1363,6 +1367,9 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				type = "Probation"
 			data = await self.bot.donorBank.find(member.id)
 			if data != None and "grinder_record" in data.keys():
+				expected_grind += data['grinder_record']['amount_per_grind']
+				if datetime.datetime.utcnow() < data['grinder_record']['time']:
+					total_grind += data['grinder_record']['amount_per_grind']
 				frequency = int(data['grinder_record']['frequency']) if "frequency" in data['grinder_record'].keys() else 0
 				grinder_records.append(
 					[member.id, member.mention, data['grinder_record']['time'], type, frequency])
@@ -1393,9 +1400,17 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 					name=f"`{counter}.` {user.name}",
 					value=	f"<:ace_replycont:1082575852061073508> **ID:** {user.id}\n"
 							f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
-							f"<:ace_replycont:1082575852061073508> **Status:** {df['Type'][ind]}\n"
+							f"<:ace_replycont:1082575852061073508> **Status:** `{df['Type'][ind]}`\n"
 							f"<:ace_replycont:1082575852061073508> **Paid for:** {df['Frequency'][ind]} days\n"
 							f"<:ace_reply:1082575762856620093> **Due On:** <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:D> (<t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R>)",
+					inline=False
+				)
+			if current_page == total_pages:
+				display.add_field(
+					name=f"` - ` TGK Stats",
+					value=	f"<:ace_replycont:1082575852061073508> **Actual Grind:** ⏣ {round(actual_grind):,}\n"
+							f"<:ace_replycont:1082575852061073508> **Expected Grind:** ⏣ {round(expected_grind):,}\n"
+							f"<:ace_reply:1082575762856620093> **Predicted Weekly:** ⏣ {round(expected_grind*7):,}\n",
 					inline=False
 				)
 			await ctx.send(embed=display)
@@ -1505,7 +1520,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			color=discord.Color.green(),
 			description=f"{self.bot.emojis_list['SuccessTick']} | Sent Grinder Reminders Successfully!"
 		)
-		await msg.edit(embed=waiting, delete_after=900)
+		await msg.edit(embed=waiting)
 
 	@commands.command(name="gappoint", aliases=['ga'])
 	@commands.check_any(checks.can_use(), checks.is_me())
