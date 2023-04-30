@@ -1363,8 +1363,9 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				type = "Probation"
 			data = await self.bot.donorBank.find(member.id)
 			if data != None and "grinder_record" in data.keys():
+				frequency = int(data['grinder_record']['frequency']) if "frequency" in data['grinder_record'].keys() else 0
 				grinder_records.append(
-					[member.id, member.mention, data['grinder_record']['time'], type, data['grinder_record']['frequency']])
+					[member.id, member.mention, data['grinder_record']['time'], type, frequency])
 			else:
 				desc_not_found += f"{member.mention} `{member.id}`\n"
 
