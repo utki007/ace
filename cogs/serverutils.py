@@ -403,7 +403,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 	
 	@commands.command(name="link",description="For sending webhook", aliases=['webhook'])
 	@commands.check_any(checks.can_use(), checks.is_me())
-	async def webhook(self,ctx,channel: discord.TextChannel,*,content: str):
+	async def webhook(self,ctx,*,content: str):
 		await ctx.message.delete()
 
 		webhooks = await ctx.channel.webhooks()
