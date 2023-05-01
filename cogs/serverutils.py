@@ -1,21 +1,23 @@
 # importing the required libraries
 import asyncio
-import random
-import discord
-from discord.ext import commands, tasks
-import pandas as pd
-import numpy as np
 import datetime
-from dateutil.relativedelta import relativedelta
-from discord_slash import cog_ext, cog_ext
-from discord_slash.utils.manage_commands import create_option, create_permission
-from discord_slash.model import SlashCommandPermissionType
-from discord_slash.utils.manage_components import create_button, create_actionrow
-from discord_slash.model import ButtonStyle
-from discord_slash.context import ComponentContext
-from colour import Color
-from utils.Checks import checks
+import random
 import re
+
+import discord
+import numpy as np
+import pandas as pd
+from colour import Color
+from dateutil.relativedelta import relativedelta
+from discord.ext import commands, tasks
+from discord_slash import cog_ext
+from discord_slash.context import ComponentContext
+from discord_slash.model import ButtonStyle, SlashCommandPermissionType
+from discord_slash.utils.manage_commands import (create_option, create_permission)
+from discord_slash.utils.manage_components import (create_actionrow, create_button)
+from discord_webhook import DiscordEmbed, DiscordWebhook
+
+from utils.Checks import checks
 
 
 class serverutils(commands.Cog, description="Server Utility"):
@@ -397,6 +399,23 @@ class serverutils(commands.Cog, description="Server Utility"):
 				description=f"<a:nat_cross:1010969491347357717> **|** {member.mention} already has the {role.mention} role!"
 			)
 			return await ctx.send(embed=error_embed)
+
+	
+	@commands.command(name="link",description="For sending webhook", aliases=['webhook'])
+	@commands.check_any(checks.can_use(), checks.is_me())
+	async def webhook(self,ctx,channel: discord.TextChannel,*,content: str):
+		await ctx.message.delete()
+
+		webhooks = await ctx.channel.webhooks()
+		webhook = discord.utils.get(webhooks, name=self.bot.user.name)
+
+		if webhook is None:
+			webhook = await ctx.channel.create_webhook(name=self.bot.user.name, reason="For sending webhook", avatar=await self.bot.user.avatar_url.read())
+
+		webhook = DiscordWebhook(url=webhook.url, username=ctx.author.name,
+								avatar_url=str(ctx.author.avatar_url).split("?")[0], 
+								content=content,allowed_mentions={ "parse": [] })
+		webhook.execute()
 
 	# @commands.command(name="hbd", description="Wish Happy Birthday")
 	# async def hbd(self, ctx, *, message: str = None):
