@@ -120,14 +120,14 @@ class selfroles(commands.Cog):
 		dev = self.bot.get_guild(999551299286732871)
 		danker = await gk.fetch_emoji(801693036911263744)
 		gambler = await gk.fetch_emoji(842628623571091457)
-		mudae = await dev.fetch_emoji(1067143842077360168)
+		mafia = await dev.fetch_emoji(1102975116989710477)
 		rumble = await dev.fetch_emoji(1067137623384141926)
 		karuta = await dev.fetch_emoji(1067144222806904983)
 
 		buttons = [
 			create_button(style=ButtonStyle.grey,emoji=danker, label="Danker's", disabled=False, custom_id="reaction:danker"),
 			create_button(style=ButtonStyle.grey,emoji=gambler, label="Casino", disabled=False, custom_id="reaction:gambler"),
-			create_button(style=ButtonStyle.grey,emoji=mudae, label="Mudae", disabled=False, custom_id="reaction:mudae"),
+			create_button(style=ButtonStyle.grey,emoji=mafia, label="Mafia", disabled=False, custom_id="reaction:mafia"),
 			create_button(style=ButtonStyle.grey,emoji=rumble, label="Rumble Royale", disabled=False, custom_id="reaction:rumble"),
 			create_button(style=ButtonStyle.grey,emoji=karuta, label="Karuta Drops", disabled=False, custom_id="reaction:karutadrops")
 		]
