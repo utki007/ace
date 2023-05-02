@@ -1367,8 +1367,7 @@ class heistroles(commands.Cog):
 							f"<a:calendar:854663256420909066>  {self.bot.emojis_list['right']} {event.mention}\n"                            
 							f"<:rumble_ping:1080023828505301003> {self.bot.emojis_list['right']} {rumble.mention}\n"                           
 							f"<:mafia_ping:1102975116989710477> {self.bot.emojis_list['right']} {mafia.mention}\n",
-				color=0x9e3bff,
-				timestamp=datetime.datetime.utcnow()
+				color=0x9e3bff
 		)
 		event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
 		# event_embed.set_image(url="https://cdn.discordapp.com/attachments/831970404762648586/833255266127970334/rob.gif")
