@@ -1410,8 +1410,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 					name=f"` - ` TGK Stats",
 					value=	f"<:ace_replycont:1082575852061073508>**Actual Grind:** ⏣ {round(actual_grind):,}\n"
 							f"<:ace_replycont:1082575852061073508>**Expected Grind:** ⏣ {round(expected_grind):,}\n"
-							f"<:ace_replycont:1082575852061073508>**Actual Weekly:** ⏣ {round(actual_grind*7):,}\n"
-							f"<:ace_reply:1082575762856620093>**Predicted Weekly:** ⏣ {round(expected_grind*7):,}\n",
+							f"<:ace_replycont:1082575852061073508>**Weekly Grind:** ⏣ {round(expected_grind*7):,}\n"
+							f"<:ace_reply:1082575762856620093>**Predicted Profit:** ⏣ {round(expected_grind*7-1e9):,}\n",
 					inline=False
 				)
 			await ctx.send(embed=display)
