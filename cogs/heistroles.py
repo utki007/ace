@@ -1384,28 +1384,32 @@ class heistroles(commands.Cog):
 		rumbleemoji = await playzone.fetch_emoji(1080023828505301003)
 		mafiaemoji = await dev.fetch_emoji(1102975116989710477)
 
-		buttons = [
+		button1 = [
 			create_button(style=ButtonStyle.blurple,emoji=gawemoji, disabled=False, custom_id="heist:giveaways"),
 			create_button(style=ButtonStyle.blurple,emoji=flashemoji, disabled=False, custom_id="heist:flash"),
-			create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=False, custom_id="heist:other"),
+			create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=False, custom_id="heist:other")
+		]
+		button2 = [
 			create_button(style=ButtonStyle.blurple,emoji=eventemoji, disabled=False, custom_id="heist:event"),
 			create_button(style=ButtonStyle.primary,emoji=rumbleemoji, disabled=False, custom_id="heist:rumble"),
 			create_button(style=ButtonStyle.primary,emoji=mafiaemoji, disabled=False, custom_id="heist:mafia")
 		]
-		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
+		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*button1),create_actionrow(*button2)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
 
 		if expire:
 			await asyncio.sleep(3600)
-			buttonsexpireall = [
+			button1 = [
 				create_button(style=ButtonStyle.blurple,emoji=gawemoji, disabled=True, custom_id="heist:giveaways"),
 				create_button(style=ButtonStyle.blurple,emoji=flashemoji, disabled=True, custom_id="heist:flash"),
-				create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=True, custom_id="heist:other"),
+				create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=True, custom_id="heist:other")
+			]
+			button2 = [
 				create_button(style=ButtonStyle.blurple,emoji=eventemoji, disabled=True, custom_id="heist:event"),
 				create_button(style=ButtonStyle.primary,emoji=rumbleemoji, disabled=True, custom_id="heist:rumble"),
 				create_button(style=ButtonStyle.primary,emoji=mafiaemoji, disabled=True, custom_id="heist:mafia")
 			]
-			await msg.edit(embed=event_embed, components=[create_actionrow(*buttonsexpireall)])
+			await msg.edit(embed=event_embed, components=[create_actionrow(*button1),create_actionrow(*button2)])
 
 	@cog_ext.cog_subcommand(base="Reactionrole", name="Nopartner",description="No partnership related reaction roles", guild_ids=guild_ids,
 		base_default_permission=True,
