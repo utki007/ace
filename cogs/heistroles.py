@@ -827,15 +827,15 @@ class heistroles(commands.Cog):
 					await ctx.author.add_roles(gambler)
 					await ctx.send(f"The role {gambler.mention} has been added to you.", hidden=True)
 					
-			elif ctx.custom_id == "reaction:mudae":
+			elif ctx.custom_id == "reaction:mafia":
 				await ctx.defer(hidden=True)
-				mudae = discord.utils.get(ctx.guild.roles, id=842809745802526730)
-				if mudae in ctx.author.roles:
-					await ctx.author.remove_roles(mudae)
-					await ctx.send(f"The role {mudae.mention} has been removed from you.", hidden=True)
+				mafia = discord.utils.get(ctx.guild.roles, id=842809745802526730)
+				if mafia in ctx.author.roles:
+					await ctx.author.remove_roles(mafia)
+					await ctx.send(f"The role {mafia.mention} has been removed from you.", hidden=True)
 				else:
-					await ctx.author.add_roles(mudae)
-					await ctx.send(f"The role {mudae.mention} has been added to you.", hidden=True)
+					await ctx.author.add_roles(mafia)
+					await ctx.send(f"The role {mafia.mention} has been added to you.", hidden=True)
 					
 			elif ctx.custom_id == "reaction:valo":
 				await ctx.defer(hidden=True)
@@ -1248,6 +1248,14 @@ class heistroles(commands.Cog):
 					await ctx.author.add_roles(rumble)
 					await ctx.send(f"The role {rumble.mention} has been added to you.", hidden=True)
 
+			elif ctx.custom_id == "heist:mafia":
+				await ctx.defer(hidden=True)
+				mafia = discord.utils.get(ctx.guild.roles, id=842809745802526730)
+				if mafia in ctx.author.roles:
+					await ctx.send(f"You already have the {mafia.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
+				else:
+					await ctx.author.add_roles(mafia)
+					await ctx.send(f"The role {mafia.mention} has been added to you.", hidden=True)
 
 			elif ctx.custom_id == "heist:voted":
 				await ctx.defer(hidden=True)
@@ -1339,7 +1347,7 @@ class heistroles(commands.Cog):
 			create_option(name="expire", description="Do the react-buttons expire?", required=False, option_type=5)
 		]
 	)
-	async def otherrr(self, ctx, name: str = "Other Self Roles", expire: bool = True):
+	async def otherrr(self, ctx, name: str = "Imp. Self Roles", expire: bool = True):
 		await ctx.defer(hidden=True)
 
 		guild = self.bot.get_guild(785839283847954433)
@@ -1349,14 +1357,16 @@ class heistroles(commands.Cog):
 		other = discord.utils.get(guild.roles, id=848809346972516363)
 		event = discord.utils.get(guild.roles, id=836925033506275399)
 		rumble = discord.utils.get(guild.roles, id=1067135771473100960)
-
+		mafia = discord.utils.get(guild.roles, id=842809745802526730)
+		
 		event_embed = discord.Embed(
 				title=f"<a:celebrateyay:821698856202141696>  **{name.title(): ^15}**  <a:celebrateyay:821698856202141696>",
 				description=f"<a:tadaa:806631994770849843> {self.bot.emojis_list['right']} {giveaways.mention}\n"
 							f"<a:tgk_redboost:1068482459014017034>  {self.bot.emojis_list['right']} {flash.mention}\n"
 							f"<:tgk_raffle:1024206931373608961> {self.bot.emojis_list['right']} {other.mention}\n"
 							f"<a:calendar:854663256420909066>  {self.bot.emojis_list['right']} {event.mention}\n"                            
-							f"<:rumble_ping:1080023828505301003> {self.bot.emojis_list['right']} {rumble.mention}\n",
+							f"<:rumble_ping:1080023828505301003> {self.bot.emojis_list['right']} {rumble.mention}\n"                           
+							f"<:mafia_ping:1102975116989710477> {self.bot.emojis_list['right']} {mafia.mention}\n",
 				color=0x9e3bff,
 				timestamp=datetime.datetime.utcnow()
 		)
@@ -1365,19 +1375,22 @@ class heistroles(commands.Cog):
 		
 		gk = self.bot.get_guild(785839283847954433)
 		playzone = self.bot.get_guild(815849745327194153)
+		dev = self.bot.get_guild(999551299286732871)
 
 		gawemoji = await gk.fetch_emoji(806631994770849843)
 		flashemoji = await gk.fetch_emoji(1068482459014017034)
 		otheremoji = await gk.fetch_emoji(1024206931373608961)
 		eventemoji = await gk.fetch_emoji(854663256420909066)
 		rumbleemoji = await playzone.fetch_emoji(1080023828505301003)
+		mafiaemoji = await dev.fetch_emoji(1102975116989710477)
 
 		buttons = [
 			create_button(style=ButtonStyle.blurple,emoji=gawemoji, disabled=False, custom_id="heist:giveaways"),
 			create_button(style=ButtonStyle.blurple,emoji=flashemoji, disabled=False, custom_id="heist:flash"),
 			create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=False, custom_id="heist:other"),
 			create_button(style=ButtonStyle.blurple,emoji=eventemoji, disabled=False, custom_id="heist:event"),
-			create_button(style=ButtonStyle.primary,emoji=rumbleemoji, disabled=False, custom_id="heist:rumble")
+			create_button(style=ButtonStyle.primary,emoji=rumbleemoji, disabled=False, custom_id="heist:rumble"),
+			create_button(style=ButtonStyle.primary,emoji=mafiaemoji, disabled=False, custom_id="heist:mafia")
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)
@@ -1389,7 +1402,8 @@ class heistroles(commands.Cog):
 				create_button(style=ButtonStyle.blurple,emoji=flashemoji, disabled=True, custom_id="heist:flash"),
 				create_button(style=ButtonStyle.blurple,emoji=otheremoji, disabled=True, custom_id="heist:other"),
 				create_button(style=ButtonStyle.blurple,emoji=eventemoji, disabled=True, custom_id="heist:event"),
-				create_button(style=ButtonStyle.primary,emoji=rumbleemoji, disabled=True, custom_id="heist:rumble")
+				create_button(style=ButtonStyle.primary,emoji=rumbleemoji, disabled=True, custom_id="heist:rumble"),
+				create_button(style=ButtonStyle.primary,emoji=mafiaemoji, disabled=True, custom_id="heist:mafia")
 			]
 			await msg.edit(embed=event_embed, components=[create_actionrow(*buttonsexpireall)])
 

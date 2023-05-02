@@ -492,20 +492,35 @@ class giveaway(commands.Cog):
 			create_option(name="event_name", description="Name of the event", option_type=3, required=True),
 			create_option(name="channel", description="Event channel where event is being hosted.", required=True, option_type=7),
 			create_option(name="prize", description="A constant number like '123' or a shorthand like '2k'", option_type=3, required=True),
+			create_option(name="event_type", description="Which event are you hosting?", choices=[
+				{
+					"name": "Rumble Royale",
+					"value": "rumble"
+				},
+				{
+					"name": "Mafia",
+					"value": "mafia"
+				},
+				{
+					"name": "Any other event",
+					"value": "other"
+				}
+			], required=True, option_type=3),
 			create_option(name="sponsor", description="Can be host too!", required=False, option_type=6),
 			create_option(name="sponsor_message", description="Note from Sponsor", option_type=3, required=False),
-			create_option(name="ping", description="Want to ping event role?", required=False, option_type=5),
-			create_option(name="rumble", description="Want to ping rumble role?", required=False, option_type=5),
+			create_option(name="ping", description="Want to ping event role?", required=False, option_type=5)
 		]
 	)
-	async def event(self, ctx, event_name, channel, prize, sponsor = None,sponsor_message = '', ping = True, rumble = False):
+	async def event(self, ctx, event_name, channel, prize, event_type, sponsor = None,sponsor_message = '', ping = True, rumble = False):
 		
 		await ctx.defer(hidden=True)
 		host = ctx.author
 		name = event_name.title()
 
-		if rumble:
+		if event_type == 'rumble':
 			event = discord.utils.get(ctx.guild.roles, id=1067135771473100960)
+		elif event_type == 'mafia':
+			event = discord.utils.get(ctx.guild.roles, id=842809745802526730)
 		else:
 			event = discord.utils.get(ctx.guild.roles, id=836925033506275399)
 		
@@ -541,7 +556,6 @@ class giveaway(commands.Cog):
 		buttons = [create_button(style=ButtonStyle.URL, label="Head to event channel!", emoji=eventemoji, disabled=False, url=url)]
 		
 		if ping:
-			# event_summary += f"||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| "
 			await ctx.channel.send(content=f"{event_summary}\n[ {event.mention} ]",embed=event_embed, components=[create_actionrow(*buttons)])
 		else:
 			await ctx.channel.send(content = event_summary ,embed=event_embed, components=[create_actionrow(*buttons)])
