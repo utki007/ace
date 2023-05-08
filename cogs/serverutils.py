@@ -16,6 +16,7 @@ from discord_slash.model import ButtonStyle, SlashCommandPermissionType
 from discord_slash.utils.manage_commands import (create_option, create_permission)
 from discord_slash.utils.manage_components import (create_actionrow, create_button)
 from discord_webhook import DiscordEmbed, DiscordWebhook
+import requests
 
 from utils.Checks import checks
 
@@ -415,6 +416,9 @@ class serverutils(commands.Cog, description="Server Utility"):
 		webhook = DiscordWebhook(url=webhook.url, username=ctx.author.name,
 								avatar_url=str(ctx.author.avatar_url).split("?")[0], 
 								content=content,allowed_mentions={ "parse": [] })
+		if ctx.message.attachments != []:
+			for attachment in ctx.message.attachments:
+				webhook.add_file(requests.get(attachment.url).content, attachment.filename)
 		webhook.execute()
 
 	# @commands.command(name="hbd", description="Wish Happy Birthday")
