@@ -661,15 +661,6 @@ class heistroles(commands.Cog):
 								except:
 									pass
 							await message.pin()
-		def check(msg):
-			return msg.author.id == self.bot.user.id
-		if message.guild.id in [999551299286732871]:
-			if message.author.id == 972637072991068220:
-				if len(message.embeds)>0 and "description" in message.embeds[0].to_dict().keys():
-					if 'Ready to be watered' in message.embeds[0].to_dict()["description"]:
-						await message.channel.send(f'Ready to be watered!')
-					else:
-						await message.channel.purge(limit=10, check=check, before=None)
 
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
