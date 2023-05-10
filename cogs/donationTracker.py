@@ -1232,7 +1232,11 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def gcheck(self, ctx, member: discord.Member = None):
 		await ctx.message.delete()
-		if not ctx.author.guild_permissions.manage_guild or member is None:
+		# if not ctx.author.guild_permissions.manage_guild or member is None:
+		staff = ctx.guild.get_role(818129661325869058)
+		if member is None:
+			member = ctx.author
+		if staff not in member.roles:
 			member = ctx.author
 		if member.bot:
 			display = discord.Embed(
