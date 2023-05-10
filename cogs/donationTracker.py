@@ -1236,7 +1236,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		staff = ctx.guild.get_role(818129661325869058)
 		if member is None:
 			member = ctx.author
-		if staff not in member.roles:
+		if staff not in ctx.author.roles:
 			member = ctx.author
 		if member.bot:
 			display = discord.Embed(
