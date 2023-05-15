@@ -64,23 +64,17 @@ class Events(commands.Cog):
 			reacts += reaction.count
 
 		display = discord.Embed(
+			title = f"Reaction Added (User ID: {member.id})",
 			colour = 2829617,
-			timestamp = datetime.datetime.utcnow()
+			timestamp = datetime.datetime.utcnow(),
+			url = message.jump_url
 		)
-		display.set_author(name=f'{member.name}#{member.discriminator} ({member.id})', icon_url=member.avatar_url)
 		display.add_field(name="Channel:",value=f'{channel.mention} (`#{channel.name}`)',inline=True)
 		display.add_field(name="Emoji:",value=f'{emoji.name}',inline=True)
 		if reacts > 10:
 			display.add_field(name="Total Reacts:",value=f'{reacts}',inline=True)
-		display.add_field(name="_ _",value=f'[`Jump to Message`]({message.jump_url})',inline=False)
-		display.set_footer(text=f"Message ID: {message.id} • {event_type}", icon_url=guild.icon_url)
+		display.set_footer(text=f"Message ID: {message.id}", icon_url=guild.icon_url)
 		display.set_thumbnail(url=emoji_url)
-
-		# dev_server = self.bot.get_guild(999551299286732871)
-		# server_emoji = await dev_server.fetch_emoji(1048598237612867584)
-		# buttons = [
-		# 	create_button(style=ButtonStyle.URL, label="Jump to Message!", emoji=server_emoji, disabled=False, url=message.jump_url)
-		# ]
 
 		logs_channel = self.bot.get_channel(1084370271944835132)
 		webhooks = await logs_channel.webhooks()
@@ -99,6 +93,8 @@ class Events(commands.Cog):
 		channel = guild.get_channel(payload.channel_id)
 		if member is None:
 			member = await guild.fetch_member(payload.user_id)
+		if member.bot:
+			return
 		message = await channel.fetch_message(payload.message_id)
 		event_type = payload.event_type
 		emoji = payload.emoji
@@ -114,14 +110,14 @@ class Events(commands.Cog):
 			emoji_url = emoji.url
 
 		display = discord.Embed(
-			colour = discord.Colour.random(),
-			timestamp = datetime.datetime.utcnow()
+			title = f"Reaction Removed (User ID: {member.id})",
+			colour = 2829617,
+			timestamp = datetime.datetime.utcnow(),
+			url = message.jump_url
 		)
-		display.set_author(name=f'{member.name}#{member.discriminator} ({member.id})', icon_url=member.avatar_url)
 		display.add_field(name="Channel:",value=f'{channel.mention} (`#{channel.name}`)',inline=True)
 		display.add_field(name="Emoji:",value=f'{emoji.name}',inline=True)
-		display.add_field(name="_ _",value=f'[`Jump to Message`]({message.jump_url})',inline=False)
-		display.set_footer(text=f"Message ID: {message.id} • {event_type}", icon_url=guild.icon_url)
+		display.set_footer(text=f"Message ID: {message.id}", icon_url=guild.icon_url)
 		display.set_thumbnail(url=emoji_url)
 
 		# dev_server = self.bot.get_guild(999551299286732871)
