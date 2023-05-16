@@ -10,6 +10,7 @@ import time as tm
 from utils.Checks import CommandDisableByDev
 from pytz import timezone 
 import datetime
+from discord_webhook import DiscordWebhook, DiscordEmbed
 
 class Events(commands.Cog):
 	def __init__(self, bot):
@@ -63,16 +64,16 @@ class Events(commands.Cog):
 		for reaction in message.reactions:
 			reacts += reaction.count
 
-		display = discord.Embed(
+		display = DiscordEmbed(
 			title = f"Reaction Added (User ID: {member.id})",
 			colour = 2829617,
 			timestamp = datetime.datetime.utcnow(),
 			url = message.jump_url
 		)
-		display.add_field(name="Channel:",value=f'{channel.mention} (`#{channel.name}`)',inline=True)
-		display.add_field(name="Emoji:",value=f'{emoji.name}',inline=True)
+		display.add_embed_field(name="Channel:",value=f'{channel.mention} (`#{channel.name}`)',inline=True)
+		display.add_embed_field(name="Emoji:",value=f'{emoji.name}',inline=True)
 		if reacts > 10:
-			display.add_field(name="Total Reacts:",value=f'{reacts}',inline=True)
+			display.add_embed_field(name="Total Reacts:",value=f'{reacts}',inline=True)
 		display.set_footer(text=f"Message ID: {message.id}", icon_url=guild.icon_url)
 		display.set_thumbnail(url=emoji_url)
 
@@ -82,57 +83,67 @@ class Events(commands.Cog):
 		if webhook is None:
 			webhook = await logs_channel.create_webhook(name=self.bot.user.name, reason="Reaction Logging", avatar=await self.bot.user.avatar_url.read())
 		
-		await webhook.send(embed=display, username=member.name, avatar_url=member.avatar_url)
-
-	@commands.Cog.listener()
-	async def on_raw_reaction_remove(self, payload):
-		if self.bot.user.id == 859107514082394142:
-			return
-		member = payload.member
-		guild = self.bot.get_guild(payload.guild_id)
-		channel = guild.get_channel(payload.channel_id)
-		if member is None:
-			member = await guild.fetch_member(payload.user_id)
-		if member.bot:
-			return
-		message = await channel.fetch_message(payload.message_id)
-		event_type = payload.event_type
-		emoji = payload.emoji
-		if emoji.is_unicode_emoji():
-			emoj_desc = emoji.name
-
-			# get url for unicode emoji
-			emojiUnicode = emoji.name.encode('unicode-escape').decode('ascii')
-			emojiNumber = emojiUnicode.lower().replace('\\u', '').lstrip('0')
-			emoji_url = f'https://twitter.github.io/twemoji/v/13.1.0/72x72/{emojiNumber}.png'
-		else:
-			emoj_desc = f'{emoji.name} (`{emoji.id}`)'
-			emoji_url = emoji.url
-
-		display = discord.Embed(
-			title = f"Reaction Removed (User ID: {member.id})",
-			colour = 2829617,
-			timestamp = datetime.datetime.utcnow(),
-			url = message.jump_url
+		webhook = DiscordWebhook(
+			url=webhook.url, 
+			username=member.name,
+			avatar_url=str(member.avatar_url),
+			rate_limit_retry=True,
+			allowed_mentions={ "parse": [] }
 		)
-		display.add_field(name="Channel:",value=f'{channel.mention} (`#{channel.name}`)',inline=True)
-		display.add_field(name="Emoji:",value=f'{emoji.name}',inline=True)
-		display.set_footer(text=f"Message ID: {message.id}", icon_url=guild.icon_url)
-		display.set_thumbnail(url=emoji_url)
+		webhook.add_embed(display)
+		webhook.execute()
 
-		# dev_server = self.bot.get_guild(999551299286732871)
-		# server_emoji = await dev_server.fetch_emoji(1048598237612867584)
-		# buttons = [
-		# 	create_button(style=ButtonStyle.URL, label="Jump to Message!", emoji=server_emoji, disabled=False, url=message.jump_url)
-		# ]
+		# await webhook.send(embed=display, username=member.name, avatar_url=member.avatar_url)
 
-		logs_channel = self.bot.get_channel(1084370271944835132)
-		webhooks = await logs_channel.webhooks()
-		webhook = discord.utils.get(webhooks, name=self.bot.user.name)
-		if webhook is None:
-			webhook = await logs_channel.create_webhook(name=self.bot.user.name, reason="Reaction Logging", avatar=await self.bot.user.avatar_url.read())
+	# @commands.Cog.listener()
+	# async def on_raw_reaction_remove(self, payload):
+	# 	if self.bot.user.id == 859107514082394142:
+	# 		return
+	# 	member = payload.member
+	# 	guild = self.bot.get_guild(payload.guild_id)
+	# 	channel = guild.get_channel(payload.channel_id)
+	# 	if member is None:
+	# 		member = await guild.fetch_member(payload.user_id)
+	# 	if member.bot:
+	# 		return
+	# 	message = await channel.fetch_message(payload.message_id)
+	# 	event_type = payload.event_type
+	# 	emoji = payload.emoji
+	# 	if emoji.is_unicode_emoji():
+	# 		emoj_desc = emoji.name
+
+	# 		# get url for unicode emoji
+	# 		emojiUnicode = emoji.name.encode('unicode-escape').decode('ascii')
+	# 		emojiNumber = emojiUnicode.lower().replace('\\u', '').lstrip('0')
+	# 		emoji_url = f'https://twitter.github.io/twemoji/v/13.1.0/72x72/{emojiNumber}.png'
+	# 	else:
+	# 		emoj_desc = f'{emoji.name} (`{emoji.id}`)'
+	# 		emoji_url = emoji.url
+
+	# 	display = discord.Embed(
+	# 		title = f"Reaction Removed (User ID: {member.id})",
+	# 		colour = 2829617,
+	# 		timestamp = datetime.datetime.utcnow(),
+	# 		url = message.jump_url
+	# 	)
+	# 	display.add_field(name="Channel:",value=f'{channel.mention} (`#{channel.name}`)',inline=True)
+	# 	display.add_field(name="Emoji:",value=f'{emoji.name}',inline=True)
+	# 	display.set_footer(text=f"Message ID: {message.id}", icon_url=guild.icon_url)
+	# 	display.set_thumbnail(url=emoji_url)
+
+	# 	# dev_server = self.bot.get_guild(999551299286732871)
+	# 	# server_emoji = await dev_server.fetch_emoji(1048598237612867584)
+	# 	# buttons = [
+	# 	# 	create_button(style=ButtonStyle.URL, label="Jump to Message!", emoji=server_emoji, disabled=False, url=message.jump_url)
+	# 	# ]
+
+	# 	logs_channel = self.bot.get_channel(1084370271944835132)
+	# 	webhooks = await logs_channel.webhooks()
+	# 	webhook = discord.utils.get(webhooks, name=self.bot.user.name)
+	# 	if webhook is None:
+	# 		webhook = await logs_channel.create_webhook(name=self.bot.user.name, reason="Reaction Logging", avatar=await self.bot.user.avatar_url.read())
 		
-		await webhook.send(embed=display, username=member.name, avatar_url=member.avatar_url)
+	# 	await webhook.send(embed=display, username=member.name, avatar_url=member.avatar_url)
 
 	@commands.Cog.listener()
 	async def on_command_error(self, ctx, error):
