@@ -1556,7 +1556,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		legendary = gk.get_role(806804472700600400)
 		epic = gk.get_role(835866393458901033)
 		trial = gk.get_role(932149422719107102)
-		grinder = gk.get_role(806804472700600400)
+		grinder = gk.get_role(836228842397106176)
 		role = []
 		if tier == 3:
 			grinder_tier = "𝕀𝕀𝕀"
