@@ -67,9 +67,9 @@ class Events(commands.Cog):
 		display = DiscordEmbed(
 			title = f"Reaction Added (User ID: {member.id})",
 			colour = 2829617,
-			timestamp = datetime.datetime.utcnow(),
 			url = message.jump_url
 		)
+		display.set_timestamp()
 		display.add_embed_field(name="Channel:",value=f'{channel.mention} (`#{channel.name}`)',inline=True)
 		display.add_embed_field(name="Emoji:",value=f'{emoji.name}',inline=True)
 		if reacts > 10:
