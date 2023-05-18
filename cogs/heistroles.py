@@ -250,7 +250,7 @@ class heistroles(commands.Cog):
 					desc = message.embeds[0].to_dict()['description']
 					pattern = "⏣\s[0-9,]*"
 					total_amount = int(re.findall(pattern,desc)[0].replace("⏣ ","",1).replace(",","",5))
-					pattern = "`[0-9]*`"
+					pattern = "`\s*[0-9]*\s`"
 					stats_list = re.findall(pattern,desc)
 					stats_list = [int(stats.replace("`","",2)) for stats in stats_list]
 					count_success = stats_list[0] + stats_list[2]
