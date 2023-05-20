@@ -271,7 +271,6 @@ class heistutils(commands.Cog):
 			await ctx.send(embed = warning,hidden=True)
 			return
 		
-		content = f"Dadvertise heist \n"
 		content += f"╔════════ ≪ ◍❈◍ ≫ ════════╗ \n"
 		content += f"<:tgk_redcrown_static:1005475832128618558>      𝕋ℍ𝔼 𝔾𝔸𝕄𝔹𝕃𝔼ℝ'𝕊 𝕂𝕀ℕ𝔾𝔻𝕆𝕄     <:tgk_redcrown_static:1005475832128618558> \n"
 		content += f"╚════════ ≪ ◍❈◍ ≫ ════════╝ \n\n"
@@ -295,6 +294,7 @@ class heistutils(commands.Cog):
 			await ctx.send(content)
 		else:
 			await ctx.send(f"```{content}```")
+			await ctx.send(f"{content}")
 
 	@commands.command(name="Thanks", description="ty to grinders",aliases = ["ty"], hidden=True)
 	@commands.check_any(checks.can_use(), checks.is_me())
