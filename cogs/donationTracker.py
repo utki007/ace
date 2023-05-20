@@ -1350,13 +1350,16 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			color=discord.Color.random(),
 			description=f"> Loading Grinder Data {self.bot.emojis_list['Typing']} "
 		)
-		msg = await ctx.send(embed=waiting, delete_after=30)
+		msg = await ctx.send(embed=waiting)
 
 		gk = self.bot.get_guild(785839283847954433)
 		grinder = gk.get_role(836228842397106176)
 		trial = gk.get_role(932149422719107102)
 
 		grinder_records = []
+		demotion_record = []
+		removal_record = []
+		promotion_records = []
 		desc_not_found = ""
 		members = grinder.members
 		members.extend(trial.members)
@@ -1374,6 +1377,16 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				expected_grind += data['grinder_record']['amount_per_grind']
 				if datetime.datetime.utcnow() < data['grinder_record']['time']:
 					actual_grind += data['grinder_record']['amount_per_grind']
+					if trial in member.roles:
+						frequency = int(data['grinder_record']['frequency']) if "frequency" in data['grinder_record'].keys() else 0
+						if frequency >= 7:
+							promotion_records.append([member.id, member.mention, data['grinder_record']['time'], type, frequency])
+				else:
+					total_seconds = int((datetime.datetime.utcnow() - data['grinder_record']['time']).total_seconds())
+					if total_seconds > 518400:
+						demotion_record.append([member.id, member.mention, data['grinder_record']['time'], type, frequency])
+					elif total_seconds > 259200:
+						removal_record.append([member.id, member.mention, data['grinder_record']['time'], type, frequency])
 				frequency = int(data['grinder_record']['frequency']) if "frequency" in data['grinder_record'].keys() else 0
 				grinder_records.append(
 					[member.id, member.mention, data['grinder_record']['time'], type, frequency])
@@ -1383,7 +1396,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		df = pd.DataFrame(grinder_records, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
 		df = df.sort_values(by='Time', ascending=True)
 		
-		user_group = list(chunk(df.index, 8))
+		user_group = list(chunk(df.index, 15))
 		total_pages = len(user_group)
 		counter = 0
 		color = discord.Color.random()
@@ -1407,7 +1420,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 							f"<:ace_replycont:1082575852061073508>**Status:** `{df['Type'][ind]}`\n"
 							f"<:ace_replycont:1082575852061073508>**Paid for:** {df['Frequency'][ind]} days\n"
 							f"<:ace_reply:1082575762856620093>**Due On:** <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:D> (<t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R>)",
-					inline=False
+					inline=True
 				)
 			if current_page == total_pages:
 				display.add_field(
@@ -1416,7 +1429,105 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 							f"<:ace_replycont:1082575852061073508>**Expected Grind:** ⏣ {round(expected_grind):,}\n"
 							f"<:ace_replycont:1082575852061073508>**Weekly Grind:** ⏣ {round(expected_grind*7):,}\n"
 							f"<:ace_reply:1082575762856620093>**Predicted Profit:** ⏣ {round(expected_grind*7-1e9):,}\n",
-					inline=False
+					inline=True
+				)
+			await ctx.send(embed=display)
+			await asyncio.sleep(1)
+		
+		try:
+			await msg.delete()
+		except:
+			pass
+
+		demotion_df = pd.DataFrame(demotion_record, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
+		demotion_df = demotion_df.sort_values(by='Time', ascending=True)
+		demotion_group = list(chunk(demotion_df.index, 15))
+		total_pages = len(demotion_group)
+		counter = 0
+		color = discord.Color.random()
+
+		for group in demotion_group:
+			current_page = demotion_group.index(group)+1
+			display = discord.Embed(
+				title=f"<a:TGK_Pandaswag:830525027341565982>  __Demotion Record__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+				colour=color
+			)
+			# display.set_thumbnail(
+			# 	url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
+			display.set_footer(text=f"{ctx.guild.name} • Page {current_page}/{total_pages}",icon_url=ctx.guild.icon_url)
+			for ind in group:
+				user = ctx.guild.get_member(int(demotion_df['ID'][ind]))
+				counter = counter + 1
+				display.add_field(
+					name=f"`{counter}.` {user.name}",
+					value=	f"<:ace_replycont:1082575852061073508>**ID:** {user.id}\n"
+							f"<:ace_replycont:1082575852061073508>**User:** {user.mention}\n"
+							f"<:ace_replycont:1082575852061073508>**Status:** `{demotion_df['Type'][ind]}`\n"
+							f"<:ace_replycont:1082575852061073508>**Paid for:** {demotion_df['Frequency'][ind]} days\n"
+							f"<:ace_reply:1082575762856620093>**Due On:** <t:{int(datetime.datetime.timestamp(demotion_df['Time'][ind]))}:D> (<t:{int(datetime.datetime.timestamp(demotion_df['Time'][ind]))}:R>)",
+					inline=True
+				)
+			await ctx.send(embed=display)
+			await asyncio.sleep(1)
+
+		removal_df = pd.DataFrame(removal_record, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
+		removal_df = removal_df.sort_values(by='Time', ascending=True)
+		removal_group = list(chunk(removal_df.index, 15))
+		total_pages = len(removal_group)
+		counter = 0
+		color = discord.Color.random()
+
+		for group in removal_group:
+			current_page = removal_group.index(group)+1
+			display = discord.Embed(
+				title=f"<a:TGK_Pandaswag:830525027341565982>  __Removal Record__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+				colour=color
+			)
+			# display.set_thumbnail(
+			# 	url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
+			display.set_footer(text=f"{ctx.guild.name} • Page {current_page}/{total_pages}",icon_url=ctx.guild.icon_url)
+			for ind in group:
+				user = ctx.guild.get_member(int(removal_df['ID'][ind]))
+				counter = counter + 1
+				display.add_field(
+					name=f"`{counter}.` {user.name}",
+					value=	f"<:ace_replycont:1082575852061073508>**ID:** {user.id}\n"
+							f"<:ace_replycont:1082575852061073508>**User:** {user.mention}\n"
+							f"<:ace_replycont:1082575852061073508>**Status:** `{removal_df['Type'][ind]}`\n"
+							f"<:ace_replycont:1082575852061073508>**Paid for:** {removal_df['Frequency'][ind]} days\n"
+							f"<:ace_reply:1082575762856620093>**Due On:** <t:{int(datetime.datetime.timestamp(removal_df['Time'][ind]))}:D> (<t:{int(datetime.datetime.timestamp(removal_df['Time'][ind]))}:R>)",
+					inline=True
+				)
+			await ctx.send(embed=display)
+			await asyncio.sleep(1)
+			
+		promotion_df = pd.DataFrame(promotion_records, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
+		promotion_df = promotion_df.sort_values(by='Time', ascending=True)
+		promotion_group = list(chunk(promotion_df.index, 15))
+		total_pages = len(promotion_group)
+		counter = 0
+		color = discord.Color.random()
+
+		for group in promotion_group:
+			current_page = promotion_group.index(group)+1
+			display = discord.Embed(
+				title=f"<a:TGK_Pandaswag:830525027341565982>  __Promotion Record__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+				colour=color
+			)
+			# display.set_thumbnail(
+			# 	url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
+			display.set_footer(text=f"{ctx.guild.name} • Page {current_page}/{total_pages}",icon_url=ctx.guild.icon_url)
+			for ind in group:
+				user = ctx.guild.get_member(int(promotion_df['ID'][ind]))
+				counter = counter + 1
+				display.add_field(
+					name=f"`{counter}.` {user.name}",
+					value=	f"<:ace_replycont:1082575852061073508>**ID:** {user.id}\n"
+							f"<:ace_replycont:1082575852061073508>**User:** {user.mention}\n"
+							f"<:ace_replycont:1082575852061073508>**Status:** `{promotion_df['Type'][ind]}`\n"
+							f"<:ace_replycont:1082575852061073508>**Paid for:** {promotion_df['Frequency'][ind]} days\n"
+							f"<:ace_reply:1082575762856620093>**Due On:** <t:{int(datetime.datetime.timestamp(promotion_df['Time'][ind]))}:D> (<t:{int(datetime.datetime.timestamp(promotion_df['Time'][ind]))}:R>)",
+					inline=True
 				)
 			await ctx.send(embed=display)
 			await asyncio.sleep(1)
