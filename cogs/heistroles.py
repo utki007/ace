@@ -119,7 +119,7 @@ class heistroles(commands.Cog):
 				)
 			else:
 				buttons = [
-					create_button(style=ButtonStyle.green,emoji=rumble_emoji, label="Toggle Grinding Reminder!", disabled=False, custom_id="heist:grumble")
+					create_button(style=ButtonStyle.blue,emoji=rumble_emoji, label="Toggle Grinding Reminder!", disabled=False, custom_id="heist:grumble")
 				]
 				await message.channel.send(content=content,
 					components=[create_actionrow(*buttons)], allowed_mentions=am
