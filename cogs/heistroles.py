@@ -108,16 +108,22 @@ class heistroles(commands.Cog):
 
 			am = discord.AllowedMentions(users=False, everyone=False, roles=False, replied_user=False)
 
-			buttons = [
-				create_button(style=ButtonStyle.green,emoji=rumble_emoji, label="Remind me!", disabled=False, custom_id="heist:rumble")
-			]
+			
 			await message.channel.purge(limit=10, check=check, before=None)
-			if message.channel.id != 1049233574622146560:
+			if message.channel.id not in [1049233574622146560, 1110476949194813501]:
+				buttons = [
+					create_button(style=ButtonStyle.green,emoji=rumble_emoji, label="Toggle Reminder!", disabled=False, custom_id="heist:rumble")
+				]
 				await message.channel.send(content=content,
 					components=[create_actionrow(*buttons)], allowed_mentions=am
 				)
 			else:
-				await message.channel.send(content=content, allowed_mentions=am)
+				buttons = [
+					create_button(style=ButtonStyle.green,emoji=rumble_emoji, label="Toggle Grinding Reminder!", disabled=False, custom_id="heist:grumble")
+				]
+				await message.channel.send(content=content,
+					components=[create_actionrow(*buttons)], allowed_mentions=am
+				)
 
 		# for mafia
 		elif message.author.id == 511786918783090688:
@@ -1259,6 +1265,16 @@ class heistroles(commands.Cog):
 				rumble = discord.utils.get(ctx.guild.roles, id=1067135771473100960)
 				if rumble in ctx.author.roles:
 					await ctx.send(f"You already have the {rumble.mention} role. \nCheckout <#944670050252648468> to remove it.", hidden=True)
+				else:
+					await ctx.author.add_roles(rumble)
+					await ctx.send(f"The role {rumble.mention} has been added to you.", hidden=True)
+			
+			elif ctx.custom_id == "heist:grumble":
+				await ctx.defer(hidden=True)
+				rumble = discord.utils.get(ctx.guild.roles, id=1110478424595767296)
+				if rumble in ctx.author.roles:
+					await ctx.author.remove_roles(rumble)
+					await ctx.send(f"The role {rumble.mention} has been removed from you.", hidden=True)
 				else:
 					await ctx.author.add_roles(rumble)
 					await ctx.send(f"The role {rumble.mention} has been added to you.", hidden=True)
