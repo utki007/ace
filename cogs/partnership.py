@@ -1,4 +1,5 @@
 # importing the required libraries
+import asyncio
 import discord
 from discord import embeds
 from discord.ext import commands, tasks
@@ -758,6 +759,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		if "here" in roles:
 			pings = "@here |"+pings
 
+		await asyncio.sleep(1)
 		channel_name = channel_name.replace("-"," ",100)
 		category = ctx.guild.get_channel(817049348977983506)
 		overwrites = category.overwrites
