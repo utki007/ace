@@ -745,7 +745,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
 		if data is None:
 			display = discord.Embed(
-				title=f"{member.name}#{member.discriminator}'s {name} Stats",
+				title=f"{member.name}'s {name} Stats",
 				colour= member.color,
 				description=f"` - `   You are not a donor yet! Support when?"
 			)
@@ -767,7 +767,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				current_role = None
 						
 			display = discord.Embed(
-				title=f"{member.name}#{member.discriminator}'s {name} Celeb Stats",
+				title=f"{member.name}'s {name} Celeb Stats",
 				colour= member.color,
 				timestamp=datetime.datetime.utcnow()
 			)
@@ -1203,7 +1203,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		else:
 			teir = "DEPRECIATED"
 		display = discord.Embed(
-			title=f"{member.name}#{member.discriminator}'s Grinder Stats",
+			title=f"{member.name}'s Grinder Stats",
 			colour=member.color,
 			timestamp=datetime.datetime.utcnow()
 		)
@@ -1240,7 +1240,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			member = ctx.author
 		if member.bot:
 			display = discord.Embed(
-				title=f"{member.name}#{member.discriminator}'s Grinder Stats",
+				title=f"{member.name}'s Grinder Stats",
 				colour= member.color,
 				description=f"` - `   Bot's are not allowed to be grinders."
 			)
@@ -1248,7 +1248,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		data = await self.bot.donorBank.find(member.id)
 		if data is None or "grinder_record" not in data.keys():
 			display = discord.Embed(
-				title=f"{member.name}#{member.discriminator}'s Grinder Stats",
+				title=f"{member.name}'s Grinder Stats",
 				colour= member.color,
 				description=f"` - `   You are not a grinder yet! Apply when?"
 			)
@@ -1262,7 +1262,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			else:
 				teir = "DEPRECIATED"
 			display = discord.Embed(
-				title=f"{member.name}#{member.discriminator}'s Grinder Stats",
+				title=f"{member.name}'s Grinder Stats",
 				colour= member.color,
 				timestamp=datetime.datetime.utcnow()
 			)
@@ -1288,7 +1288,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
 		if data is None:
 			display = discord.Embed(
-				title=f"{member.name}#{member.discriminator}'s 8k Stats",
+				title=f"{member.name}'s 8k Stats",
 				colour= member.color,
 				description=f"` - `   You are not a donor yet! Support when?"
 			)
@@ -1319,7 +1319,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				current_role = None
 						
 			display = discord.Embed(
-				title=f"{member.name}#{member.discriminator}'s 8k Celeb Stats",
+				title=f"{member.name}'s 8k Celeb Stats",
 				colour= member.color,
 				timestamp=datetime.datetime.utcnow()
 			)
@@ -1645,14 +1645,14 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		
 		if member.bot:
 			display = discord.Embed(
-				title=f"{member.name}#{member.discriminator}'s Grinder Stats",
+				title=f"{member.name}'s Grinder Stats",
 				colour= member.color,
 				description=f"` - `   Bot's are not allowed to be grinders."
 			)
 			return await ctx.send(embed=display)
 		if tier not in [3,4]:
 			display = discord.Embed(
-				title=f"{member.name}#{member.discriminator}'s Grinder Stats",
+				title=f"{member.name}'s Grinder Stats",
 				colour= member.color,
 				description=f"` - `   Invalid tier. Only tiers III and IV are available."
 			)
@@ -1669,11 +1669,13 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		trial = gk.get_role(932149422719107102)
 		grinder = gk.get_role(836228842397106176)
 		role = []
+		change_tier = False
 		if tier == 3:
 			grinder_tier = "𝕀𝕀𝕀"
 			amount_per_grind = 3e6
 			await member.add_roles(epic)
 			if legendary in member.roles:
+				change_tier = True
 				await member.remove_roles(legendary)
 			role.append(epic)
 		elif tier == 4:
@@ -1681,6 +1683,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			amount_per_grind = 4e6
 			await member.add_roles(legendary)
 			if epic in member.roles:
+				change_tier = True
 				await member.remove_roles(epic)
 			role.append(legendary)
 
@@ -1698,7 +1701,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		desc = None
 		if "grinder_record" in data.keys():
 			if int(data["grinder_record"]["frequency"]) > 10:
-				await member.add_roles(grinder)
+				if grinder not in member.roles: 
+					await member.add_roles(grinder)
 				role.append(grinder)
 			else:
 				await member.add_roles(trial)
@@ -1708,6 +1712,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			paid_till = data["grinder_record"]["time"]
 			if paid_till < time:
 				data["grinder_record"]["time"] = time
+			if change_tier:
+				data["grinder_record"]["frequency"] = 0
 		else:
 			data["grinder_record"] = grinder_record
 			await member.add_roles(trial)
@@ -1720,7 +1726,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		
 		role.reverse()
 		display = discord.Embed(
-			title=f"{member.name}#{member.discriminator}'s Grinder Appointment",
+			title=f"{member.name}'s Grinder Appointment",
 			colour= member.color,
 			timestamp=datetime.datetime.utcnow()
 		)
