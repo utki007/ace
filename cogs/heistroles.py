@@ -192,7 +192,8 @@ class heistroles(commands.Cog):
 
 				elif "description" in message.embeds[0].to_dict().keys():
 
-					if 'Sorry. The max number of' in message.embeds[0].description:
+					# if 'Sorry. The max number of' in message.embeds[0].description:
+					if int(message.embeds[0].description.split("`")[1]) == 20:
 						if message.channel.id in [1091560896591036426, 946995152440922172]: # add channel ids here
 							lock_embed = discord.Embed(
 								title=f"{'Channel has been reset!'}",
