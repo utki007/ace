@@ -190,20 +190,21 @@ class heistroles(commands.Cog):
 											self.bot.mafia_logs = {}
 											break
 
-				elif "description" in message.embeds[0].to_dict().keys():
+				if "description" in message.embeds[0].to_dict().keys():
 
 					# if 'Sorry. The max number of' in message.embeds[0].description:
-					if int(message.embeds[0].description.split("`")[1]) == 20:
-						if message.channel.id in [1091560896591036426, 946995152440922172]: # add channel ids here
-							lock_embed = discord.Embed(
-								title=f"{'Channel has been reset!'}",
-								description=f"> Thank you for joining. \n> Stay for more mafias.\n",
-								color=2829617,
-								timestamp=datetime.datetime.utcnow()
-							)
-							if not message.channel.permissions_synced:
-								await message.channel.edit(sync_permissions=True)
-								await message.channel.send(embed=lock_embed)
+					if len(message.embeds[0].description.split("`")) > 1: 
+						if int(message.embeds[0].description.split("`")[1]) == 20:
+							if message.channel.id in [1091560896591036426, 946995152440922172]: # add channel ids here
+								lock_embed = discord.Embed(
+									title=f"{'Channel has been reset!'}",
+									description=f"> Thank you for joining. \n> Stay for more mafias.\n",
+									color=2829617,
+									timestamp=datetime.datetime.utcnow()
+								)
+								if not message.channel.permissions_synced:
+									await message.channel.edit(sync_permissions=True)
+									await message.channel.send(embed=lock_embed)
 
 		elif message.author.id == 270904126974590976:
 
