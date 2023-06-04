@@ -760,16 +760,13 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			pings = "@here |"+pings
 
 		channel_name = channel_name.replace("-"," ",100)
-		await asyncio.sleep(5)
 		category = ctx.guild.get_channel(817049348977983506)
 		overwrites = category.overwrites
 		overwrites[user] = discord.PermissionOverwrite(view_channel=True,send_messages=True,embed_links=True,attach_files=True,add_reactions=True,external_emojis=True,manage_messages=True)
-		channel = await ctx.guild.create_text_channel(channel_name, category=category, overwrites=overwrites)
+		nopartner = discord.utils.get(ctx.guild.roles, id=810593886720098304)
 		if deal_type == "unhidden":
-			nopartner = discord.utils.get(ctx.guild.roles, id=810593886720098304)
-			overwrite = channel.overwrites_for(nopartner )
-			overwrite.view_channel= None
-			await channel.set_permissions(nopartner , overwrite=overwrite)
+			overwrites[nopartner] = discord.PermissionOverwrite(view_channel=None)
+		channel = await ctx.guild.create_text_channel(channel_name, category=category, overwrites=overwrites)
 
 		myquery = {"_id": channel.id}
 		info = self.mycol.find(myquery)
