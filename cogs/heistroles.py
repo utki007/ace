@@ -109,7 +109,7 @@ class heistroles(commands.Cog):
 			am = discord.AllowedMentions(users=False, everyone=False, roles=False, replied_user=False)
 
 			
-			await message.channel.purge(limit=10, check=check, before=None)
+			await message.channel.purge(limit=1, check=check, before=None)
 			if message.channel.id not in [1049233574622146560, 1110476949194813501]:
 				buttons = [
 					create_button(style=ButtonStyle.green,emoji=rumble_emoji, label="Toggle Reminder!", disabled=False, custom_id="heist:rumble")
@@ -637,8 +637,9 @@ class heistroles(commands.Cog):
 							f'` - `   **Donated by:** {user.mention}(`{user.id}`)\n',
 							colour=discord.Color.random()
 						)
+						await message.delete()
 						await msg.add_reaction("<a:nat_cross:1010969491347357717>")
-						return await message.reply(embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
+						return await msg.reply(embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
 					else:
 						amount = 1.5 * amount
 				except:
