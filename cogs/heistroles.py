@@ -628,7 +628,7 @@ class heistroles(commands.Cog):
 				try:
 					amount = await convert_to_numeral(prize)
 					amount = await calculate(amount)
-					if amount <= 3000000:
+					if amount < 3000000:
 						logg = discord.Embed(
 							title="__Invalid Amount!__",
 							description=
