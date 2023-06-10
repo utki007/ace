@@ -109,7 +109,7 @@ class heistroles(commands.Cog):
 			am = discord.AllowedMentions(users=False, everyone=False, roles=False, replied_user=False)
 
 			
-			await message.channel.purge(limit=1, check=check, before=None)
+			await message.channel.purge(limit=10, check=check, before=None)
 			if message.channel.id not in [1049233574622146560, 1110476949194813501]:
 				buttons = [
 					create_button(style=ButtonStyle.green,emoji=rumble_emoji, label="Toggle Reminder!", disabled=False, custom_id="heist:rumble")
@@ -371,7 +371,7 @@ class heistroles(commands.Cog):
 					buttons = [
 						create_button(style=ButtonStyle.green,emoji=yes, label="Hide this channel for me!", disabled=False, custom_id="nopartner:no")
 					]
-					await partnerHeists.purge(limit=10, check=check, before=None)
+					await partnerHeists.purge(limit=3, check=check, before=None)
 					# await message.channel.send(
 					# 			content=f"Grab <@&810593886720098304> from <#944670050252648468> to not get pinged here!",
 					# 			components=[create_actionrow(*buttons)], allowed_mentions=am
