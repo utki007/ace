@@ -555,7 +555,7 @@ class heistroles(commands.Cog):
 					amount_per_grind = 2e6
 				elif lazy in user.roles:
 					amount_per_grind = 1e6
-
+				
 				if amount % amount_per_grind != 0:
 					msg = await message.channel.fetch_message(message.reference.message_id)
 					await message.delete()
@@ -588,6 +588,7 @@ class heistroles(commands.Cog):
 					msg = await message.channel.fetch_message(message.reference.message_id)
 					await msg.add_reaction("<a:nat_check:1010969401379536958>")
 				except:
+					msg = await message.channel.fetch_message(message.reference.message_id)
 					await msg.add_reaction("<a:nat_cross:1010969491347357717>")
 
 			elif message.channel.id == 1051387593318740009:
@@ -612,6 +613,43 @@ class heistroles(commands.Cog):
 					ctx = await self.bot.get_context(message)
 					await ctx.invoke(self.bot.get_command('celeb a'), name="8k", member=user, amount=str(amount).replace("-","",1), multiplier = multiplier)
 					msg = await message.channel.fetch_message(message.reference.message_id)
+					await msg.add_reaction("<a:nat_check:1010969401379536958>")
+				except:
+					msg = await message.channel.fetch_message(message.reference.message_id)
+					await msg.add_reaction("<a:nat_cross:1010969491347357717>")
+
+			elif message.channel.id == 1116295238584111155:
+					
+				donor_id = re.findall("\<\@(.*?)\>", message.content)[0]
+				user = message.guild.get_member(int(donor_id))
+				og_prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0]
+				prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0].split(" ")[1]
+				msg = await message.channel.fetch_message(message.reference.message_id)
+				try:
+					amount = await convert_to_numeral(prize)
+					amount = await calculate(amount)
+					if amount <= 3000000:
+						logg = discord.Embed(
+							title="__Invalid Amount!__",
+							description=
+							f'` - `   **Donated:** **{og_prize}**\n'
+							f"` - `   **Donated on:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow()))}>\n"
+							f'` - `   **Donated by:** {user.mention}(`{user.id}`)\n',
+							colour=discord.Color.random()
+						)
+						await msg.add_reaction("<a:nat_cross:1010969491347357717>")
+						return await message.reply(embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
+					else:
+						amount = 1.5 * amount
+				except:
+					number_of_items = int(og_prize.split(" ")[0][:-1].replace(",","",100))
+					item_name = " ".join(og_prize.split(" ")[1:])
+					item_prize = int((await self.bot.dankItems.find(item_name))['price'])
+					amount = round(number_of_items * item_prize * 1.2)
+
+				try:
+					ctx = await self.bot.get_context(message)
+					await ctx.invoke(self.bot.get_command("dono a"), member=user, amount=str(amount), sendMessage=True)
 					await msg.add_reaction("<a:nat_check:1010969401379536958>")
 				except:
 					await msg.add_reaction("<a:nat_cross:1010969491347357717>")
@@ -647,7 +685,7 @@ class heistroles(commands.Cog):
 				if data!=None and "heist_ar" in data:
 					data = data["heist_ar"]
 					if data["time"] + datetime.timedelta(seconds=300) < datetime.datetime.now():
-						await self.bot.db.settings.update_one(
+						return await self.bot.db.settings.update_one(
 							{"_id": guild.id},
 							{"$unset": {"heist_ar": ""}},
 							upsert=True
