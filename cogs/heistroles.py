@@ -641,7 +641,7 @@ class heistroles(commands.Cog):
 						await msg.add_reaction("<a:nat_cross:1010969491347357717>")
 						return await msg.reply(embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
 					else:
-						amount = 1.5 * amount
+						amount = 1.1 * amount
 				except:
 					number_of_items = int(og_prize.split(" ")[0][:-1].replace(",","",100))
 					item_name = " ".join(og_prize.split(" ")[1:])
