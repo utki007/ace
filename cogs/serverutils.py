@@ -371,8 +371,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 		embed = discord.Embed(
 			title=f"<a:tgk_redcrown:1005473874693079071> {title.title()}",
 			color=0x417505,
-			description = "",
-			url="https://www.youtube.com/@utki007"
+			description = ""
 		)
 		content = content.replace("nobullet","\n")
 		content = content.split("endl")
