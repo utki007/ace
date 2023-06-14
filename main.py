@@ -51,7 +51,6 @@ async def on_ready():
 		"100": guild.get_role(810128946791579679),
 		"250": guild.get_role(810128522365763615),
 		"500": guild.get_role(810128688267919381),
-		"690": guild.get_role(810129351692648479),
 		"1000": guild.get_role(810129497931513868),
 		"3000": guild.get_role(810129641473703956),
 		"5000": guild.get_role(1094226987352068157)
