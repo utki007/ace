@@ -511,7 +511,7 @@ class giveaway(commands.Cog):
 			create_option(name="ping", description="Want to ping event role?", required=False, option_type=5)
 		]
 	)
-	@commands.cooldown(1, 600, commands.BucketType.guild)
+	@commands.cooldown(1, 300, commands.BucketType.guild)
 	async def event(self, ctx, event_name, channel, prize, event_type, sponsor = None,sponsor_message = '', ping = True, rumble = False):
 		
 		await ctx.defer(hidden=True)
