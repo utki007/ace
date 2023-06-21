@@ -511,6 +511,7 @@ class giveaway(commands.Cog):
 			create_option(name="ping", description="Want to ping event role?", required=False, option_type=5)
 		]
 	)
+	@commands.cooldown(1, 600, commands.BucketType.guild)
 	async def event(self, ctx, event_name, channel, prize, event_type, sponsor = None,sponsor_message = '', ping = True, rumble = False):
 		
 		await ctx.defer(hidden=True)
@@ -575,7 +576,23 @@ class giveaway(commands.Cog):
 		await ctx.channel.edit(sync_permissions=True)
 		await ctx.channel.send(content = content)
 		await ctx.send(f"<:TGK_thankyou:930419246792601640>", hidden= True)
-		
+
+	@event.error
+	async def event_error(self, ctx, error):
+		# If the command is currently on cooldown trip this
+		m, s = divmod(error.retry_after, 60)
+		h, m = divmod(m, 60)
+		if int(h) == 0 and int(m) == 0:
+			await ctx.send(f"The command is under a cooldown of **{int(s)} seconds** to prevent abuse!", hidden=True)
+		elif int(h) == 0 and int(m) != 0:
+			await ctx.send(
+				f"The command is under a cooldown of **{int(m)} minutes and {int(s)} seconds** to prevent abuse!", hidden=True
+			)
+		else:
+			await ctx.send(
+				f"The command is under a cooldown of **{int(h)} hours, {int(m)} minutes and {int(s)} seconds** to prevent abuse!", hidden=True
+			)
+
 	@cog_ext.cog_slash(name="goal",description="Our member goal embed", guild_ids=guild_ids,
 		default_permission=False,permissions=staff_perm,
 		options=[
@@ -643,6 +660,8 @@ class giveaway(commands.Cog):
 			await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpireall)])
 		else:
 			await ctx.send(embed=embed, hidden=True)
+
+
 
 	@cog_ext.cog_slash(name="membercount",description="Total members in server", guild_ids=guild_ids,
 		default_permission=False,permissions=staff_perm)
