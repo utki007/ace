@@ -1375,10 +1375,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			data = await self.bot.donorBank.find(member.id)
 			if data != None and "grinder_record" in data.keys():
 				expected_grind += data['grinder_record']['amount_per_grind']
+				frequency = int(data['grinder_record']['frequency']) if "frequency" in data['grinder_record'].keys() else 0
 				if datetime.datetime.utcnow() < data['grinder_record']['time']:
 					actual_grind += data['grinder_record']['amount_per_grind']
 					if trial in member.roles:
-						frequency = int(data['grinder_record']['frequency']) if "frequency" in data['grinder_record'].keys() else 0
 						if frequency >= 7:
 							promotion_records.append([member.id, member.mention, data['grinder_record']['time'], type, frequency])
 				else:
