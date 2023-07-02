@@ -1415,19 +1415,19 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				counter = counter + 1
 				display.add_field(
 					name=f"`{counter}.` {user.name}",
-					value=	f"<:ace_replycont:1082575852061073508>{user.id}\n"
-							f"<:ace_replycont:1082575852061073508>**User:** {user.mention}\n"
-							f"<:ace_replycont:1082575852061073508>**Status:** `{df['Type'][ind]}`\n"
-							f"<:ace_replycont:1082575852061073508>**Paid for:** {df['Frequency'][ind]} days\n"
+					value=	f"- {user.id}\n"
+							f"- **User:** {user.mention}\n"
+							f"- **Status:** `{df['Type'][ind]}`\n"
+							f"- **Paid for:** {df['Frequency'][ind]} days\n"
 							f"<:ace_reply:1082575762856620093>**Next Pay:** <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R>",
 					inline=True
 				)
 			if current_page == total_pages:
 				display.add_field(
 					name=f"` - ` TGK Stats",
-					value=	f"<:ace_replycont:1082575852061073508>**Actual Grind:** ⏣ {round(actual_grind):,}\n"
-							f"<:ace_replycont:1082575852061073508>**Expected Grind:** ⏣ {round(expected_grind):,}\n"
-							f"<:ace_replycont:1082575852061073508>**Weekly Grind:** ⏣ {round(expected_grind*7):,}\n"
+					value=	f"- **Actual Grind:** ⏣ {round(actual_grind):,}\n"
+							f"- **Expected Grind:** ⏣ {round(expected_grind):,}\n"
+							f"- **Weekly Grind:** ⏣ {round(expected_grind*7):,}\n"
 							f"<:ace_reply:1082575762856620093>**Predicted Profit:** ⏣ {round(expected_grind*7-1e9):,}\n",
 					inline=True
 				)
@@ -1460,10 +1460,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				counter = counter + 1
 				display.add_field(
 					name=f"`{counter}.` {user.name}",
-					value=	f"<:ace_replycont:1082575852061073508>{user.id}\n"
-							f"<:ace_replycont:1082575852061073508>**User:** {user.mention}\n"
-							f"<:ace_replycont:1082575852061073508>**Status:** `{demotion_df['Type'][ind]}`\n"
-							f"<:ace_replycont:1082575852061073508>**Paid for:** {demotion_df['Frequency'][ind]} days\n"
+					value=	f"- {user.id}\n"
+							f"- **User:** {user.mention}\n"
+							f"- **Status:** `{demotion_df['Type'][ind]}`\n"
+							f"- **Paid for:** {demotion_df['Frequency'][ind]} days\n"
 							f"<:ace_reply:1082575762856620093>**Next Pay:** <t:{int(datetime.datetime.timestamp(demotion_df['Time'][ind]))}:R>",
 					inline=True
 				)
@@ -1491,10 +1491,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				counter = counter + 1
 				display.add_field(
 					name=f"`{counter}.` {user.name}",
-					value=	f"<:ace_replycont:1082575852061073508>{user.id}\n"
-							f"<:ace_replycont:1082575852061073508>**User:** {user.mention}\n"
-							f"<:ace_replycont:1082575852061073508>**Status:** `{removal_df['Type'][ind]}`\n"
-							f"<:ace_replycont:1082575852061073508>**Paid for:** {removal_df['Frequency'][ind]} days\n"
+					value=	f"- {user.id}\n"
+							f"- **User:** {user.mention}\n"
+							f"- **Status:** `{removal_df['Type'][ind]}`\n"
+							f"- **Paid for:** {removal_df['Frequency'][ind]} days\n"
 							f"<:ace_reply:1082575762856620093>**Next Pay:** <t:{int(datetime.datetime.timestamp(removal_df['Time'][ind]))}:R>",
 					inline=True
 				)
@@ -1522,10 +1522,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				counter = counter + 1
 				display.add_field(
 					name=f"`{counter}.` {user.name}",
-					value=	f"<:ace_replycont:1082575852061073508>{user.id}\n"
-							f"<:ace_replycont:1082575852061073508>**User:** {user.mention}\n"
-							f"<:ace_replycont:1082575852061073508>**Status:** `{promotion_df['Type'][ind]}`\n"
-							f"<:ace_replycont:1082575852061073508>**Paid for:** {promotion_df['Frequency'][ind]} days\n"
+					value=	f"- {user.id}\n"
+							f"- **User:** {user.mention}\n"
+							f"- **Status:** `{promotion_df['Type'][ind]}`\n"
+							f"- **Paid for:** {promotion_df['Frequency'][ind]} days\n"
 							f"<:ace_reply:1082575762856620093>**Next Pay:** <t:{int(datetime.datetime.timestamp(promotion_df['Time'][ind]))}:R>",
 					inline=True
 				)
