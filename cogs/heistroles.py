@@ -65,7 +65,7 @@ class heistroles(commands.Cog):
 			return
 
 		if message.author.id == 646937666251915264 and message.content != None and "server is currently" in message.content:
-			await message.channel.send(f"> <@&1034072149247397938> form up for _server drop_!")  
+			await message.channel.send(f"> <@&1130765765314883756> form up for _server drop_!")  
 
 		if message.author.id in [693167035068317736, 675996677366218774] and message.channel.category.id in [946994017210621972,935537766576582716,825581377592098837,821747325818372146] and len(message.embeds) > 0 :
 			embed = message.embeds[0]
@@ -871,7 +871,7 @@ class heistroles(commands.Cog):
 			
 			elif ctx.custom_id == "reaction:karutadrops":
 				await ctx.defer(hidden=True)
-				karuta = discord.utils.get(ctx.guild.roles, id=1034072149247397938)
+				karuta = discord.utils.get(ctx.guild.roles, id=1130765765314883756)
 				if karuta in ctx.author.roles:
 					await ctx.author.remove_roles(karuta)
 					await ctx.send(f"The role {karuta.mention} has been removed from you.", hidden=True)
