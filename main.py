@@ -12,6 +12,7 @@ import json
 import logging
 import asyncio
 import datetime
+import os
 import motor.motor_asyncio
 from asyncio import sleep
 from discord_slash import SlashCommand
@@ -19,7 +20,9 @@ from discord_slash.model import SlashCommandPermissionType
 from discord_slash.utils.manage_commands import create_permission
 from utils.mongo import Document
 from amari import AmariClient
+from dotenv import load_dotenv
 
+load_dotenv()
 description = '''This is what I have been programmed to do'''
 bot = commands.Bot(
     command_prefix=["? ", "?", "gk.", "Gk."],
@@ -130,11 +133,10 @@ if os.path.exists(os.getcwd()+"./properties/tokens.json"):
 	bot.connection_url2 = configData["dankHelper"]
 	bot.amari = configData["amari"]
 else:
-	# for heroku
-	bot.botToken = os.environ['BOT_TOKEN']
-	bot.connection_url = os.environ['MongoConnectionUrl']
-	bot.connection_url2 = os.environ["dankHelper"]
-	bot.amari = os.environ["amari"]
+	bot.botToken = os.environ.get('BOT_TOKEN')
+	bot.connection_url = os.environ.get('MongoConnectionUrl')
+	bot.connection_url2 = os.environ.get("dankHelper")
+	bot.amari = os.environ.get("amari")
 bot.amari_client = AmariClient(bot.amari)
 
 @bot.command(hidden=True)
