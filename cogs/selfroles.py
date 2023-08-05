@@ -144,9 +144,10 @@ class selfroles(commands.Cog):
 				title=f"<a:gk_rainbow:944635677490970644>   **{'Dank Roles': ^15}**   <a:gk_rainbow:944635677490970644>",
 				color=0xffe5b4
 		)
-		dmop = self.bot.get_guild(838646783785697290)
+		dev = self.bot.get_guild(999551299286732871)
 		gk = self.bot.get_guild(785839283847954433)
 
+		auctionemoji = await dev.fetch_emoji(1135967362768699482)
 		gawemoji = await gk.fetch_emoji(806631994770849843)
 		flashemoji = await gk.fetch_emoji(1068482459014017034)
 		otheremoji = await gk.fetch_emoji(1024206931373608961)
@@ -156,7 +157,8 @@ class selfroles(commands.Cog):
 			create_button(style=ButtonStyle.grey,emoji=eventemoji, label="Event's Ping", disabled=False, custom_id="reaction:event"),
 			create_button(style=ButtonStyle.grey,emoji=gawemoji, label="Giveaways", disabled=False, custom_id="reaction:giveaways"),
 			create_button(style=ButtonStyle.grey,emoji=flashemoji, label="Nitro Giveaways", disabled=False, custom_id="reaction:flash"),
-			create_button(style=ButtonStyle.grey,emoji=otheremoji, label="Raffle Ping", disabled=False, custom_id="reaction:other")
+			create_button(style=ButtonStyle.grey,emoji=otheremoji, label="Raffle Ping", disabled=False, custom_id="reaction:other"),
+			create_button(style=ButtonStyle.grey,emoji=auctionemoji, label="Auction Ping", disabled=False, custom_id="reaction:auction"),
 		]
 		msg = await ctx.channel.send(embed=event_embed, components=[create_actionrow(*buttons)])
 		await ctx.send(content=f"Reaction roles created!",hidden=True)

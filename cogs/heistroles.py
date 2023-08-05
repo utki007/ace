@@ -1015,6 +1015,16 @@ class heistroles(commands.Cog):
 				else:
 					await ctx.author.add_roles(other)
 					await ctx.send(f"The role {other.mention} has been added to you.", hidden=True)
+
+			elif ctx.custom_id == "reaction:auction":
+				await ctx.defer(hidden=True)
+				auction = discord.utils.get(ctx.guild.roles, id=1134835781446422549)
+				if auction in ctx.author.roles:
+					await ctx.author.remove_roles(auction)
+					await ctx.send(f"The role {auction.mention} has been removed from you.", hidden=True)
+				else:
+					await ctx.author.add_roles(auction)
+					await ctx.send(f"The role {auction.mention} has been added to you.", hidden=True)
 			
 			elif ctx.custom_id == "reaction:event":
 				await ctx.defer(hidden=True)
