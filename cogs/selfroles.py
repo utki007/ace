@@ -146,16 +146,13 @@ class selfroles(commands.Cog):
 		)
 		dmop = self.bot.get_guild(838646783785697290)
 		gk = self.bot.get_guild(785839283847954433)
-		dev = self.bot.get_guild(999551299286732871)
 
 		gawemoji = await gk.fetch_emoji(806631994770849843)
 		flashemoji = await gk.fetch_emoji(1068482459014017034)
 		otheremoji = await gk.fetch_emoji(1024206931373608961)
 		eventemoji = await gk.fetch_emoji(854663256420909066)
-		auctionemoji = await dev.fetch_emoji(1135967362768699482)
 
 		buttons = [
-			create_button(style=ButtonStyle.grey, emoji=auctionemoji, label="Auction", disabled=False, custom_id="reaction:auction"),
 			create_button(style=ButtonStyle.grey,emoji=eventemoji, label="Event's Ping", disabled=False, custom_id="reaction:event"),
 			create_button(style=ButtonStyle.grey,emoji=gawemoji, label="Giveaways", disabled=False, custom_id="reaction:giveaways"),
 			create_button(style=ButtonStyle.grey,emoji=flashemoji, label="Nitro Giveaways", disabled=False, custom_id="reaction:flash"),
