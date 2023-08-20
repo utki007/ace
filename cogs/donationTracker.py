@@ -1432,11 +1432,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		# 		)
 		# 	await ctx.send(embed=display)
 		# 	await asyncio.sleep(1)
-		
-		try:
-			await msg.delete()
-		except:
-			pass
 
 		removal_df = pd.DataFrame(removal_record, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
 		removal_df = removal_df.sort_values(by='Time', ascending=True)
@@ -1542,7 +1537,24 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			grinders_not_found.set_thumbnail(
 				url="https://cdn.discordapp.com/emojis/790932345284853780.gif?size=128&quality=lossless")
 			await ctx.send(embed=grinders_not_found)
+	
+		embed = discord.Embed(
+			title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Stats__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+			colour=discord.Color.random(),
+			description =	f"` - ` TGK Stats for {len(members)} Grinders\n"
+							f"<:ace_replycont:1082575852061073508> **Actual Grind:** ⏣ {round(actual_grind):,}\n"
+							f"<:ace_replycont:1082575852061073508> **Expected Grind:** ⏣ {round(expected_grind):,}\n"
+							f"<:ace_replycont:1082575852061073508> **Weekly Grind:** ⏣ {round(actual_grind*7):,}\n"
+							f"<:ace_reply:1082575762856620093>**Predicted Profit:** ⏣ {round(actual_grind*7-1e9):,}\n",
+			timestamp=datetime.datetime.utcnow()
+		)
+		await ctx.send(embed=embed)
 
+		try:
+			await msg.delete()
+		except:
+			pass
+		
 	@commands.command(name="gpay", aliases=['gp', 'gpayout'])
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def gpay(self, ctx):
