@@ -207,7 +207,7 @@ class sticky(commands.Cog, description="Sticky Utility"):
 	async def on_raw_message_delete(self, payload: discord.raw_models.RawMessageDeleteEvent):
 		"""If the stickied message was deleted, re-post it."""
 		channel = self.bot.get_channel(payload.channel_id)
-		if channel.category.id == 1049228870886359050:
+		if channel.category is not None and channel.category.id == 1049228870886359050:
 			return
 		myquery = {"_id": channel.id}
 		info = self.mycol.find(myquery)
