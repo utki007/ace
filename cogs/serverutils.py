@@ -108,7 +108,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 
 	@commands.command(name="bar", description="To be used in public channels after completing a task")
 	@commands.check_any(checks.can_use(), checks.is_me())
-	async def bar(self, ctx, type: str):
+	async def bar(self, ctx, type: str="default"):
 		await ctx.message.delete()
 		gif_types = {
 			"default": "https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif",
