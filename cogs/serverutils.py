@@ -20,7 +20,6 @@ import requests
 
 from utils.Checks import checks
 
-
 class serverutils(commands.Cog, description="Server Utility"):
 
 	def __init__(self, bot):
@@ -109,14 +108,19 @@ class serverutils(commands.Cog, description="Server Utility"):
 
 	@commands.command(name="bar", description="To be used in public channels after completing a task")
 	@commands.check_any(checks.can_use(), checks.is_me())
-	async def bar(self, ctx):
+	async def bar(self, ctx, type: str):
 		await ctx.message.delete()
-		l = [
-			"https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif",
-			"https://media.discordapp.net/attachments/840291742859001876/943806099537162250/0E67BE40-2287-4A6F-9520-C6FD5E548227.gif"
-		]
-		# await ctx.send(random.choice(l))
-		await ctx.send(l[0])
+		gif_types = {
+			"default": "https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif",
+			"snow": "https://media.discordapp.net/attachments/840291742859001876/943806099537162250/0E67BE40-2287-4A6F-9520-C6FD5E548227.gif",
+			"halloween": "https://cdn.discordapp.com/attachments/1144670888797667469/1166941685213827134/IMG_5389.gif?ex=654c5222&is=6539dd22&hm=4078f851e50d96a8e3a1e4110b6a3cf49abcf5e92367ffbbaae93db5715f6a86&"
+		}
+		try: 
+			gif = gif_types[type]
+		except:
+			gif = gif_types["default"]
+		
+		await ctx.send(gif)
 
 	@commands.command(name="celebrate", description="To be used in public channels after completing a gaw")
 	@commands.check_any(checks.can_use(), checks.is_me())
