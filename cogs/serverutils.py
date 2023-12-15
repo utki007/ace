@@ -430,7 +430,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 				webhook = DiscordWebhook(url=webhook.url, username=message.author.name,
 									avatar_url=str(message.author.avatar_url).split("?")[0], 
 									allowed_mentions={ "parse": [] })
-				webhook.add_embed(embed)
+				webhook.add_embed(embed.to_dict())
 				webhook.execute()
 			except:
 				webhook = DiscordWebhook(url=webhook.url, username=ctx.author.name,
