@@ -417,13 +417,30 @@ class serverutils(commands.Cog, description="Server Utility"):
 		if webhook is None:
 			webhook = await ctx.channel.create_webhook(name=self.bot.user.name, reason="For sending webhook", avatar=await self.bot.user.avatar_url.read())
 
-		webhook = DiscordWebhook(url=webhook.url, username=ctx.author.name,
-								avatar_url=str(ctx.author.avatar_url).split("?")[0], 
-								content=content,allowed_mentions={ "parse": [] })
-		if ctx.message.attachments != []:
-			for attachment in ctx.message.attachments:
-				webhook.add_file(requests.get(attachment.url).content, attachment.filename)
-		webhook.execute()
+		if 'https://discord.com/channels' not in content.split(" ")[0]:
+			await ctx.send("Please provide a valid link!", delete_after=2)
+		else:
+			link = content.split(" ")[0]
+			try:
+				guildId = int(link.split("/")[-3])
+				channelId = int(link.split("/")[-2])
+				messageId = int(link.split("/")[-1])
+				message = await ctx.guild.get_channel(channelId).fetch_message(messageId)
+				embed = message.embeds[0]
+				webhook = DiscordWebhook(url=webhook.url, username=message.author.name,
+									avatar_url=str(message.author.avatar_url).split("?")[0], 
+									allowed_mentions={ "parse": [] })
+				webhook.add_embed(embed)
+				webhook.execute()
+			except:
+				webhook = DiscordWebhook(url=webhook.url, username=ctx.author.name,
+									avatar_url=str(ctx.author.avatar_url).split("?")[0], 
+									content=content,allowed_mentions={ "parse": [] })
+				if ctx.message.attachments != []:
+					for attachment in ctx.message.attachments:
+						webhook.add_file(requests.get(attachment.url).content, attachment.filename)
+				webhook.execute()
+		
 
 	# @commands.command(name="hbd", description="Wish Happy Birthday")
 	# async def hbd(self, ctx, *, message: str = None):
