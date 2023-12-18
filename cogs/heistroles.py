@@ -542,29 +542,22 @@ class heistroles(commands.Cog):
 				
 				
 				legendary = gk.get_role(806804472700600400)
-				epic = gk.get_role(835866393458901033)
-				ordinary = gk.get_role(835866409992716289)
-				lazy = gk.get_role(835889385390997545)
+				mythic = gk.get_role(835866409992716289)
 
 				amount_per_grind = 0
 				if legendary in user.roles:
-					amount_per_grind = 4e6
-				elif epic in user.roles:
-					amount_per_grind = 3e6
-				elif ordinary in user.roles:
-					amount_per_grind = 2e6
-				elif lazy in user.roles:
-					amount_per_grind = 1e6
+					amount_per_grind = 5e6
+				elif mythic in user.roles:
+					amount_per_grind = 7e6
 				
 				if amount % amount_per_grind != 0:
 					msg = await message.channel.fetch_message(message.reference.message_id)
 					await message.delete()
-					return await msg.reply(content= f"{user.mention}", embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
-				else:
-					number = int(amount/amount_per_grind)
+					await ctx.invoke(self.bot.get_command("dono a"), member=user, amount=str(amount % amount_per_grind), sendMessage=False)
+					await msg.reply(content= f"{user.mention}, I have credited {str(amount % amount_per_grind)} to normal donation and rest to grinder donation.", allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
 				
 				ctx = await self.bot.get_context(message)
-				await ctx.invoke(self.bot.get_command("gu"), member=user, number=number)
+				await ctx.invoke(self.bot.get_command("gu"), member=user, number=int(amount/amount_per_grind))
 
 			elif message.channel.id == 812711254790897714:
 					
