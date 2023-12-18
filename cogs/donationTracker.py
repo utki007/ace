@@ -1723,6 +1723,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			if change_tier:
 				data["grinder_record"]["frequency"] = 0
 				data["grinder_record"]["time"] = time
+			data["grinder_record"]["amount_per_grind"] = amount_per_grind
 		else:
 			data["grinder_record"] = grinder_record
 			await member.add_roles(trial)
