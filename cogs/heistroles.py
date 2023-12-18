@@ -551,14 +551,12 @@ class heistroles(commands.Cog):
 					amount_per_grind = 7e6
 				
 				ctx = await self.bot.get_context(message)
-				
+				await ctx.invoke(self.bot.get_command("gu"), member=user, number=int(amount/amount_per_grind))
+
 				if amount % amount_per_grind != 0:
 					msg = await message.channel.fetch_message(message.reference.message_id)
-					await ctx.invoke(self.bot.get_command("dono a"), member=user, amount=str(amount % amount_per_grind), sendMessage=False)
-					await msg.reply(content= f"{user.mention}, I have credited {str(amount % amount_per_grind)} to normal donation and rest to grinder donation.", allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
-				
-				await ctx.invoke(self.bot.get_command("gu"), member=user, number=int(amount/amount_per_grind))
-				await message.delete()
+					await ctx.invoke(self.bot.get_command("dono a"), member=user, amount=str(amount % amount_per_grind), sendMessage=True)
+					await msg.reply(content= f"{user.mention}, I have credited extra amount (`⏣ {round(amount % amount_per_grind):,}`) to your donor bank.", allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
 
 			elif message.channel.id == 812711254790897714:
 					
