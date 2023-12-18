@@ -1140,25 +1140,21 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			data = await self.bot.donorBank.find(member.id)
 
 		gk = self.bot.get_guild(785839283847954433)
+		mythic = gk.get_role(835866409992716289)
 		legendary = gk.get_role(806804472700600400)
-		epic = gk.get_role(835866393458901033)
-		ordinary = gk.get_role(835866409992716289)
-		lazy = gk.get_role(835889385390997545)
+		legacy = gk.get_role(835889385390997545)
 
 		amount = 0
 		amount_per_grind = 0
 		if legendary in member.roles:
-			amount_per_grind = 4e6
+			amount_per_grind = 5e6
 			amount = amount_per_grind * number
-		elif epic in member.roles:
-			amount_per_grind = 3e6
+		elif mythic in member.roles:
+			amount_per_grind = 7e6
 			amount = amount_per_grind * number
-		elif ordinary in member.roles:
-			amount_per_grind = 2e6
-			amount = amount_per_grind * number
-		elif lazy in member.roles:
-			amount_per_grind = 1e6
-			amount = amount_per_grind * number
+		
+		if legacy in member.roles:
+			return await ctx.reply(f"<a:nat_warning:1062998119899484190> | {member.mention}, please reach out to <#785901543349551104> to become an active grinder.")
 
 		date = datetime.date.today()
 		if number == 0:
@@ -1196,12 +1192,12 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		else:
 			days = f"{number} Days"
 		teir = int(data['grinder_record']['amount_per_grind'])
-		if teir == 3e6:
-			teir = "TIER 𝕀𝕀𝕀"
-		elif teir == 4e6:
-			teir = "TIER 𝕀𝕍"
+		if teir == 5e6:
+			teir = "TIER 𝕍"
+		elif teir == 7e6:
+			teir = "TIER 𝕍𝕀𝕀"
 		else:
-			teir = "DEPRECIATED"
+			teir = "LEGACY"
 		display = discord.Embed(
 			title=f"{member.name}'s Grinder Stats",
 			colour=member.color,
@@ -1256,9 +1252,13 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		else:
 			teir = int(data['grinder_record']['amount_per_grind'])
 			if teir == 3e6:
-				teir = "TIER 𝕀𝕀𝕀"
+				teir = "LEGACY"
 			elif teir == 4e6:
-				teir = "TIER 𝕀𝕍"
+				teir = "LEGACY"
+			elif teir == 5e6:
+				teir = "TIER 𝕍"
+			elif teir == 7e6:
+				teir = "TIER 𝕍𝕀𝕀"
 			else:
 				teir = "DEPRECIATED"
 			display = discord.Embed(
@@ -1340,7 +1340,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
 			display.set_thumbnail(url=member.avatar_url)
 			return await ctx.send(embed=display)
-
 
 	@commands.command(name="gstatus", aliases=['gs'])
 	@commands.check_any(checks.can_use(), checks.is_me())
@@ -1443,7 +1442,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		for group in removal_group:
 			current_page = removal_group.index(group)+1
 			display = discord.Embed(
-				title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders to Kick__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+				title=f"<a:TGK_Pandaswag:830525027341565982>  __Demotion Record__  <a:TGK_Pandaswag:830525027341565982>\n\n",
 				colour=color
 			)
 			# display.set_thumbnail(
@@ -1474,7 +1473,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		for group in demotion_group:
 			current_page = demotion_group.index(group)+1
 			display = discord.Embed(
-				title=f"<a:TGK_Pandaswag:830525027341565982>  __Demotion Record__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+				title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders to Kick__  <a:TGK_Pandaswag:830525027341565982>\n\n",
 				colour=color
 			)
 			# display.set_thumbnail(
@@ -1659,11 +1658,11 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				description=f"` - `   Bot's are not allowed to be grinders."
 			)
 			return await ctx.send(embed=display)
-		if tier not in [3,4]:
+		if tier not in [5, 7]:
 			display = discord.Embed(
 				title=f"{member.name}'s Grinder Stats",
 				colour= member.color,
-				description=f"` - `   Invalid tier. Only tiers III and IV are available."
+				description=f"` - `   Invalid tier. Only tiers V and VII are available."
 			)
 			return await ctx.send(embed=display)
 		
@@ -1674,27 +1673,29 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		
 		gk = self.bot.get_guild(785839283847954433)
 		legendary = gk.get_role(806804472700600400)
-		epic = gk.get_role(835866393458901033)
+		mythic = gk.get_role(835866409992716289)
+		legacy = gk.get_role(835889385390997545)
 		trial = gk.get_role(932149422719107102)
 		grinder = gk.get_role(836228842397106176)
 		role = []
 		change_tier = False
-		if tier == 3:
-			grinder_tier = "𝕀𝕀𝕀"
-			amount_per_grind = 3e6
-			await member.add_roles(epic)
+
+		if tier == 5:
+			grinder_tier = "𝕍"
+			amount_per_grind = 5e6
+			await member.add_roles(legendary)
+			if mythic in member.roles:
+				change_tier = True
+				await member.remove_roles(mythic)
+			role.append(legendary)
+		if tier == 7:
+			grinder_tier = "𝕍𝕀𝕀"
+			amount_per_grind = 7e6
+			await member.add_roles(mythic)
 			if legendary in member.roles:
 				change_tier = True
 				await member.remove_roles(legendary)
-			role.append(epic)
-		elif tier == 4:
-			grinder_tier = "𝕀𝕍"
-			amount_per_grind = 4e6
-			await member.add_roles(legendary)
-			if epic in member.roles:
-				change_tier = True
-				await member.remove_roles(epic)
-			role.append(legendary)
+			role.append(mythic)
 
 		date = datetime.date.today()
 		time = datetime.datetime(date.year, date.month, date.day)
@@ -1716,8 +1717,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			else:
 				await member.add_roles(trial)
 				role.append(trial)
-				if int(data["grinder_record"]["frequency"]) < 7:
-					desc = f"<a:nat_warning:1062998119899484190> **They are a blacklisted grinder.**"
 			paid_till = data["grinder_record"]["time"]
 			if paid_till < time:
 				data["grinder_record"]["time"] = time
