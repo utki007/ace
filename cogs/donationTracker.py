@@ -1853,19 +1853,13 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
 		gk = self.bot.get_guild(785839283847954433)
 		legendary = gk.get_role(806804472700600400)
-		epic = gk.get_role(835866393458901033)
-		ordinary = gk.get_role(835866409992716289)
-		lazy = gk.get_role(835889385390997545)
+		mythic = gk.get_role(835866409992716289)
 
 		amount_per_grind = 0
 		if legendary in user.roles:
-			amount_per_grind = 4e6
-		elif epic in user.roles:
-			amount_per_grind = 3e6
-		elif ordinary in user.roles:
-			amount_per_grind = 2e6
-		elif lazy in user.roles:
-			amount_per_grind = 1e6
+			amount_per_grind = 5e6
+		elif mythic in user.roles:
+			amount_per_grind = 7e6
 
 		if amount % amount_per_grind != 0:
 			return await ctx.send("<a:nat_warning:1010618708688912466> Invalid amount provided!! Try Again!! <a:nat_warning:1010618708688912466>")
@@ -1878,7 +1872,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		ctx1 = await self.bot.get_context(msg)
 		ctx1.author = ctx.author
 		await ctx1.invoke(self.bot.get_command("gu"), member=user, number=number)
-		await ctx.send(f"Successfully added ** ⏣ `{amount:,}` to {user.mention}'s grinder account",hidden=True)
+		await ctx.send(f"Successfully added ** ⏣ `{amount:,}`** to {user.mention}'s grinder account",hidden=True)
 
 def setup(bot):
 	bot.add_cog(donationTracker(bot))
