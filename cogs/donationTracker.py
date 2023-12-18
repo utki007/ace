@@ -1687,6 +1687,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			if mythic in member.roles:
 				change_tier = True
 				await member.remove_roles(mythic)
+			if legacy in member.roles:
+				await member.remove_roles(legacy)
 			role.append(legendary)
 		if tier == 7:
 			grinder_tier = "𝕍𝕀𝕀"
@@ -1695,6 +1697,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			if legendary in member.roles:
 				change_tier = True
 				await member.remove_roles(legendary)
+			if legacy in member.roles:
+				await member.remove_roles(legacy)
 			role.append(mythic)
 
 		date = datetime.date.today()
