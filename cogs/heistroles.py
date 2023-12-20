@@ -551,7 +551,8 @@ class heistroles(commands.Cog):
 					amount_per_grind = 7e6
 				
 				ctx = await self.bot.get_context(message)
-				await ctx.invoke(self.bot.get_command("gu"), member=user, number=int(amount/amount_per_grind))
+				if int(amount/amount_per_grind) != 0:
+					await ctx.invoke(self.bot.get_command("gu"), member=user, number=int(amount/amount_per_grind))
 
 				if amount % amount_per_grind != 0:
 					msg = await message.channel.fetch_message(message.reference.message_id)
