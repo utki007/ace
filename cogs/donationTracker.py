@@ -1724,9 +1724,9 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			paid_till = data["grinder_record"]["time"]
 			if paid_till < time:
 				data["grinder_record"]["time"] = time
-			if change_tier:
-				data["grinder_record"]["frequency"] = 0
-				data["grinder_record"]["time"] = time
+			# if change_tier:
+			# 	data["grinder_record"]["frequency"] = 0
+			# 	data["grinder_record"]["time"] = time
 			data["grinder_record"]["amount_per_grind"] = amount_per_grind
 		else:
 			data["grinder_record"] = grinder_record
