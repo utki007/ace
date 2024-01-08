@@ -76,13 +76,11 @@ async def on_ready():
 		guild.get_role(836551065733431348),
 		guild.get_role(821052747268358184),
 		guild.get_role(818129661325869058),
-		guild.get_role(943535266143039500),
-		guild.get_role(835866409992716289)
+		guild.get_role(943535266143039500)
 	]
 
 	bot.elite_colour_users = [
 		guild.get_role(810128946791579679),
-		guild.get_role(835866393458901033),
 		guild.get_role(806804472700600400),
 		guild.get_role(836551065733431348),
 		guild.get_role(830013421239140403),
