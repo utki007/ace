@@ -600,11 +600,11 @@ class heistroles(commands.Cog):
 					item_name = " ".join(og_prize.split(" ")[1:])
 					item_prize = int((await self.bot.dankItems.find(item_name))['price'])
 					amount = round(number_of_items * item_prize * 1.2)
-					multiplier = 1.2
+					multiplier = 1.5
 
 				try:
 					ctx = await self.bot.get_context(message)
-					await ctx.invoke(self.bot.get_command('celeb a'), name="8k", member=user, amount=str(amount).replace("-","",1), multiplier = multiplier)
+					await ctx.invoke(self.bot.get_command('celeb a'), name="10k", member=user, amount=str(amount).replace("-","",1), multiplier = multiplier)
 					msg = await message.channel.fetch_message(message.reference.message_id)
 					await msg.add_reaction("<a:nat_check:1010969401379536958>")
 				except:

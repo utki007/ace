@@ -27,8 +27,8 @@ async def donor_roles(client,query,user):
 async def event_roles(client,query,user,event_name):
     guild = user.guild
     celeb_role = guild.get_role(943535266143039500)
-    role_dict = client.event_8k
-    if event_name == "8k":     
+    role_dict = client.event_10k
+    if event_name == "10k":     
         roles_added = []
         for roles in role_dict.keys():
             actual_value = int(roles) * 1000000

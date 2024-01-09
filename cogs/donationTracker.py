@@ -62,7 +62,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		dict["name"] = user.name[0:15]
 		dict["bal"] = 0
 		dict["event"] = [{"name": "750", "bal": 0}, {"name": "1.5k", "bal": 0}, {
-			"name": "3k", "bal": 0}, {"name": "7k", "bal": 0}, {"name": "diwali", "bal": 0}, {"name": "2y", "bal": 0}, {"name": "8k", "bal": 0}]
+			"name": "3k", "bal": 0}, {"name": "7k", "bal": 0}, {"name": "diwali", "bal": 0}, {"name": "2y", "bal": 0}, {"name": "8k", "bal": 0}, {"name": "10k", "bal": 0}]
 		self.mycol.insert_one(dict)
 
 	@commands.group(name="donation", aliases=['dono'])
@@ -752,7 +752,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 			return await ctx.send(embed=display)
 		else:
 			event_bal = [event['bal'] for event in data['event'] if event['name'] == name][0]
-			role_dict = self.bot.event_8k
+			role_dict = self.bot.event_10k
 			try:
 				next_role = [role for role in role_dict.keys() if int(role)*1e6 > event_bal][0]
 			except:
@@ -1280,7 +1280,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 	async def echeck(self, ctx, member: discord.Member = None):
 		await ctx.message.delete()
 
-		event_name = '8k'
+		event_name = '10k'
 
 		if not ctx.author.guild_permissions.manage_guild or member is None:
 			member = ctx.author
@@ -1288,14 +1288,14 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 
 		if data is None:
 			display = discord.Embed(
-				title=f"{member.name}'s 8k Stats",
+				title=f"{member.name}'s 10k Stats",
 				colour= member.color,
 				description=f"` - `   You are not a donor yet! Support when?"
 			)
 			return await ctx.send(embed=display)
 		else:
 			event_bal = [event['bal'] for event in data['event'] if event['name'] == event_name][0]
-			role_dict = self.bot.event_8k
+			role_dict = self.bot.event_10k
 			try:
 				next_role = [role for role in role_dict.keys() if int(role)*1e6 > event_bal][0]
 			except:
@@ -1319,7 +1319,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 				current_role = None
 						
 			display = discord.Embed(
-				title=f"{member.name}'s 8k Celeb Stats",
+				title=f"{member.name}'s 10k Celeb Stats",
 				colour= member.color,
 				timestamp=datetime.datetime.utcnow()
 			)
@@ -1805,7 +1805,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 					"value": "dmc"
 				},
 				{
-					"name": "Item Donation (Calculates 1.2x automatically)",
+					"name": "Item Donation (Calculates 1.5x automatically)",
 					"value": "item"
 				}
 			], required=True, option_type=3)
@@ -1833,10 +1833,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
 		if donation_type == "dmc":
 			multiplier = 1.5
 		else:
-			multiplier = 1.2
+			multiplier = 1.5
 			
 			
-		await ctx1.invoke(self.bot.get_command(command), name="8k", member=user, amount=str(amount).replace("-","",1), multiplier = multiplier)
+		await ctx1.invoke(self.bot.get_command(command), name="10k", member=user, amount=str(amount).replace("-","",1), multiplier = multiplier)
 		await ctx.send(f"Successfully {action} ** ⏣ `{amount:,}** to {user.mention}'s celeb account with **{multiplier}x** multiplier!",hidden=True)
 
 	@cog_ext.cog_subcommand(base="Grinder", name="log",description="Add/Remove Grinder donation!", guild_ids=guild_ids,

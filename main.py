@@ -59,13 +59,13 @@ async def on_ready():
 		"5000": guild.get_role(1094226987352068157)
 	}
 
-	bot.event_8k = {
-		"25": guild.get_role(942719030752583680),
+	bot.event_10k = {
 		"111": guild.get_role(940581045038899230),
-		"250": guild.get_role(940581256301772820),
-		"500": guild.get_role(940581347267866625),
-		"1000": guild.get_role(940580910913450044),
-		"3000": guild.get_role(940581297145905212)
+		"112": guild.get_role(942719030752583680),
+		"500": guild.get_role(940581256301772820),
+		"1000": guild.get_role(940581347267866625),
+		"5000": guild.get_role(940580910913450044),
+		"10000": guild.get_role(940581297145905212)
 	}
 
 	bot.premium_colour_users = [
