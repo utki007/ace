@@ -243,7 +243,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 			quantity = int(item[-1])
 			item = item[:-1][0].replace("*","",100).strip()
 			if "⏣" in item:
-				dmc += int(item.replace("⏣ ","",1)) * quantity 
+				dmc += int(item.replace("⏣ ","",1).replace(",","",100)) * quantity 
 			else:
 				item_dict[item] = quantity
 				payouts.append(f"/serverevents payout user:{member.id} quantity:{quantity} item:{item}")
