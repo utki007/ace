@@ -210,7 +210,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 
 	@commands.command(name="payouts", aliases=["pay"])
 	@commands.check_any(checks.can_use(), checks.is_me())
-	async def payouts(self, ctx, number: float, query):
+	async def payouts(self, ctx):
 		# get replied msg id else return error
 		message = ctx.message
 		replied = message.reference
