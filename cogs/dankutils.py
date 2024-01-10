@@ -15,10 +15,14 @@ import datetime
 from TagScriptEngine import Interpreter, adapter, block
 from utils.Checks import checks
 from amari import AmariClient
+from itertools import islice
 
 # import convertor
 from utils.convertor import *
 
+def chunk(it, size):
+  it = iter(it)
+  return iter(lambda: tuple(islice(it, size)), ())
 
 class dankutils(commands.Cog, description="Dank Utility"):
 
@@ -210,7 +214,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 
 	@commands.command(name="payouts", aliases=["pay"])
 	@commands.check_any(checks.can_use(), checks.is_me())
-	async def payouts(self, ctx):
+	async def payouts(self, ctx, device_type : str="pc"):
 		# get replied msg id else return error
 		message = ctx.message
 		replied = message.reference
@@ -249,7 +253,20 @@ class dankutils(commands.Cog, description="Dank Utility"):
 				payouts.append(f"/serverevents payout user:{member.id} quantity:{quantity} item:{item}")
 		if dmc>0:
 			payouts.append(f"/serverevents payout user:{member.id} quantity:{dmc}")
-		await ctx.send(f"\n".join([payout for payout in payouts]))
+		
+		if device_type.lower() in ['phn','mobile','phone']:
+			payouts_grp = list(chunk(payouts, 8))
+			total_pages = len(payouts_grp)
+			color = discord.Color.random()
+			for group in payouts_grp:
+				current_page = payouts_grp.index(group)+1
+				embed = discord.Embed(color=color)
+				embed.set_footer(text=f"Payout for {member.name} • Page {current_page}/{total_pages}",icon_url=message.guild.icon_url)
+				for payout in group:
+					embed.add_field(name=f"_ _", value=f"{payout}", inline=False)         
+				await ctx.send(embed=embed) 
+		else:
+			await ctx.send(f"\n".join([payout for payout in payouts]))
 			
 
 	@commands.command(name="FreeLoader", aliases=["fl"], description="Lists Freeloader Perks")
