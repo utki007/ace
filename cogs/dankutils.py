@@ -211,30 +211,46 @@ class dankutils(commands.Cog, description="Dank Utility"):
 	@commands.command(name="payouts", aliases=["pay"])
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def payouts(self, ctx, number: float, query):
-		"""Finding tax"""
-		number = int(number)
-		query = await convert_to_numeral(query)
-		output = await calculate(query)
-		result = math.ceil(number*0.72)
-		result = math.ceil(output/result)
+		# get replied msg id else return error
+		message = ctx.message
+		replied = message.reference
+		if replied is None:
+			return await ctx.send("Reply to a message to use this command!")
+		replied = await ctx.fetch_message(replied.message_id)
+		if replied is None:
+			return await ctx.send("Reply to a message to use this command!")
+		# check if embed exists else return error
+		if len(replied.embeds) == 0:
+			return await ctx.send("Reply to a message with inv embed to use this command!")
+		if replied.author.id != 781481270726754315:
+			return await ctx.send("Reply to a message from 'Scuffed Guard'!")
+		
+		dict = replied.embeds[0].to_dict()
 
-		await ctx.message.delete()
+		# find member by name, if not found return error
+		member = ctx.guild.get_member_named(dict['title'].split("'s Christmas")[0])
+		if member is None:
+			return await ctx.send("Member not found!")
 
-		e = discord.Embed(
-			color=0x9e3bff,
-			title=f"Payouts Calculator",
-			timestamp=datetime.datetime.utcnow(),
-			description=f"**{'Number of people joined:':^25}** `{number:,}`\n"
-			f"**{'Amount Heisted:':^25}** ⏣ `{output:,}`\n"
-			f"**{'Expected Payouts:':^25}** ⏣ `{result:,}`\n"
-		)
-		url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={result:,}&font=lobster&font_size=28"
-		e.set_image(url=url)
-		e.set_footer(
-			text=f"Developed by utki007 & Jay")
-		e.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
-
-		await ctx.send(embed=e)
+		inv = dict['description']
+		dmc = 0
+		item_dict = {}
+		payouts = []
+		for item in inv.split("\n"):
+			if 'Nothing' in item:
+				continue
+			item = item.split("-")
+			quantity = int(item[-1])
+			item = item[:-1][0].replace("*","",100).strip()
+			if "⏣" in item:
+				dmc += int(item.replace("⏣ ","",1)) * quantity 
+			else:
+				item_dict[item] = quantity
+				payouts.append(f"/serverevents payout user:{member.id} quantity:{quantity} item:{item}")
+		if dmc>0:
+			payouts.append(f"/serverevents payout user:{member.id} quantity:{dmc}")
+		await ctx.send(f"\n".join([payout for payout in payouts]))
+			
 
 	@commands.command(name="FreeLoader", aliases=["fl"], description="Lists Freeloader Perks")
 	@commands.check_any(checks.can_use(), checks.is_me())
