@@ -194,17 +194,20 @@ class heistroles(commands.Cog):
 
 					# if 'Sorry. The max number of' in message.embeds[0].description:
 					if len(message.embeds[0].description.split("`")) > 1: 
-						if int(message.embeds[0].description.split("`")[1]) == 20:
-							if message.channel.id in [1091560896591036426, 946995152440922172]: # add channel ids here
-								lock_embed = discord.Embed(
-									title=f"{'Channel has been reset!'}",
-									description=f"> Thank you for joining. \n> Stay for more mafias.\n",
-									color=2829617,
-									timestamp=datetime.datetime.utcnow()
-								)
-								if not message.channel.permissions_synced:
-									await message.channel.edit(sync_permissions=True)
-									await message.channel.send(embed=lock_embed)
+						try:
+							if int(message.embeds[0].description.split("`")[1]) == 20:
+								if message.channel.id in [1091560896591036426, 946995152440922172]: # add channel ids here
+									lock_embed = discord.Embed(
+										title=f"{'Channel has been reset!'}",
+										description=f"> Thank you for joining. \n> Stay for more mafias.\n",
+										color=2829617,
+										timestamp=datetime.datetime.utcnow()
+									)
+									if not message.channel.permissions_synced:
+										await message.channel.edit(sync_permissions=True)
+										await message.channel.send(embed=lock_embed)
+						except:
+							pass
 
 		elif message.author.id == 270904126974590976:
 
@@ -697,25 +700,25 @@ class heistroles(commands.Cog):
 					)
 					await message.reply(content=f"Checkout {heist_channel.mention} for more info!" ,embed=embed, mention_author=False,delete_after=10)
 
-	@commands.Cog.listener()
-	async def on_message_edit(self, before, after):
+	# @commands.Cog.listener()
+	# async def on_message_edit(self, before, after):
 
-		message = after
+	# 	message = after
 
-		if message.guild.id in [838646783785697290,927399549063004270]:
-			if message.author.id == 270904126974590976:
-				if len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
-					if 'Great work' in message.embeds[0].to_dict()["title"]: 
-						if '1x' in message.embeds[0].to_dict()["description"]:
-							pins = await message.channel.pins()
-							for msg in pins:
-								try:
-									if round((datetime.datetime.utcnow() - msg.created_at).total_seconds()) > 172800:
-										if msg.author.id == 270904126974590976:
-											await msg.unpin()
-								except:
-									pass
-							await message.pin()
+	# 	if message.guild.id in [838646783785697290,927399549063004270]:
+	# 		if message.author.id == 270904126974590976:
+	# 			if len(message.embeds)>0 and "title" in message.embeds[0].to_dict().keys():
+	# 				if 'Great work' in message.embeds[0].to_dict()["title"]: 
+	# 					if '1x' in message.embeds[0].to_dict()["description"]:
+	# 						pins = await message.channel.pins()
+	# 						for msg in pins:
+	# 							try:
+	# 								if round((datetime.datetime.utcnow() - msg.created_at).total_seconds()) > 172800:
+	# 									if msg.author.id == 270904126974590976:
+	# 										await msg.unpin()
+	# 							except:
+	# 								pass
+	# 						await message.pin()
 
 	@commands.Cog.listener()
 	async def on_component(self, ctx: ComponentContext):
