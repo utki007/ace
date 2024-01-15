@@ -266,7 +266,13 @@ class dankutils(commands.Cog, description="Dank Utility"):
 					embed.add_field(name=f"_ _", value=f"{payout}", inline=False)         
 				await ctx.send(embed=embed) 
 		else:
-			await ctx.send(f"\n".join([payout for payout in payouts]))
+			if f"\n".join([payout for payout in payouts]) > 2000:
+				# send multiple messages
+				payouts_grp = list(chunk(payouts, 12))
+				for group in payouts_grp:
+					await ctx.send(f"\n".join([payout for payout in group]))
+			else:
+				await ctx.send(f"\n".join([payout for payout in payouts]))
 			
 
 	@commands.command(name="FreeLoader", aliases=["fl"], description="Lists Freeloader Perks")
