@@ -266,7 +266,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 					embed.add_field(name=f"_ _", value=f"{payout}", inline=False)         
 				await ctx.send(embed=embed) 
 		else:
-			if f"\n".join([payout for payout in payouts]) > 2000:
+			if len(f"\n".join([payout for payout in payouts])) > 2000:
 				# send multiple messages
 				payouts_grp = list(chunk(payouts, 12))
 				for group in payouts_grp:
