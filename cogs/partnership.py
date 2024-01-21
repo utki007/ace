@@ -9,6 +9,8 @@ import pymongo
 import datetime
 import itertools
 import re
+
+from pytz import timezone
 from utils.Checks import checks
 from utils.convertor import calculate, convert_to_numeral, convert_to_time
 # helper functions
@@ -239,7 +241,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		try:
 			timer = await convert_to_time(timer)
 			timer = await calculate(timer)
-			timer = datetime.datetime.utcnow() + datetime.timedelta(seconds=timer)
+			timer = datetime.datetime.now(timezone("Asia/Kolkata")) + datetime.timedelta(seconds=timer)
 		except:
 			warning = discord.Embed(
 				color=self.bot.colors["RED"],
