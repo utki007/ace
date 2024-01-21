@@ -20,6 +20,7 @@ from discord_slash.utils.manage_components import create_button, create_actionro
 from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
 from itertools import islice
+from pytz import timezone
 
 def chunk(it, size):
 	it = iter(it)
@@ -442,12 +443,24 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		time = await convert_to_time(time)
 		cd = await calculate(time)
 		
-		end = datetime.datetime.utcnow() + datetime.timedelta(seconds=cd)
-		await ctx.send(
-			f"<t:{int(datetime.datetime.timestamp(end))}:t> (<t:{int(datetime.datetime.timestamp(end))}:R>)\n"
+		timestamp = int((datetime.datetime.now(timezone("Asia/Kolkata")) + datetime.timedelta(seconds=cd)).timestamp())
+		await ctx.send(timestamp)
+		embed = discord.Embed(
+			title="Unix Timestamp Generator",
+			# description=f"There are seven different formatting options that discord offers for Unix Timestamps. These include: Short & Long Time, Short & Long Date, Short Date & Time, Long Date & Time, and Relative Time.\n\n"
+			# 			f"Relative time will always show the Unix Timestamp relative to the current one, this can be extremely useful when used for a count down!",
+			color=discord.Color.random()
 		)
+		embed.add_field(name="Short Time",value=f"<t:{timestamp}:t>\n\<t:{timestamp}:t>")
+		embed.add_field(name="Long Time",value=f"<t:{timestamp}:T>\n\<t:{timestamp}:T>")
+		embed.add_field(name="Short Date",value=f"<t:{timestamp}:d>\n\<t:{timestamp}:d>")
+		embed.add_field(name="Long Date",value=f"<t:{timestamp}:D>\n\<t:{timestamp}:D>")
+		embed.add_field(name="Short Date & Time",value=f"<t:{timestamp}:f>\n\<t:{timestamp}:f>")
+		embed.add_field(name="Long Date & Time",value=f"<t:{timestamp}:F>\n\<t:{timestamp}:F>")
+		embed.add_field(name="Relative Time",value=f"<t:{timestamp}:R>\n\<t:{timestamp}:R>")
 		await ctx.send(
-			f"```<t:{int(datetime.datetime.timestamp(end))}:t> (<t:{int(datetime.datetime.timestamp(end))}:R>)```\n"
+			content = f"Copy the message above to get the Unix timestamp that you require!",
+			embed=embed
 		)
 		
 def setup(bot):
