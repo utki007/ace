@@ -20,4 +20,4 @@ humanfriendly==9.2
 chat-exporter==1.7.3
 tabulate==0.9.0
 python-dotenv
-parsedatetime==2.6
+dateparser

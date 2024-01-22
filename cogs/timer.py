@@ -24,6 +24,7 @@ from pytz import timezone
 import parsedatetime
 import pytz
 from pytz import timezone
+import dateparser
 
 def chunk(it, size):
 	it = iter(it)
@@ -442,14 +443,12 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def gettime(self, ctx,*,time):
 		
-		# await ctx.message.delete()
-		cal = parsedatetime.Calendar()
-		datetime_obj, _ = cal.parseDT(datetimeString=time)
-
-		# time = await convert_to_time(time)
-		# cd = await calculate(time)
+		if not (t := dateparser.parse(time, settings={"PREFER_DATES_FROM": "future"})):
+			return await ctx.reply("Could not convert time.", mention_author=False)
+		if not t.tzinfo:
+			t.replace(tzinfo=pytz.UTC)
 		
-		timestamp = int(datetime_obj.timestamp())
+		timestamp = int(t.timestamp() + 1)
 		# await ctx.send(timestamp)
 		embed = discord.Embed(
 			title="Unix Timestamp Generator",
@@ -465,7 +464,6 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		embed.add_field(name="Long Date & Time",value=f"<t:{timestamp}:F>\n\<t:{timestamp}:F>")
 		embed.add_field(name="Relative Time",value=f"<t:{timestamp}:R>\n\<t:{timestamp}:R>")
 		await ctx.reply(
-			content = f"Copy the message above to get the Unix timestamp that you require!",
 			embed=embed,
 			mention_author=False
 		)
