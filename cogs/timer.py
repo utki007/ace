@@ -21,6 +21,9 @@ from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
 from itertools import islice
 from pytz import timezone
+import parsedatetime
+import pytz
+from pytz import timezone
 
 def chunk(it, size):
 	it = iter(it)
@@ -435,16 +438,19 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 			pass  
 
 		
-	@commands.command(name = "get_time",aliases = ["gt"])
+	@commands.command(name = "get_time",aliases = ["gt", "timestamp", "ts"])
 	@commands.check_any(checks.can_use(), checks.is_me())
-	async def gettime(self, ctx,time):
+	async def gettime(self, ctx,*,time):
 		
-		await ctx.message.delete()
-		time = await convert_to_time(time)
-		cd = await calculate(time)
+		# await ctx.message.delete()
+		cal = parsedatetime.Calendar()
+		datetime_obj, _ = cal.parseDT(datetimeString=time , tzinfo=pytz.timezone("Asia/Kolkata"))
+
+		# time = await convert_to_time(time)
+		# cd = await calculate(time)
 		
-		timestamp = int((datetime.datetime.now(timezone("Asia/Kolkata")) + datetime.timedelta(seconds=cd)).timestamp())
-		await ctx.send(timestamp)
+		timestamp = int(datetime_obj.timestamp())
+		# await ctx.send(timestamp)
 		embed = discord.Embed(
 			title="Unix Timestamp Generator",
 			# description=f"There are seven different formatting options that discord offers for Unix Timestamps. These include: Short & Long Time, Short & Long Date, Short Date & Time, Long Date & Time, and Relative Time.\n\n"
@@ -458,9 +464,10 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		embed.add_field(name="Short Date & Time",value=f"<t:{timestamp}:f>\n\<t:{timestamp}:f>")
 		embed.add_field(name="Long Date & Time",value=f"<t:{timestamp}:F>\n\<t:{timestamp}:F>")
 		embed.add_field(name="Relative Time",value=f"<t:{timestamp}:R>\n\<t:{timestamp}:R>")
-		await ctx.send(
+		await ctx.reply(
 			content = f"Copy the message above to get the Unix timestamp that you require!",
-			embed=embed
+			embed=embed,
+			mention_author=False
 		)
 		
 def setup(bot):
