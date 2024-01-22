@@ -444,7 +444,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		
 		# await ctx.message.delete()
 		cal = parsedatetime.Calendar()
-		datetime_obj, _ = cal.parseDT(datetimeString=time , tzinfo=pytz.timezone("Asia/Kolkata"))
+		datetime_obj, _ = cal.parseDT(datetimeString=time)
 
 		# time = await convert_to_time(time)
 		# cd = await calculate(time)
