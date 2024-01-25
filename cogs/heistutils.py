@@ -89,7 +89,7 @@ class heistutils(commands.Cog):
 			timer = await calculate(timer)
 			# timer += 19800 
 		
-			timer = datetime.datetime.utcnow() + datetime.timedelta(seconds=timer)
+			timer = datetime.datetime.now(timezone("Asia/Kolkata")) + datetime.timedelta(seconds=timer)
 		except:
 			warning = discord.Embed(
 				color=self.bot.colors["RED"],
