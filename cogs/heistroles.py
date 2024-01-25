@@ -428,7 +428,7 @@ class heistroles(commands.Cog):
 			if amount == -1:
 				return await errorFeed.send(f'## [Incorrect Amount]({message.jump_url})\n{content}')
 			
-			invite = (re.findall(r'https\:\/\/discord\.gg\/[a-zA-Z0-9]+', message.content))[0]
+			invite = (re.findall(r'https\:\/\/discord\.gg\/[a-zA-Z0-9\-]+', message.content))[0]
 			try:
 				invite = await self.bot.fetch_invite(invite)
 			except:
@@ -484,9 +484,9 @@ class heistroles(commands.Cog):
 			
 			grind_channel = self.bot.get_channel(1110476949194813501)
 			messages = [message async for message in grind_channel.history(limit=20) if heist_ad.split("\n")[0] in message.content]
-			if len(messages) > 0:
+			if len(messages) == 0:
 				try:
-					await grind_channel.send(content = heist_ad, components=[create_actionrow(*buttons)], allowed_mentions=am)
+					await grind_channel.send(content = f"{heist_ad}\n{pings}", components=[create_actionrow(*buttons)], allowed_mentions=am)
 					await user.send(content = heist_ad, components=[create_actionrow(*buttons)], allowed_mentions=am)
 				except:
 					await errorFeed.send(f'## [Error Sending]({message.jump_url})\n{content}')
