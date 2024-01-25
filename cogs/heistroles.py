@@ -412,7 +412,85 @@ class heistroles(commands.Cog):
 		elif message.channel.id == 947525172049621023:
 			
 			aceFeed = gk.get_channel(944490857111896064)
+			errorFeed = gk.get_channel(1002668942277492868)
 			user = self.bot.get_user(301657045248114690)
+			content = message.content.lower()
+
+			try :
+				amount = int((re.findall(r'[0-9]*,*[0-9]+,[0-9]+,[0-9]+', message.content))[0].replace(",","",100)) 
+			except :
+				try:
+					amount_list = ((re.findall(r'[0-9]+\s*[mil|m|bil|b|]', message.content.lower()))[0]).replace(' ','',100).repalce('il','',1)
+					amount = await convert_to_numeral(amount_list)
+				except:
+					amount = -1
+			
+			if amount == -1:
+				return await errorFeed.send(f'## [Incorrect Amount]({message.jump_url})\n{content}')
+			
+			invite = (re.findall(r'https\:\/\/discord\.gg\/[a-zA-Z0-9]+', message.content))[0]
+			try:
+				invite = await self.bot.fetch_invite(invite)
+			except:
+				return await errorFeed.send(f'## [Invalid Invite]({message.jump_url})\n{content}')
+			if invite == None:
+				return await errorFeed.send(f'## [Incorrect Invite]({message.jump_url})\n{content}')
+			
+			timestamp = int(re.findall("\<t:\w*:\d*", message.content)[0].replace("<t:","",1).replace(":","",1))
+			current_timestamp = datetime.datetime.now().timestamp()
+			if timestamp < current_timestamp:
+				return await errorFeed.send(f'## [Incorrect Timestamp]({message.jump_url})\n{content}')
+			channel = (re.findall("\<\#\d*\>", message.content))[0]
+			try:
+				channel_id = (channel.replace("<#","",1).replace(">","",1))
+			except:
+				channel_id = invite.channel.id
+			
+			member_count = invite.approximate_member_count
+			if member_count < 500:
+				return await user.send(f'## [Low Member Count]({message.jump_url})\n{content}')
+			if amount < 50000000:
+				return
+			elif amount < 250000000:
+				pings = f"[ <@&1048602378858922086> ]"
+			else:
+				pings = f"[ <@&1048602415047389224> <@&1048602378858922086> ]"
+			
+			gk = self.bot.get_guild(785839283847954433)
+			dev_server = self.bot.get_guild(999551299286732871)
+			
+			server_emoji = await dev_server.fetch_emoji(1048598237612867584)
+			heistemoji = await gk.fetch_emoji(932911351154741308)
+
+			heist_ad = f"★｡ﾟ☆ﾟ__**{invite.guild}'s Heist**__☆ﾟ｡★\n\n"
+
+			buttons = [
+				create_button(style=ButtonStyle.URL, label="Join Heist!", emoji=heistemoji, disabled=False, url=f'https://discord.com/channels/{invite.guild.id}/{channel_id}/{invite.code}'),
+				create_button(style=ButtonStyle.URL, label="Join Server!", emoji=server_emoji, disabled=False, url=invite)
+			]
+
+			heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Amount:** **⏣ {int(amount):,}**\n"
+			heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Channel:** {channel}\n"
+			heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Time:** <t:{timestamp}:t> (<t:{timestamp}:R>)\n\n"
+			heist_ad += f" ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ｡ﾟ☆ﾟ｡★｡ﾟ☆ﾟ"
+
+			am = discord.AllowedMentions(
+				users=False,  # Whether to ping individual user @mentions
+				everyone=False,  # Whether to ping @everyone or @here mentions
+				roles=True,  # Whether to ping role @mentions
+				replied_user=False,  # Whether to ping on replies to messages
+			)
+
+			
+			grind_channel = self.bot.get_channel(1110476949194813501)
+			messages = [message async for message in grind_channel.history(limit=20) if heist_ad.split("\n")[0] in message.content]
+			if len(messages) > 0:
+				try:
+					await grind_channel.send(content = heist_ad, components=[create_actionrow(*buttons)], allowed_mentions=am)
+					await user.send(content = heist_ad, components=[create_actionrow(*buttons)], allowed_mentions=am)
+				except:
+					await errorFeed.send(f'## [Error Sending]({message.jump_url})\n{content}')
+
 			content = message.content
 			emojis = list(set(re.findall(":\w*:\d*", content )))
 			emoji_only = []
@@ -430,7 +508,7 @@ class heistroles(commands.Cog):
 			messages = [message async for message in aceFeed.history(limit=20) if content_to_check in message.content]
 			if len(messages) == 0:
 				await aceFeed.send(content = content, allowed_mentions=discord.AllowedMentions.none())
-				await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
+				# await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
 
 		#for acefeed
 		elif message.channel.id == 947525898100412417:
