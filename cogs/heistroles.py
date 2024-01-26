@@ -447,7 +447,7 @@ class heistroles(commands.Cog):
 				channel_id = invite.channel.id
 			
 			member_count = invite.approximate_member_count
-			if member_count < 500:
+			if member_count < 1000:
 				return await user.send(f'## [Low Member Count]({message.jump_url})\n{content}')
 			if amount < 50000000:
 				return
