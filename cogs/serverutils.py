@@ -366,7 +366,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 		await message.add_reaction(self.bot.emojis_list['Check'])
 		await ctx.message.delete()
 
-	@cog_ext.cog_slash(name="template", description="Get Heist Ad", guild_ids=[785839283847954433],default_permission=False,
+	@cog_ext.cog_slash(name="template", description="Get Embed", guild_ids=[785839283847954433],default_permission=False,
 		options=[
 			create_option(name="title", description="Enter embed title", required=True, option_type=3),
 			create_option(name="content", description="Enter embed description", option_type=3, required=True)])
@@ -387,6 +387,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 		await ctx.send(f"<a:okie:932576089618931772>", hidden=True)
 
 	@commands.command(name="kaiji", description="Verify Kaiji Members")
+	@commands.check_any(checks.can_use(), checks.is_me())
 	async def kaij(self, ctx, member: discord.Member):
 		gk = self.bot.get_guild(785839283847954433)
 		role = discord.utils.get(gk.roles, id=1069540530154897438)
