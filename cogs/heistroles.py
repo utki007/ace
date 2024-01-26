@@ -482,7 +482,7 @@ class heistroles(commands.Cog):
 			)
 
 			
-			grind_channel = self.bot.get_channel(1110476949194813501)
+			grind_channel = self.bot.get_channel(1048587172523016252)
 			messages = [message async for message in grind_channel.history(limit=20) if heist_ad.split("\n")[0] in message.content]
 			if len(messages) == 0:
 				try:
