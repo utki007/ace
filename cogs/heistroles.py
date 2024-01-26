@@ -411,8 +411,8 @@ class heistroles(commands.Cog):
 		# for acefeed
 		elif message.channel.id == 947525172049621023:
 			
-			aceFeed = gk.get_channel(944490857111896064)
-			errorFeed = gk.get_channel(1002668942277492868)
+			aceFeed = self.bot.get_channel(944490857111896064)
+			errorFeed = self.bot.get_channel(1002668942277492868)
 			user = self.bot.get_user(301657045248114690)
 			content = message.content.lower()
 
@@ -466,7 +466,7 @@ class heistroles(commands.Cog):
 
 			buttons = [
 				create_button(style=ButtonStyle.URL, label="Join Heist!", emoji=heistemoji, disabled=False, url=f'https://discord.com/channels/{invite.guild.id}/{channel_id}/{invite.code}'),
-				create_button(style=ButtonStyle.URL, label="Join Server!", emoji=server_emoji, disabled=False, url=invite)
+				create_button(style=ButtonStyle.URL, label="Join Server!", emoji=server_emoji, disabled=False, url=f"{invite}")
 			]
 
 			heist_ad += f"<:tgk_redarrow:1005361235715424296> | **Amount:** **⏣ {int(amount):,}**\n"
@@ -487,7 +487,7 @@ class heistroles(commands.Cog):
 			if len(messages) == 0:
 				try:
 					await grind_channel.send(content = f"{heist_ad}\n{pings}", components=[create_actionrow(*buttons)], allowed_mentions=am)
-					await user.send(content = heist_ad, components=[create_actionrow(*buttons)], allowed_mentions=am)
+					await user.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)])
 				except:
 					await errorFeed.send(f'## [Error Sending]({message.jump_url})\n{content}')
 
