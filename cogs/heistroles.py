@@ -420,26 +420,33 @@ class heistroles(commands.Cog):
 				amount = int((re.findall(r'[0-9]*,*[0-9]+,[0-9]+,[0-9]+', message.content))[0].replace(",","",100)) 
 			except :
 				try:
-					amount_list = ((re.findall(r'[0-9]+\s*[mil|m|bil|b|]', message.content.lower()))[0]).replace(' ','',100).repalce('il','',1)
+					amount_list = ((re.findall(r'[0-9]+\s*[mil|m|bil|b|]', message.content.lower()))[0]).replace(' ','',100).replace('il','',1)
 					amount = await convert_to_numeral(amount_list)
+					amount = await calculate(amount)
 				except:
 					amount = -1
 			
 			if amount == -1:
-				return await errorFeed.send(f'## [Incorrect Amount]({message.jump_url})\n{content}')
+				return await errorFeed.send(f'## [Incorrect Amount]({message.jump_url})\n{message.content}')
 			
 			invite = (re.findall(r'https\:\/\/discord\.gg\/[a-zA-Z0-9\-]+', message.content))[0]
 			try:
 				invite = await self.bot.fetch_invite(invite)
 			except:
-				return await errorFeed.send(f'## [Invalid Invite]({message.jump_url})\n{content}')
+				return await errorFeed.send(f'## [Invalid Invite]({message.jump_url})\n{message.content}')
 			if invite == None:
-				return await errorFeed.send(f'## [Incorrect Invite]({message.jump_url})\n{content}')
+				return await errorFeed.send(f'## [Incorrect Invite]({message.jump_url})\n{message.content}')
 			
 			timestamp = int(re.findall("\<t:\w*:\d*", message.content)[0].replace("<t:","",1).replace(":","",1))
 			current_timestamp = datetime.datetime.now().timestamp()
 			if timestamp < current_timestamp:
-				return await errorFeed.send(f'## [Incorrect Timestamp]({message.jump_url})\n{content}')
+				return # await errorFeed.send(f'## [Incorrect Timestamp]({message.jump_url})\n{content}')
+			
+			records = await self.bot.bl.get_all()
+			server_ids = [record["_id"] for record in records]
+			if invite.guild.id in server_ids:
+				return await errorFeed.send(f'## [Blacklisted Partner]({message.jump_url})\n{message.content}')
+
 			channel = (re.findall("\<\#\d*\>", message.content))[0]
 			try:
 				channel_id = (channel.replace("<#","",1).replace(">","",1))
@@ -448,7 +455,7 @@ class heistroles(commands.Cog):
 			
 			member_count = invite.approximate_member_count
 			if member_count < 1000:
-				return await user.send(f'## [Low Member Count]({message.jump_url})\n{content}')
+				return await user.send(f'## [Low Member Count]({message.jump_url})\n{message.content}')
 			if amount < 50000000:
 				return
 			elif amount < 250000000:
@@ -486,7 +493,7 @@ class heistroles(commands.Cog):
 			messages = [message async for message in grind_channel.history(limit=20) if heist_ad.split("\n")[0] in message.content]
 			if len(messages) == 0:
 				try:
-					await grind_channel.send(content = f"{heist_ad}\n{pings}", components=[create_actionrow(*buttons)], allowed_mentions=am)
+					# await grind_channel.send(content = f"{heist_ad}\n{pings}", components=[create_actionrow(*buttons)], allowed_mentions=am)
 					await user.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)])
 				except:
 					await errorFeed.send(f'## [Error Sending]({message.jump_url})\n{content}')
