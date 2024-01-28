@@ -111,5 +111,3 @@ async def convert_to_human_time(seconds):
         timer = human_timer[-1]
 
     return timer.strip()
-
-

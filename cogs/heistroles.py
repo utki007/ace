@@ -408,7 +408,7 @@ class heistroles(commands.Cog):
 				await aceFeed.send(content = content, allowed_mentions=discord.AllowedMentions.none())
 				await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
 
-		# for acefeed
+		# for sherofeed
 		elif message.channel.id == 947525172049621023:
 			
 			aceFeed = self.bot.get_channel(944490857111896064)
@@ -493,7 +493,7 @@ class heistroles(commands.Cog):
 			messages = [message async for message in grind_channel.history(limit=20) if heist_ad.split("\n")[0] in message.content]
 			if len(messages) == 0:
 				try:
-					# await grind_channel.send(content = f"{heist_ad}\n{pings}", components=[create_actionrow(*buttons)], allowed_mentions=am)
+					await grind_channel.send(content = f"{heist_ad}\n{pings}", components=[create_actionrow(*buttons)], allowed_mentions=am)
 					await user.send(heist_ad, allowed_mentions=am, components=[create_actionrow(*buttons)])
 				except:
 					await errorFeed.send(f'## [Error Sending]({message.jump_url})\n{content}')
