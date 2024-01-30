@@ -203,7 +203,7 @@ class heistroles(commands.Cog):
                                         title=f"{'Channel has been reset!'}",
                                         description=f"> Thank you for joining. \n> Stay for more mafias.\n",
                                         color=2829617,
-                                        timestamp=datetime.datetime.utcnow()
+                                        timestamp=datetime.datetime.now()
                                     )
                                     if not message.channel.permissions_synced:
                                         await message.channel.edit(sync_permissions=True)
@@ -240,7 +240,7 @@ class heistroles(commands.Cog):
                         title=f"{'Channel has been reset!'}",
                         description=f"> Thank you for joining! \n> Stay for more heists!\n",
                         color=0xffbbff,
-                        timestamp=datetime.datetime.utcnow()
+                        timestamp=datetime.datetime.now()
                     )
                     lock_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/801343188945207297.gif?v=1")
 
@@ -252,7 +252,7 @@ class heistroles(commands.Cog):
                         f'{self.bot.emojis_list["rightArrow"]} Multiple freeloads, Permanent ban.\n'
                         f'{self.bot.emojis_list["rightArrow"]} Lament why you left such a POG server.\n',
                         color=0xDA2A2A ,
-                        timestamp=datetime.datetime.utcnow()
+                        timestamp=datetime.datetime.now()
                     )
         # fl.set_author(name=ctx.guild.name, icon_url="https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024")
                     fl.set_footer(text=f"Developed by utki007 & Jay",
@@ -276,7 +276,7 @@ class heistroles(commands.Cog):
                         title=f"<a:celebrateyay:821698856202141696>  **Heist Stats**  <a:celebrateyay:821698856202141696>",
                         description=f"**{count_robbers} robbers** teamed up to rack up a total of **⏣ {total_amount:,}**!\n",
                         color=0x9e3bff,
-                        timestamp=datetime.datetime.utcnow()
+                        timestamp=datetime.datetime.now()
                     )
                     payouts_list = [
                         f"barely escaped the police with ⏣ {heist_amount:,}.",
@@ -533,7 +533,7 @@ class heistroles(commands.Cog):
                     title="__Invalid Amount!__",
                     description=
                     f'` - `   **Donated:** **{og_prize}**\n'
-                    f"` - `   **Donated on:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow()))}>\n"
+                    f"` - `   **Donated on:** <t:{int(datetime.datetime.timestamp(datetime.datetime.now()))}>\n"
                     f'` - `   **Donated by:** {user.mention}(`{user.id}`)\n',
                     colour=discord.Color.random()
                 )
@@ -635,7 +635,7 @@ class heistroles(commands.Cog):
                             title="__Invalid Amount!__",
                             description=
                             f'` - `   **Donated:** **{og_prize}**\n'
-                            f"` - `   **Donated on:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow()))}>\n"
+                            f"` - `   **Donated on:** <t:{int(datetime.datetime.timestamp(datetime.datetime.now()))}>\n"
                             f'` - `   **Donated by:** {user.mention}(`{user.id}`)\n',
                             colour=discord.Color.random()
                         )
@@ -719,7 +719,7 @@ class heistroles(commands.Cog):
     # 						pins = await message.channel.pins()
     # 						for msg in pins:
     # 							try:
-    # 								if round((datetime.datetime.utcnow() - msg.created_at).total_seconds()) > 172800:
+    # 								if round((datetime.datetime.now() - msg.created_at).total_seconds()) > 172800:
     # 									if msg.author.id == 270904126974590976:
     # 										await msg.unpin()
     # 							except:
@@ -1096,7 +1096,7 @@ class heistroles(commands.Cog):
                                     f"<a:Partner:925618902673817700> {self.bot.emojis_list['right']} {partnership.mention}\n"   ,                         
                                     # f"<a:nopartnership:929440715539374171> {self.bot.emojis_list['right']} {nopartnership.mention}\n",
                         color=0x9e3bff,
-                        timestamp=datetime.datetime.utcnow()
+                        timestamp=datetime.datetime.now()
                 )
                 event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
                 gk = self.bot.get_guild(785839283847954433)
@@ -1194,7 +1194,7 @@ class heistroles(commands.Cog):
                         # 	heist_stats = discord.Embed(
                         # 		title = title,
                         # 		color=discord.Color.random(),
-                        # 		timestamp = datetime.datetime.utcnow()
+                        # 		timestamp = datetime.datetime.now()
                         # 	)
                         # 	heist_stats.add_field(name=f"Heisted Amount `(in July)`: ",value=f'{total_payouts} Mil',inline=True)
                         # 	heist_stats.add_field(name=f"Heists Joined: ",value=heistdata["payouts"][str(ctx.guild.id)]["count"],inline=True)
@@ -1388,7 +1388,7 @@ class heistroles(commands.Cog):
                             f"<a:Partner:925618902673817700> {self.bot.emojis_list['right']} {partnership.mention}\n"                            
                             f"<a:gk_chatrevive:944667909702185010> {self.bot.emojis_list['right']} {chat.mention}\n",
                 color=0x9e3bff,
-                timestamp=datetime.datetime.utcnow()
+                timestamp=datetime.datetime.now()
         )
         event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
         # event_embed.set_image(url="https://cdn.discordapp.com/attachments/831970404762648586/833255266127970334/rob.gif")

@@ -66,7 +66,7 @@ class Events(commands.Cog):
 	# 	display = discord.Embed(
 	# 		title = f"Reaction Added (User ID: {member.id})",
 	# 		colour = 2829617,
-	# 		timestamp = datetime.datetime.utcnow(),
+	# 		timestamp = datetime.datetime.now(),
 	# 		url = message.jump_url
 	# 	)
 	# 	display.add_field(name="Channel:",value=f'{channel.mention} (`#{channel.name}`)',inline=True)
@@ -112,7 +112,7 @@ class Events(commands.Cog):
 	# 	display = discord.Embed(
 	# 		title = f"Reaction Removed (User ID: {member.id})",
 	# 		colour = 2829617,
-	# 		timestamp = datetime.datetime.utcnow(),
+	# 		timestamp = datetime.datetime.now(),
 	# 		url = message.jump_url
 	# 	)
 	# 	display.add_field(name="Channel:",value=f'{channel.mention} (`#{channel.name}`)',inline=True)

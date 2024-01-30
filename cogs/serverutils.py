@@ -98,7 +98,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 			title=f" {str(name).upper()} ",
 			description=f"**RGB:** {color.to_rgb()} \n**COLOUR:** {color}",
 			color=color,
-			timestamp=datetime.datetime.utcnow()
+			timestamp=datetime.datetime.now()
 		)
 		color.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
 		color.set_thumbnail(url=url)

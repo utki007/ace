@@ -119,7 +119,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 	# 			desc += f"> **Member:** __**{member}**__ \n"
 	# 			desc += f"> **ID:** __**`{member.id}`**__ \n"
 	# 			desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
-	# 			desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=banDuration)))}:D> ({flCount+5} days)\n"
+	# 			desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.now() + datetime.timedelta(seconds=banDuration)))}:D> ({flCount+5} days)\n"
 	# 			embed = discord.Embed(
 	# 				title=f"<a:Siren:999394017005543464> Freeloader Spotted! <a:Siren:999394017005543464>",
 	# 				description=desc,
@@ -179,7 +179,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 	# 		desc += f"> **Member:** __**{member}**__ \n"
 	# 		desc += f"> **ID:** __**`{member.id}`**__ \n"
 	# 		desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
-	# 		desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=banDuration)))}:D> ({flCount+5} days)\n"
+	# 		desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.now() + datetime.timedelta(seconds=banDuration)))}:D> ({flCount+5} days)\n"
 	# 		embed = discord.Embed(
 	# 			title=f"<a:Siren:999394017005543464> Freeloader Spotted! <a:Siren:999394017005543464>",
 	# 			description=desc,
@@ -203,7 +203,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 			color=0x9e3bff,
 			title=f"**Calculated:** `{round(float(output),2):,}`",
 			description=f"**Calculated in:** {round((end - start) * 1000, 3)} ms",
-			timestamp=datetime.datetime.utcnow()
+			timestamp=datetime.datetime.now()
 		)
 		url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={round(float(output),2):,}&font=lobster&font_size=28"
 		e.set_image(url=url)
@@ -285,7 +285,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 			f'{self.bot.emojis_list["rightArrow"]} Multiple freeloads, Permanent ban.\n'
 			f'{self.bot.emojis_list["rightArrow"]} Lament why you left such a POG server.\n',
 			color=0xDA2A2A,
-			timestamp=datetime.datetime.utcnow()
+			timestamp=datetime.datetime.now()
 		)
 		# fl.set_author(name=ctx.guild.name, icon_url="https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024")
 		fl.set_footer(text=f"Developed by utki007 & Jay",
@@ -403,7 +403,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 				desc += f"> **Member:** __**{user}**__ \n"
 				desc += f"> **ID:** __**`{user.id}`**__ \n"
 				desc += f"> **Banned at:** <t:{int(datetime.datetime.now().timestamp())}:D>\n"
-				desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.utcnow() + datetime.timedelta(seconds=duration)))}:D> (14 days)\n"
+				desc += f"> **Banned till:** <t:{int(datetime.datetime.timestamp(datetime.datetime.now() + datetime.timedelta(seconds=duration)))}:D> (14 days)\n"
 				embed = discord.Embed(
 					title=f"<a:Siren:999394017005543464> Freeloader Spotted! <a:Siren:999394017005543464>",
 					description=desc,

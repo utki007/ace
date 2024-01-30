@@ -84,7 +84,7 @@ class lasttoleave(commands.Cog, description="Last to Leave Manager"):
         cd = 30
         name = "Last to Leave "
 
-        end = datetime.datetime.utcnow() + datetime.timedelta(seconds=cd)
+        end = datetime.datetime.now() + datetime.timedelta(seconds=cd)
         timer_left = datetime.datetime.strptime(str(datetime.timedelta(seconds=cd)), '%H:%M:%S')
         cd = int(cd)
         desc = f''
@@ -120,7 +120,7 @@ class lasttoleave(commands.Cog, description="Last to Leave Manager"):
                 await asyncio.sleep(5)
             else:
                 await asyncio.sleep(2)
-            timer_left = str(end - datetime.datetime.utcnow())
+            timer_left = str(end - datetime.datetime.now())
             if timer_left[0]=="-":
                 timer_left = "00:00:00.00"
                 loop = False

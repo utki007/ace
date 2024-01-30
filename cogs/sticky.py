@@ -72,7 +72,7 @@ class sticky(commands.Cog, description="Sticky Utility"):
 				title = "Sticky Messages",
 				description = f"Manage Sticky Messages Efficiently",
 				color = 0x9e3bff,
-				timestamp=datetime.datetime.utcnow()
+				timestamp=datetime.datetime.now()
 			)
 			help.add_field(
 				name="<a:TGK_sparkles:838838345316040744> __Set Sticky Message__",

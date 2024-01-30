@@ -141,7 +141,7 @@ class heistutils(commands.Cog):
 				title=f"<a:bhaago:821993760492879872>  **{title.title(): ^15}**  <a:bhaago:821993760492879872>",
 				description = desc,
 				color=0x9e3bff,
-				timestamp=datetime.datetime.utcnow()
+				timestamp=datetime.datetime.now()
 		)
 		event_embed.add_field(
 				name=f"**\n**",
@@ -202,7 +202,7 @@ class heistutils(commands.Cog):
 			title=f"<a:tgk_run:832700446711611422>       **{'Requirement Heist'}**       <a:tgk_run:832700446711611422> ",
 			description=f"Heist channel is unlocked for :\n\n{role_string}",
 			color=discord.Color.random(),
-			timestamp=datetime.datetime.utcnow()
+			timestamp=datetime.datetime.now()
 		)
 		unlock_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
 		unlock_embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/831970404762648586/833039923548389397/tenor.gif")
@@ -336,7 +336,7 @@ class heistutils(commands.Cog):
 	# 		f"` - `   **Channel:** {ctx.channel.mention}\n"
 	# 		f"` - `   **Message:** {orig_message}",
 	# 		colour=discord.Color.random(),
-	# 		timestamp=datetime.datetime.utcnow()
+	# 		timestamp=datetime.datetime.now()
 	# 	)
 
 	# 	logg.set_footer(

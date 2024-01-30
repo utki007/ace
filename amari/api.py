@@ -46,7 +46,7 @@ class AmariClient:
 
     def update_ratelimit(self):
         for request_time in self.requests:
-            if (datetime.utcnow() - request_time).seconds >= self.request_period:
+            if (datetime.now() - request_time).seconds >= self.request_period:
                 self.requests.remove(request_time)
 
     async def check_and_update_ratelimit(self):
@@ -133,5 +133,5 @@ class AmariClient:
             params=params,
         ) as response:
             await self.check_response_for_errors(response)
-            self.requests.append(datetime.utcnow())
+            self.requests.append(datetime.now())
             return await response.json()

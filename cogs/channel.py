@@ -328,7 +328,7 @@ class channel(commands.Cog, description="Channel utils"):
                 title=f"    **{'Why are Dank Memer channels Locked ?'}**   ",
                 description=f":lock:Dank Memer is offline. Keep an eye on <#785849567518130176> to check status of the bot.\n If the bot is online and the channel is still locked, raise a ticket from <#785901543349551104>. \n",
                 color=0xff0000,
-                timestamp=datetime.datetime.utcnow()
+                timestamp=datetime.datetime.now()
             )
             dlock.set_footer(
             text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
@@ -450,7 +450,7 @@ class channel(commands.Cog, description="Channel utils"):
                             f":unlock: Dank Memer is back online."
                             f"Have fun! \n",
                 color=0x78AB46,
-                timestamp=datetime.datetime.utcnow()
+                timestamp=datetime.datetime.now()
             )
             dunlock.set_footer(
             text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)

@@ -183,7 +183,7 @@ class blacklist(commands.Cog, name="Blacklist", description="Blacklist a Partner
 						f"**Reason:** {dict['reason']}\n"
 						f"**Proof:** {dict['proof']} \n",
 			color = self.bot.colors["Success"],
-			timestamp = datetime.datetime.utcnow()
+			timestamp = datetime.datetime.now()
 		)
 		dm.set_footer(text = f"Developed by utki007 & Jay", icon_url = ctx.guild.icon_url)
 		embed = discord.Embed(

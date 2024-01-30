@@ -161,7 +161,7 @@ class giveaway(commands.Cog):
 	# 					else:
 	# 						embed = discord.Embed(title="Entry Declined:",
 	# 							description=f"Your entry for this [Giveaway]({message.jump_url}) has been declined.\nReason: You don't have the Required Role`{required_role.name}`",color=0xE74C3C)
-	# 						embed.timestamp = datetime.datetime.utcnow()
+	# 						embed.timestamp = datetime.datetime.now()
 	# 						embed.set_footer(text=guild.name,icon_url=guild.icon_url)
 	# 						try:
 	# 							await user.send(embed=embed)
@@ -171,7 +171,7 @@ class giveaway(commands.Cog):
 	# 				else:
 	# 					embed = discord.Embed(title="Entry Declined:",
 	# 							description=f"Your entry for this [Giveaway]({message.jump_url}) has been declined.\nReason: You don't have the Required Role`{required_role.name}`",color=0xE74C3C)
-	# 					embed.timestamp = datetime.datetime.utcnow()
+	# 					embed.timestamp = datetime.datetime.now()
 	# 					embed.set_footer(text=guild.name,icon_url=guild.icon_url)
 	# 					try:
 	# 						await user.send(embed=embed)
@@ -189,7 +189,7 @@ class giveaway(commands.Cog):
 	# 					else:
 	# 						embed = discord.Embed(title="Entery Decline:",
 	# 							description=f"Your Entery for this [Giveaway]({message.jump_url}) has been declined\nReason:You don't have Required amari level to join the giveaway `{data['amari_level']}`", color=0xE74C3C)
-	# 						embed.timestamp = datetime.datetime.utcnow()
+	# 						embed.timestamp = datetime.datetime.now()
 	# 						embed.set_footer(text=guild.name,icon_url=guild.icon_url)
 	# 						try:
 	# 							await user.send(embed=embed)
@@ -199,7 +199,7 @@ class giveaway(commands.Cog):
 	# 				else:
 	# 					embed = discord.Embed(title="Entery Decline:",
 	# 						description=f"Your Entery for this [Giveaway]({message.jump_url}) has been declined\nReason:Required amari level to join the giveaway `{data['amari_level']}`", color=0xE74C3C)
-	# 					embed.timestamp = datetime.datetime.utcnow()
+	# 					embed.timestamp = datetime.datetime.now()
 	# 					embed.set_footer(text=guild.name,icon_url=guild.icon_url)
 	# 					try:
 	# 						await user.send(embed=embed)
@@ -217,7 +217,7 @@ class giveaway(commands.Cog):
 	# 					else:
 	# 						embed = discord.Embed(title="Entery Decline:",
 	# 							description=f"Your Entry to this [Giveaway]({message.jump_url}).has been denied.\nReason:You don't have the required Weekly Amari points `{data['weekly_amari']}`", color=0xE74C3C)
-	# 						embed.timestamp = datetime.datetime.utcnow()
+	# 						embed.timestamp = datetime.datetime.now()
 	# 						embed.set_footer(text=guild.name,icon_url=guild.icon_url)
 	# 						try:
 	# 							await user.send(embed=embed)
@@ -227,7 +227,7 @@ class giveaway(commands.Cog):
 	# 				else:
 	# 					embed = discord.Embed(title="Entery Decline:",
 	# 						description=f"Your Entery for this [Giveaway]({message.jump_url}) has been declined\nReason:You don't have Required Weekly Amari `{data['weekly_amari']}`", color=0xE74C3C)
-	# 					embed.timestamp = datetime.datetime.utcnow()
+	# 					embed.timestamp = datetime.datetime.now()
 	# 					embed.set_footer(text=guild.name,icon_url=guild.icon_url)
 	# 					try:
 	# 						await user.send(embed=embed)
@@ -538,7 +538,7 @@ class giveaway(commands.Cog):
 		event_embed = discord.Embed(
 			title=title,
 			color=0xfedb01,
-			timestamp=datetime.datetime.utcnow()
+			timestamp=datetime.datetime.now()
 		)
 		event_embed.add_field(name="Prize:", value=prize, inline=True)
 		event_embed.add_field(name="Sponsor:", value=sponsor.mention, inline=True)
@@ -612,7 +612,7 @@ class giveaway(commands.Cog):
 		
 		member = guild.member_count - count
 
-		today = str(datetime.datetime.utcnow()).split(" ")[0].split("-")
+		today = str(datetime.datetime.now()).split(" ")[0].split("-")
 		today = date(int(today[0]),int(today[1]),int(today[2]))
 
 		member_joined_today = 0
@@ -628,7 +628,7 @@ class giveaway(commands.Cog):
 				title=f"<a:celebrateyay:821698856202141696>  **Our Goal**  <a:celebrateyay:821698856202141696>",
 				# description=f"",
 				color=0x78AB46,
-				timestamp=datetime.datetime.utcnow()
+				timestamp=datetime.datetime.now()
 		)
 		if member >= goal:
 			embed.set_image(url=f"https://minecraftskinstealer.com/achievement/11/Achievement+Reached%21/{goal}+members+reached%21")
@@ -670,7 +670,7 @@ class giveaway(commands.Cog):
 
 		embed = discord.Embed(
 				color=0x020202,
-				timestamp=datetime.datetime.utcnow()
+				timestamp=datetime.datetime.now()
 		)
 		embed.add_field(name="**Members:** ",value=f"<:tgk_member:1064253964842975232> {members}",inline=True)
 
@@ -760,7 +760,7 @@ class giveaway(commands.Cog):
 		display = discord.Embed(
 			title=f"{user.name}#{user.discriminator} is now Blacklisted!",
 			colour= user.color,
-			timestamp=datetime.datetime.utcnow()
+			timestamp=datetime.datetime.now()
 		)
 		display.add_field(name="Authorized by:", value=f"{ctx.author.mention}", inline=True)
 		display.add_field(name="Roles Added:", value=f"\n".join([role.mention for role in roles]), inline=True)
@@ -775,7 +775,7 @@ class giveaway(commands.Cog):
 		logg = discord.Embed(
 			title=f"Blacklist logging",
 			colour= discord.Color.random(),
-			timestamp=datetime.datetime.utcnow()
+			timestamp=datetime.datetime.now()
 		)
 		logg.add_field(name="Blacklisted:", value=f"{user.mention}", inline=True)
 		logg.add_field(name="Authorized by:", value=f"{ctx.author.mention}", inline=True)
@@ -851,7 +851,7 @@ class giveaway(commands.Cog):
 		display = discord.Embed(
 			title=f"{user.name}#{user.discriminator} is now Unblacklisted!",
 			colour= user.color,
-			timestamp=datetime.datetime.utcnow()
+			timestamp=datetime.datetime.now()
 		)
 		display.add_field(name="Authorized by:", value=f"{ctx.author.mention}", inline=True)
 		display.add_field(name="Roles Removed:", value=f"\n".join([role.mention for role in roles]), inline=True)
@@ -865,7 +865,7 @@ class giveaway(commands.Cog):
 		logg = discord.Embed(
 			title=f"Unblacklist logging",
 			colour= discord.Color.random(),
-			timestamp=datetime.datetime.utcnow()
+			timestamp=datetime.datetime.now()
 		)
 		logg.add_field(name="Blacklisted:", value=f"{user.mention}", inline=True)
 		logg.add_field(name="Authorized by:", value=f"{ctx.author.mention}", inline=True)
@@ -919,7 +919,7 @@ class giveaway(commands.Cog):
 					display = discord.Embed(
 						title=f"{user.name}#{user.discriminator} is not blacklisted!",
 						colour= user.color,
-						timestamp=datetime.datetime.utcnow()
+						timestamp=datetime.datetime.now()
 					)
 					display.add_field(name="Authorized by:", value=f"<@{data['sanctioned_by']}>", inline=True)
 					display.add_field(name="Reason:", value=data['reason'], inline=False)
@@ -943,7 +943,7 @@ class giveaway(commands.Cog):
 		display = discord.Embed(
 			title=f"{user.name}#{user.discriminator} Blacklisted Stats!",
 			colour= user.color,
-			timestamp=datetime.datetime.utcnow()
+			timestamp=datetime.datetime.now()
 		)
 		display.add_field(name="Authorized by:", value=f"<@{data['sanctioned_by']}>", inline=True)
 		display.add_field(name="Blacklisted Roles:", value=f"\n".join([role.mention for role in roles]), inline=True)

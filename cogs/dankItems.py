@@ -144,7 +144,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
                                 f"**Unit Cost:** {self.bot.emojis_list['DMC']} **{dict['donationCost']:,}**\n"
                                 f"**Items Worth:** {self.bot.emojis_list['DMC']} **{dict['quantity']*dict['donationCost']:,}**\n",
                     color=self.bot.colors["Success"],
-                    timestamp=datetime.datetime.utcnow()
+                    timestamp=datetime.datetime.now()
                 )
                 embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
                 embed.set_thumbnail(url=dict['url'])
@@ -155,7 +155,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
                     title="__Inventory Logging__",
                     description=f"  {quantity} {dict['itemName'][0].upper()} added [here]({ctx.message.jump_url})",
                     colour=self.bot.colors["Success"],
-                    timestamp=datetime.datetime.utcnow()
+                    timestamp=datetime.datetime.now()
                 )
 
                 logg.set_footer(text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
@@ -220,7 +220,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
                                 f"**Total Items:** {dict['quantity']}\n"
                                 f"**Unit Cost:** {self.bot.emojis_list['DMC']} **{dict['donationCost']:,}**\n",
                     color=self.bot.colors["Success"],
-                    timestamp=datetime.datetime.utcnow()
+                    timestamp=datetime.datetime.now()
                 )
                 embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
                 embed.set_thumbnail(url=dict['url'])
@@ -231,7 +231,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
                     title="__Inventory Logging__",
                     description=f"  {quantity} {dict['itemName'][0].upper()} removed [here]({ctx.message.jump_url})",
                     colour=self.bot.colors["RED"],
-                    timestamp=datetime.datetime.utcnow()
+                    timestamp=datetime.datetime.now()
                 )
 
                 logg.set_footer(text=f"Sanctioned by: {ctx.author}", icon_url=ctx.author.avatar_url)
@@ -327,7 +327,7 @@ class dankItems(commands.Cog, name = "Collectibles Tracker" ,description="All it
                             f"**Unit Cost:** {self.bot.emojis_list['DMC']} **{dict['donationCost']:,}**\n"
                             f"**Items Worth:** {self.bot.emojis_list['DMC']} **{amount*dict['donationCost']:,}**\n",
                 color=self.bot.colors["Success"],
-                timestamp=datetime.datetime.utcnow()
+                timestamp=datetime.datetime.now()
             )
             embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
             embed.set_thumbnail(url=dict['url'])
