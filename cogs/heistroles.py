@@ -411,7 +411,7 @@ class heistroles(commands.Cog):
                 messages = [message async for message in aceFeed.history(limit=20) if content_to_check in message.content]
                 if len(messages) == 0:
                     await aceFeed.send(content = content, allowed_mentions=discord.AllowedMentions.none())
-                    await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
+                    # await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
 
         # for sherofeed
         elif message.channel.id == 947525172049621023:
