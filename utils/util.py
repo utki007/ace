@@ -58,39 +58,58 @@ async def parse_heist_content(self, message):
     user = self.bot.get_user(301657045248114690)
     content = message.content.lower()
 
+    embed = discord.Embed(timestamp=datetime.datetime.now(), color=discord.Color.random())
+
     try :
         amount = int((re.findall(r'[0-9]*,*[0-9]+,[0-9]+,[0-9]+', message.content))[0].replace(",","",100)) 
     except :
         try:
-            amount_list = ((re.findall(r'[0-9]+\s*[mil|m|bil|b|]', message.content.lower()))[0]).replace(' ','',100).replace('il','',1)
+            amount_list = ((re.findall(r'\d+\.?\d*\s*[mil|m|bil|b|]', message.content.lower()))[0]).replace(' ','',100).replace('il','',1)
             amount = await convert_to_numeral(amount_list)
             amount = await calculate(amount)
         except:
             amount = -1
     
     if amount == -1:
-        await errorFeed.send(f'## [Incorrect Amount]({message.jump_url})\n{message.content}')
+        embed.title = "Incorrect Amount"
+        embed.description = f"```py\n{message.content[:500]}\n```"
+        embed.url = message.jump_url
+        await errorFeed.send(embed=embed)
         return posted
     
     invite = (re.findall(r'https\:\/\/discord\.gg\/[a-zA-Z0-9\-]+', message.content))[0]
     try:
         invite = await self.bot.fetch_invite(invite)
     except:
-        await errorFeed.send(f'## [Invalid Invite]({message.jump_url})\n{message.content}')
+        embed.title = "Invalid Invite"
+        embed.description = f"```py\n{message.content[:500]}\n```"
+        embed.url = message.jump_url
+        await errorFeed.send(embed=embed)
         return posted
     if invite == None:
-        await errorFeed.send(f'## [Incorrect Invite]({message.jump_url})\n{message.content}')
+        embed.title = "Invalid Invite"
+        embed.description = f"```py\n{message.content[:500]}\n```"
+        embed.url = message.jump_url
+        await errorFeed.send(embed=embed)
         return posted
     
     timestamp = int(re.findall("\<t:\w*:\d*", message.content)[0].replace("<t:","",1).replace(":","",1))
     current_timestamp = datetime.datetime.now().timestamp()
     if timestamp < current_timestamp:
-        await errorFeed.send(f'## [Incorrect Timestamp]({message.jump_url})\n{message.content}')
+        embed.title = "Incorrect Timestamp"
+        embed.description = f"```py\n{message.content[:500]}\n```"
+        embed.set_footer(text=f"{invite.guild}")
+        embed.url = message.jump_url
+        await errorFeed.send(embed=embed)
         return posted
     
     records = await self.bot.bl.get_all()
     server_ids = [record["_id"] for record in records]
     if invite.guild.id in server_ids:
+        embed.title = "Blacklisted Server"
+        embed.description = f"```py\n{message.content[:500]}\n```"
+        embed.set_footer(text=f"{invite.guild}")
+        embed.url = message.jump_url
         await errorFeed.send(f'## [Blacklisted Partner]({message.jump_url})\n{message.content}')
         return posted
 
@@ -102,9 +121,18 @@ async def parse_heist_content(self, message):
     
     member_count = invite.approximate_member_count
     if member_count < 1000:
-        await user.send(f'## [Low Member Count]({message.jump_url})\n{message.content}')
+        embed.title = "Low Member Count"
+        embed.description = f"```py\n{message.content[:500]}\n```"
+        embed.set_footer(text=f"{invite.guild}")
+        embed.url = message.jump_url
+        await errorFeed.send(embed=embed)
         return posted
     if amount < 50000000:
+        embed.title = "Low Amount"
+        embed.description = f"```py\n{message.content[:500]}\n```"
+        embed.set_footer(text=f"{invite.guild}")
+        embed.url = message.jump_url
+        await errorFeed.send(embed=embed)
         return posted
     elif amount < 250000000:
         pings = f"[ <@&1048602378858922086> ]"
@@ -138,10 +166,14 @@ async def parse_heist_content(self, message):
 
     
     grind_channel = self.bot.get_channel(1048587172523016252)
+    grind_channel2 = self.bot.get_channel(840231915100569650)
+    grind_channel3 = self.bot.get_channel(933605919055568898)
     messages = [message async for message in grind_channel.history(limit=20) if heist_ad.split("\n")[0] in message.content]
     if len(messages) == 0:
         try:
             await grind_channel.send(content = f"{heist_ad}\n{pings}", components=[create_actionrow(*buttons)], allowed_mentions=am)
+            await grind_channel2.send(content = f"{heist_ad}", components=[create_actionrow(*buttons)], allowed_mentions=am)
+            await grind_channel3.send(content = f"{heist_ad}", components=[create_actionrow(*buttons)], allowed_mentions=am)
             await user.send(f"{heist_ad}\n> From: {message.channel.mention}", allowed_mentions=am, components=[create_actionrow(*buttons)])
             posted = True
         except:
