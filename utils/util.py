@@ -148,7 +148,7 @@ async def parse_heist_content(self, message):
     heist_ad = f"★｡ﾟ☆ﾟ__**{invite.guild}'s Heist**__☆ﾟ｡★\n\n"
 
     buttons = [
-        create_button(style=ButtonStyle.URL, label="Join Heist!", emoji=heistemoji, disabled=False, url=f'https://discord.com/channels/{invite.guild.id}/{channel_id}/{invite.code}'),
+        create_button(style=ButtonStyle.URL, label="Join Heist!", emoji=heistemoji, disabled=False, url=f'https://discord.com/channels/{invite.guild.id}/{channel_id}'),
         create_button(style=ButtonStyle.URL, label="Join Server!", emoji=server_emoji, disabled=False, url=f"{invite}")
     ]
 
