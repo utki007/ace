@@ -4,6 +4,8 @@ import discord
 import asyncio
 import math
 import datetime
+
+from pytz import timezone
 from utils.Checks import checks
 class Help(commands.Cog, name="Help command"):
      
@@ -25,7 +27,7 @@ class Help(commands.Cog, name="Help command"):
             # title = "Help",
             description = f"Use `?help <command>` to know more",
             color = 0x9e3bff,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Channel Management__",
@@ -71,7 +73,7 @@ class Help(commands.Cog, name="Help command"):
             title = "Donation Tracker",
             description = f"Track all Donations",
             color = 0x9e3bff,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Donor Bank__",
@@ -122,7 +124,7 @@ class Help(commands.Cog, name="Help command"):
             title = "Heist Tracker",
             description = f"Track and conduct a Heist",
             color = 0x9e3bff,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Conduct a Heist__",
@@ -160,7 +162,7 @@ class Help(commands.Cog, name="Help command"):
             title = "Channel Management",
             description = f"Secure the Server",
             color = 0x9e3bff,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Dank Offline__",
@@ -207,7 +209,7 @@ class Help(commands.Cog, name="Help command"):
             title = "Item Management",
             description = f"Track Items Efficiently",
             color = 0x9e3bff,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Update Items__",
@@ -252,7 +254,7 @@ class Help(commands.Cog, name="Help command"):
             title = "Timer Management",
             description = f"Manage Timers Efficiently",
             color = 0x9e3bff,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Start Timer__",
@@ -298,7 +300,7 @@ class Help(commands.Cog, name="Help command"):
             title = "Partnership Tracker",
             description = f"Track Partnerships Efficiently",
             color = 0x9e3bff,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Ping Count__",
@@ -340,7 +342,7 @@ class Help(commands.Cog, name="Help command"):
             title = "Last to Leave Event Manager",
             description = f"Manage L2L Event Efficiently",
             color = 0x9e3bff,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
         help.add_field(
             name="<a:TGK_sparkles:838838345316040744> __Pre Event Setup__",

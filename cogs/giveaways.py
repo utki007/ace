@@ -14,6 +14,7 @@ from discord_slash.utils.manage_components import create_button, create_actionro
 from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
 from django.forms import HiddenInput
+from pytz import timezone
 from amari import AmariClient
 import datetime
 from datetime import date
@@ -538,7 +539,7 @@ class giveaway(commands.Cog):
 		event_embed = discord.Embed(
 			title=title,
 			color=0xfedb01,
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		event_embed.add_field(name="Prize:", value=prize, inline=True)
 		event_embed.add_field(name="Sponsor:", value=sponsor.mention, inline=True)
@@ -628,7 +629,7 @@ class giveaway(commands.Cog):
 				title=f"<a:celebrateyay:821698856202141696>  **Our Goal**  <a:celebrateyay:821698856202141696>",
 				# description=f"",
 				color=0x78AB46,
-				timestamp=datetime.datetime.now()
+				timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		if member >= goal:
 			embed.set_image(url=f"https://minecraftskinstealer.com/achievement/11/Achievement+Reached%21/{goal}+members+reached%21")
@@ -670,7 +671,7 @@ class giveaway(commands.Cog):
 
 		embed = discord.Embed(
 				color=0x020202,
-				timestamp=datetime.datetime.now()
+				timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		embed.add_field(name="**Members:** ",value=f"<:tgk_member:1064253964842975232> {members}",inline=True)
 
@@ -760,7 +761,7 @@ class giveaway(commands.Cog):
 		display = discord.Embed(
 			title=f"{user.name}#{user.discriminator} is now Blacklisted!",
 			colour= user.color,
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		display.add_field(name="Authorized by:", value=f"{ctx.author.mention}", inline=True)
 		display.add_field(name="Roles Added:", value=f"\n".join([role.mention for role in roles]), inline=True)
@@ -775,7 +776,7 @@ class giveaway(commands.Cog):
 		logg = discord.Embed(
 			title=f"Blacklist logging",
 			colour= discord.Color.random(),
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		logg.add_field(name="Blacklisted:", value=f"{user.mention}", inline=True)
 		logg.add_field(name="Authorized by:", value=f"{ctx.author.mention}", inline=True)
@@ -851,7 +852,7 @@ class giveaway(commands.Cog):
 		display = discord.Embed(
 			title=f"{user.name}#{user.discriminator} is now Unblacklisted!",
 			colour= user.color,
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		display.add_field(name="Authorized by:", value=f"{ctx.author.mention}", inline=True)
 		display.add_field(name="Roles Removed:", value=f"\n".join([role.mention for role in roles]), inline=True)
@@ -865,7 +866,7 @@ class giveaway(commands.Cog):
 		logg = discord.Embed(
 			title=f"Unblacklist logging",
 			colour= discord.Color.random(),
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		logg.add_field(name="Blacklisted:", value=f"{user.mention}", inline=True)
 		logg.add_field(name="Authorized by:", value=f"{ctx.author.mention}", inline=True)
@@ -919,7 +920,7 @@ class giveaway(commands.Cog):
 					display = discord.Embed(
 						title=f"{user.name}#{user.discriminator} is not blacklisted!",
 						colour= user.color,
-						timestamp=datetime.datetime.now()
+						timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 					)
 					display.add_field(name="Authorized by:", value=f"<@{data['sanctioned_by']}>", inline=True)
 					display.add_field(name="Reason:", value=data['reason'], inline=False)
@@ -943,7 +944,7 @@ class giveaway(commands.Cog):
 		display = discord.Embed(
 			title=f"{user.name}#{user.discriminator} Blacklisted Stats!",
 			colour= user.color,
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		display.add_field(name="Authorized by:", value=f"<@{data['sanctioned_by']}>", inline=True)
 		display.add_field(name="Blacklisted Roles:", value=f"\n".join([role.mention for role in roles]), inline=True)

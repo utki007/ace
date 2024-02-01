@@ -35,7 +35,7 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 				title="Settings",
 				description=f"Configure the settings for the server!",
 				color=0x9e3bff,
-				timestamp=datetime.datetime.now()
+				timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 			)
 			help.add_field(
 				name="<a:TGK_sparkles:838838345316040744> __Partnership Management__",

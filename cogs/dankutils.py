@@ -13,6 +13,7 @@ import datetime
 import TagScriptEngine
 import datetime
 from TagScriptEngine import Interpreter, adapter, block
+from pytz import timezone
 from utils.Checks import checks
 from amari import AmariClient
 from itertools import islice
@@ -203,7 +204,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 			color=0x9e3bff,
 			title=f"**Calculated:** `{round(float(output),2):,}`",
 			description=f"**Calculated in:** {round((end - start) * 1000, 3)} ms",
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		url = f"https://fakeimg.pl/150x40/9e3bff/000000/?retina=1&text={round(float(output),2):,}&font=lobster&font_size=28"
 		e.set_image(url=url)
@@ -285,7 +286,7 @@ class dankutils(commands.Cog, description="Dank Utility"):
 			f'{self.bot.emojis_list["rightArrow"]} Multiple freeloads, Permanent ban.\n'
 			f'{self.bot.emojis_list["rightArrow"]} Lament why you left such a POG server.\n',
 			color=0xDA2A2A,
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		# fl.set_author(name=ctx.guild.name, icon_url="https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024")
 		fl.set_footer(text=f"Developed by utki007 & Jay",

@@ -12,6 +12,8 @@ import math
 import time
 import datetime
 import re
+
+from pytz import timezone
 from utils.Checks import checks
 # helper functions
 from utils.convertor import *
@@ -74,7 +76,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 title="Donation Tracker",
                 description=f"Track all Donations",
                 color=0x9e3bff,
-                timestamp=datetime.datetime.now()
+                timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
             )
             help.add_field(
                 name="<a:TGK_sparkles:838838345316040744> __Donor Bank__",
@@ -145,7 +147,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                         f"**_Sanctioned By: _** {ctx.author.mention}\n"
                         f"**_𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧_** \n",
             colour=0x78AB46,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
         display.set_footer(text=f"Developed by utki007 & Jay",
                            icon_url=ctx.guild.icon_url)
@@ -160,7 +162,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                         f"**_Sanctioned By: _** {ctx.author.mention}\n"
                         f"**_𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧_** \n",
             colour=0x78AB46,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
 
         dmMessage.set_footer(
@@ -281,7 +283,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                         f"**Total Donation: ** ⏣ {dict[self.bal]:,} \n\n"
                         f"**_Sanctioned By: _** {ctx.author.mention}\n",
             colour=0xE74C3C,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
 
         display.set_footer(text=f"Developed by utki007 & Jay",
@@ -297,7 +299,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                         f"**_Sanctioned By: _** {ctx.author.mention}\n\n"
                         f"**__If it was not authorized by you then \n do reach out to an admin/owner.__** \n\n",
             colour=0xE74C3C,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
 
         dmMessage.set_footer(
@@ -431,7 +433,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             f"{desc}```\n"
             f"To check your donation do `?bal`",
             colour=member.colour,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
 
         # embed.add_field(
@@ -640,7 +642,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 title="Donation Tracker",
                 description=f"Track all Donations",
                 color=0x9e3bff,
-                timestamp=datetime.datetime.now()
+                timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
             )
             help.add_field(
                 name="<a:TGK_sparkles:838838345316040744> __Donor Bank__",
@@ -769,7 +771,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             display = discord.Embed(
                 title=f"{member.name}'s {name} Celeb Stats",
                 colour= member.color,
-                timestamp=datetime.datetime.now()
+                timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
             )
             if current_role is not None:
                 display.add_field(name="Current Role:", value=f'{current_role.mention}',inline=False)
@@ -795,7 +797,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                         f"**_Sanctioned By: _** {ctx.author.mention}\n"
                         f"**_𝐓𝐡𝐚𝐧𝐤 𝐘𝐨𝐮 𝐟𝐨𝐫 𝐲𝐨𝐮𝐫 𝐯𝐚𝐥𝐮𝐚𝐛𝐥𝐞 𝐝𝐨𝐧𝐚𝐭𝐢𝐨𝐧_** \n",
             colour=member.colour,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
 
         dmMessage.set_footer(text=f"Developed by utki & Jay",
@@ -954,7 +956,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                         f"{spldono}\n"
                         f"**_Sanctioned By: _** {ctx.author.mention}\n",
             colour=0xE74C3C,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
 
         display.set_footer(text=f"Developed by utki & Jay",
@@ -971,7 +973,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                         f"**_Sanctioned By: _** {ctx.author.mention}\n\n"
                         f"**__If it was not authorized by you then \n do reach out to an admin/owner.__** \n\n",
             colour=0xE74C3C,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
 
         dmMessage.set_footer(text=f"Developed by utki & Jay",
@@ -1110,7 +1112,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             description=f"```|{'🏆': ^3}| {'Name': <13}|{'Amount':>6} |\n"
             f"{desc}```\n\n",
             colour=member.colour,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
 
         embed.add_field(
@@ -1201,7 +1203,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         display = discord.Embed(
             title=f"{member.name}'s Grinder Stats",
             colour=member.color,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
         display.add_field(name="Rank:",value=f'**`{teir}`**',inline=True)
         display.add_field(name="Paid For:",value=f'{days}',inline=True)
@@ -1264,7 +1266,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             display = discord.Embed(
                 title=f"{member.name}'s Grinder Stats",
                 colour= member.color,
-                timestamp=datetime.datetime.now()
+                timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
             )
             display.add_field(name="Rank:",value=f'**`{teir}`**',inline=True)
             display.add_field(name="Due On:",value=f"<t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D>",inline=True)
@@ -1321,7 +1323,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             display = discord.Embed(
                 title=f"{member.name}'s 10k Celeb Stats",
                 colour= member.color,
-                timestamp=datetime.datetime.now()
+                timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
             )
             if current_role is not None:
                 display.add_field(name="Current Role:", value=f'{current_role.mention}',inline=False)
@@ -1529,7 +1531,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Data Not Found__  <a:TGK_Pandaswag:830525027341565982>\n\n",
                 description=f"{desc_not_found}",
                 colour=0xff0000,
-                timestamp=datetime.datetime.now()
+                timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
             )
             grinders_not_found.set_footer(text=f"Developed by utki007 & Jay",
                                           icon_url=ctx.guild.icon_url)
@@ -1545,7 +1547,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                             f"<:ace_replycont:1082575852061073508> **Expected Grind:** ⏣ {round(expected_grind):,}\n"
                             f"<:ace_replycont:1082575852061073508> **Weekly Grind:** ⏣ {round(actual_grind*7):,}\n"
                             f"<:ace_reply:1082575762856620093>**Predicted Profit:** ⏣ {round(actual_grind*7-1e9):,}\n",
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
         await ctx.send(embed=embed)
 
@@ -1617,7 +1619,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                                 f"{self.bot.emojis_list['rightArrow']} Please send `⏣ {(int(-df['Time Difference'][ind]+1)*df['Amount Per Grind'][ind]):,}` in <#851663580620521472> today. \n"
                                 f"{self.bot.emojis_list['rightArrow']} Inform staff if you have any trouble with donations.  \n",
                     colour=ctx.author.colour,
-                    timestamp=datetime.datetime.now()
+                    timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
                 )
                 payment_pending.set_footer(text=f"Developed by utki007 & Jay",
                                            icon_url=ctx.guild.icon_url)
@@ -1633,7 +1635,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Data Not Found__  <a:TGK_Pandaswag:830525027341565982>\n\n",
                 description=f"{desc}",
                 colour=0xff0000,
-                timestamp=datetime.datetime.now()
+                timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
             )
             grinders_not_found.set_footer(text=f"Developed by utki007 & Jay",
                                           icon_url=ctx.guild.icon_url)
@@ -1742,7 +1744,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         display = discord.Embed(
             title=f"{member.name}'s Grinder Appointment",
             colour= member.color,
-            timestamp=datetime.datetime.now()
+            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
         if desc is not None:
             display.description = desc

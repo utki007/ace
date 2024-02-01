@@ -110,7 +110,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			title="__Partner Logging__",
 			description=f'{self.bot.emojis_list["SuccessTick"]} | Removed partnership data for <@{member}>\'s (`{member}`)!',
 			colour=self.bot.colors["Success"],
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 
 		logg.set_footer(
@@ -381,7 +381,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			title=f"    **Single Pings for Partnership\n**   ",
 			description=singlePings,
 			color=0x9e3bff,
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		ping1.set_footer(
 			text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
@@ -417,7 +417,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 				title=f"    **Double Pings for Partnership\n**   ",
 				description=doublePings,
 				color=0x9e3bff,
-				timestamp=datetime.datetime.now()
+				timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 			)
 			ping2.set_footer(
 				text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
@@ -483,7 +483,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			title=f"    **Reach for __{channel.name}__\n**   ",
 			description=singlePings,
 			color=0x9e3bff,
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		ping1.set_footer(
 			text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
@@ -519,7 +519,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 				title=f"    **Reach for __{channel.name}__\n**   ",
 				description=doublePings,
 				color=0x9e3bff,
-				timestamp=datetime.datetime.now()
+				timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 			)
 			ping2.set_footer(
 				text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
@@ -587,7 +587,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			title=f"    **Roles reach\n**   ",
 			description=Reach,
 			color=ctx.author.colour,
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		reach.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
 		await ctx.send(embed=reach)
@@ -801,7 +801,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			title="__Partner Logging__",
 			description=f'{self.bot.emojis_list["SuccessTick"]} |{user.mention} can now ping [{pings}] in {channel.mention} (`{channel.name}`)!!!',
 			colour=self.bot.colors["Success"],
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 
 		logg.set_footer(

@@ -5,6 +5,8 @@ from discord.ext import commands
 import asyncio
 import math
 import datetime
+
+from pytz import timezone
 from utils.convertor import *
 
 from discord_slash.utils.manage_commands import create_option, create_choice
@@ -328,7 +330,7 @@ class channel(commands.Cog, description="Channel utils"):
                 title=f"    **{'Why are Dank Memer channels Locked ?'}**   ",
                 description=f":lock:Dank Memer is offline. Keep an eye on <#785849567518130176> to check status of the bot.\n If the bot is online and the channel is still locked, raise a ticket from <#785901543349551104>. \n",
                 color=0xff0000,
-                timestamp=datetime.datetime.now()
+                timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
             )
             dlock.set_footer(
             text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
@@ -450,7 +452,7 @@ class channel(commands.Cog, description="Channel utils"):
                             f":unlock: Dank Memer is back online."
                             f"Have fun! \n",
                 color=0x78AB46,
-                timestamp=datetime.datetime.now()
+                timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
             )
             dunlock.set_footer(
             text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)

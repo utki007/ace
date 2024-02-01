@@ -16,6 +16,7 @@ from discord_slash.model import ButtonStyle, SlashCommandPermissionType
 from discord_slash.utils.manage_commands import (create_option, create_permission)
 from discord_slash.utils.manage_components import (create_actionrow, create_button)
 from discord_webhook import DiscordEmbed, DiscordWebhook
+from pytz import timezone
 import requests
 
 from utils.Checks import checks
@@ -98,7 +99,7 @@ class serverutils(commands.Cog, description="Server Utility"):
 			title=f" {str(name).upper()} ",
 			description=f"**RGB:** {color.to_rgb()} \n**COLOUR:** {color}",
 			color=color,
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		color.set_author(name=ctx.guild.name, icon_url=ctx.guild.icon_url)
 		color.set_thumbnail(url=url)

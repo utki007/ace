@@ -15,6 +15,8 @@ from discord_slash.model import ButtonStyle
 from discord_slash.context import ComponentContext
 import numpy as np
 import datetime
+
+from pytz import timezone
 from utils.convertor import *
 from itertools import islice
 
@@ -203,7 +205,7 @@ class heistroles(commands.Cog):
                                         title=f"{'Channel has been reset!'}",
                                         description=f"> Thank you for joining. \n> Stay for more mafias.\n",
                                         color=2829617,
-                                        timestamp=datetime.datetime.now()
+                                        timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
                                     )
                                     if not message.channel.permissions_synced:
                                         await message.channel.edit(sync_permissions=True)
@@ -240,7 +242,7 @@ class heistroles(commands.Cog):
                         title=f"{'Channel has been reset!'}",
                         description=f"> Thank you for joining! \n> Stay for more heists!\n",
                         color=0xffbbff,
-                        timestamp=datetime.datetime.now()
+                        timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
                     )
                     lock_embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/801343188945207297.gif?v=1")
 
@@ -252,7 +254,7 @@ class heistroles(commands.Cog):
                         f'{self.bot.emojis_list["rightArrow"]} Multiple freeloads, Permanent ban.\n'
                         f'{self.bot.emojis_list["rightArrow"]} Lament why you left such a POG server.\n',
                         color=0xDA2A2A ,
-                        timestamp=datetime.datetime.now()
+                        timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
                     )
         # fl.set_author(name=ctx.guild.name, icon_url="https://cdn.discordapp.com/icons/785839283847954433/a_23007c59f65faade4c973506d9e66224.gif?size=1024")
                     fl.set_footer(text=f"Developed by utki007 & Jay",
@@ -276,7 +278,7 @@ class heistroles(commands.Cog):
                         title=f"<a:celebrateyay:821698856202141696>  **Heist Stats**  <a:celebrateyay:821698856202141696>",
                         description=f"**{count_robbers} robbers** teamed up to rack up a total of **⏣ {total_amount:,}**!\n",
                         color=0x9e3bff,
-                        timestamp=datetime.datetime.now()
+                        timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
                     )
                     payouts_list = [
                         f"barely escaped the police with ⏣ {heist_amount:,}.",
@@ -413,8 +415,8 @@ class heistroles(commands.Cog):
                     await aceFeed.send(content = content, allowed_mentions=discord.AllowedMentions.none())
                     # await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
 
-        # for sherofeed
-        elif message.channel.id == 947525172049621023:
+        # for sherofeed and guardfeed
+        elif message.channel.id in [947525172049621023, 947525898100412417]:
             
             posted = await parse_heist_content(self, message)
             if posted:
@@ -439,21 +441,21 @@ class heistroles(commands.Cog):
                     # await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
 
         #for guardfeed
-        elif message.channel.id == 947525898100412417:
-            gk = self.bot.get_guild(785839283847954433)
-            aceFeed = gk.get_channel(944490857111896064)
-            user = self.bot.get_user(301657045248114690)
+        # elif message.channel.id == 947525898100412417:
+        #     gk = self.bot.get_guild(785839283847954433)
+        #     aceFeed = gk.get_channel(944490857111896064)
+        #     user = self.bot.get_user(301657045248114690)
             
-            if message.embeds:
-                embeds = message.embeds
-                dict = {}
-                for embed in embeds:
-                    dict = embed.to_dict()
-                await aceFeed.send(content=message.content,embed = embed.from_dict(dict))
-                await user.send(content=message.content,embed = embed.from_dict(dict))
-            else:
-                await aceFeed.send(content = message.content, allowed_mentions=discord.AllowedMentions.none())
-                await user.send(content = message.content, allowed_mentions=discord.AllowedMentions.none())
+        #     if message.embeds:
+        #         embeds = message.embeds
+        #         dict = {}
+        #         for embed in embeds:
+        #             dict = embed.to_dict()
+        #         await aceFeed.send(content=message.content,embed = embed.from_dict(dict))
+        #         await user.send(content=message.content,embed = embed.from_dict(dict))
+        #     else:
+        #         await aceFeed.send(content = message.content, allowed_mentions=discord.AllowedMentions.none())
+        #         await user.send(content = message.content, allowed_mentions=discord.AllowedMentions.none())
 
         # for banner
         elif message.channel.id == 1004666846894624778:
@@ -1096,7 +1098,7 @@ class heistroles(commands.Cog):
                                     f"<a:Partner:925618902673817700> {self.bot.emojis_list['right']} {partnership.mention}\n"   ,                         
                                     # f"<a:nopartnership:929440715539374171> {self.bot.emojis_list['right']} {nopartnership.mention}\n",
                         color=0x9e3bff,
-                        timestamp=datetime.datetime.now()
+                        timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
                 )
                 event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
                 gk = self.bot.get_guild(785839283847954433)
@@ -1388,7 +1390,7 @@ class heistroles(commands.Cog):
                             f"<a:Partner:925618902673817700> {self.bot.emojis_list['right']} {partnership.mention}\n"                            
                             f"<a:gk_chatrevive:944667909702185010> {self.bot.emojis_list['right']} {chat.mention}\n",
                 color=0x9e3bff,
-                timestamp=datetime.datetime.now()
+                timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
         )
         event_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
         # event_embed.set_image(url="https://cdn.discordapp.com/attachments/831970404762648586/833255266127970334/rob.gif")

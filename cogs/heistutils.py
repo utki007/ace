@@ -18,6 +18,7 @@ import discord_webhook
 from utils.convertor import *
 from cogs.timer import *
 from discord_webhook import DiscordWebhook,DiscordEmbed
+from pytz import timezone
 
 guild_ids=[785839283847954433]
 
@@ -141,7 +142,7 @@ class heistutils(commands.Cog):
 				title=f"<a:bhaago:821993760492879872>  **{title.title(): ^15}**  <a:bhaago:821993760492879872>",
 				description = desc,
 				color=0x9e3bff,
-				timestamp=datetime.datetime.now()
+				timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		event_embed.add_field(
 				name=f"**\n**",
@@ -202,7 +203,7 @@ class heistutils(commands.Cog):
 			title=f"<a:tgk_run:832700446711611422>       **{'Requirement Heist'}**       <a:tgk_run:832700446711611422> ",
 			description=f"Heist channel is unlocked for :\n\n{role_string}",
 			color=discord.Color.random(),
-			timestamp=datetime.datetime.now()
+			timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 		)
 		unlock_embed.set_footer(text=f"Developed by utki007 & Jay", icon_url=ctx.guild.icon_url)
 		unlock_embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/831970404762648586/833039923548389397/tenor.gif")
@@ -336,7 +337,7 @@ class heistutils(commands.Cog):
 	# 		f"` - `   **Channel:** {ctx.channel.mention}\n"
 	# 		f"` - `   **Message:** {orig_message}",
 	# 		colour=discord.Color.random(),
-	# 		timestamp=datetime.datetime.now()
+	# 		timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
 	# 	)
 
 	# 	logg.set_footer(
