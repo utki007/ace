@@ -115,7 +115,8 @@ class serverutils(commands.Cog, description="Server Utility"):
 			"default": "https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif",
 			"snow": "https://media.discordapp.net/attachments/840291742859001876/943806099537162250/0E67BE40-2287-4A6F-9520-C6FD5E548227.gif",
 			"halloween": "https://cdn.discordapp.com/attachments/1144670888797667469/1166941685213827134/IMG_5389.gif?ex=654c5222&is=6539dd22&hm=4078f851e50d96a8e3a1e4110b6a3cf49abcf5e92367ffbbaae93db5715f6a86&",
-			"halloween2": "https://68.media.tumblr.com/2c5ac33b9a0a8a680dc4374fcba6b071/tumblr_nsbo2nPupG1tl8p9uo1_500.gif"
+			"halloween2": "https://68.media.tumblr.com/2c5ac33b9a0a8a680dc4374fcba6b071/tumblr_nsbo2nPupG1tl8p9uo1_500.gif",
+			"tgk": "https://cdn.discordapp.com/attachments/810050662686523394/1088716970322575370/tgk.png?ex=65c5cbb1&is=65b356b1&hm=ae9b8c6d2f2a87f6b61edb60bc3b3649f730b588fda73bd85f35d00852f833eb&"
 		}
 		try: 
 			gif = gif_types[type]
