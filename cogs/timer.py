@@ -53,7 +53,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 			)
 			return await ctx.reply(embed=warning, mention_author=False)
 		await ctx.message.delete()  
-		end = datetime.datetime.now() + datetime.timedelta(seconds=cd)
+		end = datetime.datetime.now(timezone('Asia/Kolkata')) + datetime.timedelta(seconds=cd)
 		# cd = str(cd)
 		# datetime.strptime(datetime_str, '%m/%d/%y %H:%M:%S')
 		timer_left = datetime.datetime.strptime(str(datetime.timedelta(seconds=cd)), '%H:%M:%S')
@@ -95,7 +95,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 				await asyncio.sleep(5)
 			else:
 				await asyncio.sleep(2)
-			timer_left = str(end - datetime.datetime.now())
+			timer_left = str(end - datetime.datetime.now(timezone('Asia/Kolkata')))
 			if timer_left[0]=="-":
 				timer_left = "00:00:00.00"
 				loop = False
@@ -198,7 +198,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		date_time_str = tdata["timestamp"].split("+")[0]
 		date_time_str = date_time_str.replace("T", " ", 1)
 		date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')   
-		timer_left = str(date_time_obj - datetime.datetime.now())
+		timer_left = str(date_time_obj - datetime.datetime.now(timezone('Asia/Kolkata')))
 		# try:
 		# 	timer_left = datetime.datetime.strptime(timer_left,'%H:%M:%S.%f')
 		# except:
@@ -272,7 +272,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		date_time_str = tdata["timestamp"].split("+")[0]
 		date_time_str = date_time_str.replace("T", " ", 1)
 		date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')   
-		timer_left = str(date_time_obj - datetime.datetime.now())
+		timer_left = str(date_time_obj - datetime.datetime.now(timezone('Asia/Kolkata')))
 		try:
 			timer_left = datetime.datetime.strptime(timer_left,'%H:%M:%S.%f')
 		except:
@@ -318,7 +318,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 				await asyncio.sleep(5)
 			else:
 				await asyncio.sleep(2)
-			timer_left = str(date_time_obj - datetime.datetime.now())
+			timer_left = str(date_time_obj - datetime.datetime.now(timezone('Asia/Kolkata')))
 			if timer_left[0]=="-":
 				timer_left = "00:00:00.00"
 				loop = False
