@@ -58,7 +58,14 @@ async def parse_heist_content(self, message):
     user = self.bot.get_user(301657045248114690)
     content = message.content.lower()
 
+    gk = self.bot.get_guild(785839283847954433)
+    dev_server = self.bot.get_guild(999551299286732871)
+    
+    server_emoji = await dev_server.fetch_emoji(1048598237612867584)
+    heistemoji = await gk.fetch_emoji(932911351154741308)
+
     embed = discord.Embed(timestamp=datetime.datetime.now(), color=discord.Color.random())
+    buttons = [create_button(style=ButtonStyle.URL, label="Advertisement Link!", emoji=server_emoji, disabled=False, url=f"{message.jump_url}")]
 
     try :
         amount = int((re.findall(r'[0-9]*,*[0-9]+,[0-9]+,[0-9]+', message.content))[0].replace(",","",100)) 
@@ -74,7 +81,7 @@ async def parse_heist_content(self, message):
         embed.title = "Incorrect Amount"
         embed.description = f"```py\n{message.content[:500]}\n```"
         embed.url = message.jump_url
-        await errorFeed.send(embed=embed)
+        await errorFeed.send(embed=embed, components=[create_actionrow(*buttons)])
         return posted
     
     invite = (re.findall(r'https\:\/\/discord\.gg\/[a-zA-Z0-9\-]+', message.content))[0]
@@ -84,13 +91,13 @@ async def parse_heist_content(self, message):
         embed.title = "Invalid Invite"
         embed.description = f"```py\n{message.content[:500]}\n```"
         embed.url = message.jump_url
-        await errorFeed.send(embed=embed)
+        await errorFeed.send(embed=embed, components=[create_actionrow(*buttons)])
         return posted
     if invite == None:
         embed.title = "Invalid Invite"
         embed.description = f"```py\n{message.content[:500]}\n```"
         embed.url = message.jump_url
-        await errorFeed.send(embed=embed)
+        await errorFeed.send(embed=embed, components=[create_actionrow(*buttons)])
         return posted
     
     timestamp = int(re.findall("\<t:\w*:\d*", message.content)[0].replace("<t:","",1).replace(":","",1))
@@ -100,7 +107,7 @@ async def parse_heist_content(self, message):
         embed.description = f"```py\n{message.content[:500]}\n```"
         embed.set_footer(text=f"{invite.guild}")
         embed.url = message.jump_url
-        await errorFeed.send(embed=embed)
+        await errorFeed.send(embed=embed, components=[create_actionrow(*buttons)])
         return posted
     
     records = await self.bot.bl.get_all()
@@ -110,7 +117,7 @@ async def parse_heist_content(self, message):
         embed.description = f"```py\n{message.content[:500]}\n```"
         embed.set_footer(text=f"{invite.guild}")
         embed.url = message.jump_url
-        await errorFeed.send(f'## [Blacklisted Partner]({message.jump_url})\n{message.content}')
+        await errorFeed.send(embed=embed, components=[create_actionrow(*buttons)])
         return posted
 
     channel = (re.findall("\<\#\d*\>", message.content))[0]
@@ -125,25 +132,19 @@ async def parse_heist_content(self, message):
         embed.description = f"```py\n{message.content[:500]}\n```"
         embed.set_footer(text=f"{invite.guild}")
         embed.url = message.jump_url
-        await errorFeed.send(embed=embed)
+        await errorFeed.send(embed=embed, components=[create_actionrow(*buttons)])
         return posted
     if amount < 50000000:
         embed.title = "Low Amount"
         embed.description = f"```py\n{message.content[:500]}\n```"
         embed.set_footer(text=f"{invite.guild}")
         embed.url = message.jump_url
-        await errorFeed.send(embed=embed)
+        await errorFeed.send(embed=embed, components=[create_actionrow(*buttons)])
         return posted
     elif amount < 250000000:
         pings = f"[ <@&1048602378858922086> ]"
     else:
         pings = f"[ <@&1048602415047389224> <@&1048602378858922086> ]"
-    
-    gk = self.bot.get_guild(785839283847954433)
-    dev_server = self.bot.get_guild(999551299286732871)
-    
-    server_emoji = await dev_server.fetch_emoji(1048598237612867584)
-    heistemoji = await gk.fetch_emoji(932911351154741308)
 
     heist_ad = f"★｡ﾟ☆ﾟ__**{invite.guild}'s Heist**__☆ﾟ｡★\n\n"
 
