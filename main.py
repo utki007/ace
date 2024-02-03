@@ -126,11 +126,18 @@ async def on_ready():
 	]
 
 #setting up tokens.py
-bot.botToken = os.environ.get('BOT_TOKEN')
-bot.connection_url = os.environ.get('MongoConnectionUrl')
-bot.connection_url2 = os.environ.get("dankHelper")
-bot.amari = os.environ.get("amari")
-bot.amari_client = AmariClient(bot.amari)
+if os.path.exists(os.getcwd()+"./properties/tokens.json"):
+	with open("./properties/tokens.json") as f:
+		configData = json.load(f)
+	bot.botToken = configData["BOT_TOKEN"]
+	bot.connection_url = configData["MongoConnectionUrl"]
+	bot.connection_url2 = configData["dankHelper"]
+	bot.amari = configData["amari"]
+else:
+	bot.botToken = os.environ.get('BOT_TOKEN')
+	bot.connection_url = os.environ.get('MongoConnectionUrl')
+	bot.connection_url2 = os.environ.get("dankHelper")
+	bot.amari = os.environ.get("amari")
 
 @bot.command(hidden=True)
 @commands.check_any(commands.has_any_role(785842380565774368), commands.is_owner())
