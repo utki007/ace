@@ -705,7 +705,7 @@ class heistroles(commands.Cog):
                 data = await self.bot.settings.find(guild.id)
                 if data!=None and "heist_ar" in data:
                     data = data["heist_ar"]
-                    if data["time"] + datetime.timedelta(seconds=300) < datetime.datetime.now(timezone("Asia/Kolkata")):
+                    if data["time"] + datetime.timedelta(seconds=300) < datetime.datetime.now():
                         return await self.bot.db.settings.update_one(
                             {"_id": guild.id},
                             {"$unset": {"heist_ar": ""}},

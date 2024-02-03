@@ -448,7 +448,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		if not t.tzinfo:
 			t.replace(tzinfo=pytz.UTC)
 		
-		timestamp = int(t.timestamp() + 1)
+		timestamp = int(t.timestamp())
 		# await ctx.send(timestamp)
 		embed = discord.Embed(
 			title="Unix Timestamp Generator",

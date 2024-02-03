@@ -213,7 +213,7 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 			timer = await calculate(timer)
 			# timer += 19800 
 		
-			timer = datetime.datetime.now(timezone("Asia/Kolkata")) + datetime.timedelta(seconds=timer)
+			timer = datetime.datetime.now() + datetime.timedelta(seconds=timer)
 		except:
 			warning = discord.Embed(
 				color=self.bot.colors["RED"],
