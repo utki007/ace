@@ -237,6 +237,7 @@ class heistroles(commands.Cog):
                     return
             
             if len(message.embeds)>0 and "description" in message.embeds[0].to_dict().keys():
+
                 if "amazing job everybody, we racked up a total of" in message.embeds[0].description.lower():
                     lock_embed = discord.Embed(
                         title=f"{'Channel has been reset!'}",
@@ -334,6 +335,21 @@ class heistroles(commands.Cog):
 
                     await message.channel.send(embed=fl)
                     await message.channel.send(f'https://cdn.discordapp.com/attachments/810050662686523394/1061588592864010310/tgk_black_bar.gif')
+
+            # for highlow
+            if len(message.embeds)>0 and "author" in message.embeds[0].to_dict().keys():
+                if "utki007's high-low game" in message.embeds[0].author.name:
+                    try:
+                        content = message.embeds[0].description
+                        number = int(re.findall(r'\*\*(.*?)\*\*', content)[0])
+                        data = await self.bot.counter.find('high-low')
+                        if data is None:
+                            await self.bot.counter.upsert({'_id': 'high-low', 'sequence_value': 1, 'number': number})
+                        else:
+                            game_id = data['sequence_value']
+                            await self.bot.counter.upsert({'_id': 'high-low', 'sequence_value': game_id+1, 'number': number})
+                    except:
+                        pass
 
         # mafia message count logging
         if message.channel.name == "mafia":
