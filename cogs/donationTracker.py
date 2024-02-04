@@ -1142,9 +1142,10 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             data = await self.bot.donorBank.find(member.id)
 
         gk = self.bot.get_guild(785839283847954433)
-        mythic = gk.get_role(835866409992716289)
         legendary = gk.get_role(806804472700600400)
-        legacy = gk.get_role(835889385390997545)
+        mythic = gk.get_role(835866409992716289)
+        trial = gk.get_role(932149422719107102)
+        grinder = gk.get_role(836228842397106176)
 
         amount = 0
         amount_per_grind = 0
@@ -1154,9 +1155,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         elif mythic in member.roles:
             amount_per_grind = 7e6
             amount = amount_per_grind * number
-        
-        if legacy in member.roles:
-            return await ctx.reply(f"<a:nat_warning:1062998119899484190> | {member.mention}, please reach out to <#785901543349551104> to become an active grinder.")
 
         date = datetime.date.today()
         if number == 0:
@@ -1198,8 +1196,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             teir = "TIER 𝕍"
         elif teir == 7e6:
             teir = "TIER 𝕍𝕀𝕀"
-        else:
-            teir = "LEGACY"
         display = discord.Embed(
             title=f"{member.name}'s Grinder Stats",
             colour=member.color,
@@ -1225,6 +1221,14 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 f"{self.bot.emojis_list['SuccessTick']} | You have completed your **Grinder Requirements** till <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D>."
                 f" I will notify you <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> to submit your next `⏣ {int(amount_per_grind):,}` again."
             )
+        date = datetime.date.today()
+        time = datetime.datetime(date.year, date.month, date.day)
+        if trial in member.roles:
+            if data["grinder_record"]["time"] > time and data["grinder_record"]["frequency"] > 10:
+                await member.add_roles(grinder)
+                await member.remove_roles(trial)
+                await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Added {grinder.mention} to {member.mention}", allowed_mentions=discord.AllowedMentions.none())
+
 
     @commands.command(name="gcheck", aliases=['gc'])
     @commands.check_any(checks.can_use(), checks.is_me())
@@ -1253,11 +1257,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             return await ctx.send(embed=display)
         else:
             teir = int(data['grinder_record']['amount_per_grind'])
-            if teir == 3e6:
-                teir = "LEGACY"
-            elif teir == 4e6:
-                teir = "LEGACY"
-            elif teir == 5e6:
+            if teir == 5e6:
                 teir = "TIER 𝕍"
             elif teir == 7e6:
                 teir = "TIER 𝕍𝕀𝕀"
@@ -1676,7 +1676,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         gk = self.bot.get_guild(785839283847954433)
         legendary = gk.get_role(806804472700600400)
         mythic = gk.get_role(835866409992716289)
-        legacy = gk.get_role(835889385390997545)
         trial = gk.get_role(932149422719107102)
         grinder = gk.get_role(836228842397106176)
         role = []
@@ -1689,8 +1688,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             if mythic in member.roles:
                 change_tier = True
                 await member.remove_roles(mythic)
-            if legacy in member.roles:
-                await member.remove_roles(legacy)
             role.append(legendary)
         if tier == 7:
             grinder_tier = "𝕍𝕀𝕀"
@@ -1699,8 +1696,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             if legendary in member.roles:
                 change_tier = True
                 await member.remove_roles(legendary)
-            if legacy in member.roles:
-                await member.remove_roles(legacy)
             role.append(mythic)
 
         date = datetime.date.today()
