@@ -570,12 +570,15 @@ class heistroles(commands.Cog):
                 
                 legendary = gk.get_role(806804472700600400)
                 mythic = gk.get_role(835866409992716289)
+                ultimate = gk.get_role(1196477546385133648)
 
                 amount_per_grind = 0
                 if legendary in user.roles:
                     amount_per_grind = 5e6
                 elif mythic in user.roles:
                     amount_per_grind = 7e6
+                elif ultimate in user.roles:
+                    amount_per_grind = 10e6
                 
                 ctx = await self.bot.get_context(message)
                 if int(amount/amount_per_grind) != 0:

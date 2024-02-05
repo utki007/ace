@@ -1144,6 +1144,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         gk = self.bot.get_guild(785839283847954433)
         legendary = gk.get_role(806804472700600400)
         mythic = gk.get_role(835866409992716289)
+        ultimate = gk.get_role(1196477546385133648)
         trial = gk.get_role(932149422719107102)
         grinder = gk.get_role(836228842397106176)
 
@@ -1151,10 +1152,11 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         amount_per_grind = 0
         if legendary in member.roles:
             amount_per_grind = 5e6
-            amount = amount_per_grind * number
         elif mythic in member.roles:
             amount_per_grind = 7e6
-            amount = amount_per_grind * number
+        elif ultimate in member.roles:
+            amount_per_grind = 10e6
+        amount = amount_per_grind * number
 
         date = datetime.date.today()
         if number == 0:
@@ -1196,6 +1198,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             teir = "TIER 𝕍"
         elif teir == 7e6:
             teir = "TIER 𝕍𝕀𝕀"
+        elif teir == 10e6:
+            teir = "TIER 𝕏"
         display = discord.Embed(
             title=f"{member.name}'s Grinder Stats",
             colour=member.color,
@@ -1261,6 +1265,8 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
                 teir = "TIER 𝕍"
             elif teir == 7e6:
                 teir = "TIER 𝕍𝕀𝕀"
+            elif teir == 10e6:
+                teir = "TIER 𝕏"
             else:
                 teir = "DEPRECIATED"
             display = discord.Embed(
@@ -1676,6 +1682,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         gk = self.bot.get_guild(785839283847954433)
         legendary = gk.get_role(806804472700600400)
         mythic = gk.get_role(835866409992716289)
+        ultimate = gk.get_role(1196477546385133648)
         trial = gk.get_role(932149422719107102)
         grinder = gk.get_role(836228842397106176)
         role = []
@@ -1686,17 +1693,27 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             amount_per_grind = 5e6
             await member.add_roles(legendary)
             if mythic in member.roles:
-                change_tier = True
                 await member.remove_roles(mythic)
+            if ultimate in member.roles:
+                await member.remove_roles(ultimate)
             role.append(legendary)
-        if tier == 7:
+        elif tier == 7:
             grinder_tier = "𝕍𝕀𝕀"
             amount_per_grind = 7e6
             await member.add_roles(mythic)
             if legendary in member.roles:
-                change_tier = True
                 await member.remove_roles(legendary)
+            if ultimate in member.roles:
+                await member.remove_roles(ultimate)
             role.append(mythic)
+        elif tier == 10:
+            grinder_tier = "𝕏"
+            amount_per_grind = 10e6
+            await member.add_roles(ultimate)
+            if mythic in member.roles:
+                await member.remove_roles(mythic)
+            if legendary in member.roles:
+                await member.remove_roles(legendary)
 
         date = datetime.date.today()
         time = datetime.datetime(date.year, date.month, date.day)
@@ -1721,9 +1738,6 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             paid_till = data["grinder_record"]["time"]
             if paid_till < time:
                 data["grinder_record"]["time"] = time
-            # if change_tier:
-            # 	data["grinder_record"]["frequency"] = 0
-            # 	data["grinder_record"]["time"] = time
             data["grinder_record"]["amount_per_grind"] = amount_per_grind
         else:
             data["grinder_record"] = grinder_record
@@ -1754,10 +1768,11 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
     @commands.check_any(checks.can_use(), checks.is_me())
     async def gtop(self, ctx):
         
-        guild = self.bot.get_guild(785839283847954433)
-        grinders = guild.get_role(836228842397106176)
-        mythic = guild.get_role(835866409992716289)
-        top = guild.get_role(1191770307757887609)
+        gk = self.bot.get_guild(785839283847954433)
+        grinders = gk.get_role(836228842397106176)
+        mythic = gk.get_role(835866409992716289)
+        ultimate = gk.get_role(1196477546385133648)
+        top = gk.get_role(1191770307757887609)
         # users = guild.members
  
         am = discord.AllowedMentions(
@@ -1768,23 +1783,48 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         )
         message = await ctx.reply(f"Starting to assign {top.mention} role to members ... ", allowed_mentions=am)
         
-        list = []
+        add_list = []
+        remove_list = []
         for member in grinders.members:
+            if top in member.roles:
+                if grinders not in member.roles:
+                    try:
+                        await member.remove_roles(top)
+                        await asyncio.sleep(0.1)
+                        add_list.append(member)
+                    except:
+                        await ctx.author.send(f"Failed to remove {top.name} role from {member.name}(`{member.id}`)", allowed_mentions=am)
+                        continue
             if mythic in member.roles:
                 if top not in member.roles:
                     try:
                         await member.add_roles(top)
                         await asyncio.sleep(0.1)
-                        list.append(member)
+                        add_list.append(member)
+                    except:
+                        await ctx.author.send(f"Failed to add {top.name} role to {member.name}(`{member.id}`)", allowed_mentions=am)
+                        continue
+            elif ultimate in member.roles:
+                if top not in member.roles:
+                    try:
+                        await member.add_roles(top)
+                        await asyncio.sleep(0.1)
+                        add_list.append(member)
                     except:
                         await ctx.author.send(f"Failed to add {top.name} role to {member.name}(`{member.id}`)", allowed_mentions=am)
                         continue
                 
-
-        if len(list) > 0:    
-            message = await message.edit(content = f"Assigned role to **{len(list)} members**!")
+            
+        if len(add_list) > 0:
+            if len(remove_list) > 0:
+                message = await message.edit(content = f"Assigned role to **{len(add_list)} members** and removed from **{len(remove_list)} members**!", allowed_mentions=am)
+            else:
+                message = await message.edit(content = f"Assigned role to **{len(add_list)} members**!", allowed_mentions=am)
         else:
-            await message.edit(content=f"No user is left to be assigned {top.mention} role! \n**Let's go beyy!!**", allowed_mentions=am)
+            if len(remove_list) > 0:
+                message = await message.edit(content = f"Removed role from **{len(remove_list)} members**!", allowed_mentions=am)
+            else:
+                message = await message.edit(content = f"No user is left to be assigned {top.mention} role! \n**Let's go beyy!!**", allowed_mentions=am)
 
     @cog_ext.cog_subcommand(base="Donation", name="log",description="Add/Remove normal server donation!", guild_ids=guild_ids,
         base_default_permission=False,
@@ -1891,12 +1931,15 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         gk = self.bot.get_guild(785839283847954433)
         legendary = gk.get_role(806804472700600400)
         mythic = gk.get_role(835866409992716289)
+        ultimate = gk.get_role(1196477546385133648)
 
         amount_per_grind = 0
         if legendary in user.roles:
             amount_per_grind = 5e6
         elif mythic in user.roles:
             amount_per_grind = 7e6
+        elif ultimate in user.roles:
+            amount_per_grind = 10e6
 
         if amount % amount_per_grind != 0:
             return await ctx.send("<a:nat_warning:1010618708688912466> Invalid amount provided!! Try Again!! <a:nat_warning:1010618708688912466>")
@@ -1909,7 +1952,7 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         ctx1 = await self.bot.get_context(msg)
         ctx1.author = ctx.author
         await ctx1.invoke(self.bot.get_command("gu"), member=user, number=number)
-        await ctx.send(f"Successfully added ** ⏣ `{amount:,}`** to {user.mention}'s grinder account",hidden=True)
+        await ctx.send(f"Successfully added **⏣ `{amount:,}`** to {user.mention}'s grinder account",hidden=True)
 
 def setup(bot):
     bot.add_cog(donationTracker(bot))
