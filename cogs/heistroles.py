@@ -691,14 +691,14 @@ class heistroles(commands.Cog):
             if "vote" in messageContent:
                 playzone = self.bot.get_guild(815849745327194153)
                 emoji = await playzone.fetch_emoji(967152178617811064)
-                buttons = [create_button(style=ButtonStyle.URL, label="Vote here!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
+                buttons = [create_button(style=ButtonStyle.URL, label="Vote here!", emoji=emoji, disabled=False, url="https://disurl.me/server/785839283847954433/vote")]
                 embed = discord.Embed(
                     title=f"<a:tgk_redcrown:1005473874693079071> {gk.name}",
                     description=f"<:tgk_redarrow:1005361235715424296> `+1x` amari guild-wide\n"
                                 f"<:tgk_redarrow:1005361235715424296> Access to <#929613393097293874>\n"
                                 f"<:tgk_redarrow:1005361235715424296> `+1x` entry in <@700743797977514004>'s gaws\n",
                     color=0xff0000,
-                    url="https://top.gg/servers/785839283847954433/vote"
+                    url="https://disurl.me/server/785839283847954433/vote"
                 )
                 try:
                     await message.reply(embed=embed, components=[create_actionrow(*buttons)], mention_author=False , delete_after = 30)
@@ -1076,7 +1076,7 @@ class heistroles(commands.Cog):
                     
                     gk = self.bot.get_guild(785839283847954433)
                     emoji = await gk.fetch_emoji(942521024476487741)
-                    buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
+                    buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://disurl.me/server/785839283847954433/vote")]
                     embed = discord.Embed(
                         title=f"Vote for the {ctx.guild.name}", 
                         description=
@@ -1369,7 +1369,7 @@ class heistroles(commands.Cog):
                     
                     gk = self.bot.get_guild(785839283847954433)
                     emoji = await gk.fetch_emoji(942521024476487741)
-                    buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://top.gg/servers/785839283847954433/vote")]
+                    buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://disurl.me/server/785839283847954433/vote")]
                     embed = discord.Embed(
                         title=f"Vote for the {ctx.guild.name}", 
                         description=
