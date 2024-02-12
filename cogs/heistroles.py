@@ -48,7 +48,6 @@ founder_perm = {
 
 class heistroles(commands.Cog):
     def __init__(self, bot):
-        bot.mafia_logs = {}
         self.bot = bot
         
     @commands.Cog.listener()
@@ -128,90 +127,6 @@ class heistroles(commands.Cog):
                 await message.channel.send(content=content,
                     components=[create_actionrow(*buttons)], allowed_mentions=am
                 )
-
-        # for mafia
-        elif message.author.id == 511786918783090688:
-
-            # check if embed exists
-            if len(message.embeds)>0:
-                
-                # check if embed has title
-                if "title" in message.embeds[0].to_dict().keys():
-                    title = message.embeds[0].title.lower()
-
-                    if 'win' in title and 'also wins' not in title:
-                        #  game has ended , log the game
-                        async for msg in message.channel.history(limit=1000):
-                            if msg.author.id == 511786918783090688 and len(msg.embeds)>0:
-                                if "description" in msg.embeds[0].to_dict().keys():
-                                    desc = msg.embeds[0].description.lower()
-                                    if 'everyone please navigate to' in desc:
-                                        channel_id = int(re.findall("\<\#(.*?)\>", desc)[0])
-                                        logg_channel = self.bot.get_channel(1096669152447582318)
-                                        if channel_id in self.bot.mafia_logs.keys():
-                                            data = await self.bot.counter.find('mafiaGameId')
-                                            if data is None:
-                                                await self.bot.counter.upsert({'_id': 'mafiaGameId', 'sequence_value': 1})
-                                                game_id = 100
-                                            else:
-                                                game_id = data['sequence_value']
-                                                await self.bot.counter.upsert({'_id': 'mafiaGameId', 'sequence_value': game_id+1})
-
-                                            dict = self.bot.mafia_logs[channel_id]
-                                            keys = list(dict.keys())
-                                            values = list(dict.values())
-                                            sorted_value_index = np.argsort(values)
-                                            sorted_dict = {keys[i]: values[i] for i in sorted_value_index}
-
-                                            user_group = list(chunk(sorted_dict.keys(), 4))
-                                            total_pages = len(user_group)
-                                            counter = 0
-                                            color = discord.Color.random()
-
-                                            for group in user_group:
-                                                current_page = user_group.index(group)+1
-                                                embed = discord.Embed(title=f"Mafia Game #{game_id}", url = f'{msg.jump_url}', color=color)
-                                                embed.set_footer(text=f"{message.guild.name} • Page {current_page}/{total_pages}",icon_url=message.guild.icon_url)
-                                                for user in group:
-                                                    user = message.guild.get_member(int(user))
-                                                    counter = counter + 1
-                                                    embed.add_field(
-                                                        name=f"` {counter}. ` {user.name}",
-                                                        value=	f"<:ace_replycont:1082575852061073508> **ID:** {user.id}\n"
-                                                                f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
-                                                                f"<:ace_reply:1082575762856620093> **Messages:** {self.bot.mafia_logs[channel_id][user.id]}",
-                                                        inline=False
-                                                    )
-                                                ace_Server = self.bot.get_guild(947525009247707157)
-                                                emoji = await ace_Server.fetch_emoji(1096893380459499551)
-                                                buttons = [create_button(style=ButtonStyle.URL, label="Winner Message", emoji=emoji, disabled=False, url=message.jump_url)]
-
-                                                if current_page == total_pages:
-                                                    await logg_channel.send(embed=embed, components=[create_actionrow(*buttons)])
-                                                else:
-                                                    await logg_channel.send(embed=embed)
-                                            
-                                            self.bot.mafia_logs = {}
-                                            break
-
-                if "description" in message.embeds[0].to_dict().keys():
-
-                    # if 'Sorry. The max number of' in message.embeds[0].description:
-                    if len(message.embeds[0].description.split("`")) > 1: 
-                        try:
-                            if int(message.embeds[0].description.split("`")[1]) == 20:
-                                if message.channel.id in [1091560896591036426, 946995152440922172]: # add channel ids here
-                                    lock_embed = discord.Embed(
-                                        title=f"{'Channel has been reset!'}",
-                                        description=f"> Thank you for joining. \n> Stay for more mafias.\n",
-                                        color=2829617,
-                                        timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
-                                    )
-                                    if not message.channel.permissions_synced:
-                                        await message.channel.edit(sync_permissions=True)
-                                        await message.channel.send(embed=lock_embed)
-                        except:
-                            pass
 
         elif message.author.id == 270904126974590976:
 
@@ -350,22 +265,6 @@ class heistroles(commands.Cog):
                             await self.bot.counter.upsert({'_id': 'high-low', 'sequence_value': game_id+1, 'number': number})
                     except:
                         pass
-
-        # mafia message count logging
-        if message.channel.name == "mafia":
-            if message.channel.id not in self.bot.mafia_logs.keys():
-                self.bot.mafia_logs[message.channel.id] = {}
-                first_message = await message.channel.history(oldest_first=True,limit=1).flatten()
-                for msg in first_message:
-                    first_message = msg
-                users = re.findall("\<\@(.*?)\>", first_message.content)
-                for user in users:
-                    self.bot.mafia_logs[message.channel.id][int(user)] = 0
-            if message.author.bot:
-                return
-            if message.channel.id in self.bot.mafia_logs.keys():
-                if message.author.id in self.bot.mafia_logs[message.channel.id].keys():
-                    self.bot.mafia_logs[message.channel.id][message.author.id] += 1
 
         # for partner heists 1012434586866827376
         if message.channel.id == 1012434586866827376:
