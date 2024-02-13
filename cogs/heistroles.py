@@ -307,53 +307,70 @@ class heistroles(commands.Cog):
             if 'to not get pinged here!' in message.content:
                 return
             
-            posted = await parse_heist_content(self, message)
-            if posted:
-                aceFeed = gk.get_channel(944490857111896064)
+            try:
+                posted = await parse_heist_content(self, message)
+                if posted:
+                    aceFeed = gk.get_channel(944490857111896064)
+                    user = self.bot.get_user(301657045248114690)
+                    content = f"\n".join(message.content.split("\n")[:-1])
+                    emojis = list(set(re.findall(":\w*:\d*", content )))
+                    emoji_only = []
+                    for emoji in emojis:
+                        k = emoji.replace(":","",2)
+                        if k.isdigit() == False:
+                            if k.lower() != "https":
+                                emoji_only.append(emoji)
+                    for emoji in emoji_only:
+                        content = content.replace(emoji,"",100)
+                    content = content.replace("<>","",100)
+                    content = content.replace("<a>","",100)
+                    
+                    content_to_check = (message.content.split("\n")[0])
+                    messages = [message async for message in aceFeed.history(limit=20) if content_to_check in message.content]
+                    if len(messages) == 0:
+                        await aceFeed.send(content = content, allowed_mentions=discord.AllowedMentions.none())
+            except:
                 user = self.bot.get_user(301657045248114690)
-                content = f"\n".join(message.content.split("\n")[:-1])
-                emojis = list(set(re.findall(":\w*:\d*", content )))
-                emoji_only = []
-                for emoji in emojis:
-                    k = emoji.replace(":","",2)
-                    if k.isdigit() == False:
-                        if k.lower() != "https":
-                            emoji_only.append(emoji)
-                for emoji in emoji_only:
-                    content = content.replace(emoji,"",100)
-                content = content.replace("<>","",100)
-                content = content.replace("<a>","",100)
-                
-                content_to_check = (message.content.split("\n")[0])
-                messages = [message async for message in aceFeed.history(limit=20) if content_to_check in message.content]
-                if len(messages) == 0:
-                    await aceFeed.send(content = content, allowed_mentions=discord.AllowedMentions.none())
-                    # await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
+                embed = discord.Embed(timestamp=datetime.datetime.now(), color=discord.Color.random())
+                embed.title = "Unable to parse heist content"
+                embed.description = f"```py\n{message.content[:4096]}\n```"
+                embed.url = message.jump_url
+                await user.send(embed=embed)
+                pass
 
         # for sherofeed and guardfeed
         elif message.channel.id in [947525172049621023, 947525898100412417]:
             
-            posted = await parse_heist_content(self, message)
-            if posted:
-                aceFeed = self.bot.get_channel(944490857111896064)
-                content = message.content
-                emojis = list(set(re.findall(":\w*:\d*", content )))
-                emoji_only = []
-                for emoji in emojis:
-                    k = emoji.replace(":","",2)
-                    if k.isdigit() == False:
-                        if k.lower() != "https":
-                            emoji_only.append(emoji)
-                for emoji in emoji_only:
-                    content = content.replace(emoji,"",100)
-                content = content.replace("<>","",100)
-                content = content.replace("<a>","",100)
-                
-                content_to_check = (message.content.split("\n")[0])
-                messages = [message async for message in aceFeed.history(limit=20) if content_to_check in message.content]
-                if len(messages) == 0:
-                    await aceFeed.send(content = content, allowed_mentions=discord.AllowedMentions.none())
-                    # await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
+            try:
+                posted = await parse_heist_content(self, message)
+                if posted:
+                    aceFeed = self.bot.get_channel(944490857111896064)
+                    content = message.content
+                    emojis = list(set(re.findall(":\w*:\d*", content )))
+                    emoji_only = []
+                    for emoji in emojis:
+                        k = emoji.replace(":","",2)
+                        if k.isdigit() == False:
+                            if k.lower() != "https":
+                                emoji_only.append(emoji)
+                    for emoji in emoji_only:
+                        content = content.replace(emoji,"",100)
+                    content = content.replace("<>","",100)
+                    content = content.replace("<a>","",100)
+                    
+                    content_to_check = (message.content.split("\n")[0])
+                    messages = [message async for message in aceFeed.history(limit=20) if content_to_check in message.content]
+                    if len(messages) == 0:
+                        await aceFeed.send(content = content, allowed_mentions=discord.AllowedMentions.none())
+                        # await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
+            except:
+                user = self.bot.get_user(301657045248114690)
+                embed = discord.Embed(timestamp=datetime.datetime.now(), color=discord.Color.random())
+                embed.title = "Unable to parse heist content"
+                embed.description = f"```py\n{message.content[:4096]}\n```"
+                embed.url = message.jump_url
+                await user.send(embed=embed)
+                pass
 
         #for guardfeed
         # elif message.channel.id == 947525898100412417:
