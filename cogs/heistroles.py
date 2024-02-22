@@ -530,7 +530,7 @@ class heistroles(commands.Cog):
                     msg = await message.channel.fetch_message(message.reference.message_id)
                     await msg.add_reaction("<a:nat_cross:1010969491347357717>")
 
-            elif message.channel.id == 1051387593318740009:
+            elif message.channel.id == 1210094990315753472:
                     
                 donor_id = re.findall("\<\@(.*?)\>", message.content)[0]
                 user = message.guild.get_member(int(donor_id))
@@ -545,7 +545,7 @@ class heistroles(commands.Cog):
                     number_of_items = int(og_prize.split(" ")[0][:-1].replace(",","",100))
                     item_name = " ".join(og_prize.split(" ")[1:])
                     item_prize = int((await self.bot.dankItems.find(item_name))['price'])
-                    amount = round(number_of_items * item_prize * 1.2)
+                    amount = round(number_of_items * item_prize)
                     multiplier = 1.5
 
                 try:
