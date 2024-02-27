@@ -329,13 +329,16 @@ class heistroles(commands.Cog):
                     messages = [message async for message in aceFeed.history(limit=20) if content_to_check in message.content]
                     if len(messages) == 0:
                         await aceFeed.send(content = content, allowed_mentions=discord.AllowedMentions.none())
+                else:
+                    user = self.bot.get_user(301657045248114690)
+                    await user.send(f"{message.jump_url}\n{message.content[:2000]}")
             except:
-                user = self.bot.get_user(301657045248114690)
                 embed = discord.Embed(timestamp=datetime.datetime.now(), color=discord.Color.random())
                 embed.title = "Unable to parse heist content"
                 embed.description = f"```py\n{message.content[:4096]}\n```"
                 embed.url = message.jump_url
-                await user.send(embed=embed)
+                errorFeed = self.bot.get_channel(1002668942277492868)
+                await errorFeed.send(embed=embed)
                 pass
 
         # for sherofeed and guardfeed
@@ -362,14 +365,16 @@ class heistroles(commands.Cog):
                     messages = [message async for message in aceFeed.history(limit=20) if content_to_check in message.content]
                     if len(messages) == 0:
                         await aceFeed.send(content = content, allowed_mentions=discord.AllowedMentions.none())
-                        # await user.send(content = content, allowed_mentions=discord.AllowedMentions.none())
+                else:
+                    user = self.bot.get_user(301657045248114690)
+                    await user.send(f"{message.jump_url}\n{message.content[:2000]}")
             except:
-                user = self.bot.get_user(301657045248114690)
+                errorFeed = self.bot.get_channel(1002668942277492868)
                 embed = discord.Embed(timestamp=datetime.datetime.now(), color=discord.Color.random())
                 embed.title = "Unable to parse heist content"
                 embed.description = f"```py\n{message.content[:4096]}\n```"
                 embed.url = message.jump_url
-                await user.send(embed=embed)
+                await errorFeed.send(embed=embed)
                 pass
 
         #for guardfeed
