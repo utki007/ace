@@ -299,7 +299,7 @@ class heistroles(commands.Cog):
                     # 			components=[create_actionrow(*buttons)], allowed_mentions=am
                     # )
                     await message.channel.send(
-                                content=f"Grab <@&810593886720098304> from <#944670050252648468> to not get pinged here!", allowed_mentions=am
+                                content=f"Grab <@&810593886720098304> from <id:customize> to not get pinged here!", allowed_mentions=am
                     )
                 except:
                     print("Error in partner heist channel")
