@@ -1132,107 +1132,106 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             pass
         await ctx.send(embed=embed)
 
-    @commands.command(name="gupdate", aliases=['gu', 'gadd'])
-    @commands.check_any(checks.can_use(), checks.is_me())
-    async def gupdate(self, ctx, member: discord.Member, number: int = 1):
-        await ctx.message.delete()
-        data = await self.bot.donorBank.find(member.id)
-        if data == None:
-            await self.create_donor(member)
-            data = await self.bot.donorBank.find(member.id)
+    # @commands.command(name="gupdate", aliases=['gu', 'gadd'])
+    # @commands.check_any(checks.can_use(), checks.is_me())
+    # async def gupdate(self, ctx, member: discord.Member, number: int = 1):
+    #     await ctx.message.delete()
+    #     data = await self.bot.donorBank.find(member.id)
+    #     if data == None:
+    #         await self.create_donor(member)
+    #         data = await self.bot.donorBank.find(member.id)
 
-        gk = self.bot.get_guild(785839283847954433)
-        legendary = gk.get_role(806804472700600400)
-        mythic = gk.get_role(835866409992716289)
-        ultimate = gk.get_role(1196477546385133648)
-        trial = gk.get_role(932149422719107102)
-        grinder = gk.get_role(836228842397106176)
+    #     gk = self.bot.get_guild(785839283847954433)
+    #     legendary = gk.get_role(806804472700600400)
+    #     mythic = gk.get_role(835866409992716289)
+    #     ultimate = gk.get_role(1196477546385133648)
+    #     trial = gk.get_role(932149422719107102)
+    #     grinder = gk.get_role(836228842397106176)
 
-        amount = 0
-        amount_per_grind = 0
-        if legendary in member.roles:
-            amount_per_grind = 5e6
-        elif mythic in member.roles:
-            amount_per_grind = 7e6
-        elif ultimate in member.roles:
-            amount_per_grind = 10e6
-        amount = amount_per_grind * number
+    #     amount = 0
+    #     amount_per_grind = 0
+    #     if legendary in member.roles:
+    #         amount_per_grind = 5e6
+    #     elif mythic in member.roles:
+    #         amount_per_grind = 7e6
+    #     elif ultimate in member.roles:
+    #         amount_per_grind = 10e6
+    #     amount = amount_per_grind * number
 
-        date = datetime.date.today()
-        if number == 0:
-            time = datetime.datetime(date.year, date.month, date.day)
-        else:
-            time = datetime.datetime(date.year, date.month, date.day) + datetime.timedelta(days=number)
+    #     date = datetime.date.today()
+    #     if number == 0:
+    #         time = datetime.datetime(date.year, date.month, date.day)
+    #     else:
+    #         time = datetime.datetime(date.year, date.month, date.day) + datetime.timedelta(days=number)
 
-        grinder_record = {
-            "amount": amount,
-            "amount_per_grind": amount_per_grind,
-            "time": time,
-            "frequency": number
-        }
+    #     grinder_record = {
+    #         "amount": amount,
+    #         "amount_per_grind": amount_per_grind,
+    #         "time": time,
+    #         "frequency": number
+    #     }
 
-        if "grinder_record" in data.keys():
-            data["grinder_record"]["frequency"] += 1*number
-            data["grinder_record"]["amount"] += amount
-            if number == 0:
-                data["grinder_record"]["time"] = time
-            else:
-                data["grinder_record"]["time"] += datetime.timedelta(
-                    days=number)
-            data["grinder_record"]["amount_per_grind"] = amount_per_grind
-        else:
-            data["grinder_record"] = grinder_record
+    #     if "grinder_record" in data.keys():
+    #         data["grinder_record"]["frequency"] += 1*number
+    #         data["grinder_record"]["amount"] += amount
+    #         if number == 0:
+    #             data["grinder_record"]["time"] = time
+    #         else:
+    #             data["grinder_record"]["time"] += datetime.timedelta(
+    #                 days=number)
+    #         data["grinder_record"]["amount_per_grind"] = amount_per_grind
+    #     else:
+    #         data["grinder_record"] = grinder_record
 
-        try:
-            await self.bot.donorBank.upsert(data)
-        except:
-            await ctx.send(f"{self.bot.emojis_list['Warrning']} | Error updating donor data")
-            return
-            # showing donor balance
-        if number == 1:
-            days = "1 Day"
-        else:
-            days = f"{number} Days"
-        teir = int(data['grinder_record']['amount_per_grind'])
-        if teir == 5e6:
-            teir = "TIER 𝕍"
-        elif teir == 7e6:
-            teir = "TIER 𝕍𝕀𝕀"
-        elif teir == 10e6:
-            teir = "TIER 𝕏"
-        display = discord.Embed(
-            title=f"{member.name}'s Grinder Stats",
-            colour=member.color,
-            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
-        )
-        display.add_field(name="Rank:",value=f'**`{teir}`**',inline=True)
-        display.add_field(name="Paid For:",value=f'{days}',inline=True)
-        display.add_field(name="Sanctioned By:",value=f"{ctx.author.mention}",inline=True)
-        display.add_field(name="Amount Credited:",value=f'⏣ {round(amount):,}',inline=True)
-        display.add_field(name="Grinder Bank:",value=f"⏣ {round(data['grinder_record']['amount']):,}",inline=True)
-        display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
-        display.set_thumbnail(url=member.avatar_url)
-        await ctx.send(embed=display)
-        await ctx.invoke(self.bot.get_command("dono a"), member=member, amount=str(amount), sendMessage=False)
-        try:
-            await member.send(
-                f"{self.bot.emojis_list['SuccessTick']} | You have completed your **Grinder Requirements** till <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D>."
-                f" I will notify you <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> to submit your next **⏣ {int(amount_per_grind):,}** again."
-            )
-        except:
-            await ctx.send(
-                f"{self.bot.emojis_list['Warrning']} | Error sending message to {member.mention}"
-                f"{self.bot.emojis_list['SuccessTick']} | You have completed your **Grinder Requirements** till <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D>."
-                f" I will notify you <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> to submit your next `⏣ {int(amount_per_grind):,}` again."
-            )
-        date = datetime.date.today()
-        time = datetime.datetime(date.year, date.month, date.day)
-        if trial in member.roles:
-            if data["grinder_record"]["time"] > time and data["grinder_record"]["frequency"] > 10:
-                await member.add_roles(grinder)
-                await member.remove_roles(trial)
-                await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Added {grinder.mention} to {member.mention}", allowed_mentions=discord.AllowedMentions.none())
-
+    #     try:
+    #         await self.bot.donorBank.upsert(data)
+    #     except:
+    #         await ctx.send(f"{self.bot.emojis_list['Warrning']} | Error updating donor data")
+    #         return
+    #         # showing donor balance
+    #     if number == 1:
+    #         days = "1 Day"
+    #     else:
+    #         days = f"{number} Days"
+    #     teir = int(data['grinder_record']['amount_per_grind'])
+    #     if teir == 5e6:
+    #         teir = "TIER 𝕍"
+    #     elif teir == 7e6:
+    #         teir = "TIER 𝕍𝕀𝕀"
+    #     elif teir == 10e6:
+    #         teir = "TIER 𝕏"
+    #     display = discord.Embed(
+    #         title=f"{member.name}'s Grinder Stats",
+    #         colour=member.color,
+    #         timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
+    #     )
+    #     display.add_field(name="Rank:",value=f'**`{teir}`**',inline=True)
+    #     display.add_field(name="Paid For:",value=f'{days}',inline=True)
+    #     display.add_field(name="Sanctioned By:",value=f"{ctx.author.mention}",inline=True)
+    #     display.add_field(name="Amount Credited:",value=f'⏣ {round(amount):,}',inline=True)
+    #     display.add_field(name="Grinder Bank:",value=f"⏣ {round(data['grinder_record']['amount']):,}",inline=True)
+    #     display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+    #     display.set_thumbnail(url=member.avatar_url)
+    #     await ctx.send(embed=display)
+    #     await ctx.invoke(self.bot.get_command("dono a"), member=member, amount=str(amount), sendMessage=False)
+    #     try:
+    #         await member.send(
+    #             f"{self.bot.emojis_list['SuccessTick']} | You have completed your **Grinder Requirements** till <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D>."
+    #             f" I will notify you <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> to submit your next **⏣ {int(amount_per_grind):,}** again."
+    #         )
+    #     except:
+    #         await ctx.send(
+    #             f"{self.bot.emojis_list['Warrning']} | Error sending message to {member.mention}"
+    #             f"{self.bot.emojis_list['SuccessTick']} | You have completed your **Grinder Requirements** till <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:D>."
+    #             f" I will notify you <t:{int(datetime.datetime.timestamp(data['grinder_record']['time']))}:R> to submit your next `⏣ {int(amount_per_grind):,}` again."
+    #         )
+    #     date = datetime.date.today()
+    #     time = datetime.datetime(date.year, date.month, date.day)
+    #     if trial in member.roles:
+    #         if data["grinder_record"]["time"] > time and data["grinder_record"]["frequency"] > 10:
+    #             await member.add_roles(grinder)
+    #             await member.remove_roles(trial)
+    #             await ctx.send(f"{self.bot.emojis_list['SuccessTick']} | Added {grinder.mention} to {member.mention}", allowed_mentions=discord.AllowedMentions.none())
 
     @commands.command(name="gcheck", aliases=['gc'])
     @commands.check_any(checks.can_use(), checks.is_me())
@@ -1349,420 +1348,420 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
             display.set_thumbnail(url=member.avatar_url)
             return await ctx.send(embed=display)
 
-    @commands.command(name="gstatus", aliases=['gs'])
-    @commands.check_any(checks.can_use(), checks.is_me())
-    async def glist(self, ctx):
-        await ctx.message.delete()
-        waiting = discord.Embed(
-            color=discord.Color.random(),
-            description=f"> Loading Grinder Data {self.bot.emojis_list['Typing']} "
-        )
-        msg = await ctx.send(embed=waiting)
+    # @commands.command(name="gstatus", aliases=['gs'])
+    # @commands.check_any(checks.can_use(), checks.is_me())
+    # async def glist(self, ctx):
+    #     await ctx.message.delete()
+    #     waiting = discord.Embed(
+    #         color=discord.Color.random(),
+    #         description=f"> Loading Grinder Data {self.bot.emojis_list['Typing']} "
+    #     )
+    #     msg = await ctx.send(embed=waiting)
 
-        gk = self.bot.get_guild(785839283847954433)
-        grinder = gk.get_role(836228842397106176)
-        trial = gk.get_role(932149422719107102)
+    #     gk = self.bot.get_guild(785839283847954433)
+    #     grinder = gk.get_role(836228842397106176)
+    #     trial = gk.get_role(932149422719107102)
 
-        grinder_records = []
-        demotion_record = []
-        removal_record = []
-        promotion_records = []
-        desc_not_found = ""
-        members = grinder.members
-        members.extend(trial.members)
+    #     grinder_records = []
+    #     demotion_record = []
+    #     removal_record = []
+    #     promotion_records = []
+    #     desc_not_found = ""
+    #     members = grinder.members
+    #     members.extend(trial.members)
 
-        actual_grind = 0
-        expected_grind = 0
+    #     actual_grind = 0
+    #     expected_grind = 0
 
-        for member in members:
-            if grinder in member.roles:
-                type = "Permanent"
-            else:
-                type = "Probation"
-            data = await self.bot.donorBank.find(member.id)
-            if data != None and "grinder_record" in data.keys():
-                expected_grind += data['grinder_record']['amount_per_grind']
-                frequency = int(data['grinder_record']['frequency']) if "frequency" in data['grinder_record'].keys() else 0
-                if datetime.datetime.now() < data['grinder_record']['time']:
-                    actual_grind += data['grinder_record']['amount_per_grind']
-                    if trial in member.roles:
-                        if frequency >= 7:
-                            promotion_records.append([member.id, member.mention, data['grinder_record']['time'], type, frequency])
-                else:
-                    total_seconds = int((datetime.datetime.now() - data['grinder_record']['time']).total_seconds())
-                    if total_seconds > 518400:
-                        demotion_record.append([member.id, member.mention, data['grinder_record']['time'], type, frequency])
-                    elif total_seconds > 259200:
-                        removal_record.append([member.id, member.mention, data['grinder_record']['time'], type, frequency])
-                frequency = int(data['grinder_record']['frequency']) if "frequency" in data['grinder_record'].keys() else 0
-                grinder_records.append(
-                    [member.id, member.mention, data['grinder_record']['time'], type, frequency])
-            else:
-                desc_not_found += f"{member.mention} `{member.id}`\n"
+    #     for member in members:
+    #         if grinder in member.roles:
+    #             type = "Permanent"
+    #         else:
+    #             type = "Probation"
+    #         data = await self.bot.donorBank.find(member.id)
+    #         if data != None and "grinder_record" in data.keys():
+    #             expected_grind += data['grinder_record']['amount_per_grind']
+    #             frequency = int(data['grinder_record']['frequency']) if "frequency" in data['grinder_record'].keys() else 0
+    #             if datetime.datetime.now() < data['grinder_record']['time']:
+    #                 actual_grind += data['grinder_record']['amount_per_grind']
+    #                 if trial in member.roles:
+    #                     if frequency >= 7:
+    #                         promotion_records.append([member.id, member.mention, data['grinder_record']['time'], type, frequency])
+    #             else:
+    #                 total_seconds = int((datetime.datetime.now() - data['grinder_record']['time']).total_seconds())
+    #                 if total_seconds > 518400:
+    #                     demotion_record.append([member.id, member.mention, data['grinder_record']['time'], type, frequency])
+    #                 elif total_seconds > 259200:
+    #                     removal_record.append([member.id, member.mention, data['grinder_record']['time'], type, frequency])
+    #             frequency = int(data['grinder_record']['frequency']) if "frequency" in data['grinder_record'].keys() else 0
+    #             grinder_records.append(
+    #                 [member.id, member.mention, data['grinder_record']['time'], type, frequency])
+    #         else:
+    #             desc_not_found += f"{member.mention} `{member.id}`\n"
 
-        # df = pd.DataFrame(grinder_records, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
-        # df = df.sort_values(by='Time', ascending=True)
+    #     # df = pd.DataFrame(grinder_records, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
+    #     # df = df.sort_values(by='Time', ascending=True)
         
-        # user_group = list(chunk(df.index, 15))
-        # total_pages = len(user_group)
-        # counter = 0
-        # color = discord.Color.random()
+    #     # user_group = list(chunk(df.index, 15))
+    #     # total_pages = len(user_group)
+    #     # counter = 0
+    #     # color = discord.Color.random()
         
-        # for group in user_group:
-        # 	current_page = user_group.index(group)+1
-        # 	display = discord.Embed(
-        # 		title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Status__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-        # 		colour=color
-        # 	)
-        # 	# display.set_thumbnail(
-        # 	# 	url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
-        # 	display.set_footer(text=f"{ctx.guild.name} • Page {current_page}/{total_pages}",icon_url=ctx.guild.icon_url)
-        # 	for ind in group:
-        # 		user = ctx.guild.get_member(int(df['ID'][ind]))
-        # 		counter = counter + 1
-        # 		display.add_field(
-        # 			name=f"`{counter}.` {user.name}",
-        # 			value=	f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
-        # 					f"<:ace_replycont:1082575852061073508> **Status:** `{df['Type'][ind]}`\n"
-        # 					f"<:ace_replycont:1082575852061073508> **Paid for:** {df['Frequency'][ind]} days\n"
-        # 					f"<:ace_reply:1082575762856620093> **Next Pay:** <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R>",
-        # 			inline=True
-        # 		)
-        # 	if current_page == total_pages:
-        # 		display.add_field(
-        # 			name=f"` - ` TGK Stats",
-        # 			value=	f"<:ace_replycont:1082575852061073508> **Actual Grind:** ⏣ {round(actual_grind):,}\n"
-        # 					f"<:ace_replycont:1082575852061073508> **Expected Grind:** ⏣ {round(expected_grind):,}\n"
-        # 					f"<:ace_replycont:1082575852061073508> **Weekly Grind:** ⏣ {round(actual_grind*7):,}\n"
-        # 					f"<:ace_reply:1082575762856620093>**Predicted Profit:** ⏣ {round(actual_grind*7-1e9):,}\n",
-        # 			inline=True
-        # 		)
-        # 	await ctx.send(embed=display)
-        # 	await asyncio.sleep(1)
+    #     # for group in user_group:
+    #     # 	current_page = user_group.index(group)+1
+    #     # 	display = discord.Embed(
+    #     # 		title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Status__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+    #     # 		colour=color
+    #     # 	)
+    #     # 	# display.set_thumbnail(
+    #     # 	# 	url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
+    #     # 	display.set_footer(text=f"{ctx.guild.name} • Page {current_page}/{total_pages}",icon_url=ctx.guild.icon_url)
+    #     # 	for ind in group:
+    #     # 		user = ctx.guild.get_member(int(df['ID'][ind]))
+    #     # 		counter = counter + 1
+    #     # 		display.add_field(
+    #     # 			name=f"`{counter}.` {user.name}",
+    #     # 			value=	f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
+    #     # 					f"<:ace_replycont:1082575852061073508> **Status:** `{df['Type'][ind]}`\n"
+    #     # 					f"<:ace_replycont:1082575852061073508> **Paid for:** {df['Frequency'][ind]} days\n"
+    #     # 					f"<:ace_reply:1082575762856620093> **Next Pay:** <t:{int(datetime.datetime.timestamp(df['Time'][ind]))}:R>",
+    #     # 			inline=True
+    #     # 		)
+    #     # 	if current_page == total_pages:
+    #     # 		display.add_field(
+    #     # 			name=f"` - ` TGK Stats",
+    #     # 			value=	f"<:ace_replycont:1082575852061073508> **Actual Grind:** ⏣ {round(actual_grind):,}\n"
+    #     # 					f"<:ace_replycont:1082575852061073508> **Expected Grind:** ⏣ {round(expected_grind):,}\n"
+    #     # 					f"<:ace_replycont:1082575852061073508> **Weekly Grind:** ⏣ {round(actual_grind*7):,}\n"
+    #     # 					f"<:ace_reply:1082575762856620093>**Predicted Profit:** ⏣ {round(actual_grind*7-1e9):,}\n",
+    #     # 			inline=True
+    #     # 		)
+    #     # 	await ctx.send(embed=display)
+    #     # 	await asyncio.sleep(1)
 
-        removal_df = pd.DataFrame(removal_record, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
-        removal_df = removal_df.sort_values(by='Time', ascending=True)
-        removal_group = list(chunk(removal_df.index, 15))
-        total_pages = len(removal_group)
-        counter = 0
-        color = discord.Color.random()
+    #     removal_df = pd.DataFrame(removal_record, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
+    #     removal_df = removal_df.sort_values(by='Time', ascending=True)
+    #     removal_group = list(chunk(removal_df.index, 15))
+    #     total_pages = len(removal_group)
+    #     counter = 0
+    #     color = discord.Color.random()
 
-        for group in removal_group:
-            current_page = removal_group.index(group)+1
-            display = discord.Embed(
-                title=f"<a:TGK_Pandaswag:830525027341565982>  __Demotion Record__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-                colour=color
-            )
-            # display.set_thumbnail(
-            # 	url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
-            display.set_footer(text=f"{ctx.guild.name} • Page {current_page}/{total_pages}",icon_url=ctx.guild.icon_url)
-            for ind in group:
-                user = ctx.guild.get_member(int(removal_df['ID'][ind]))
-                counter = counter + 1
-                display.add_field(
-                    name=f"`{counter}.` {user.name}",
-                    value=	f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
-                            f"<:ace_replycont:1082575852061073508> **Status:** `{removal_df['Type'][ind]}`\n"
-                            f"<:ace_replycont:1082575852061073508> **Paid for:** {removal_df['Frequency'][ind]} days\n"
-                            f"<:ace_reply:1082575762856620093>**Next Pay:** <t:{int(datetime.datetime.timestamp(removal_df['Time'][ind]))}:R>",
-                    inline=True
-                )
-            await ctx.send(embed=display)
-            # await asyncio.sleep(1)
+    #     for group in removal_group:
+    #         current_page = removal_group.index(group)+1
+    #         display = discord.Embed(
+    #             title=f"<a:TGK_Pandaswag:830525027341565982>  __Demotion Record__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+    #             colour=color
+    #         )
+    #         # display.set_thumbnail(
+    #         # 	url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
+    #         display.set_footer(text=f"{ctx.guild.name} • Page {current_page}/{total_pages}",icon_url=ctx.guild.icon_url)
+    #         for ind in group:
+    #             user = ctx.guild.get_member(int(removal_df['ID'][ind]))
+    #             counter = counter + 1
+    #             display.add_field(
+    #                 name=f"`{counter}.` {user.name}",
+    #                 value=	f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
+    #                         f"<:ace_replycont:1082575852061073508> **Status:** `{removal_df['Type'][ind]}`\n"
+    #                         f"<:ace_replycont:1082575852061073508> **Paid for:** {removal_df['Frequency'][ind]} days\n"
+    #                         f"<:ace_reply:1082575762856620093>**Next Pay:** <t:{int(datetime.datetime.timestamp(removal_df['Time'][ind]))}:R>",
+    #                 inline=True
+    #             )
+    #         await ctx.send(embed=display)
+    #         # await asyncio.sleep(1)
         
 
-        demotion_df = pd.DataFrame(demotion_record, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
-        demotion_df = demotion_df.sort_values(by='Time', ascending=True)
-        demotion_group = list(chunk(demotion_df.index, 15))
-        total_pages = len(demotion_group)
-        counter = 0
-        color = discord.Color.random()
+    #     demotion_df = pd.DataFrame(demotion_record, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
+    #     demotion_df = demotion_df.sort_values(by='Time', ascending=True)
+    #     demotion_group = list(chunk(demotion_df.index, 15))
+    #     total_pages = len(demotion_group)
+    #     counter = 0
+    #     color = discord.Color.random()
 
-        for group in demotion_group:
-            current_page = demotion_group.index(group)+1
-            display = discord.Embed(
-                title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders to Kick__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-                colour=color
-            )
-            # display.set_thumbnail(
-            # 	url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
-            display.set_footer(text=f"{ctx.guild.name} • Page {current_page}/{total_pages}",icon_url=ctx.guild.icon_url)
-            for ind in group:
-                user = ctx.guild.get_member(int(demotion_df['ID'][ind]))
-                counter = counter + 1
-                display.add_field(
-                    name=f"`{counter}.` {user.name}",
-                    value=	f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
-                            f"<:ace_replycont:1082575852061073508> **Status:** `{demotion_df['Type'][ind]}`\n"
-                            f"<:ace_replycont:1082575852061073508> **Paid for:** {demotion_df['Frequency'][ind]} days\n"
-                            f"<:ace_reply:1082575762856620093>**Next Pay:** <t:{int(datetime.datetime.timestamp(demotion_df['Time'][ind]))}:R>",
-                    inline=True
-                )
-            await ctx.send(embed=display)
-            # await asyncio.sleep(1)
+    #     for group in demotion_group:
+    #         current_page = demotion_group.index(group)+1
+    #         display = discord.Embed(
+    #             title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders to Kick__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+    #             colour=color
+    #         )
+    #         # display.set_thumbnail(
+    #         # 	url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
+    #         display.set_footer(text=f"{ctx.guild.name} • Page {current_page}/{total_pages}",icon_url=ctx.guild.icon_url)
+    #         for ind in group:
+    #             user = ctx.guild.get_member(int(demotion_df['ID'][ind]))
+    #             counter = counter + 1
+    #             display.add_field(
+    #                 name=f"`{counter}.` {user.name}",
+    #                 value=	f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
+    #                         f"<:ace_replycont:1082575852061073508> **Status:** `{demotion_df['Type'][ind]}`\n"
+    #                         f"<:ace_replycont:1082575852061073508> **Paid for:** {demotion_df['Frequency'][ind]} days\n"
+    #                         f"<:ace_reply:1082575762856620093>**Next Pay:** <t:{int(datetime.datetime.timestamp(demotion_df['Time'][ind]))}:R>",
+    #                 inline=True
+    #             )
+    #         await ctx.send(embed=display)
+    #         # await asyncio.sleep(1)
     
-        promotion_df = pd.DataFrame(promotion_records, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
-        promotion_df = promotion_df.sort_values(by='Time', ascending=True)
-        promotion_group = list(chunk(promotion_df.index, 15))
-        total_pages = len(promotion_group)
-        counter = 0
-        color = discord.Color.random()
+    #     promotion_df = pd.DataFrame(promotion_records, columns=['ID', 'Mention', 'Time', 'Type', 'Frequency'])
+    #     promotion_df = promotion_df.sort_values(by='Time', ascending=True)
+    #     promotion_group = list(chunk(promotion_df.index, 15))
+    #     total_pages = len(promotion_group)
+    #     counter = 0
+    #     color = discord.Color.random()
 
-        for group in promotion_group:
-            current_page = promotion_group.index(group)+1
-            display = discord.Embed(
-                title=f"<a:TGK_Pandaswag:830525027341565982>  __Promotion Record__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-                colour=color
-            )
-            # display.set_thumbnail(
-            # 	url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
-            display.set_footer(text=f"{ctx.guild.name} • Page {current_page}/{total_pages}",icon_url=ctx.guild.icon_url)
-            for ind in group:
-                user = ctx.guild.get_member(int(promotion_df['ID'][ind]))
-                counter = counter + 1
-                display.add_field(
-                    name=f"`{counter}.` {user.name}",
-                    value=	f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
-                            f"<:ace_replycont:1082575852061073508> **Status:** `{promotion_df['Type'][ind]}`\n"
-                            f"<:ace_replycont:1082575852061073508> **Paid for:** {promotion_df['Frequency'][ind]} days\n"
-                            f"<:ace_reply:1082575762856620093>**Next Pay:** <t:{int(datetime.datetime.timestamp(promotion_df['Time'][ind]))}:R>",
-                    inline=True
-                )
-            await ctx.send(embed=display)
-            # await asyncio.sleep(1)
+    #     for group in promotion_group:
+    #         current_page = promotion_group.index(group)+1
+    #         display = discord.Embed(
+    #             title=f"<a:TGK_Pandaswag:830525027341565982>  __Promotion Record__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+    #             colour=color
+    #         )
+    #         # display.set_thumbnail(
+    #         # 	url="https://cdn.discordapp.com/emojis/951075584958685194.webp?size=128&quality=lossless")
+    #         display.set_footer(text=f"{ctx.guild.name} • Page {current_page}/{total_pages}",icon_url=ctx.guild.icon_url)
+    #         for ind in group:
+    #             user = ctx.guild.get_member(int(promotion_df['ID'][ind]))
+    #             counter = counter + 1
+    #             display.add_field(
+    #                 name=f"`{counter}.` {user.name}",
+    #                 value=	f"<:ace_replycont:1082575852061073508> **User:** {user.mention}\n"
+    #                         f"<:ace_replycont:1082575852061073508> **Status:** `{promotion_df['Type'][ind]}`\n"
+    #                         f"<:ace_replycont:1082575852061073508> **Paid for:** {promotion_df['Frequency'][ind]} days\n"
+    #                         f"<:ace_reply:1082575762856620093>**Next Pay:** <t:{int(datetime.datetime.timestamp(promotion_df['Time'][ind]))}:R>",
+    #                 inline=True
+    #             )
+    #         await ctx.send(embed=display)
+    #         # await asyncio.sleep(1)
 
-        # await msg.edit(embed=display)
-        if desc_not_found != "":
-            grinders_not_found = discord.Embed(
-                title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Data Not Found__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-                description=f"{desc_not_found}",
-                colour=0xff0000,
-                timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
-            )
-            grinders_not_found.set_footer(text=f"Developed by utki007 & Jay",
-                                          icon_url=ctx.guild.icon_url)
-            grinders_not_found.set_thumbnail(
-                url="https://cdn.discordapp.com/emojis/790932345284853780.gif?size=128&quality=lossless")
-            await ctx.send(embed=grinders_not_found)
+    #     # await msg.edit(embed=display)
+    #     if desc_not_found != "":
+    #         grinders_not_found = discord.Embed(
+    #             title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Data Not Found__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+    #             description=f"{desc_not_found}",
+    #             colour=0xff0000,
+    #             timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
+    #         )
+    #         grinders_not_found.set_footer(text=f"Developed by utki007 & Jay",
+    #                                       icon_url=ctx.guild.icon_url)
+    #         grinders_not_found.set_thumbnail(
+    #             url="https://cdn.discordapp.com/emojis/790932345284853780.gif?size=128&quality=lossless")
+    #         await ctx.send(embed=grinders_not_found)
     
-        embed = discord.Embed(
-            title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Stats__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-            colour=discord.Color.random(),
-            description =	f"` - ` TGK Stats for {len(members)} Grinders\n"
-                            f"<:ace_replycont:1082575852061073508> **Actual Grind:** ⏣ {round(actual_grind):,}\n"
-                            f"<:ace_replycont:1082575852061073508> **Expected Grind:** ⏣ {round(expected_grind):,}\n"
-                            f"<:ace_replycont:1082575852061073508> **Weekly Grind:** ⏣ {round(actual_grind*7):,}\n"
-                            f"<:ace_reply:1082575762856620093>**Predicted Profit:** ⏣ {round(actual_grind*7-1e9):,}\n",
-            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
-        )
-        await ctx.send(embed=embed)
+    #     embed = discord.Embed(
+    #         title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Stats__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+    #         colour=discord.Color.random(),
+    #         description =	f"` - ` TGK Stats for {len(members)} Grinders\n"
+    #                         f"<:ace_replycont:1082575852061073508> **Actual Grind:** ⏣ {round(actual_grind):,}\n"
+    #                         f"<:ace_replycont:1082575852061073508> **Expected Grind:** ⏣ {round(expected_grind):,}\n"
+    #                         f"<:ace_replycont:1082575852061073508> **Weekly Grind:** ⏣ {round(actual_grind*7):,}\n"
+    #                         f"<:ace_reply:1082575762856620093>**Predicted Profit:** ⏣ {round(actual_grind*7-1e9):,}\n",
+    #         timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
+    #     )
+    #     await ctx.send(embed=embed)
 
-        try:
-            await msg.delete()
-        except:
-            pass
+    #     try:
+    #         await msg.delete()
+    #     except:
+    #         pass
         
-    @commands.command(name="gpay", aliases=['gp', 'gpayout'])
-    @commands.check_any(checks.can_use(), checks.is_me())
-    async def gpay(self, ctx):
-        await ctx.message.delete()
-        waiting = discord.Embed(
-            color=discord.Color.random(),
-            description=f"> Loading Grinder Data {self.bot.emojis_list['Typing']} "
-        )
-        msg = await ctx.send(embed=waiting)
+    # @commands.command(name="gpay", aliases=['gp', 'gpayout'])
+    # @commands.check_any(checks.can_use(), checks.is_me())
+    # async def gpay(self, ctx):
+    #     await ctx.message.delete()
+    #     waiting = discord.Embed(
+    #         color=discord.Color.random(),
+    #         description=f"> Loading Grinder Data {self.bot.emojis_list['Typing']} "
+    #     )
+    #     msg = await ctx.send(embed=waiting)
 
-        gk = self.bot.get_guild(785839283847954433)
-        grinder = gk.get_role(836228842397106176)
-        trial = gk.get_role(932149422719107102)
+    #     gk = self.bot.get_guild(785839283847954433)
+    #     grinder = gk.get_role(836228842397106176)
+    #     trial = gk.get_role(932149422719107102)
 
-        date = datetime.date.today()
-        current_time = datetime.datetime(
-            date.year, date.month, date.day) + datetime.timedelta(days=0)
+    #     date = datetime.date.today()
+    #     current_time = datetime.datetime(
+    #         date.year, date.month, date.day) + datetime.timedelta(days=0)
 
-        grinder_records = []
-        desc = ""
-        desc_not_found = ""
-        for member in ctx.guild.members:
-            if grinder in member.roles or trial in member.roles:
-                data = await self.bot.donorBank.find(member.id)
-                if data != None and "grinder_record" in data.keys():
-                    if data['grinder_record']['time'] == current_time:
-                        grinder_records.append([member.id, member.mention, data['grinder_record']
-                                               ['time'], current_time, 0, data['grinder_record']['amount_per_grind']])
-                    else:
-                        grinder_records.append([member.id, member.mention, data['grinder_record']['time'], current_time, int(
-                            str(data['grinder_record']['time'] - current_time).split(" ")[0]), data['grinder_record']['amount_per_grind']])
+    #     grinder_records = []
+    #     desc = ""
+    #     desc_not_found = ""
+    #     for member in ctx.guild.members:
+    #         if grinder in member.roles or trial in member.roles:
+    #             data = await self.bot.donorBank.find(member.id)
+    #             if data != None and "grinder_record" in data.keys():
+    #                 if data['grinder_record']['time'] == current_time:
+    #                     grinder_records.append([member.id, member.mention, data['grinder_record']
+    #                                            ['time'], current_time, 0, data['grinder_record']['amount_per_grind']])
+    #                 else:
+    #                     grinder_records.append([member.id, member.mention, data['grinder_record']['time'], current_time, int(
+    #                         str(data['grinder_record']['time'] - current_time).split(" ")[0]), data['grinder_record']['amount_per_grind']])
 
-        df = pd.DataFrame(grinder_records, columns=[
-                          'ID', 'Mention', 'Donated Time', 'Current Time', 'Time Difference', 'Amount Per Grind'])
-        df = df.sort_values(by='Donated Time', ascending=True)
+    #     df = pd.DataFrame(grinder_records, columns=[
+    #                       'ID', 'Mention', 'Donated Time', 'Current Time', 'Time Difference', 'Amount Per Grind'])
+    #     df = df.sort_values(by='Donated Time', ascending=True)
 
-        desc = ""
-        for ind in df.index:
-            try:
-                member = ctx.guild.get_member(df['ID'][ind])
-            except:
-                desc += f"> {df['Mention'][ind]} \n"
-                desc += f"> **Donated on:** <t:{int(datetime.datetime.timestamp(df['Donated Time'][ind]))}:D> <t:{int(datetime.datetime.timestamp(df['Donated Time'][ind]))}:R> \n"
-                if df['Time Difference'][ind] < 0:
-                    desc += f"> **Pending from:** {-df['Time Difference'][ind]} days!\n\n"
-                elif df['Time Difference'][ind] == 0:
-                    desc += f"> **Donation is due today!\n\n"
-                else:
-                    desc += f"> **Due in:** {df['Time Difference'][ind]} days!\n\n"
-            if df['Time Difference'][ind] <= 0:
-                message_for_pending = ""
-                if df['Time Difference'][ind] < 0:
-                    message_for_pending += f"> **Pending from:** {-df['Time Difference'][ind]} days!\n\n"
-                elif df['Time Difference'][ind] == 0:
-                    message_for_pending += f"> **Donation is due today!\n\n"
-                else:
-                    message_for_pending += f"> **Due in:** {df['Time Difference'][ind]} days!\n\n"
-                payment_pending = discord.Embed(
-                    title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK's Grinders Team__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-                    description=f"{self.bot.emojis_list['rightArrow']} Your grinder donations are pending for **{-df['Time Difference'][ind]+1} days**. \n"
-                                f"{self.bot.emojis_list['rightArrow']} Please send `⏣ {(int(-df['Time Difference'][ind]+1)*df['Amount Per Grind'][ind]):,}` in <#851663580620521472> today. \n"
-                                f"{self.bot.emojis_list['rightArrow']} Inform staff if you have any trouble with donations.  \n",
-                    colour=ctx.author.colour,
-                    timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
-                )
-                payment_pending.set_footer(text=f"Developed by utki007 & Jay",
-                                           icon_url=ctx.guild.icon_url)
-                try:
-                    await member.send(content=f"Hello {member.name}! I have a message for you:", embed=payment_pending)
-                except:
-                    grinder_channel = self.bot.get_channel(851663580620521472)
-                    await grinder_channel.send(content=f"Hello {member.mention}! I have a message for you:", embed=payment_pending)
-                await ctx.send(content=f"Sent {member.mention} the following message:", embed=payment_pending, delete_after=600, allowed_mentions=discord.AllowedMentions(users=False, everyone=False,roles=False))
-                await asyncio.sleep(0.5)
-        if desc != "":
-            grinders_not_found = discord.Embed(
-                title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Data Not Found__  <a:TGK_Pandaswag:830525027341565982>\n\n",
-                description=f"{desc}",
-                colour=0xff0000,
-                timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
-            )
-            grinders_not_found.set_footer(text=f"Developed by utki007 & Jay",
-                                          icon_url=ctx.guild.icon_url)
-            grinders_not_found.set_thumbnail(
-                url="https://cdn.discordapp.com/emojis/790932345284853780.gif?size=128&quality=lossless")
-            await ctx.send(embed=grinders_not_found)
-        waiting = discord.Embed(
-            color=discord.Color.green(),
-            description=f"{self.bot.emojis_list['SuccessTick']} | Sent Grinder Reminders Successfully!"
-        )
-        await msg.edit(embed=waiting)
+    #     desc = ""
+    #     for ind in df.index:
+    #         try:
+    #             member = ctx.guild.get_member(df['ID'][ind])
+    #         except:
+    #             desc += f"> {df['Mention'][ind]} \n"
+    #             desc += f"> **Donated on:** <t:{int(datetime.datetime.timestamp(df['Donated Time'][ind]))}:D> <t:{int(datetime.datetime.timestamp(df['Donated Time'][ind]))}:R> \n"
+    #             if df['Time Difference'][ind] < 0:
+    #                 desc += f"> **Pending from:** {-df['Time Difference'][ind]} days!\n\n"
+    #             elif df['Time Difference'][ind] == 0:
+    #                 desc += f"> **Donation is due today!\n\n"
+    #             else:
+    #                 desc += f"> **Due in:** {df['Time Difference'][ind]} days!\n\n"
+    #         if df['Time Difference'][ind] <= 0:
+    #             message_for_pending = ""
+    #             if df['Time Difference'][ind] < 0:
+    #                 message_for_pending += f"> **Pending from:** {-df['Time Difference'][ind]} days!\n\n"
+    #             elif df['Time Difference'][ind] == 0:
+    #                 message_for_pending += f"> **Donation is due today!\n\n"
+    #             else:
+    #                 message_for_pending += f"> **Due in:** {df['Time Difference'][ind]} days!\n\n"
+    #             payment_pending = discord.Embed(
+    #                 title=f"<a:TGK_Pandaswag:830525027341565982>  __TGK's Grinders Team__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+    #                 description=f"{self.bot.emojis_list['rightArrow']} Your grinder donations are pending for **{-df['Time Difference'][ind]+1} days**. \n"
+    #                             f"{self.bot.emojis_list['rightArrow']} Please send `⏣ {(int(-df['Time Difference'][ind]+1)*df['Amount Per Grind'][ind]):,}` in <#851663580620521472> today. \n"
+    #                             f"{self.bot.emojis_list['rightArrow']} Inform staff if you have any trouble with donations.  \n",
+    #                 colour=ctx.author.colour,
+    #                 timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
+    #             )
+    #             payment_pending.set_footer(text=f"Developed by utki007 & Jay",
+    #                                        icon_url=ctx.guild.icon_url)
+    #             try:
+    #                 await member.send(content=f"Hello {member.name}! I have a message for you:", embed=payment_pending)
+    #             except:
+    #                 grinder_channel = self.bot.get_channel(851663580620521472)
+    #                 await grinder_channel.send(content=f"Hello {member.mention}! I have a message for you:", embed=payment_pending)
+    #             await ctx.send(content=f"Sent {member.mention} the following message:", embed=payment_pending, delete_after=600, allowed_mentions=discord.AllowedMentions(users=False, everyone=False,roles=False))
+    #             await asyncio.sleep(0.5)
+    #     if desc != "":
+    #         grinders_not_found = discord.Embed(
+    #             title=f"<a:TGK_Pandaswag:830525027341565982>  __Grinders Data Not Found__  <a:TGK_Pandaswag:830525027341565982>\n\n",
+    #             description=f"{desc}",
+    #             colour=0xff0000,
+    #             timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
+    #         )
+    #         grinders_not_found.set_footer(text=f"Developed by utki007 & Jay",
+    #                                       icon_url=ctx.guild.icon_url)
+    #         grinders_not_found.set_thumbnail(
+    #             url="https://cdn.discordapp.com/emojis/790932345284853780.gif?size=128&quality=lossless")
+    #         await ctx.send(embed=grinders_not_found)
+    #     waiting = discord.Embed(
+    #         color=discord.Color.green(),
+    #         description=f"{self.bot.emojis_list['SuccessTick']} | Sent Grinder Reminders Successfully!"
+    #     )
+    #     await msg.edit(embed=waiting)
 
-    @commands.command(name="gappoint", aliases=['ga'])
-    @commands.check_any(checks.can_use(), checks.is_me())
-    async def gappoint(self, ctx, member: discord.Member, tier: int):
-        await ctx.message.delete()
+    # @commands.command(name="gappoint", aliases=['ga'])
+    # @commands.check_any(checks.can_use(), checks.is_me())
+    # async def gappoint(self, ctx, member: discord.Member, tier: int):
+    #     await ctx.message.delete()
         
-        if member.bot:
-            display = discord.Embed(
-                title=f"{member.name}'s Grinder Stats",
-                colour= member.color,
-                description=f"` - `   Bot's are not allowed to be grinders."
-            )
-            return await ctx.send(embed=display)
-        if tier not in [5, 7]:
-            display = discord.Embed(
-                title=f"{member.name}'s Grinder Stats",
-                colour= member.color,
-                description=f"` - `   Invalid tier. Only tiers V and VII are available."
-            )
-            return await ctx.send(embed=display)
+    #     if member.bot:
+    #         display = discord.Embed(
+    #             title=f"{member.name}'s Grinder Stats",
+    #             colour= member.color,
+    #             description=f"` - `   Bot's are not allowed to be grinders."
+    #         )
+    #         return await ctx.send(embed=display)
+    #     if tier not in [5, 7]:
+    #         display = discord.Embed(
+    #             title=f"{member.name}'s Grinder Stats",
+    #             colour= member.color,
+    #             description=f"` - `   Invalid tier. Only tiers V and VII are available."
+    #         )
+    #         return await ctx.send(embed=display)
         
-        data = await self.bot.donorBank.find(member.id)
-        if data == None:
-            await self.create_donor(member)
-            data = await self.bot.donorBank.find(member.id)
+    #     data = await self.bot.donorBank.find(member.id)
+    #     if data == None:
+    #         await self.create_donor(member)
+    #         data = await self.bot.donorBank.find(member.id)
         
-        gk = self.bot.get_guild(785839283847954433)
-        legendary = gk.get_role(806804472700600400)
-        mythic = gk.get_role(835866409992716289)
-        ultimate = gk.get_role(1196477546385133648)
-        trial = gk.get_role(932149422719107102)
-        grinder = gk.get_role(836228842397106176)
-        role = []
-        change_tier = False
+    #     gk = self.bot.get_guild(785839283847954433)
+    #     legendary = gk.get_role(806804472700600400)
+    #     mythic = gk.get_role(835866409992716289)
+    #     ultimate = gk.get_role(1196477546385133648)
+    #     trial = gk.get_role(932149422719107102)
+    #     grinder = gk.get_role(836228842397106176)
+    #     role = []
+    #     change_tier = False
 
-        if tier == 5:
-            grinder_tier = "𝕍"
-            amount_per_grind = 5e6
-            await member.add_roles(legendary)
-            if mythic in member.roles:
-                await member.remove_roles(mythic)
-            if ultimate in member.roles:
-                await member.remove_roles(ultimate)
-            role.append(legendary)
-        elif tier == 7:
-            grinder_tier = "𝕍𝕀𝕀"
-            amount_per_grind = 7e6
-            await member.add_roles(mythic)
-            if legendary in member.roles:
-                await member.remove_roles(legendary)
-            if ultimate in member.roles:
-                await member.remove_roles(ultimate)
-            role.append(mythic)
-        elif tier == 10:
-            grinder_tier = "𝕏"
-            amount_per_grind = 10e6
-            await member.add_roles(ultimate)
-            if mythic in member.roles:
-                await member.remove_roles(mythic)
-            if legendary in member.roles:
-                await member.remove_roles(legendary)
+    #     if tier == 5:
+    #         grinder_tier = "𝕍"
+    #         amount_per_grind = 5e6
+    #         await member.add_roles(legendary)
+    #         if mythic in member.roles:
+    #             await member.remove_roles(mythic)
+    #         if ultimate in member.roles:
+    #             await member.remove_roles(ultimate)
+    #         role.append(legendary)
+    #     elif tier == 7:
+    #         grinder_tier = "𝕍𝕀𝕀"
+    #         amount_per_grind = 7e6
+    #         await member.add_roles(mythic)
+    #         if legendary in member.roles:
+    #             await member.remove_roles(legendary)
+    #         if ultimate in member.roles:
+    #             await member.remove_roles(ultimate)
+    #         role.append(mythic)
+    #     elif tier == 10:
+    #         grinder_tier = "𝕏"
+    #         amount_per_grind = 10e6
+    #         await member.add_roles(ultimate)
+    #         if mythic in member.roles:
+    #             await member.remove_roles(mythic)
+    #         if legendary in member.roles:
+    #             await member.remove_roles(legendary)
 
-        date = datetime.date.today()
-        time = datetime.datetime(date.year, date.month, date.day)
+    #     date = datetime.date.today()
+    #     time = datetime.datetime(date.year, date.month, date.day)
         
         
-        grinder_record = {
-            "amount": 0,
-            "amount_per_grind": amount_per_grind,
-            "time": time,
-            "frequency": 0
-        }
+    #     grinder_record = {
+    #         "amount": 0,
+    #         "amount_per_grind": amount_per_grind,
+    #         "time": time,
+    #         "frequency": 0
+    #     }
         
-        desc = None
-        if "grinder_record" in data.keys():
-            if int(data["grinder_record"]["frequency"]) > 10:
-                if grinder not in member.roles: 
-                    await member.add_roles(grinder)
-                role.append(grinder)
-            else:
-                await member.add_roles(trial)
-                role.append(trial)
-            paid_till = data["grinder_record"]["time"]
-            if paid_till < time:
-                data["grinder_record"]["time"] = time
-            data["grinder_record"]["amount_per_grind"] = amount_per_grind
-        else:
-            data["grinder_record"] = grinder_record
-            await member.add_roles(trial)
-            role.append(trial)
+    #     desc = None
+    #     if "grinder_record" in data.keys():
+    #         if int(data["grinder_record"]["frequency"]) > 10:
+    #             if grinder not in member.roles: 
+    #                 await member.add_roles(grinder)
+    #             role.append(grinder)
+    #         else:
+    #             await member.add_roles(trial)
+    #             role.append(trial)
+    #         paid_till = data["grinder_record"]["time"]
+    #         if paid_till < time:
+    #             data["grinder_record"]["time"] = time
+    #         data["grinder_record"]["amount_per_grind"] = amount_per_grind
+    #     else:
+    #         data["grinder_record"] = grinder_record
+    #         await member.add_roles(trial)
+    #         role.append(trial)
         
-        try:
-            await self.bot.donorBank.upsert(data)
-        except:
-            return await ctx.send(f"{self.bot.emojis_list['Warrning']} | Error updating donor data")
+    #     try:
+    #         await self.bot.donorBank.upsert(data)
+    #     except:
+    #         return await ctx.send(f"{self.bot.emojis_list['Warrning']} | Error updating donor data")
         
-        role.reverse()
-        display = discord.Embed(
-            title=f"{member.name}'s Grinder Appointment",
-            colour= member.color,
-            timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
-        )
-        if desc is not None:
-            display.description = desc
-        display.add_field(name="Rank:", value=f"`TIER {grinder_tier}`", inline=True)
-        display.add_field(name="Roles Added:", value=f"\n".join([role.mention for role in role]), inline=True)
-        display.add_field(name="Appointed By:", value=ctx.author.mention, inline=True)
-        display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
-        display.set_thumbnail(url=member.avatar_url)
-        await ctx.send(embed=display)
+    #     role.reverse()
+    #     display = discord.Embed(
+    #         title=f"{member.name}'s Grinder Appointment",
+    #         colour= member.color,
+    #         timestamp=datetime.datetime.now(timezone('Asia/Kolkata'))
+    #     )
+    #     if desc is not None:
+    #         display.description = desc
+    #     display.add_field(name="Rank:", value=f"`TIER {grinder_tier}`", inline=True)
+    #     display.add_field(name="Roles Added:", value=f"\n".join([role.mention for role in role]), inline=True)
+    #     display.add_field(name="Appointed By:", value=ctx.author.mention, inline=True)
+    #     display.set_footer(text=f"{ctx.guild.name}", icon_url=ctx.guild.icon_url)
+    #     display.set_thumbnail(url=member.avatar_url)
+    #     await ctx.send(embed=display)
 
     @commands.command(name="gtop")
     @commands.check_any(checks.can_use(), checks.is_me())
@@ -1912,47 +1911,47 @@ class donationTracker(commands.Cog, description="Donation Tracker"):
         await ctx1.invoke(self.bot.get_command(command), name="10k", member=user, amount=str(amount).replace("-","",1), multiplier = multiplier)
         await ctx.send(f"Successfully {action} ** ⏣ `{amount:,}** to {user.mention}'s celeb account with **{multiplier}x** multiplier!",hidden=True)
 
-    @cog_ext.cog_subcommand(base="Grinder", name="log",description="Add/Remove Grinder donation!", guild_ids=guild_ids,
-        base_default_permission=False,
-        options = [
-            create_option(name="user", description="Who's donation do you want to log?", required=True, option_type=6),
-            create_option(name="amount", description='Use negative number like "-2k" to remove donation!', required=True, option_type=3)
-        ]
-    )
-    async def grinderlogg(self, ctx, user: discord.Member, amount):
-        await ctx.defer(hidden=True)
+    # @cog_ext.cog_subcommand(base="Grinder", name="log",description="Add/Remove Grinder donation!", guild_ids=guild_ids,
+    #     base_default_permission=False,
+    #     options = [
+    #         create_option(name="user", description="Who's donation do you want to log?", required=True, option_type=6),
+    #         create_option(name="amount", description='Use negative number like "-2k" to remove donation!', required=True, option_type=3)
+    #     ]
+    # )
+    # async def grinderlogg(self, ctx, user: discord.Member, amount):
+    #     await ctx.defer(hidden=True)
 
-        try:
-            amount = await convert_to_numeral(amount)
-            amount = await calculate(amount)
-        except:
-            return await ctx.send("<a:nat_warning:1010618708688912466> Invalid amount provided!! Try Again!! <a:nat_warning:1010618708688912466>")
+    #     try:
+    #         amount = await convert_to_numeral(amount)
+    #         amount = await calculate(amount)
+    #     except:
+    #         return await ctx.send("<a:nat_warning:1010618708688912466> Invalid amount provided!! Try Again!! <a:nat_warning:1010618708688912466>")
 
-        gk = self.bot.get_guild(785839283847954433)
-        legendary = gk.get_role(806804472700600400)
-        mythic = gk.get_role(835866409992716289)
-        ultimate = gk.get_role(1196477546385133648)
+    #     gk = self.bot.get_guild(785839283847954433)
+    #     legendary = gk.get_role(806804472700600400)
+    #     mythic = gk.get_role(835866409992716289)
+    #     ultimate = gk.get_role(1196477546385133648)
 
-        amount_per_grind = 0
-        if legendary in user.roles:
-            amount_per_grind = 5e6
-        elif mythic in user.roles:
-            amount_per_grind = 7e6
-        elif ultimate in user.roles:
-            amount_per_grind = 10e6
+    #     amount_per_grind = 0
+    #     if legendary in user.roles:
+    #         amount_per_grind = 5e6
+    #     elif mythic in user.roles:
+    #         amount_per_grind = 7e6
+    #     elif ultimate in user.roles:
+    #         amount_per_grind = 10e6
 
-        if amount % amount_per_grind != 0:
-            return await ctx.send("<a:nat_warning:1010618708688912466> Invalid amount provided!! Try Again!! <a:nat_warning:1010618708688912466>")
-        else:
-            number = int(amount/amount_per_grind)
+    #     if amount % amount_per_grind != 0:
+    #         return await ctx.send("<a:nat_warning:1010618708688912466> Invalid amount provided!! Try Again!! <a:nat_warning:1010618708688912466>")
+    #     else:
+    #         number = int(amount/amount_per_grind)
 
   
-        msg = await ctx.channel.send(f"<a:nat_timer:1010824320672604260> | Logging donation ...")
+    #     msg = await ctx.channel.send(f"<a:nat_timer:1010824320672604260> | Logging donation ...")
         
-        ctx1 = await self.bot.get_context(msg)
-        ctx1.author = ctx.author
-        await ctx1.invoke(self.bot.get_command("gu"), member=user, number=number)
-        await ctx.send(f"Successfully added **⏣ `{amount:,}`** to {user.mention}'s grinder account",hidden=True)
+    #     ctx1 = await self.bot.get_context(msg)
+    #     ctx1.author = ctx.author
+    #     await ctx1.invoke(self.bot.get_command("gu"), member=user, number=number)
+    #     await ctx.send(f"Successfully added **⏣ `{amount:,}`** to {user.mention}'s grinder account",hidden=True)
 
 def setup(bot):
     bot.add_cog(donationTracker(bot))
