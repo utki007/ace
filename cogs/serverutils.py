@@ -218,12 +218,12 @@ class serverutils(commands.Cog, description="Server Utility"):
 			description=f"> {message}",
 			color=discord.Color.random()
 		)
-		if ctx.channel.id == 849498983172800562 or ctx.channel.id == 960077349116862505:
+		if ctx.channel.id in [849498983172800562, 946995152440922172]:
 			await ctx.send(content=f"{event.mention}", embed=embed)
 		else:
 			embed = discord.Embed(
 				title="Incorrect Usage",
-				description=f"> Event ping is only available in <#849498983172800562> channel!",
+				description=f"> Event ping is only available in <#849498983172800562> or <#946995152440922172>!",
 				color=discord.Color.red()
 			)
 			await ctx.send(embed=embed)
