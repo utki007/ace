@@ -211,6 +211,7 @@ class serverutils(commands.Cog, description="Server Utility"):
                 webhook = await ctx.channel.create_webhook(name=self.bot.user.name, reason="For sending webhook", avatar=await self.bot.user.avatar_url.read())
             webhook = DiscordWebhook(url=webhook.url, username=ctx.author.name,
                             avatar_url=str(ctx.author.avatar_url).split("?")[0], content = f"{message} {gaw.mention}")
+            webhook.execute()
             if len(roles) > 0:
                 log_channel = self.bot.get_channel(999557650364760144)
                 await log_channel.send(content=f"**Used by:** {ctx.author.mention}\n**Message:** {message}\n**Attempted to ping:** {roles}\n**Channel:** {ctx.channel.mention}", allowed_mentions=discord.AllowedMentions.none())
@@ -248,6 +249,7 @@ class serverutils(commands.Cog, description="Server Utility"):
                 webhook = await ctx.channel.create_webhook(name=self.bot.user.name, reason="For sending webhook", avatar=await self.bot.user.avatar_url.read())
             webhook = DiscordWebhook(url=webhook.url, username=ctx.author.name,
                             avatar_url=str(ctx.author.avatar_url).split("?")[0], content = f"{message} {event.mention}")
+            webhook.execute()
             if len(roles) > 0:
                 log_channel = self.bot.get_channel(999557650364760144)
                 await log_channel.send(content=f"**Used by:** {ctx.author.mention}\n**Message:** {message}\n**Attempted to ping:** {roles}\n**Channel:** {ctx.channel.mention}", allowed_mentions=discord.AllowedMentions.none())
