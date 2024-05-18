@@ -113,7 +113,7 @@ class heistroles(commands.Cog):
 
             
             await message.channel.purge(limit=10, check=check, before=None)
-            if message.channel.id not in [1049233574622146560, 1110476949194813501]:
+            if message.channel.id not in [1110476949194813501]:
                 buttons = [
                     create_button(style=ButtonStyle.green,emoji=rumble_emoji, label="Toggle Reminder!", disabled=False, custom_id="heist:rumble")
                 ]
