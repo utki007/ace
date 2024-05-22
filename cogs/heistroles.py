@@ -142,7 +142,7 @@ class heistroles(commands.Cog):
                             pass
                     
                     if message.guild.id == gk.id:
-                        if message.channel.id == 965828315564896256:
+                        if message.channel.id in [1200679530902339634, 965828315564896256]:
                             m2 = await message.channel.send(f"||@here <@&801392998465404958> <@&804068344612913163>|| Heist has started ^^ !")
                         else:
                             m2 = await message.channel.send(f"<@&804068344612913163> <@&804069957528584212> Heist has started ^^ !")
