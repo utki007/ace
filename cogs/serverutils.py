@@ -242,7 +242,7 @@ class serverutils(commands.Cog, description="Server Utility"):
         gk = self.bot.get_guild(785839283847954433)
         event = discord.utils.get(gk.roles, id=836925033506275399)
         
-        if ctx.channel.id in [849498983172800562, 946995152440922172, 999557650364760144]:
+        if ctx.channel.id in [849498983172800562, 946995152440922172, 999557650364760144, 1203639501973487616]:
             webhooks = await ctx.channel.webhooks()
             webhook = discord.utils.get(webhooks, name=self.bot.user.name)
             if webhook is None:
