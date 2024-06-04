@@ -93,7 +93,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			return
 
 		try:
-			self.mycol.remove(myquery)
+			self.mycol.delete_one(myquery)
 			embed = discord.Embed(
 				color=self.bot.colors["Success"],
 				description=f"{self.bot.emojis_list['SuccessTick']} |<@{member}>'s (`{member}`) partnership data has been erased!!!")
