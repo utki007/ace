@@ -303,7 +303,7 @@ class serverutils(commands.Cog, description="Server Utility"):
     @commands.command(name="rumbleping", description="Event ping", aliases=["rumble", "rping"])
     @commands.cooldown(1, 300, commands.BucketType.guild)
     @commands.check_any(checks.can_use(), checks.is_me())
-    async def mafiaping(self, ctx, *, message: str = "Form up for event!"):
+    async def rumbleping(self, ctx, *, message: str = "Form up for event!"):
         await ctx.message.delete()
 
         # cleaup msg
