@@ -223,7 +223,7 @@ class serverutils(commands.Cog, description="Server Utility"):
             )
             await ctx.send(embed=embed)
 
-    @commands.command(name="eventping", description="Event ping", aliases=["se", "event"])
+    @commands.command(name="eventping", description="Event ping", aliases=["se", "eping"])
     @commands.cooldown(1, 300, commands.BucketType.guild)
     @commands.check_any(checks.can_use(), checks.is_me())
     async def eventping(self, ctx, *, message: str = "Form up for event!"):
@@ -242,7 +242,7 @@ class serverutils(commands.Cog, description="Server Utility"):
         gk = self.bot.get_guild(785839283847954433)
         event = discord.utils.get(gk.roles, id=836925033506275399)
         
-        if ctx.channel.id in [849498983172800562, 946995152440922172, 999557650364760144, 1203639501973487616]:
+        if ctx.channel.id in [946995152440922172, 1203639501973487616]:
             webhooks = await ctx.channel.webhooks()
             webhook = discord.utils.get(webhooks, name=self.bot.user.name)
             if webhook is None:
@@ -256,10 +256,89 @@ class serverutils(commands.Cog, description="Server Utility"):
         else:
             embed = discord.Embed(
                 title="Incorrect Usage",
-                description=f"> Event ping is only available in <#849498983172800562> or <#946995152440922172>!",
+                description=f"> Event ping is only available in <#946995152440922172> or <#1203639501973487616>!",
                 color=discord.Color.red()
             )
             await ctx.send(embed=embed)
+
+    @commands.command(name="mafiaping", description="Event ping", aliases=["mafia", "mping"])
+    @commands.cooldown(1, 300, commands.BucketType.guild)
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def mafiaping(self, ctx, *, message: str = "Form up for event!"):
+        await ctx.message.delete()
+
+        # cleaup msg
+        roles = []
+        roles = re.findall(r'\<\@\&[0-9]*\>', message)
+        if "@here" in message:
+            roles.append("@here")
+        if "@everyone" in message:
+            roles.append("@everyone")
+        for role in roles:
+            message = message.replace(role, "",100)
+
+        gk = self.bot.get_guild(785839283847954433)
+        event = discord.utils.get(gk.roles, id=836925033506275399)
+        mafia = discord.utils.get(gk.roles, id=842809745802526730)
+        
+        if ctx.channel.id in [946995152440922172, 1203639501973487616]:
+            webhooks = await ctx.channel.webhooks()
+            webhook = discord.utils.get(webhooks, name=self.bot.user.name)
+            if webhook is None:
+                webhook = await ctx.channel.create_webhook(name=self.bot.user.name, reason="For sending webhook", avatar=await self.bot.user.avatar_url.read())
+            webhook = DiscordWebhook(url=webhook.url, username=ctx.author.name,
+                            avatar_url=str(ctx.author.avatar_url).split("?")[0], content = f"{message} \n[{event.mention} **|** {mafia.mention}]")
+            webhook.execute()
+            if len(roles) > 0:
+                log_channel = self.bot.get_channel(999557650364760144)
+                await log_channel.send(content=f"**Used by:** {ctx.author.mention}\n**Message:** {message}\n**Attempted to ping:** {roles}\n**Channel:** {ctx.channel.mention}", allowed_mentions=discord.AllowedMentions.none())
+        else:
+            embed = discord.Embed(
+                title="Incorrect Usage",
+                description=f"> Mafia ping is only available in <#946995152440922172> or <#1203639501973487616>!",
+                color=discord.Color.red()
+            )
+            await ctx.send(embed=embed)
+  
+    @commands.command(name="rumbleping", description="Event ping", aliases=["rumble", "rping"])
+    @commands.cooldown(1, 300, commands.BucketType.guild)
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def mafiaping(self, ctx, *, message: str = "Form up for event!"):
+        await ctx.message.delete()
+
+        # cleaup msg
+        roles = []
+        roles = re.findall(r'\<\@\&[0-9]*\>', message)
+        if "@here" in message:
+            roles.append("@here")
+        if "@everyone" in message:
+            roles.append("@everyone")
+        for role in roles:
+            message = message.replace(role, "",100)
+
+        gk = self.bot.get_guild(785839283847954433)
+        event = discord.utils.get(gk.roles, id=836925033506275399)
+        rumble = discord.utils.get(gk.roles, id=1067135771473100960)
+        
+        if ctx.channel.id in [946995152440922172, 1203639501973487616]:
+            webhooks = await ctx.channel.webhooks()
+            webhook = discord.utils.get(webhooks, name=self.bot.user.name)
+            if webhook is None:
+                webhook = await ctx.channel.create_webhook(name=self.bot.user.name, reason="For sending webhook", avatar=await self.bot.user.avatar_url.read())
+            webhook = DiscordWebhook(url=webhook.url, username=ctx.author.name,
+                            avatar_url=str(ctx.author.avatar_url).split("?")[0], content = f"{message} \n[{event.mention} **|** {rumble.mention}]")
+            webhook.execute()
+            if len(roles) > 0:
+                log_channel = self.bot.get_channel(999557650364760144)
+                await log_channel.send(content=f"**Used by:** {ctx.author.mention}\n**Message:** {message}\n**Attempted to ping:** {roles}\n**Channel:** {ctx.channel.mention}", allowed_mentions=discord.AllowedMentions.none())
+        else:
+            embed = discord.Embed(
+                title="Incorrect Usage",
+                description=f"> Rumble ping is only available in <#946995152440922172> or <#1203639501973487616>!",
+                color=discord.Color.red()
+            )
+            await ctx.send(embed=embed)
+  
 
     @commands.command(name="rc", description="Change role colour", aliases=["randomcolor"])
     @commands.cooldown(1, 14400, commands.BucketType.user)
