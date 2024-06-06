@@ -484,55 +484,7 @@ class heistroles(commands.Cog):
                             break
         
         elif message.author.id == 816699167824281621:
-            if message.channel.id == 851663580620521472:
-                donor_id = re.findall("\<\@(.*?)\>", message.content)[0]
-                user = message.guild.get_member(int(donor_id))
-                og_prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0]
-                prize = re.findall(r"\*\*(.*?)\*\*", message.content)[0].split(" ")[1]
-
-                logg = discord.Embed(
-                    title="__Invalid Amount!__",
-                    description=
-                    f'` - `   **Donated:** **{og_prize}**\n'
-                    f"` - `   **Donated on:** <t:{int(datetime.datetime.timestamp(datetime.datetime.now()))}>\n"
-                    f'` - `   **Donated by:** {user.mention}(`{user.id}`)\n',
-                    colour=discord.Color.random()
-                )
-
-                logg.set_footer(
-                    text=f"Reach out to grinder managers to fix this!", icon_url=user.avatar_url)
-
-                try:
-                    amount = await convert_to_numeral(prize)
-                    amount = await calculate(amount)
-                except:
-                    msg = await message.channel.fetch_message(message.reference.message_id)
-                    await message.delete()
-                    return await msg.reply(content= f"{user.mention}", embed= logg, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
-                
-                
-                legendary = gk.get_role(806804472700600400)
-                mythic = gk.get_role(835866409992716289)
-                ultimate = gk.get_role(1196477546385133648)
-
-                amount_per_grind = 0
-                if legendary in user.roles:
-                    amount_per_grind = 5e6
-                elif mythic in user.roles:
-                    amount_per_grind = 7e6
-                elif ultimate in user.roles:
-                    amount_per_grind = 10e6
-                
-                ctx = await self.bot.get_context(message)
-                if int(amount/amount_per_grind) != 0:
-                    await ctx.invoke(self.bot.get_command("gu"), member=user, number=int(amount/amount_per_grind))
-
-                if amount % amount_per_grind != 0:
-                    msg = await message.channel.fetch_message(message.reference.message_id)
-                    await ctx.invoke(self.bot.get_command("dono a"), member=user, amount=str(amount % amount_per_grind), sendMessage=True)
-                    await msg.reply(content= f"{user.mention}, I have credited extra amount (`⏣ {round(amount % amount_per_grind):,}`) to your donor bank.", allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
-
-            elif message.channel.id == 812711254790897714:
+            if message.channel.id == 812711254790897714:
                     
                 donor_id = re.findall("\<\@(.*?)\>", message.content)[0]
                 user = message.guild.get_member(int(donor_id))
@@ -543,7 +495,7 @@ class heistroles(commands.Cog):
                     amount = await convert_to_numeral(prize)
                     amount = await calculate(amount)
                 except:
-                    number_of_items = int(og_prize.split(" ")[0][:-1].replace(",","",100))
+                    number_of_items = int(og_prize.split(" ")[0].replace(",","",100))
                     item_name = " ".join(og_prize.split(" ")[1:])
                     item_prize = int((await self.bot.dankItems.find(item_name))['price'])
                     amount = round(number_of_items * item_prize * 1.2)
@@ -569,7 +521,7 @@ class heistroles(commands.Cog):
                     amount = await calculate(amount)
                     multiplier = 1.5
                 except:
-                    number_of_items = int(og_prize.split(" ")[0][:-1].replace(",","",100))
+                    number_of_items = int(og_prize.split(" ")[0].replace(",","",100))
                     item_name = " ".join(og_prize.split(" ")[1:])
                     item_prize = int((await self.bot.dankItems.find(item_name))['price'])
                     amount = round(number_of_items * item_prize)
@@ -609,7 +561,7 @@ class heistroles(commands.Cog):
                     else:
                         amount = 1.1 * amount
                 except:
-                    number_of_items = int(og_prize.split(" ")[0][:-1].replace(",","",100))
+                    number_of_items = int(og_prize.split(" ")[0].replace(",","",100))
                     item_name = " ".join(og_prize.split(" ")[1:])
                     item_prize = int((await self.bot.dankItems.find(item_name))['price'])
                     amount = round(number_of_items * item_prize * 1.2)
