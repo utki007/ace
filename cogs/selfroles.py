@@ -152,7 +152,7 @@ class selfroles(commands.Cog):
 		gawemoji = await playzone.fetch_emoji(830525854013849680)
 		flashemoji = await gk.fetch_emoji(1068482459014017034)
 		otheremoji = await gk.fetch_emoji(1024206931373608961)
-		eventemoji = await gk.fetch_emoji(854663256420909066)
+		eventemoji = await gk.fetch_emoji(1072914111077285889)
 
 		buttons = [
 			create_button(style=ButtonStyle.grey,emoji=eventemoji, label="Event's Ping", disabled=False, custom_id="reaction:event"),

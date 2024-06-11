@@ -1364,7 +1364,7 @@ class heistroles(commands.Cog):
                 description=f"<a:TGK_TADA:830525854013849680> {self.bot.emojis_list['right']} {giveaways.mention}\n"
                             f"<a:tgk_redboost:1068482459014017034>  {self.bot.emojis_list['right']} {flash.mention}\n"
                             f"<:tgk_raffle:1024206931373608961> {self.bot.emojis_list['right']} {other.mention}\n"
-                            f"<a:calendar:854663256420909066>  {self.bot.emojis_list['right']} {event.mention}\n"                            
+                            f"<a:tgk_events:1072914111077285889>  {self.bot.emojis_list['right']} {event.mention}\n"                            
                             f"<:rumble_ping:1080023828505301003> {self.bot.emojis_list['right']} {rumble.mention}\n"                           
                             f"<:mafia_ping:1102975116989710477> {self.bot.emojis_list['right']} {mafia.mention}\n",
                 color=0x9e3bff
@@ -1379,7 +1379,7 @@ class heistroles(commands.Cog):
         gawemoji = await playzone.fetch_emoji(830525854013849680)
         flashemoji = await gk.fetch_emoji(1068482459014017034)
         otheremoji = await gk.fetch_emoji(1024206931373608961)
-        eventemoji = await gk.fetch_emoji(854663256420909066)
+        eventemoji = await gk.fetch_emoji(1072914111077285889)
         rumbleemoji = await playzone.fetch_emoji(1080023828505301003)
         mafiaemoji = await dev.fetch_emoji(1102975116989710477)
 
