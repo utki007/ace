@@ -205,8 +205,8 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 			buttons = []
 			for message in messages:
 				if len(message.embeds) > 0 and message.author.id in [700743797977514004, 294882584201003009]:
-					gk = self.bot.get_guild(785839283847954433)
-					gawemoji = await gk.fetch_emoji(806631994770849843)
+					playzone = self.bot.get_guild(815849745327194153)
+					gawemoji = await playzone.fetch_emoji(830525854013849680)
 					buttons = [create_button(style=ButtonStyle.URL, label=f"Giveaway for the ping", emoji=gawemoji, disabled=False, url=message.jump_url)]
 					# await message.reply(components=[create_actionrow(*buttons)])
 					break

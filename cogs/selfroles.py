@@ -146,9 +146,10 @@ class selfroles(commands.Cog):
 		)
 		dev = self.bot.get_guild(999551299286732871)
 		gk = self.bot.get_guild(785839283847954433)
+		playzone = self.bot.get_guild(815849745327194153)
 
 		auctionemoji = await dev.fetch_emoji(1135967362768699482)
-		gawemoji = await gk.fetch_emoji(806631994770849843)
+		gawemoji = await playzone.fetch_emoji(830525854013849680)
 		flashemoji = await gk.fetch_emoji(1068482459014017034)
 		otheremoji = await gk.fetch_emoji(1024206931373608961)
 		eventemoji = await gk.fetch_emoji(854663256420909066)
