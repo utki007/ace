@@ -554,7 +554,7 @@ class giveaway(commands.Cog):
 		await message.add_reaction("<:tgk_thankyou:930419246792601640>")
 		url = message.jump_url
 		gk = self.bot.get_guild(785839283847954433)
-		eventemoji = await gk.fetch_emoji(854663256420909066)
+		eventemoji = await gk.fetch_emoji(1072914111077285889)
 		buttons = [create_button(style=ButtonStyle.URL, label="Head to event channel!", emoji=eventemoji, disabled=False, url=url)]
 		
 		if ping:
