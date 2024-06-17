@@ -475,20 +475,19 @@ class channel(commands.Cog, description="Channel utils"):
    
     @cog_ext.cog_slash(name="sync", description="Sync the channel with channel category", guild_ids=[785839283847954433],default_permission=False,permissions=staff_perm)
     async def sync(self, ctx):
-        if ctx.author.id == 685705841264820247:
-            await ctx.defer(hidden=True)
-        else:
-            await ctx.defer(hidden=False)
+        await ctx.defer(hidden=False)
         channel = ctx.channel
         embed = discord.Embed(
             color=0x78AB46, description=f':white_check_mark: | **{channel.mention}** is now synced with channel category.')
         await ctx.channel.edit(sync_permissions=True)
         # await ctx.send(embed=embed, hidden=False)
-        if ctx.author.id == 685705841264820247:
-            await ctx.send(f"Jann pro fr", hidden= True)
-            await channel.send(embed=embed)
-        else:
-            await ctx.send(embed=embed, hidden=False)
+        if ctx.channel.id in [1203639501973487616, 849498983172800562, 1091560896591036426, 946995152440922172]:
+            role = ctx.guild.get_role(948276283018719233)
+            overwrite = ctx.channel.overwrites_for(role)
+            overwrite.view_channel = False
+            await ctx.channel.set_permissions(role, overwrite=overwrite)
+        
+        await ctx.send(embed=embed, hidden=False)
 
 def setup(bot):
    bot.add_cog(channel(bot))
