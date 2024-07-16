@@ -177,7 +177,7 @@ class Events(commands.Cog):
 			if i.bot:
 				count = count + 1
 		
-		member = guild.member_count - count
+		member = guild.member_count
 		activity = str(member) + " members!" 
 		await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=activity),status= discord.Status.dnd)
 
