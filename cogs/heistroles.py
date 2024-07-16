@@ -595,23 +595,7 @@ class heistroles(commands.Cog):
         immune_users = [301657045248114690, 488614633670967307, 562738920031256576, 413651113485533194]
         
         if message.channel.id in channel_ids and message.author.id not in immune_users:
-            if "vote" in messageContent:
-                playzone = self.bot.get_guild(815849745327194153)
-                emoji = await playzone.fetch_emoji(967152178617811064)
-                buttons = [create_button(style=ButtonStyle.URL, label="Vote here!", emoji=emoji, disabled=False, url="https://disurl.me/server/785839283847954433/vote")]
-                embed = discord.Embed(
-                    title=f"<a:tgk_redcrown:1005473874693079071> {gk.name}",
-                    description=f"<:tgk_redarrow:1005361235715424296> `+1x` amari guild-wide\n"
-                                f"<:tgk_redarrow:1005361235715424296> Access to <#929613393097293874>\n"
-                                f"<:tgk_redarrow:1005361235715424296> `+1x` entry in <@700743797977514004>'s gaws\n",
-                    color=0xff0000,
-                    url="https://disurl.me/server/785839283847954433/vote"
-                )
-                try:
-                    await message.reply(embed=embed, components=[create_actionrow(*buttons)], mention_author=False , delete_after = 30)
-                except:
-                    pass
-            elif "heist" in messageContent:
+            if "heist" in messageContent:
                 data = await self.bot.settings.find(guild.id)
                 if data!=None and "heist_ar" in data:
                     data = data["heist_ar"]
@@ -975,28 +959,6 @@ class heistroles(commands.Cog):
                 else:
                     await ctx.author.add_roles(movie)
                     await ctx.send(f"The role {movie.mention} has been added to you.", hidden=True)
-
-            elif ctx.custom_id == "reaction:voted":
-                await ctx.defer(hidden=True)
-                voted = discord.utils.get(ctx.guild.roles, id=786884615192313866)
-                if voted not in ctx.author.roles:
-                    
-                    gk = self.bot.get_guild(785839283847954433)
-                    emoji = await gk.fetch_emoji(942521024476487741)
-                    buttons = [create_button(style=ButtonStyle.URL, label="Let's Go!", emoji=emoji, disabled=False, url="https://disurl.me/server/785839283847954433/vote")]
-                    embed = discord.Embed(
-                        title=f"Vote for the {ctx.guild.name}", 
-                        description=
-                        f"❥ 1x extra entry into all frisky giveaways.\n"
-                        f"❥ Special <@&786884615192313866> role with 1x guild-wide amari-multi.\n"
-                        f"❥ Access to <#929613393097293874> with 2x Amari.\n"
-                        f"❥ 2,500 Casino Cash. Collect using `,collectincome` in <#786117471840895016>\n", 
-                        color=ctx.author.color
-                    )
-            
-                    msg = await ctx.send(embed=embed, components=[create_actionrow(*buttons)],hidden=True)
-                else:
-                    await ctx.send(f"Already have voted role!",hidden=True)
 
         elif ctx.custom_id.startswith("nopartner"):
             if ctx.custom_id == "nopartner:yes":
