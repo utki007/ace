@@ -648,27 +648,13 @@ class giveaway(commands.Cog):
 		if goal > member:
 			embed.add_field(name="**✦  Status:** ",value=f"> Need **{goal - member}** more people, **_Invite when_** ?",inline=False)
 		else:
-			embed.add_field(name="**Status:** ",value=f"Target has been achieved!",inline=False)	
-				
-		gk = self.bot.get_guild(785839283847954433)
-		emoji = await gk.fetch_emoji(942521024476487741)
-		buttons = [
-			create_button(style=ButtonStyle.green,emoji=emoji, label="Click here to hack giveaways!",disabled=False, custom_id="reaction:voted")
-		]
-		# await ctx.send(content=f"Goal Sent!",hidden=True)
+			embed.add_field(name="**Status:** ",value=f"Target has been achieved!",inline=False)
 
 		if hidden == False:
-			msg = await ctx.channel.send(embed=embed, components=[create_actionrow(*buttons)])
-			await ctx.send(content=f"Goal Sent!",hidden=True)
-			await asyncio.sleep(1800)
-			buttonsexpireall = [
-				create_button(style=ButtonStyle.green,emoji=emoji, label="Click here to hack giveaways!",disabled=True, custom_id="reaction:voted")
-			]
-			await msg.edit(embed=embed, components=[create_actionrow(*buttonsexpireall)])
+			msg = await ctx.channel.send(embed=embed)
+			await ctx.send(content=f"Goal Sent!",hidden=False)
 		else:
 			await ctx.send(embed=embed, hidden=True)
-
-
 
 	@cog_ext.cog_slash(name="membercount",description="Total members in server", guild_ids=guild_ids,
 		default_permission=False,permissions=staff_perm)
