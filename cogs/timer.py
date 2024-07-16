@@ -198,7 +198,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 		date_time_str = tdata["timestamp"].split("+")[0]
 		date_time_str = date_time_str.replace("T", " ", 1)
 		date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S.%f')   
-		timer_left = str(date_time_obj - datetime.datetime.now(timezone('Asia/Kolkata')))
+		timer_left = str(date_time_obj - datetime.datetime.now())
 		# try:
 		# 	timer_left = datetime.datetime.strptime(timer_left,'%H:%M:%S.%f')
 		# except:
@@ -248,7 +248,7 @@ class timer(commands.Cog,name= "Giveaway Utils" ,description="Make a giveaway or
 			buttons = [create_button(style=ButtonStyle.URL, label="Timer ended here", disabled=False, url=f"{message.jump_url}")]
 			end_message = await ctx.send(f"{ctx.author.mention} your timer for **{tdata['title']}** has Ended!", components=[create_actionrow(*buttons)])
 			await end_message.add_reaction(self.bot.emojis_list["waiting"])
-			await message.delete()
+			# await message.delete()
 		except:
 			pass  
 
