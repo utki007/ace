@@ -300,8 +300,8 @@ class heistroles(commands.Cog):
                     except:
                         pass
 
-        # for partner heists 1012434586866827376
-        if message.channel.id == 1012434586866827376:
+        # for partner heists 1265190781812215808
+        if message.channel.id == 1265190781812215808:
             word_list = ['discord.gg']
 
             messageContent = message.content.lower()
@@ -965,7 +965,7 @@ class heistroles(commands.Cog):
                 await ctx.defer(hidden=True)
                 nopartnership = discord.utils.get(ctx.guild.roles, id=810593886720098304)
                 outside = discord.utils.get(ctx.guild.roles, id=806795854475165736)
-                channel = self.bot.get_channel(1012434586866827376)
+                channel = self.bot.get_channel(1265190781812215808)
                 if nopartnership in ctx.author.roles:
                     await ctx.author.remove_roles(nopartnership)
                     await ctx.send(f"**{channel.mention}** is no longer hidden from you!",hidden=True)
@@ -1017,7 +1017,7 @@ class heistroles(commands.Cog):
                 if outside in ctx.author.roles:
                     await ctx.author.remove_roles(outside)
                     flag = 1
-                channel = self.bot.get_channel(1012434586866827376)
+                channel = self.bot.get_channel(1265190781812215808)
                 if flag == 1:
                     await ctx.send(f"**`{channel}`** is now successfully hidden for you!",hidden=True)
                 else:

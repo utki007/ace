@@ -38,7 +38,7 @@ class reminder(commands.Cog, name="Reminder Manager", description="Manages all r
         self.mycounter = self.mydb["counters"]
         
         # channel ids
-        self.partnerheist = 1012434586866827376
+        self.partnerheist = 1265190781812215808
         # for tgk
         self.logChannel = int(858233010860326962)
 

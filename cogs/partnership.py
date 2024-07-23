@@ -45,7 +45,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		self.mycol = self.mydb["partnerships"]
 
 		# channel ids
-		self.partnerheist = 1012434586866827376
+		self.partnerheist = 1265190781812215808
 		# for tgk
 		self.logChannel = int(858233010860326962)
 
@@ -346,7 +346,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		miniPartnership = discord.utils.get(guild.roles, id=1084114504771706971)
 		nopartner = discord.utils.get(guild.roles, id=797448080223109120)
 
-		channel = self.bot.get_channel(1012434586866827376)
+		channel = self.bot.get_channel(1265190781812215808)
 		channel_members = channel.members
 
 		l = [heist, partnerHeist, outsideHeist, partnership, miniPartnership]
@@ -442,7 +442,7 @@ class partnership(commands.Cog, name="Partnership Manager", description="Manages
 		miniPartnership = discord.utils.get(guild.roles, id=1084114504771706971)
 
 		if channel == None:
-			channel = self.bot.get_channel(1012434586866827376)
+			channel = self.bot.get_channel(1265190781812215808)
 
 		channel_members = channel.members
 
