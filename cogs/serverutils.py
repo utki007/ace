@@ -153,25 +153,6 @@ class serverutils(commands.Cog, description="Server Utility"):
         except:
             await ctx.send(f"{ctx.author.mention}, DM was not sent because there was no confirmation!")
 
-    @commands.command(name="vote", description="Get vote link")
-    @commands.check_any(checks.can_use(), checks.is_me())
-    async def vote(self, ctx):
-        await ctx.message.delete()
-        gk = self.bot.get_guild(785839283847954433)
-        playzone = self.bot.get_guild(815849745327194153)
-        emoji = await playzone.fetch_emoji(967152178617811064)
-        buttons = [create_button(style=ButtonStyle.URL, label="Vote here!",
-                           emoji=emoji, url="https://disurl.me/server/785839283847954433/vote")]
-        embed = discord.Embed(
-            title=f"<a:tgk_redcrown:1005473874693079071> {gk.name}",
-            description=f"<:tgk_redarrow:1005361235715424296> `+1x` amari guild-wide\n"
-                        f"<:tgk_redarrow:1005361235715424296> Access to <#929613393097293874>\n"
-                        f"<:tgk_redarrow:1005361235715424296> `+1x` entry in <@700743797977514004>'s gaws\n",
-            color=0xff0000,
-            url="https://disurl.me/server/785839283847954433/vote"
-        )
-        await ctx.send(embed=embed, components=[create_actionrow(*buttons)])
-
     @commands.command(name="revive", description="Revive server")
     @commands.cooldown(1, 28800, commands.BucketType.guild)
     @commands.check_any(checks.can_use(), checks.is_me())
@@ -556,26 +537,60 @@ class serverutils(commands.Cog, description="Server Utility"):
                         webhook.add_file(requests.get(attachment.url).content, attachment.filename)
                 webhook.execute()
         
+    # for cricket honour board
+    @commands.command(name="honour", description="Honour Board")
+    @commands.check_any(checks.can_use(), checks.is_me())
+    async def honour(self, ctx, link_to_honour: str, misc_link: str = None):
+        await ctx.message.delete()
+        honour_channel = self.bot.get_channel(1267437754237845545)
+        if honour_channel is None:
+            return await ctx.send("Honour Board channel not found!", delete_after=10)
+        if misc_link is not None:
+            try:
+                channel_id = int(misc_link.split("/")[-2])
+                message_id = int(misc_link.split("/")[-1])
+                channel = self.bot.get_channel(channel_id)
+                message2 = await channel.fetch_message(message_id)
+                # if message2.author.id != 814100764787081217:
+                #     return await ctx.send("Message is not from <@814100764787081217> bot!", delete_after=10)
+            except:
+                return await ctx.send("Invalid Misc link!", delete_after=10)
+        try:
+            channel_id = int(link_to_honour.split("/")[-2])
+            message_id = int(link_to_honour.split("/")[-1])
+            channel = self.bot.get_channel(channel_id)
+            message1 = await channel.fetch_message(message_id)
+            if message1.author.id != 814100764787081217:
+                return await ctx.send("Message is not from <@814100764787081217> bot!", delete_after=10)
+        except:
+            return await ctx.send("Invalid Honour link!", delete_after=10)
 
-    # @commands.command(name="hbd", description="Wish Happy Birthday")
-    # async def hbd(self, ctx, *, message: str = None):
-    # 	await ctx.message.delete()
-    # 	if ctx.channel.id != 945280894296555520:
-    # 		return await ctx.send(f"{ctx.author.mention}, Please use this command in <#945280894296555520>!", delete_after=5)
-    # 	gk = self.bot.get_guild(785839283847954433)
-    # 	role = discord.utils.get(gk.roles, id=803160016899014736)
-    # 	birthdayMsg = f'<a:happybirthday:1078296433037414470> _Happy Birthday <@416600678073630731>_ <a:happybirthday:1078296433037414470>\n'
-    # 	birthdayMsg += f'from: {ctx.author.mention}'
+        if misc_link is not None:
+            content = message2.content
+        else:
+            content = message1.content
+        
+        try:
+            user = ctx.guild.get_member(int(re.findall("\<\@(.*?)\>", content)[0]))
+        except:
+            user = None
+        if user is None:
+            return await ctx.send("User not found!", delete_after=10)
+        webhooks = await honour_channel.webhooks()
+        webhook = discord.utils.get(webhooks, name=self.bot.user.name)
 
-    # 	if message == None:
-    # 		message = birthdayMsg
-    # 	else:
-    # 		message = f'**{message}**\n\n{birthdayMsg}'
+        if webhook is None:
+            webhook = await honour_channel.create_webhook(name=self.bot.user.name, reason="For sending webhook", avatar=await self.bot.user.avatar_url.read())
 
-    # 	if role not in ctx.author.roles:
-    # 		await ctx.author.add_roles(role, reason=f'Wished Happy Birthday')
+        content = f'{(" ".join(content.split(" ")[1:])).capitalize()}\n-# **Source:** [Click here]({link_to_honour})'
+        webhook = DiscordWebhook(url=webhook.url, username=user.display_name,
+                        avatar_url=str(user.avatar_url).split("?")[0], content = f"{content.replace('983883003111559209','1267437188363325481',100)}")
+        webhook.add_embed(message1.embeds[0].to_dict())
+        webhook.execute()
 
-    # 	await ctx.send(message, allowed_mentions=discord.AllowedMentions(users=True, everyone=False, roles=False, replied_user=False))
+        # find last message and star it
+        async for message in honour_channel.history(limit=1):
+            await message.add_reaction("⭐")
 
 def setup(bot):
     bot.add_cog(serverutils(bot))
