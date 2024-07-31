@@ -494,6 +494,22 @@ class heistroles(commands.Cog):
                             await message.author.add_roles(bday_role)
                             await message.add_reaction(random.choice(self.bday_emojis))
                             break
+
+        elif message.channel.id == 1268194825543618652:
+            messageContent = message.content.lower()
+            bday_list = ['happy birthday', 'hbd', 'happy']
+            for bday in bday_list:
+                if bday in messageContent:
+                    data = await self.bot.settings.find(message.guild.id)
+                    if "bday_event" in data:
+                        data = data["bday_event2"]
+                        user_id = data['user_id']
+                        user = message.guild.get_member(user_id)
+                        if user in message.mentions:
+                            bday_role = discord.utils.get(gk.roles, id=835866393458901033)
+                            await message.author.add_roles(bday_role)
+                            await message.add_reaction(random.choice(self.bday_emojis))
+                            break
         
         elif message.author.id == 816699167824281621:
             if message.channel.id == 812711254790897714:
