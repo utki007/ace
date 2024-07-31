@@ -154,7 +154,7 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 	async def configure_bday_Event(self, ctx, member:discord.Member, name: str = None,  colour: discord.Color = None):
 		await ctx.message.delete()
 		if name is None:
-			name = f'₊˚﹕Happy Birthday {member.name}₊˚﹆'
+			name = f'₊˚﹕Happy Birthday {member.display_name}₊˚﹆'
 		else:
 			name = f'₊˚﹕Happy Birthday {name}₊˚﹆'
 		
