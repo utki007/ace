@@ -186,44 +186,6 @@ class settings(commands.Cog, description="Server SPecific Settings"):
 			await pin.unpin()
 		await wish_embed.pin()
 
-	@settings.command(name="configure_bday_event2", aliases=['bday2','hbd2','bday_event2'])
-	@commands.check_any(checks.can_use(), checks.is_me())
-	async def configure_bday_Event2(self, ctx, member:discord.Member, name: str = None,  colour: discord.Color = None):
-		await ctx.message.delete()
-		if name is None:
-			name = f'₊˚﹕Happy Birthday {member.display_name}₊˚﹆'
-		else:
-			name = f'₊˚﹕Happy Birthday {name}₊˚﹆'
-		
-		gk = self.bot.get_guild(785839283847954433)
-		role = discord.utils.get(gk.roles, id=835866393458901033)
-		if colour!=None:
-			await role.edit(name=name, colour = colour, reason = f"Setting up birthday event for {member.name}.")
-		else:
-			await role.edit(name=name, reason = f"Setting up birthday event for {member.name}.")
-		
-		await self.bot.db.settings.update_one(
-			{"_id": ctx.guild.id},
-			{"$set": {"bday_event2": {"user_id": member.id}}},
-			upsert=True
-		)
-		wish_here = self.bot.get_channel(1268194825543618652)
-		embed = discord.Embed(
-			title = f"<a:birthdaycake:1078363053210476656> Happy Birthday {member.name} <a:birthdaycake:1078363053210476656>!",
-			description = f"**{member.mention}** has a birthday today! Let's wish them a happy birthday! :tada: :tada: :tada: \n\n**Need {role.mention} to participate in today's birthday bash!**",
-			color = ctx.author.color
-		)
-		embed.set_thumbnail(url=member.avatar_url)
-		embed.set_footer(text=f'Wish {member.name} a happy birthday with a ping to get role. Bot reaction verifes that role has been added.')
-		wish_embed = await wish_here.send(embed=embed, allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
-		await ctx.send(f"**Birthday event configured for {member.name}: {role.mention} in {wish_here.mention}**", allowed_mentions=discord.AllowedMentions(users=True, everyone=False,roles=False))
-		
-		pins = await wish_here.pins()
-		for pin in pins:
-			await pin.unpin()
-		await wish_embed.pin()
-
-
 	@settings.command(name="heist-ar", aliases=['ha'])
 	@commands.check_any(checks.can_use(), checks.is_me())
 	async def heist_ar(self, ctx, channel:discord.TextChannel,timer,amount:str,role :discord.Role, delete:bool=False):
