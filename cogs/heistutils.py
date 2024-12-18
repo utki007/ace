@@ -135,7 +135,7 @@ class heistutils(commands.Cog):
 		self.bot.heist_setup_data = [i.id for i in all_roles_list]
 		
 		desc = f"{ctx.author.mention} is hosting a heist!**\n**\n"
-		desc = desc + f"> <a:TGK_paisa_hi_paisa_hoga:849509579565301780>  **⏣ {int(amount):,}**\n"
+		desc = desc + f"> <a:tgk_heisttime:932911351154741308>  **⏣ {int(amount):,}**\n"
 		desc = desc + f"> <a:timesand:832701552845389866>  <t:{int(datetime.datetime.timestamp(timer))}:t> (<t:{int(datetime.datetime.timestamp(timer))}:R>)\n"
 
 		event_embed = discord.Embed(
@@ -216,9 +216,9 @@ class heistutils(commands.Cog):
 		ctx1.author = ctx.author
 		await ctx1.invoke(self.bot.get_command("settings heist-ar"),channel=ctx1.channel,amount=str(amount),timer=og_timer,role = required_role)
 		if amount > 999000000:
-			await ctx1.invoke(self.bot.get_command("t"), time=og_timer, name =f"<a:TGK_paisa_hi_paisa_hoga:849509579565301780> **{int(amount/1000000000)} Bil** Heist Timer! <a:TGK_paisa_hi_paisa_hoga:849509579565301780>")
+			await ctx1.invoke(self.bot.get_command("t"), time=og_timer, name =f"<a:tgk_heisttime:932911351154741308> **{int(amount/1000000000)} Bil** Heist Timer! <a:tgk_heisttime:932911351154741308>")
 		else:
-			await ctx1.invoke(self.bot.get_command("t"), time=og_timer, name =f"<a:TGK_paisa_hi_paisa_hoga:849509579565301780> **{int(amount/1000000)} Mil** Heist Timer! <a:TGK_paisa_hi_paisa_hoga:849509579565301780>")
+			await ctx1.invoke(self.bot.get_command("t"), time=og_timer, name =f"<a:tgk_heisttime:932911351154741308> **{int(amount/1000000)} Mil** Heist Timer! <a:tgk_heisttime:932911351154741308>")
 		
 	@cog_ext.cog_subcommand(base="Heist", name="Ad-Template", description="Get Heist Ad", guild_ids=[785839283847954433], base_default_permission=False, base_permissions=heist_perm,
 						 options=[
